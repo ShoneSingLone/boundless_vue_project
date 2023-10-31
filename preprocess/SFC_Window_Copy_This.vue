@@ -25,8 +25,7 @@ export default async function ({ row, getTableData }) {
 	const RULES = await _.$importVue("/common/utils/rules.vue");
 	const { useDialogProps } = await _.$importVue("/common/utils/compositionAPI.vue");
 
-	return {
-		NEED_HMR: localStorage.isDev,
+	return defineComponent({
 		inject: ["APP"],
 		props: useDialogProps(),
 		mounted() {
@@ -105,7 +104,7 @@ export default async function ({ row, getTableData }) {
 				this.upsertOne();
 			}
 		}
-	};
+	});
 }
 </script>
 

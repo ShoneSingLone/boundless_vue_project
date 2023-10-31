@@ -13,7 +13,10 @@ export default async function ({ onOk, onCancel, content }) {
 	const isUpdate = false;
 	/*  */
 	const RULES = await _.$importVue("/common/utils/rules.vue");
-	return {
+	const { useDialogProps } = await _.$importVue("/common/utils/compositionAPI.vue");
+
+	return defineComponent({
+		props: useDialogProps(),
 		mounted() {
 			this.init();
 		},
@@ -80,7 +83,7 @@ export default async function ({ onOk, onCancel, content }) {
 				}
 			}
 		}
-	};
+	});
 }
 </script>
 

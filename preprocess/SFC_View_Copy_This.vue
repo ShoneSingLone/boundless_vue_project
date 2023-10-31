@@ -68,14 +68,14 @@ export default async function () {
 				}
 			},
 			async upsertOne(row) {
-				const WindowImageModify = await _.$importVue(
-					"/modules/views/image/WindowImageModify.vue",
+				const DialogTypeVueSFC = await _.$importVue(
+					"@/DialogTypeVueSFC.vue",
 					{
 						$parent: this,
 						row
 					}
 				);
-				_.$openWindow(i18n("modifyImageInfo"), WindowImageModify);
+				_.$openWindow(i18n("modifyImageInfo"), DialogTypeVueSFC);
 			}
 		},
 		watch: {},

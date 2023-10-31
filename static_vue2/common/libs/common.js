@@ -105,7 +105,7 @@
 						if (errorCodeArray.includes(response.status)) {
 							reject(
 								response?.responseJSON?.message ||
-									JSON?.stringify(response?.responseJSON, null, 2)
+								JSON?.stringify(response?.responseJSON, null, 2)
 							);
 						} else {
 							reject(response);
@@ -262,7 +262,7 @@
 	 * @name _.$doNoting
 	 * 啥都不干的函数
 	 */
-	_.$doNoting = () => {};
+	_.$doNoting = () => { };
 
 	/**
 	 * @name _.$sleep
@@ -348,7 +348,7 @@
 			}
 
 			const WindowConfirm = await _.$importVue(
-				"/components/msg/WindowConfirm.vue",
+				"/common/ui-x/msg/WindowConfirm.vue",
 				{
 					onOk: resolve,
 					onCancel: reject,

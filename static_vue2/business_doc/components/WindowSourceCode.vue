@@ -10,7 +10,11 @@
 
 <script>
 export default async function ({ code, componentPath }) {
-	return {
+	const { useDialogProps } = await _.$importVue("/common/utils/compositionAPI.vue");
+
+	return defineComponent({
+		inject: ["APP"],
+		props: useDialogProps(),
 		data() {
 			return {
 				componentPath,
@@ -30,6 +34,6 @@ ${code.styleSourceCode}
 `
 			};
 		}
-	};
+	});
 }
 </script>

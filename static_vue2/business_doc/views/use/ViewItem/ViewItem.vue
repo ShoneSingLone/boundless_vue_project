@@ -1,9 +1,7 @@
 <template>
 	<div class="page-view">
 		<xPageContent>
-			asdfsf
 			<router-view />
-			asdfsf
 		</xPageContent>
 	</div>
 </template>

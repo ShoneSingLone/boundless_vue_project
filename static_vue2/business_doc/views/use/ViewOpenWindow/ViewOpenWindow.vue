@@ -1,7 +1,9 @@
 <template>
 	<div class="page-view view-icon">
 		<xPageContent>
-			<div><xBtn @click="openDialog" preset="blue">OpenDialog</xBtn></div>
+			<div>
+				<xBtn @click="openDialog" preset="blue">OpenDialog</xBtn>
+			</div>
 		</xPageContent>
 	</div>
 </template>

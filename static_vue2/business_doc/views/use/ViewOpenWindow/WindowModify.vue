@@ -15,8 +15,11 @@
 
 <script>
 export default async function () {
-	return {
+	const { useDialogProps } = await _.$importVue("/common/utils/compositionAPI.vue");
+
+	return defineComponent({
 		inject: ["APP"],
+		props: useDialogProps(),
 		data() {
 			return {
 				form: {
@@ -49,7 +52,7 @@ export default async function () {
 				this.$closeWindow();
 			}
 		}
-	};
+	});
 }
 </script>
 
