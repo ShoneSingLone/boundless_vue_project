@@ -255,9 +255,9 @@
 }
 
 /* padding16 */
-@list: 4, 8, 16, 32, 48, 64;
+@listA: 4, 8, 16, 32, 48, 64;
 
-each(@list, {
+each(@listA, {
 	.padding@{value} {
 		padding: @value*1px;
 	}
@@ -265,9 +265,9 @@ each(@list, {
 /* padding16 */
 
 /* flex1 flex2 */
-/* @i: 1;
+@i: 1;
 
-.flex-loop (@i) when (@i <=5) {
+/* .flex-loop (@i) when (@i <= 50) {
   .flex@{i} {
     flex: @i;
   }

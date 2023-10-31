@@ -4,7 +4,7 @@ export default async function () {
 		_.$importVue("/common/ui-x/useXui.vue"),
 		_.$importVue("/common/ui-element/useElementUI.vue", {
 			size: "small",
-			i18nLanguage: window.i18nLanguage
+			I18N_LANGUAGE: window.I18N_LANGUAGE
 		})
 	]);
 

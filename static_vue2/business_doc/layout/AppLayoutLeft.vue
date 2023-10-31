@@ -71,7 +71,7 @@ export default async function () {
 				if (!this.isOpen) {
 					return `--left-aside-width:1px`;
 				}
-				if (i18nLanguage === "zh-CN") {
+				if (I18N_LANGUAGE === "zh-CN") {
 					return `--left-aside-width:240px;`;
 				} else {
 					return `--left-aside-width:240px;`;

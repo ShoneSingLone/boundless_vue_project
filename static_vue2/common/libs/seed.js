@@ -1,5 +1,3 @@
-console.time("x-loading");
-
 (async function useIdbKeyVal() {
 	var camelizeRE = /\/|\.|_|-(\w)/g;
 	const $$id = id => document.getElementById(id);
@@ -86,12 +84,14 @@ console.time("x-loading");
 	})();
 
 	(function loadBaseInfo() {
-		const { srcRoot, appName, appVersion } = $$id("src-root").dataset;
-		window.MOCK_URL_PREFIX = "";
+		const { srcRoot, appName, appEntryName, appVersion } =
+			$$id("src-root").dataset;
+
 		window.SRC_ROOT_PATH = srcRoot || "";
 		window.APP_NAME = appName || "";
+		window.APP_ENTRY_NAME = appEntryName || "entry";
 		window.APP_VERSION = appVersion || "";
-		window.i18nLanguage =
+		window.I18N_LANGUAGE =
 			localStorage["X-Language"] || $$tags("html")[0].lang || "zh-CN";
 	})();
 
@@ -312,12 +312,14 @@ console.time("x-loading");
 				styleSourceCode = $resolveCssAssetsPath(styleSourceCode);
 			}
 			/* 如果是移动端，会替换px为rem html的font-size:1px; */
+
 			if (window._CURENT_IS_MOBILE) {
 				const pxReg = /([-+]?[0-9]*\.?[0-9]+)px/g;
 				styleSourceCode = styleSourceCode.replace(pxReg, (full, num) => {
 					return `${num}rem`;
 				});
 			}
+
 			return styleSourceCode;
 		})();
 		if (!innerHtml) {
@@ -330,8 +332,8 @@ console.time("x-loading");
 			$style.id = id;
 			const body = $$tags("body")[0];
 			body.appendChild($style);
-			$style.innerHTML = innerHtml;
 		}
+		$style.innerHTML = innerHtml;
 	}
 
 	(function () {
@@ -366,7 +368,6 @@ console.time("x-loading");
 			z-index: 9999999999;
 		}`)
 		);
-		console.timeEnd("x-loading");
 	})();
 
 	(async function bootstrap() {
@@ -385,6 +386,18 @@ console.time("x-loading");
 			$appendScript("/common/libs/vue.js")
 		]);
 
+		(function () {
+			if (window._CURENT_IS_MOBILE) {
+				function setRemBase() {
+					const wWidth = $(window).width();
+					const rate = wWidth / 375;
+					const unit = (16 * rate) / 16;
+					$("html").css("font-size", unit + "px");
+				}
+				$(window).on("resize", setRemBase);
+				setRemBase();
+			}
+		})();
 		_.$$tags = $$tags;
 		_.$$id = $$id;
 		_.$val = $val;
