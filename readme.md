@@ -37,3 +37,7 @@ window.APP_ENTRY_NAME 默认entry 其他的也可以
 ## 优化
 
 ![](preprocess/assets/20231031124856.png)
+
+## utils
+
+- git rm -r --cached
