@@ -13,7 +13,9 @@ export default async function ({ onOk, onCancel, content }) {
 	const isUpdate = false;
 	/*  */
 	const RULES = await _.$importVue("/common/utils/rules.vue");
-	const { useDialogProps } = await _.$importVue("/common/utils/compositionAPI.vue");
+	const { useDialogProps } = await _.$importVue(
+		"/common/utils/compositionAPI.vue"
+	);
 
 	return defineComponent({
 		props: useDialogProps(),

@@ -40,12 +40,12 @@ export default async function () {
 	width: 100%;
 	overflow: hidden;
 
-	>.AppLayoutLeft,
-	>.AppLayoutContent {
+	> .AppLayoutLeft,
+	> .AppLayoutContent {
 		height: 100%;
 	}
 
-	>.AppLayoutContent {
+	> .AppLayoutContent {
 		flex: 1;
 		width: 1px;
 		display: flex;

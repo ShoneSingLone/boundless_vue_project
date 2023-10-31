@@ -8,7 +8,6 @@ export default async function () {
 		})
 	]);
 
-
 	_.each(
 		{
 			DemoAndCode: "@/components/DemoAndCode.vue",

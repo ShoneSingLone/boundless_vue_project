@@ -1,3 +1,3 @@
 window.i18n.options = {
-	"itWork": "itWork"
+	itWork: "itWork"
 };
