@@ -31,17 +31,30 @@ exports.appUseKoaAssets = function (app) {
 				const indexHtmlString = await fs.promises.readFile(targetPath, "utf-8");
 				const $ = cheerio.load(indexHtmlString);
 				/* 首页注入 hmr 代码 */
-				const scriptBlockString = await fs.promises.readFile(
+				let scriptBlockString = await fs.promises.readFile(
 					app.pathResolve("preprocess/server/hmr.socket.io.script_block.vue"),
 					"utf-8"
 				);
-				$("#src-root").after(scriptBlockString);
+				scriptBlockString = scriptBlockString.replace("LOCALHOST_PORT", app.LOCALHOST_PORT);
+
+
+				socketIoString = await fs.promises.readFile(
+					app.pathResolve("preprocess/server/hmr.socket.io.script_block.socket.io.js"),
+					"utf-8"
+				);
+
+				scriptBlockString = scriptBlockString.replace(`/* window.io */`, socketIoString);
+
+				$("#app").after(scriptBlockString);
 
 				const APP_NAME = basename.replace(extname, "");
+
 				const { MOCK_URL_PREFIX } = SERVER_CONFIGS[APP_NAME] || {};
+
+				/* 配置 yapi mock 地址 */
 				if (MOCK_URL_PREFIX) {
-					$("#src-root").after(
-						`<script only-use-in-dev-model>window.MOCK_URL_PREFIX=localStorage.isDev?"${MOCK_URL_PREFIX}":"";</script>`
+					$("#app").after(
+						`<script only-use-in-dev-model>window.MOCK_URL_PREFIX="${MOCK_URL_PREFIX}";</script>`
 					);
 				}
 				console.log(

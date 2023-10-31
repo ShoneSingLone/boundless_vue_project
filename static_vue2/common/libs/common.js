@@ -1028,7 +1028,7 @@
 		};
 		/* 国际化 */
 		window.i18n = i18n;
-		await _.$globalVar("i18n.options", `@/i18n/${i18nLanguage}.js`);
+		await _.$globalVar("i18n.options", `@/i18n/${I18N_LANGUAGE}.js`);
 		Vue.prototype.$i18n = i18n;
 		Vue.prototype.i18n = i18n;
 	})();
@@ -1041,7 +1041,7 @@
 
 	document.title = window.i18n("adminConsole");
 	const APP = await _.$importVue(
-		`${SRC_ROOT_PATH}/business_${APP_NAME}/entry.vue`
+		`${SRC_ROOT_PATH}/business_${APP_NAME}/${APP_ENTRY_NAME}.vue`
 	);
 	if (localStorage.isDev) {
 		window.APP = APP;

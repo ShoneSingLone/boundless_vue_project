@@ -4,13 +4,13 @@ export default async function (options) {
 		await _.$globalVar("ELEMENT", "/common/ui-element/index.min.js");
 		await _.$globalVar(
 			"ELEMENT.lang",
-			`/common/ui-element/i18n/${options.i18nLanguage}.js`
+			`/common/ui-element/i18n/${options.I18N_LANGUAGE}.js`
 		);
 		const LOCALE_MAP = {
 			"zh-CN": ELEMENT.lang.zhCN,
 			"en-US": ELEMENT.lang.en
 		};
-		ELEMENT.locale(LOCALE_MAP[i18nLanguage]);
+		ELEMENT.locale(LOCALE_MAP[I18N_LANGUAGE]);
 
 		Vue.prototype.$ELEMENT = options;
 	}

@@ -1,6 +1,7 @@
 const Koa = require('koa');
 const path = require('path');
 const IO = require('koa-socket');
+const os = require("os");
 var { appUseHMR, appUseProxy, appUseKoaAssets, appUseSocketMiddleware } = require("./preprocess/server/middleware");
 
 const app = new Koa();
@@ -25,6 +26,7 @@ appUseHMR(ioWs);
             console.log('🚀:', '端口', port + "被占用");
             appListen(++port);
         });
-    console.log(`http://localhost:${port}`);
+    app.LOCALHOST_PORT = `http://localhost:${port}`;
+    console.log("networkInterfaces\n", os.networkInterfaces(), "\n", app.LOCALHOST_PORT);
 })(3000);
 

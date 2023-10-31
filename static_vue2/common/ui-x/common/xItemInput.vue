@@ -24,7 +24,7 @@ export default async function () {
 				showWordLimit: "",
 				showPassword: vm.isShowPassword,
 				autocomplete: "on",
-				type: vm.configs?.type || "text"
+				type: vm.$attrs.type || vm.configs?.type || "text"
 			};
 			if (_.isFunction(Vue?.useXui?.globalConfigs?.xItemInput?.defaultProps)) {
 				attrs = Vue.useXui.globalConfigs.xItemInput.defaultProps(this, attrs);
