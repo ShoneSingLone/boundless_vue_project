@@ -1,0 +1,89 @@
+.center() {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.top {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+}
+.left {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+.right {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.ellipsis {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.ellipsis2($line) {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: $line;
+	white-space: normal;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-all;
+}
+.columnLeft {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+}
+.columnTop {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+.columnCenter {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+.absCenter {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+}
+.leftBottom {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-end;
+}
+.scroll {
+	overflow-x: hidden;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+@function px2rem($px) {
+	@return $px / $ratio + rem;
+}
+
+.icon {
+	color: #666;
+	font-size: 16px;
+}
+
+.title {
+	color: #666;
+	font-size: 16px;
+	font-weight: bold;
+}

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "jsx": "react"
+  },
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "include": [
+    "./", "static_vue2/common/ui-element/index.min.js",
+  ],
+  "vueCompilerOptions": {
+    "target": 2.7
+  }
+}

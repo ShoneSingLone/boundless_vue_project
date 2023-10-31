@@ -1,0 +1,43 @@
+<svg width="32px" height="32px" viewBox="0 0 144 144" xmlns="http://www.w3.org/2000/svg" class="x-spin-dot-item">
+    <circle style="" cx="72" cy="24" r="24" class="x-spin-dot-item" />
+    <circle style="" cx="24" cy="72" r="24" class="x-spin-dot-item" />
+    <circle style="" cx="120" cy="72" r="24" class="x-spin-dot-item" />
+    <circle style="" cx="72" cy="120" r="24" class="x-spin-dot-item" />
+    <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="1.2s"
+        repeatCount="indefinite" />
+    <style>
+        @keyframes antSpinMove {
+            to {
+                opacity: 1
+            }
+        }
+
+
+        .x-spin-dot-item-wrapper {
+            max-width: var(--ui-height)
+            max-height: var(--ui-height);
+        }
+
+
+        .x-spin-dot-item {
+            fill: #1890ff;
+        }
+
+        .x-spin-dot-item {
+            opacity: .3;
+            animation: antSpinMove 1s infinite linear alternate
+        }
+
+        .x-spin-dot-item:nth-child(2) {
+            animation-delay: .4s
+        }
+
+        .x-spin-dot-item:nth-child(3) {
+            animation-delay: .8s
+        }
+
+        .x-spin-dot-item:nth-child(4) {
+            animation-delay: 1.2s
+        }
+    </style>
+</svg>

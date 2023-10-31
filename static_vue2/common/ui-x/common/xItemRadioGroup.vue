@@ -1,0 +1,103 @@
+<script>
+export default async function () {
+	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
+	return {
+		mixins: [mixins],
+		props: ["value", "configs"],
+		computed: {
+			cptDisabled() {
+				if (hasOwn(this.$attrs, "disabled")) {
+					return this.$attrs.disabled;
+				}
+				return false;
+			},
+			minWidth() {
+				return this.configs?.minWidth || 200;
+			},
+			options() {
+				return this.configs?.options || [];
+			},
+			cptGroupProps() {
+				return merge_hFnProps([
+					{ attrs: this.$attrs },
+					{
+						staticClass: "xItemRadioGroup",
+						attrs: {
+							on: this.mixin_listeners,
+							col: 4
+						}
+					}
+				]);
+			},
+			vDomItems() {
+				/*el-radio-button*/
+				const tag = this.configs?.type || "el-radio";
+				return _.map(this.options, ({ value, label }) =>
+					h("div", {}, [
+						h(
+							tag,
+							{
+								label: value,
+								key: value,
+								value: this.mixin_value,
+								disabled: this.cptDisabled,
+								nativeOn: {
+									click: () => {
+										if (!this.cptDisabled) {
+											this.mixin_value = value;
+										}
+									}
+								}
+							},
+							[label]
+						)
+					])
+				);
+			}
+		},
+		methods: {
+			getCol(width, col) {
+				if (col === 1) {
+					return 1;
+				}
+				const _minWidth = width / col;
+				if (_minWidth > this.minWidth) {
+					return col;
+				} else {
+					return this.getCol(width, col - 1);
+				}
+			}
+		},
+		render() {
+			return h("xAutoResizer", {}, [
+				{
+					default: ({ width, height }) => {
+						if (width) {
+							return h(
+								"xForm",
+								{
+									...this.cptGroupProps,
+									col: this.getCol(width, Math.ceil(width / this.minWidth))
+								},
+								this.vDomItems
+							);
+						}
+					}
+				}
+			]);
+		}
+	};
+}
+</script>
+
+<style lang="less">
+.xForm.xItemRadioGroup {
+	.xFormItem {
+		min-height: var(--ui-height);
+	}
+
+	.el-radio__input.is-checked + .el-radio__label {
+		color: var(--ui-primary);
+	}
+}
+</style>
