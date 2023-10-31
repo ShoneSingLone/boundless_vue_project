@@ -20,16 +20,16 @@ export default async function () {
 				state.content = content;
 			}
 			function onEmit_All() {
-				window.APP_ws.emit("all", { msg: "yo central, are you on the line?" });
+				window.APP_WS.emit("all", { msg: "yo central, are you on the line?" });
 			}
 			function onEmit_Self() {
-				window.APP_ws.emit("self", { foo: "foo" });
+				window.APP_WS.emit("self", { foo: "foo" });
 			}
 			function onEmit_Other() {
 				function handleAcknowledge(content) {
 					state.content = "acknowledgement: " + content;
 				}
-				window.APP_ws.emit("other", { foo: "foo" }, handleAcknowledge);
+				window.APP_WS.emit("other", { foo: "foo" }, handleAcknowledge);
 			}
 
 			onMounted(() => {
