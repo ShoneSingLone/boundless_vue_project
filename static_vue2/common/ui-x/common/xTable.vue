@@ -177,6 +177,8 @@ export default async function () {
 										})();
 
 										tableCellProps.key = prop;
+										tableCellProps.dataColProp = prop;
+										tableCellProps.dataRowIndex = $index;
 										return h(tag, tableCellProps, children);
 									}
 								};

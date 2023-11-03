@@ -15,7 +15,6 @@ export default async function () {
   } */
 
 	return {
-		NEED_HMR: localStorage.isDev,
 		props: ["configs", "value"],
 		provide() {
 			const xItem = this;
@@ -253,19 +252,21 @@ export default async function () {
 			},
 			reset() {},
 			async validate() {
-				const vm = this;
-				if (vm.configs.rules && vm.configs.rules.length > 0) {
-					for await (const rule of vm.configs.rules) {
-						const msg = await rule.validator({ val: vm.p_value, vm });
+				if (this.configs.rules && this.configs.rules.length > 0) {
+					for await (const rule of this.configs.rules) {
+						const msg = await rule.validator({
+							val: this.p_value,
+							xItem: this
+						});
 						if (msg) {
-							vm.errorTips = msg;
+							this.errorTips = msg;
 							break;
 						} else {
-							vm.errorTips = "";
+							this.errorTips = "";
 						}
 					}
 				}
-				return vm.errorTips;
+				return this.errorTips;
 			},
 			setStyle() {
 				this.p_style = (() => {
@@ -302,14 +303,24 @@ export default async function () {
 				};
 			},
 			setListeners() {
+				/* TODO:透传机制，onEmitEvent,AOP */
 				const vm = this;
 				const handleListener = (listeners, eventName) => {
 					listeners[eventName] = function (value, $event) {
+						const on = vm.configs.on;
 						const rule = vm.cpt_rulesByTrigger[eventName];
 						if (rule) {
 							vm.debounceValidate();
 						}
-						vm.$emit(eventName, value);
+						if (on?.[eventName]) {
+							on[eventName]({
+								val: value,
+								$event,
+								xItem: vm
+							});
+						} else {
+							vm.$emit(eventName, value);
+						}
 					};
 					return listeners;
 				};
@@ -356,7 +367,7 @@ export default async function () {
 							h(vm.itemType, {
 								...vm.cpt_disabled,
 								...vm.cpt_bindProps,
-								...vm.p_listeners,
+								on: vm.p_listeners,
 								configs: vm.configs,
 								value: vm.p_value,
 								onChange: val => (vm.p_value = val)

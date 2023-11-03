@@ -7,7 +7,8 @@ export default async function () {
 		_.$newRoute("/xTable", "@/views/use/ViewTable.vue"),
 		_.$newRoute("/xItem", "@/views/use/ViewItem/ViewItem.vue", {
 			children: [
-				_.$newRoute("/xItem/xItemInput", "@/views/use/ViewTableVir.vue")
+				_.$newRoute("/xItem/xItemInput", "@/views/use/ViewItem/base.vue"),
+				_.$newRoute("/xItem/ip_address", "@/views/viewItem/viewIpAddress.vue")
 			]
 		}),
 		,

@@ -7,8 +7,7 @@
     "dev": "node ./server.js",
     "doc": "node ./preprocess/genDocMd/genDoc.js",
     "i18n": "node ./preprocess/makei18n/makeLanguageFile.js",
-    "component": "node ./preprocess/makeComponentList.js static_vue2/common",
-    "push": "npm run i18n && npm run component && npm run doc && npm run lint",
+    "push": "npm run i18n && npm run doc && npm run lint",
     "start": "vite --open --host --port 3010",
     "build:lib": "vite build",
     "serve": "vite preview",
@@ -26,6 +25,7 @@
     "watch": "^1.0.2"
   },
   "devDependencies": {
+    "@vue/runtime-dom": "latest",
     "@opentiny/vue": "^2.11.0",
     "@ventose/utils-node": "^0.0.15",
     "@vitejs/plugin-vue2": "^1.1.2",

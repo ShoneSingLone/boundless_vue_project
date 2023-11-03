@@ -15,13 +15,21 @@
 
 ## 山寨（zei）王UI
 
->只要看上了就山寨过来
+> UI层面的，只要它是开源的，看上了就可以山寨过来。
 
 - [arco.design](https://arco.design/vue/component/resize-box)
 - [devui](https://vue-devui.github.io/components/code-editor/)
 - [tiny-vue](https://opentiny.design/tiny-vue/zh-CN/os-theme/components/form)
 
+### demo
+- 简单的参考elButton.vue，直接CV
+- 复杂点的例如[virtualized-table](https://element-plus.org/zh-CN/component/table-v2.html#virtualized-table-%E8%99%9A%E6%8B%9F%E5%8C%96%E8%A1%A8%E6%A0%BC)
+  - 利用 `vite build`
+  - ![](preprocess/assets/20231103113643.png)
+  - 打包出来再CV调试
+
 ## 关键参数
+
 window._CURENT_IS_MOBILE
 window.APP_VERSION,
 window.APP_ENTRY_NAME 默认entry 其他的也可以

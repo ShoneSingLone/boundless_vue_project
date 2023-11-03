@@ -20,7 +20,6 @@ export default async function () {
 	};
 
 	return {
-		NEED_HMR: localStorage.isDev,
 		props: ["configs"],
 		data() {
 			return {

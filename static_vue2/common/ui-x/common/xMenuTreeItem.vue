@@ -4,7 +4,6 @@ export default async function () {
 	const GH_MENU_TREE_ITEM = "xMenuTreeItem";
 
 	return {
-		NEED_HMR: localStorage.isDev,
 		name: GH_MENU_TREE_ITEM,
 		props: ["item", "clickItem", "renders", "active"],
 		setup(props, { slots }) {

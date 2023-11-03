@@ -3,15 +3,17 @@
 		<p>
 			<code>{{ formData }}</code>
 		</p>
-		<xItem :configs="form.xItemSelect" />
+		<tinyIpAddress></tinyIpAddress>
+		<xItem :configs="form.xItemSelect" @focus="handleFocus" />
 		<xItem :configs="form.xItemInput" />
+		<xItem :configs="form.xItemInputNumber" />
 		<xItem :configs="form.xItemInputNumber" />
 	</div>
 </template>
 
 <script>
 export default async function () {
-	return {
+	return defineComponent({
 		setup() {
 			const form = reactive({
 				xItemSelect: {
@@ -22,11 +24,21 @@ export default async function () {
 						{ label: "foo", value: "foo" },
 						{ label: "bar", value: "bar" },
 						{ label: "fiz", value: "fiz" }
-					]
+					],
+					on: {
+						blur(...args) {
+							console.log("🚀 ~ file: base.vue:28 ~ blur ~ args:", args);
+						}
+					}
 				},
 				xItemInput: {
 					value: "",
-					label: "xItemInput"
+					label: "xItemInput",
+					on: {
+						focus(...args) {
+							console.log("🚀 ~ file: base.vue:37 ~ focus ~ args:", args);
+						}
+					}
 				},
 				xItemInputNumber: {
 					value: null,
@@ -34,14 +46,21 @@ export default async function () {
 				}
 			});
 
-			const formData = computed(() => _.$pickValueFromConfigs(form));
+			const formData = computed(() =>
+				JSON.stringify(_.$pickValueFromConfigs(form), null, 2)
+			);
+
+			function handleFocus(...args) {
+				console.log("🚀 ~ file: base.vue:50 ~ handleFocus ~ args:", args);
+			}
 
 			return {
 				form,
-				formData
+				formData,
+				handleFocus
 			};
 		}
-	};
+	});
 }
 </script>
 

@@ -1,6 +1,7 @@
 <script>
 export default async function () {
 	await Promise.all([
+		_.$importVue("/common/ui-tiny/useTinyUI.vue"),
 		_.$importVue("/common/ui-x/useXui.vue"),
 		_.$importVue("/common/ui-element/useElementUI.vue", {
 			size: "small",

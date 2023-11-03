@@ -2,7 +2,9 @@
 window.ONLY_USE_IN_DEV_MODEL = function () {
 	const $win = $(window);
 
+	/* 运行时会replace */
 	/* window.io */
+	/* 运行时会replace */
 
 	/* 默认 socket.io */
 	var ws = io("LOCALHOST_PORT/ws");

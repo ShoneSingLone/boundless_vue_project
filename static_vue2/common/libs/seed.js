@@ -149,6 +149,7 @@
 					if (isVue2) {
 						fnVue$set(nextItem, key, val);
 					} else {
+						Vue?.set && Vue?.set(nextItem, key, val);
 						nextItem[key] = val;
 					}
 					return;
@@ -297,7 +298,7 @@
 	function $resolveCssAssetsPath(styleSourceCode) {
 		/* 替换路径 */
 		styleSourceCode = styleSourceCode.replace(
-			/\/common\/(assets|libs|ui-element)/g,
+			/\/common\/(assets|libs|ui-element|ui-tiny)/g,
 			path => $resolvePath(path)
 		);
 		/* 当前业务app 的相对地址*/
@@ -322,6 +323,7 @@
 
 			return styleSourceCode;
 		})();
+
 		if (!innerHtml) {
 			return;
 		}

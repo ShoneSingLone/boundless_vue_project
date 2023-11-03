@@ -3176,7 +3176,7 @@ export default async function () {
 	})();
 
 	(function lazyLoadAllComponents() {
-		/*由makeComponentList生成，不要修改*/ const ALL_COMPONENTS = [
+		const ALL_COMPONENTS = [
 			"xAutoResizer",
 			"xBtn",
 			"xBtnGroup",
@@ -3221,8 +3221,8 @@ export default async function () {
 			"xTableFilter",
 			"xTableVir",
 			"xTransfer"
-		]; /*由makeComponentList生成，不要修改*/
-		/* *********不要修改以上代码****添加组件后运行 node makeComponentList.js 生成************************************************************************************************* */
+		];
+
 		Vue.ALL_COMPONENTS = ALL_COMPONENTS;
 		const load = async componentName => {
 			const component = await _.$importVue(

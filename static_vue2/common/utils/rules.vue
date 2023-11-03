@@ -138,9 +138,9 @@ export default async function RULES() {
 		rowDataRequired: rowArray => {
 			return {
 				name: "required",
-				async validator({ val, vm }) {
+				async validator({ val, xItem }) {
 					const record = [];
-					let rows = vm.configs?.payload?.row || {};
+					let rows = xItem.configs?.payload?.row || {};
 					for (let key in rows) {
 						if (rowArray.includes(key)) {
 							record.push(rows[key]);

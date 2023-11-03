@@ -115,7 +115,7 @@
 			};
 		}
 
-		const urlWrapper = url => `${window.MOCK_URL_PREFIX}${url}`;
+		const urlWrapper = url => `${window.MOCK_URL_PREFIX || ""}${url}`;
 
 		const $ajax = {
 			post: (url, options = {}) => {
@@ -282,8 +282,14 @@
 	/**
 	 * 开发模式下才会在console打印日志
 	 */
-	const genConsole = type =>
-		!!localStorage.isDev ? console[type].bind(console) : () => null;
+	const genConsole = type => {
+		const isDev = !!localStorage.isDev;
+		const mustShowLog = localStorage.mustShowLog;
+		if (isDev || mustShowLog) {
+			return console[type].bind(console);
+		}
+		return () => null;
+	};
 	console.log = genConsole("log");
 	console.warn = genConsole("warn");
 	console.info = genConsole("info");
@@ -620,6 +626,7 @@
 			}
 		});
 	}
+
 	_.$globalVar = $globalVar;
 	/*  */
 	_.$location = {
@@ -893,24 +900,25 @@
 		}
 	};
 
-	function getTargetBy(selector) {
-		let $wrapper = (function () {
-			if (_.isString(selector)) {
-				return $(selector);
-			}
+	function getWrapperBy(selector) {
+		if (_.isString(selector)) {
+			return $(selector);
+		}
 
-			if (selector.innerHTML) {
-				return $(selector);
-			}
+		if (selector.innerHTML) {
+			return $(selector);
+		}
 
-			if (selector.$el) {
-				return $(selector.$el);
-			}
-		})();
-
+		if (selector.$el) {
+			return $(selector.$el);
+		}
 		if (!$wrapper || $wrapper.length == 0) {
 			throw new Error("selector不是可用的dom元素");
 		}
+	}
+
+	function getTargetBy(selector) {
+		let $wrapper = getWrapperBy(selector);
 
 		const $target = (function () {
 			let $target = $wrapper.find(`[data-form-item-id^=gh_form_id_]`);
@@ -969,6 +977,38 @@
 				});
 			}
 		}
+	};
+
+	/* 从Table 中获取xItem的vm */
+	_.$getCellItemVm = (rowIndex, colProp, selector) => {
+		let vm = {};
+		try {
+			let $wrapper = getWrapperBy(selector);
+			const itemSelector = `.el-table__body-wrapper [data-row-index=${rowIndex}][data-col-prop=${colProp}]`;
+			const targetDom = $wrapper.find(itemSelector);
+			const { formItemId } = targetDom?.[0].dataset || {};
+			vm = Vue.GH_FORM_ITEM_MAP?.[formItemId || "________No"] || {};
+		} catch (error) {
+		} finally {
+			return vm;
+		}
+	};
+	/**
+	 * 从指定selector范围的xTable 表中获取rowIndex colProp 对应xItem的实例
+	 * @param selector
+	 * @param rowIndex
+	 * @param colProp
+	 * @returns {*|{}}
+	 */
+	_.$CellItem = function ({ selector, rowIndex, colProp }) {
+		return new Proxy(_.$getCellItemVm(rowIndex, colProp, selector), {
+			get(obj, prop) {
+				if (prop === "_$item") {
+					return value => _.find(obj?.configs?.options, { value }) || {};
+				}
+				return obj[prop];
+			}
+		});
 	};
 
 	/**

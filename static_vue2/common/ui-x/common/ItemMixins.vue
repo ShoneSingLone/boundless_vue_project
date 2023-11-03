@@ -27,7 +27,11 @@ export default async function () {
 			};
 		},
 		mixins: {
-			inject: ["xItem"],
+			inject: {
+				xItem: {
+					default: {}
+				}
+			},
 			model: {
 				prop: "value",
 				event: "change"

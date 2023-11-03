@@ -746,7 +746,7 @@
 				"require" // for Webpack/Browserify
 		);
 		var warnNonPresent_1 = function (target, key) {
-			warn$2(
+			warnMsgVm(
 				'Property or method "'.concat(
 					key,
 					'" is not defined on the instance but '
@@ -759,7 +759,7 @@
 			);
 		};
 		var warnReservedPrefix_1 = function (target, key) {
-			warn$2(
+			warnMsgVm(
 				'Property "'
 					.concat(key, '" must be accessed with "$data.')
 					.concat(key, '" because ') +
@@ -777,7 +777,7 @@
 			config.keyCodes = new Proxy(config.keyCodes, {
 				set: function (target, key, value) {
 					if (isBuiltInModifier_1(key)) {
-						warn$2(
+						warnMsgVm(
 							"Avoid overwriting built-in modifier in config.keyCodes: .".concat(
 								key
 							)
@@ -1176,14 +1176,14 @@
 
 	function set(target, key, val) {
 		if (isUndef(target) || isPrimitive(target)) {
-			warn$2(
+			warnMsgVm(
 				"Cannot set reactive property on undefined, null, or primitive value: ".concat(
 					target
 				)
 			);
 		}
 		if (isReadonly(target)) {
-			warn$2(
+			warnMsgVm(
 				'Set operation on key "'.concat(key, '" failed: target is readonly.')
 			);
 			return;
@@ -1203,7 +1203,7 @@
 			return val;
 		}
 		if (target._isVue || (ob && ob.vmCount)) {
-			warn$2(
+			warnMsgVm(
 				"Avoid adding reactive properties to a Vue instance or its root $data " +
 					"at runtime - declare it upfront in the data option."
 			);
@@ -1228,7 +1228,7 @@
 
 	function del(target, key) {
 		if (isUndef(target) || isPrimitive(target)) {
-			warn$2(
+			warnMsgVm(
 				"Cannot delete reactive property on undefined, null, or primitive value: ".concat(
 					target
 				)
@@ -1240,14 +1240,14 @@
 		}
 		var ob = target.__ob__;
 		if (target._isVue || (ob && ob.vmCount)) {
-			warn$2(
+			warnMsgVm(
 				"Avoid deleting properties on a Vue instance or its root $data " +
 					"- just set it to null."
 			);
 			return;
 		}
 		if (isReadonly(target)) {
-			warn$2(
+			warnMsgVm(
 				'Delete operation on key "'.concat(key, '" failed: target is readonly.')
 			);
 			return;
@@ -1305,7 +1305,7 @@
 		if (!isReadonly(target)) {
 			{
 				if (isArray(target)) {
-					warn$2(
+					warnMsgVm(
 						"Avoid using Array as root value for "
 							.concat(
 								shallow ? "shallowReactive()" : "reactive()",
@@ -1319,7 +1319,7 @@
 				}
 				var existingOb = target && target.__ob__;
 				if (existingOb && existingOb.shallow !== shallow) {
-					warn$2(
+					warnMsgVm(
 						"Target is already a "
 							.concat(
 								existingOb.shallow ? "" : "non-",
@@ -1336,10 +1336,10 @@
 			);
 			if (!ob) {
 				if (target == null || isPrimitive(target)) {
-					warn$2("value cannot be made reactive: ".concat(String(target)));
+					warnMsgVm("value cannot be made reactive: ".concat(String(target)));
 				}
 				if (isCollectionType(target)) {
-					warn$2(
+					warnMsgVm(
 						"Vue 2 does not support reactive collection types such as Map or Set."
 					);
 				}
@@ -1426,7 +1426,7 @@
 
 	function triggerRef(ref) {
 		if (!ref.dep) {
-			warn$2("received object is not a triggerable ref.");
+			warnMsgVm("received object is not a triggerable ref.");
 		}
 		{
 			ref.dep &&
@@ -1517,7 +1517,7 @@
 
 	function toRefs(object) {
 		if (!isReactive(object)) {
-			warn$2("toRefs() expects a reactive object but received a plain one.");
+			warnMsgVm("toRefs() expects a reactive object but received a plain one.");
 		}
 		var ret = isArray(object) ? new Array(object.length) : {};
 		for (var key in object) {
@@ -1555,19 +1555,19 @@
 		if (!isPlainObject(target)) {
 			{
 				if (isArray(target)) {
-					warn$2("Vue 2 does not support readonly arrays.");
+					warnMsgVm("Vue 2 does not support readonly arrays.");
 				} else if (isCollectionType(target)) {
-					warn$2(
+					warnMsgVm(
 						"Vue 2 does not support readonly collection types such as Map or Set."
 					);
 				} else {
-					warn$2("value cannot be made readonly: ".concat(typeof target));
+					warnMsgVm("value cannot be made readonly: ".concat(typeof target));
 				}
 			}
 			return target;
 		}
 		if (!Object.isExtensible(target)) {
-			warn$2(
+			warnMsgVm(
 				"Vue 2 does not support creating readonly proxy for non-extensible object."
 			);
 		}
@@ -1607,7 +1607,7 @@
 				return shallow || !isPlainObject(val) ? val : readonly(val);
 			},
 			set: function () {
-				warn$2(
+				warnMsgVm(
 					'Set operation on key "'.concat(key, '" failed: target is readonly.')
 				);
 			}
@@ -1631,7 +1631,7 @@
 		if (onlyGetter) {
 			getter = getterOrOptions;
 			setter = function () {
-				warn$2("Write operation failed: computed value is readonly");
+				warnMsgVm("Write operation failed: computed value is readonly");
 			};
 		} else {
 			getter = getterOrOptions.get;
@@ -1745,7 +1745,7 @@
 			old = oldOn[name];
 			event = normalizeEvent(name);
 			if (isUndef(cur)) {
-				warn$2(
+				warnMsgVm(
 					'Invalid handler for event "'.concat(event.name, '": got ') +
 						String(cur),
 					vm
@@ -1833,7 +1833,7 @@
 						attrs &&
 						hasOwn(attrs, keyInLowerCase)
 					) {
-						tip(
+						tipMsgVm(
 							'Prop "'.concat(keyInLowerCase, '" is passed to component ') +
 								"".concat(
 									formatComponentName(
@@ -2054,7 +2054,7 @@
 		})();
 
 		if (isDef(props) && isDef(props.__ob__)) {
-			warn$2(
+			warnMsgVm(
 				"Avoid using observed data object as vnode data: ".concat(
 					JSON.stringify(props),
 					"\n"
@@ -2074,7 +2074,7 @@
 		}
 		// warn against non-primitive key
 		if (isDef(props) && isDef(props.key) && !isPrimitive(props.key)) {
-			warn$2(
+			warnMsgVm(
 				"Avoid using non-primitive value as key, " +
 					"use string/number value instead.",
 				context
@@ -2108,7 +2108,7 @@
 						isDef(props.nativeOn) &&
 						props.tag !== "component"
 					) {
-						warn$2(
+						warnMsgVm(
 							"The .native modifier for v-on is only valid on components but it was used on <".concat(
 								tag,
 								">."
@@ -2253,7 +2253,7 @@
 			props = props || {};
 			if (bindObject) {
 				if (!isObject(bindObject)) {
-					warn$2("slot v-bind without argument expects an Object", this);
+					warnMsgVm("slot v-bind without argument expects an Object", this);
 				}
 				props = extend(extend({}, bindObject), props);
 			}
@@ -2317,7 +2317,7 @@
 	function bindObjectProps(data, tag, value, asProp, isSync) {
 		if (value) {
 			if (!isObject(value)) {
-				warn$2(
+				warnMsgVm(
 					"v-bind without argument expects an Object or Array value",
 					this
 				);
@@ -2411,7 +2411,7 @@
 	function bindObjectListeners(data, value) {
 		if (value) {
 			if (!isPlainObject(value)) {
-				warn$2("v-on without argument expects an Object value", this);
+				warnMsgVm("v-on without argument expects an Object value", this);
 			} else {
 				var on = (data.on = data.on ? extend({}, data.on) : {});
 				for (var key in value) {
@@ -2460,7 +2460,7 @@
 				baseObj[values[i]] = values[i + 1];
 			} else if (key !== "" && key !== null) {
 				// null is a special value for explicitly removing a binding
-				warn$2(
+				warnMsgVm(
 					"Invalid value for dynamic directive argument (expected string or null): ".concat(
 						key
 					),
@@ -2665,7 +2665,7 @@
 			} else if (isObject(setupResult)) {
 				// bindings
 				if (setupResult instanceof VNode) {
-					warn$2(
+					warnMsgVm(
 						"setup() should not return VNodes directly - " +
 							"return a render function instead."
 					);
@@ -2677,7 +2677,7 @@
 						if (!isReserved(key)) {
 							proxyWithRefUnwrap(vm, setupResult, key);
 						} else {
-							warn$2(
+							warnMsgVm(
 								"Avoid using variables that start with _ or $ in setup()."
 							);
 						}
@@ -2692,7 +2692,7 @@
 					}
 				}
 			} else if (setupResult !== undefined) {
-				warn$2(
+				warnMsgVm(
 					"setup() should return an object. Received: ".concat(
 						setupResult === null ? "null" : typeof setupResult
 					)
@@ -2726,7 +2726,7 @@
 			expose: function (exposed) {
 				{
 					if (exposeCalled) {
-						warn$2("expose() should be called only once per setup().", vm);
+						warnMsgVm("expose() should be called only once per setup().", vm);
 					}
 					exposeCalled = true;
 				}
@@ -2813,7 +2813,7 @@
 
 	function getContext() {
 		if (!currentInstance) {
-			warn$2("useContext() called without active instance.");
+			warnMsgVm("useContext() called without active instance.");
 		}
 		var vm = currentInstance;
 		return vm._setupContext || (vm._setupContext = createSetupContext(vm));
@@ -2841,7 +2841,7 @@
 			} else if (opt === null) {
 				props[key] = { default: defaults[key] };
 			} else {
-				warn$2(
+				warnMsgVm(
 					'props default key "'.concat(
 						key,
 						'" has no corresponding declaration.'
@@ -2890,7 +2890,7 @@
 				"$attrs",
 				(parentData && parentData.attrs) || emptyObject,
 				function () {
-					!isUpdatingChildComponent && warn$2("$attrs is readonly.", vm);
+					!isUpdatingChildComponent && warnMsgVm("$attrs is readonly.", vm);
 				},
 				true
 			);
@@ -2899,7 +2899,7 @@
 				"$listeners",
 				options._parentListeners || emptyObject,
 				function () {
-					!isUpdatingChildComponent && warn$2("$listeners is readonly.", vm);
+					!isUpdatingChildComponent && warnMsgVm("$listeners is readonly.", vm);
 				},
 				true
 			);
@@ -2975,7 +2975,7 @@
 			// return empty vnode in case the render function errored out
 			if (!(vnode instanceof VNode)) {
 				if (isArray(vnode)) {
-					warn$2(
+					warnMsgVm(
 						"Multiple root nodes returned from render function. Render function " +
 							"should return a single root node.",
 						vm
@@ -3071,7 +3071,7 @@
 				}
 			});
 			var reject_1 = once(function (reason) {
-				warn$2(
+				warnMsgVm(
 					"Failed to resolve async component: ".concat(String(factory)) +
 						(reason ? "\nReason: ".concat(reason) : "")
 				);
@@ -3250,7 +3250,7 @@
 			{
 				var lowerCaseEvent = event.toLowerCase();
 				if (lowerCaseEvent !== event && vm._events[lowerCaseEvent]) {
-					tip(
+					tipMsgVm(
 						'Event "'.concat(lowerCaseEvent, '" is emitted in component ') +
 							""
 								.concat(
@@ -3408,14 +3408,14 @@
 					vm.$options.el ||
 					el
 				) {
-					warn$2(
+					warnMsgVm(
 						"You are using the runtime-only build of Vue where the template " +
 							"compiler is not available. Either pre-compile the templates into " +
 							"render functions, or use the compiler-included build.",
 						vm
 					);
 				} else {
-					warn$2(
+					warnMsgVm(
 						"Failed to mount component: template or render function not defined.",
 						vm
 					);
@@ -3737,7 +3737,7 @@
 			if (has[id] != null) {
 				circular[id] = (circular[id] || 0) + 1;
 				if (circular[id] > MAX_UPDATE_COUNT) {
-					warn$2(
+					warnMsgVm(
 						"You may have an infinite update loop " +
 							(watcher.user
 								? 'in watcher with expression "'.concat(watcher.expression, '"')
@@ -3860,7 +3860,7 @@
 	// implementation
 	function watch(source, cb, options) {
 		if (typeof cb !== "function") {
-			warn$2(
+			warnMsgVm(
 				"`watch(fn, options?)` signature has been moved to a separate API. " +
 					"Use `watchEffect(fn, options?)` instead. `watch` now only " +
 					"supports `watch(source, cb, options?) signature."
@@ -3879,20 +3879,20 @@
 			onTrigger = _b.onTrigger;
 		if (!cb) {
 			if (immediate !== undefined) {
-				warn$2(
+				warnMsgVm(
 					'watch() "immediate" option is only respected when using the ' +
 						"watch(source, callback, options?) signature."
 				);
 			}
 			if (deep !== undefined) {
-				warn$2(
+				warnMsgVm(
 					'watch() "deep" option is only respected when using the ' +
 						"watch(source, callback, options?) signature."
 				);
 			}
 		}
 		var warnInvalidSource = function (s) {
-			warn$2(
+			warnMsgVm(
 				"Invalid watch source: ".concat(
 					s,
 					". A watch source can only be a getter/effect "
@@ -4107,7 +4107,7 @@
 					activeEffectScope = currentEffectScope;
 				}
 			} else {
-				warn$2("cannot run an inactive effect scope.");
+				warnMsgVm("cannot run an inactive effect scope.");
 			}
 		};
 		/**
@@ -4179,7 +4179,7 @@
 		if (activeEffectScope) {
 			activeEffectScope.cleanups.push(fn);
 		} else {
-			warn$2(
+			warnMsgVm(
 				"onScopeDispose() is called when there is no active effect scope" +
 					" to be associated with."
 			);
@@ -4189,7 +4189,7 @@
 	function provide(key, value) {
 		if (!currentInstance) {
 			{
-				warn$2("provide() can only be used inside setup().");
+				warnMsgVm("provide() can only be used inside setup().");
 			}
 		} else {
 			// TS doesn't allow symbol as index type
@@ -4232,10 +4232,10 @@
 					? defaultValue.call(instance)
 					: defaultValue;
 			} else {
-				warn$2('injection "'.concat(String(key), '" not found.'));
+				warnMsgVm('injection "'.concat(String(key), '" not found.'));
 			}
 		} else {
-			warn$2(
+			warnMsgVm(
 				"inject() can only be used inside setup() or functional components."
 			);
 		}
@@ -4251,7 +4251,7 @@
 	 */
 	function h(type, props, children) {
 		if (!currentInstance) {
-			warn$2(
+			warnMsgVm(
 				"globally imported h() can only be invoked when there is an active " +
 					"component instance, e.g. synchronously in a component's render or setup function."
 			);
@@ -4318,15 +4318,11 @@
 	}
 
 	function logError(err, vm, info) {
-		{
-			warn$2("Error in ".concat(info, ': "').concat(err.toString(), '"'), vm);
-		}
-		/* istanbul ignore else */
-		if (inBrowser && typeof console !== "undefined") {
-			console.error(`${vm?.$vnode?.FILE_URL}\n${err}`);
-		} else {
-			throw err;
-		}
+		warnMsgVm(
+			"Error in ".concat(info, ': "').concat(err.toString(), '"'),
+			vm,
+			err
+		);
 	}
 
 	/* globals MutationObserver */
@@ -4441,7 +4437,7 @@
 		/* istanbul ignore else */
 		{
 			{
-				warn$2("useCssModule() is not supported in the global build.");
+				warnMsgVm("useCssModule() is not supported in the global build.");
 			}
 			return emptyObject;
 		}
@@ -4455,7 +4451,9 @@
 		if (!inBrowser && !false) return;
 		var instance = currentInstance;
 		if (!instance) {
-			warn$2("useCssVars is called without current active component instance.");
+			warnMsgVm(
+				"useCssVars is called without current active component instance."
+			);
 			return;
 		}
 		watchPostEffect(function () {
@@ -4489,7 +4487,7 @@
 			suspensible = _b === void 0 ? false : _b, // in Vue 3 default is true
 			userOnError = source.onError;
 		if (suspensible) {
-			warn$2(
+			warnMsgVm(
 				"The suspensiblbe option for async components is not supported in Vue2. It is ignored."
 			);
 		}
@@ -4527,7 +4525,7 @@
 								return pendingRequest;
 							}
 							if (!comp) {
-								warn$2(
+								warnMsgVm(
 									"Async component loader resolved to undefined. " +
 										"If you are using retry(), make sure to return its return value."
 								);
@@ -4566,7 +4564,7 @@
 				target = currentInstance;
 			}
 			if (!target) {
-				warn$2(
+				warnMsgVm(
 					"".concat(
 						formatName(hookName),
 						" is called when there is no active component instance to be "
@@ -4782,7 +4780,7 @@
 				this.getter = parsePath(expOrFn);
 				if (!this.getter) {
 					this.getter = noop;
-					warn$2(
+					warnMsgVm(
 						'Failed watching path: "'.concat(expOrFn, '" ') +
 							"Watcher only accepts simple dot-delimited paths. " +
 							"For full control, use a function instead.",
@@ -4996,7 +4994,7 @@
 					isReservedAttribute(hyphenatedKey) ||
 					config.isReservedAttr(hyphenatedKey)
 				) {
-					warn$2(
+					warnMsgVm(
 						'"'.concat(
 							hyphenatedKey,
 							'" is a reserved attribute and cannot be used as component prop.'
@@ -5006,7 +5004,7 @@
 				}
 				defineReactive(props, key, value, function () {
 					if (!isRoot && !isUpdatingChildComponent) {
-						warn$2(
+						warnMsgVm(
 							"Avoid mutating a prop directly since the value will be " +
 								"overwritten whenever the parent component re-renders. " +
 								"Instead, use a data or computed property based on the prop's " +
@@ -5034,7 +5032,7 @@
 		data = vm._data = isFunction(data) ? getData(data, vm) : data || {};
 		if (!isPlainObject(data)) {
 			data = {};
-			warn$2(
+			warnMsgVm(
 				"data functions should return an object:\n" +
 					"https://v2.vuejs.org/v2/guide/components.html#data-Must-Be-a-Function",
 				vm
@@ -5049,7 +5047,7 @@
 			var key = keys[i];
 			{
 				if (methods && hasOwn(methods, key)) {
-					warn$2(
+					warnMsgVm(
 						'Method "'.concat(
 							key,
 							'" has already been defined as a data property.'
@@ -5059,7 +5057,7 @@
 				}
 			}
 			if (props && hasOwn(props, key)) {
-				warn$2(
+				warnMsgVm(
 					'The data property "'.concat(
 						key,
 						'" is already declared as a prop. '
@@ -5099,7 +5097,7 @@
 			var userDef = computed[key];
 			var getter = isFunction(userDef) ? userDef : userDef.get;
 			if (getter == null) {
-				warn$2(
+				warnMsgVm(
 					'Getter is missing for computed property "'.concat(key, '".'),
 					vm
 				);
@@ -5120,7 +5118,7 @@
 				defineComputed(vm, key, userDef);
 			} else {
 				if (key in vm.$data) {
-					warn$2(
+					warnMsgVm(
 						'The computed property "'.concat(
 							key,
 							'" is already defined in data.'
@@ -5128,7 +5126,7 @@
 						vm
 					);
 				} else if (vm.$options.props && key in vm.$options.props) {
-					warn$2(
+					warnMsgVm(
 						'The computed property "'.concat(
 							key,
 							'" is already defined as a prop.'
@@ -5136,7 +5134,7 @@
 						vm
 					);
 				} else if (vm.$options.methods && key in vm.$options.methods) {
-					warn$2(
+					warnMsgVm(
 						'The computed property "'.concat(
 							key,
 							'" is already defined as a method.'
@@ -5165,7 +5163,7 @@
 		}
 		if (sharedPropertyDefinition.set === noop) {
 			sharedPropertyDefinition.set = function () {
-				warn$2(
+				warnMsgVm(
 					'Computed property "'.concat(
 						key,
 						'" was assigned to but it has no setter.'
@@ -5211,7 +5209,7 @@
 		for (var key in methods) {
 			{
 				if (typeof methods[key] !== "function") {
-					warn$2(
+					warnMsgVm(
 						'Method "'
 							.concat(key, '" has type "')
 							.concat(typeof methods[key], '" in the component definition. ') +
@@ -5220,13 +5218,13 @@
 					);
 				}
 				if (props && hasOwn(props, key)) {
-					warn$2(
+					warnMsgVm(
 						'Method "'.concat(key, '" has already been defined as a prop.'),
 						vm
 					);
 				}
 				if (key in vm && isReserved(key)) {
-					warn$2(
+					warnMsgVm(
 						'Method "'.concat(
 							key,
 							'" conflicts with an existing Vue instance method. '
@@ -5277,14 +5275,14 @@
 		};
 		{
 			dataDef.set = function () {
-				warn$2(
+				warnMsgVm(
 					"Avoid replacing instance root $data. " +
 						"Use nested data properties instead.",
 					this
 				);
 			};
 			propsDef.set = function () {
-				warn$2("$props is readonly.", this);
+				warnMsgVm("$props is readonly.", this);
 			};
 		}
 		Object.defineProperty(Vue.prototype, "$data", dataDef);
@@ -5346,7 +5344,7 @@
 				/* istanbul ignore else */
 				{
 					defineReactive(vm, key, result[key], function () {
-						warn$2(
+						warnMsgVm(
 							"Avoid mutating an injected value directly since the changes will be " +
 								"overwritten whenever the provided component re-renders. " +
 								'injection being mutated: "'.concat(key, '"'),
@@ -5377,7 +5375,7 @@
 						? provideDefault.call(vm)
 						: provideDefault;
 				} else {
-					warn$2('Injection "'.concat(key, '" not found'), vm);
+					warnMsgVm('Injection "'.concat(key, '" not found'), vm);
 				}
 			}
 			return result;
@@ -5742,7 +5740,10 @@
 		// reject.
 		if (typeof Ctor !== "function") {
 			{
-				warn$2("Invalid Component definition: ".concat(String(Ctor)), context);
+				warnMsgVm(
+					"Invalid Component definition: ".concat(String(Ctor)),
+					context
+				);
 			}
 			return;
 		}
@@ -5900,108 +5901,117 @@
 		}
 	}
 
-	var warn$2 = noop;
-	var tip = noop;
 	var generateComponentTrace; // work around flow check
 	var formatComponentName;
-	{
-		var hasConsole_1 = typeof console !== "undefined";
-		var classifyRE_1 = /(?:^|[-_])(\w)/g;
-		var classify_1 = function (str) {
-			return str
-				.replace(classifyRE_1, function (c) {
-					return c.toUpperCase();
-				})
-				.replace(/[-_]/g, "");
-		};
-		warn$2 = function (msg, vm) {
-			if (vm === void 0) {
-				vm = currentInstance;
+	var hasConsole_1 = typeof console !== "undefined";
+	var classifyRE_1 = /(?:^|[-_])(\w)/g;
+
+	var warnMsgVm = function (msg, vm, error = "") {
+		if (vm === void 0) {
+			vm = currentInstance;
+		}
+		/* var trace = vm ? generateComponentTrace(vm) : ""; */
+		if (config.warnHandler) {
+			config.warnHandler.call(null, msg, vm, trace);
+		} else if (hasConsole_1 && !config.silent) {
+			/* ${trace} */
+			if (error) {
+				throw error;
+			} else {
+				console.error(`[Vue warn]: ${vm?.$vnode?.FILE_URL || "未知"}\n${msg}`);
 			}
-			var trace = vm ? generateComponentTrace(vm) : "";
-			if (config.warnHandler) {
-				config.warnHandler.call(null, msg, vm, trace);
-			} else if (hasConsole_1 && !config.silent) {
-				console.error(`[Vue warn]: ${vm?.$vnode?.FILE_URL}\n${msg}`);
-				// ${trace}
-			}
-		};
-		tip = function (msg, vm) {
-			if (hasConsole_1 && !config.silent) {
+		}
+	};
+
+	var tipMsgVm = function (msg, vm, error) {
+		if (hasConsole_1 && !config.silent) {
+			/* var trace = vm ? generateComponentTrace(vm) : ""; */
+			/* ${trace} */
+			if (error) {
+				throw error;
+			} else {
 				console.warn(`[Vue tip]: ${vm?.$vnode?.FILE_URL}\n${msg}`);
-				// ${(vm ? generateComponentTrace(vm) : "")}
 			}
-		};
-		formatComponentName = function (vm, includeFile) {
-			if (vm.$root === vm) {
-				return "<Root>";
-			}
-			var options =
-				isFunction(vm) && vm.cid != null
-					? vm.options
-					: vm._isVue
-					? vm.$options || vm.constructor.options
-					: vm;
-			var name = getComponentName(options);
-			var file = options.__file;
-			if (!name && file) {
-				var match = file.match(/([^/\\]+)\.vue$/);
-				name = match && match[1];
+		}
+	};
+
+	var classify_1 = function (str) {
+		return str
+			.replace(classifyRE_1, function (c) {
+				return c.toUpperCase();
+			})
+			.replace(/[-_]/g, "");
+	};
+	formatComponentName = function (vm, includeFile) {
+		if (vm.$root === vm) {
+			return "<Root>";
+		}
+		var options =
+			isFunction(vm) && vm.cid != null
+				? vm.options
+				: vm._isVue
+				? vm.$options || vm.constructor.options
+				: vm;
+		var name = getComponentName(options);
+		var file = options.__file;
+		if (!name && file) {
+			var match = file.match(/([^/\\]+)\.vue$/);
+			name = match && match[1];
+		}
+		return (
+			(name ? "<".concat(classify_1(name), ">") : "<Anonymous>") +
+			(file && includeFile !== false ? " at ".concat(file) : "")
+		);
+	};
+	var repeat_1 = function (str, n) {
+		var res = "";
+		while (n) {
+			if (n % 2 === 1) res += str;
+			if (n > 1) str += str;
+			n >>= 1;
+		}
+		return res;
+	};
+	generateComponentTrace = function (vm) {
+		if (vm._isVue && vm.$parent) {
+			var tree = [];
+			var currentRecursiveSequence = 0;
+			while (vm) {
+				if (tree.length > 0) {
+					var last = tree[tree.length - 1];
+					if (last.constructor === vm.constructor) {
+						currentRecursiveSequence++;
+						vm = vm.$parent;
+						continue;
+					} else if (currentRecursiveSequence > 0) {
+						tree[tree.length - 1] = [last, currentRecursiveSequence];
+						currentRecursiveSequence = 0;
+					}
+				}
+				tree.push(vm);
+				vm = vm.$parent;
 			}
 			return (
-				(name ? "<".concat(classify_1(name), ">") : "<Anonymous>") +
-				(file && includeFile !== false ? " at ".concat(file) : "")
+				"\n\nfound in\n\n" +
+				tree
+					.map(function (vm, i) {
+						return ""
+							.concat(i === 0 ? "---> " : repeat_1(" ", 5 + i * 2))
+							.concat(
+								isArray(vm)
+									? ""
+											.concat(formatComponentName(vm[0]), "... (")
+											.concat(vm[1], " recursive calls)")
+									: formatComponentName(vm)
+							);
+					})
+					.join("\n")
 			);
-		};
-		var repeat_1 = function (str, n) {
-			var res = "";
-			while (n) {
-				if (n % 2 === 1) res += str;
-				if (n > 1) str += str;
-				n >>= 1;
-			}
-			return res;
-		};
-		generateComponentTrace = function (vm) {
-			if (vm._isVue && vm.$parent) {
-				var tree = [];
-				var currentRecursiveSequence = 0;
-				while (vm) {
-					if (tree.length > 0) {
-						var last = tree[tree.length - 1];
-						if (last.constructor === vm.constructor) {
-							currentRecursiveSequence++;
-							vm = vm.$parent;
-							continue;
-						} else if (currentRecursiveSequence > 0) {
-							tree[tree.length - 1] = [last, currentRecursiveSequence];
-							currentRecursiveSequence = 0;
-						}
-					}
-					tree.push(vm);
-					vm = vm.$parent;
-				}
-				return (
-					"\n\nfound in\n\n" +
-					tree
-						.map(function (vm, i) {
-							return ""
-								.concat(i === 0 ? "---> " : repeat_1(" ", 5 + i * 2))
-								.concat(
-									isArray(vm)
-										? ""
-												.concat(formatComponentName(vm[0]), "... (")
-												.concat(vm[1], " recursive calls)")
-										: formatComponentName(vm)
-								);
-						})
-						.join("\n")
-				);
-			} else {
-				return "\n\n(found in ".concat(formatComponentName(vm), ")");
-			}
-		};
-	}
+		} else {
+			return "\n\n(found in ".concat(formatComponentName(vm), ")");
+		}
+	};
+
 	/**
 	 * Option overwriting strategies are functions that handle
 	 * how to merge a parent option value and a child option
@@ -6014,7 +6024,7 @@
 	{
 		strats.el = strats.propsData = function (parent, child, vm, key) {
 			if (!vm) {
-				warn$2(
+				warnMsgVm(
 					'option "'.concat(key, '" can only be used during instance ') +
 						"creation with the `new` keyword."
 				);
@@ -6096,7 +6106,7 @@
 	strats.data = function (parentVal, childVal, vm) {
 		if (!vm) {
 			if (childVal && typeof childVal !== "function") {
-				warn$2(
+				warnMsgVm(
 					'The "data" option should be a function ' +
 						"that returns a per-instance value in component " +
 						"definitions.",
@@ -6245,7 +6255,7 @@
 				"^[a-zA-Z][\\-\\.0-9_".concat(unicodeRegExp.source, "]*$")
 			).test(name)
 		) {
-			warn$2(
+			warnMsgVm(
 				'Invalid component name: "' +
 					name +
 					'". Component names ' +
@@ -6253,7 +6263,7 @@
 			);
 		}
 		if (isBuiltInTag(name) || config.isReservedTag(name)) {
-			warn$2(
+			warnMsgVm(
 				"Do not use built-in or reserved HTML elements as component " +
 					"id: " +
 					name
@@ -6278,7 +6288,7 @@
 					name = camelize(val);
 					res[name] = { type: null };
 				} else {
-					warn$2("props must be strings when using array syntax.");
+					warnMsgVm("props must be strings when using array syntax.");
 				}
 			}
 		} else if (isPlainObject(props)) {
@@ -6288,7 +6298,7 @@
 				res[name] = isPlainObject(val) ? val : { type: val };
 			}
 		} else {
-			warn$2(
+			warnMsgVm(
 				'Invalid value for option "props": expected an Array or an Object, ' +
 					"but got ".concat(toRawType(props), "."),
 				vm
@@ -6316,7 +6326,7 @@
 					: { from: val };
 			}
 		} else {
-			warn$2(
+			warnMsgVm(
 				'Invalid value for option "inject": expected an Array or an Object, ' +
 					"but got ".concat(toRawType(inject), "."),
 				vm
@@ -6341,7 +6351,7 @@
 
 	function assertObjectType(name, value, vm) {
 		if (!isPlainObject(value)) {
-			warn$2(
+			warnMsgVm(
 				'Invalid value for option "'.concat(name, '": expected an Object, ') +
 					"but got ".concat(toRawType(value), "."),
 				vm
@@ -6417,7 +6427,7 @@
 		// fallback to prototype chain
 		var res = assets[id] || assets[camelizedId] || assets[PascalCaseId];
 		if (warnMissing && !res) {
-			warn$2("Failed to resolve " + type.slice(0, -1) + ": " + id);
+			warnMsgVm("Failed to resolve " + type.slice(0, -1) + ": " + id);
 		}
 		return res;
 	}
@@ -6474,7 +6484,7 @@
 		var def = prop.default;
 		// warn against non-factory defaults for Object & Array
 		if (isObject(def)) {
-			warn$2(
+			warnMsgVm(
 				'Invalid default value for prop "' +
 					key +
 					'": ' +
@@ -6505,7 +6515,7 @@
 	 */
 	function assertProp(prop, name, value, vm, absent) {
 		if (prop.required && absent) {
-			warn$2('Missing required prop: "' + name + '"', vm);
+			warnMsgVm('Missing required prop: "' + name + '"', vm);
 			return;
 		}
 		if (value == null && !prop.required) {
@@ -6528,13 +6538,13 @@
 			return t;
 		});
 		if (!valid && haveExpectedTypes) {
-			warn$2(getInvalidTypeMessage(name, value, expectedTypes), vm);
+			warnMsgVm(getInvalidTypeMessage(name, value, expectedTypes), vm);
 			return;
 		}
 		var validator = prop.validator;
 		if (validator) {
 			if (!validator(value)) {
-				warn$2(
+				warnMsgVm(
 					'Invalid prop: custom validator check failed for prop "' +
 						name +
 						'".',
@@ -6564,7 +6574,7 @@
 			try {
 				valid = value instanceof type;
 			} catch (e) {
-				warn$2(
+				warnMsgVm(
 					'Invalid prop type: "' + String(type) + '" is not a constructor',
 					vm
 				);
@@ -6658,7 +6668,7 @@
 
 	function Vue(options) {
 		if (!(this instanceof Vue)) {
-			warn$2(
+			warnMsgVm(
 				"Vue is a constructor and should be called with the `new` keyword"
 			);
 		}
@@ -6971,7 +6981,7 @@
 		};
 		{
 			configDef.set = function () {
-				warn$2(
+				warnMsgVm(
 					"Do not replace the Vue.config object, set individual fields instead."
 				);
 			};
@@ -6981,7 +6991,7 @@
 		// NOTE: these are not considered part of the public API - avoid relying on
 		// them unless you are aware of the risk.
 		Vue.util = {
-			warn: warn$2,
+			warn: warnMsgVm,
 			extend: extend,
 			mergeOptions: mergeOptions,
 			defineReactive: defineReactive
@@ -7225,7 +7235,7 @@
 		if (typeof el === "string") {
 			var selected = document.querySelector(el);
 			if (!selected) {
-				warn$2("Cannot find element: " + el);
+				warnMsgVm("Cannot find element: " + el);
 				return document.createElement("div");
 			}
 			return selected;
@@ -7368,7 +7378,7 @@
 				}
 				ref.value = value;
 			} else {
-				warn$2("Invalid template ref type: ".concat(typeof ref));
+				warnMsgVm("Invalid template ref type: ".concat(typeof ref));
 			}
 		}
 	}
@@ -7521,7 +7531,7 @@
 						creatingElmInVPre++;
 					}
 					if (isUnknownElement(vnode, creatingElmInVPre)) {
-						warn$2(
+						warnMsgVm(
 							"Unknown custom element: <" +
 								tag +
 								"> - did you " +
@@ -7936,7 +7946,7 @@
 				var key = vnode.key;
 				if (isDef(key)) {
 					if (seenKeys[key]) {
-						warn$2(
+						warnMsgVm(
 							"Duplicate keys detected: '".concat(
 								key,
 								"'. This may cause an update error."
@@ -8199,7 +8209,7 @@
 								invokeInsertHook(vnode, insertedVnodeQueue, true);
 								return oldVnode;
 							} else {
-								warn$2(
+								warnMsgVm(
 									"The client-side rendered virtual DOM tree is not matching " +
 										"server-rendered content. This is likely caused by incorrect " +
 										"HTML markup, for example nesting block-level elements inside " +
@@ -10032,7 +10042,7 @@
 	// only used in dev mode
 	function checkDuration(val, name, vnode) {
 		if (typeof val !== "number") {
-			warn$2(
+			warnMsgVm(
 				"<transition> explicit ".concat(
 					name,
 					" duration is not a valid number - "
@@ -10040,7 +10050,7 @@
 				vnode.context
 			);
 		} else if (isNaN(val)) {
-			warn$2(
+			warnMsgVm(
 				"<transition> explicit ".concat(name, " duration is NaN - ") +
 					"the duration expression might be incorrect.",
 				vnode.context
@@ -10189,7 +10199,7 @@
 		var value = binding.value;
 		var isMultiple = el.multiple;
 		if (isMultiple && !Array.isArray(value)) {
-			warn$2(
+			warnMsgVm(
 				'<select multiple v-model="'.concat(binding.expression, '"> ') +
 					"expects an Array value for its binding, but got ".concat(
 						Object.prototype.toString.call(value).slice(8, -1)
@@ -10393,7 +10403,7 @@
 			}
 			// warn multiple elements
 			if (children.length > 1) {
-				warn$2(
+				warnMsgVm(
 					"<transition> can only be used on a single element. Use " +
 						"<transition-group> for lists.",
 					this.$parent
@@ -10402,7 +10412,7 @@
 			var mode = this.mode;
 			// warn invalid mode
 			if (mode && mode !== "in-out" && mode !== "out-in") {
-				warn$2("invalid <transition> mode: " + mode, this.$parent);
+				warnMsgVm("invalid <transition> mode: " + mode, this.$parent);
 			}
 			var rawChild = children[0];
 			// if this is a component root node and the component's
@@ -10534,7 +10544,7 @@
 						var name_1 = opts
 							? getComponentName(opts.Ctor.options) || opts.tag || ""
 							: c.tag;
-						warn$2(
+						warnMsgVm(
 							"<transition-group> children must be keyed: <".concat(name_1, ">")
 						);
 					}
@@ -12543,7 +12553,7 @@
 
 	function on(el, dir) {
 		if (dir.modifiers) {
-			warn$2("v-on without argument does not support modifiers.");
+			warnMsgVm("v-on without argument does not support modifiers.");
 		}
 		el.wrapListeners = function (code) {
 			return "bindObjectListeners(".concat(code, ",").concat(dir.value, ")");
@@ -13444,7 +13454,7 @@
 		var cache = Object.create(null);
 		return function compileToFunctions(template, options, vm) {
 			options = extend({}, options);
-			var warn = options.warn || warn$2;
+			var warn = options.warn || warnMsgVm;
 			delete options.warn;
 			/* istanbul ignore if */
 			{
@@ -13499,11 +13509,11 @@
 				if (compiled.tips && compiled.tips.length) {
 					if (options.outputSourceRange) {
 						compiled.tips.forEach(function (e) {
-							return tip(e.msg, vm);
+							return tipMsgVm(e.msg, vm, e);
 						});
 					} else {
 						compiled.tips.forEach(function (msg) {
-							return tip(msg, vm);
+							return tipMsgVm(msg, vm);
 						});
 					}
 				}
@@ -13647,7 +13657,7 @@
 		el = el && query(el);
 		/* istanbul ignore if */
 		if (el === document.body || el === document.documentElement) {
-			warn$2(
+			warnMsgVm(
 				"Do not mount Vue to <html> or <body> - mount to normal elements instead."
 			);
 			return this;
@@ -13662,7 +13672,7 @@
 						template = idToTemplate(template);
 						/* istanbul ignore if */
 						if (!template) {
-							warn$2(
+							warnMsgVm(
 								"Template element not found or is empty: ".concat(
 									options.template
 								),
@@ -13674,7 +13684,7 @@
 					template = template.innerHTML;
 				} else {
 					{
-						warn$2("invalid template option:" + template, this);
+						warnMsgVm("invalid template option:" + template, this);
 					}
 					return this;
 				}

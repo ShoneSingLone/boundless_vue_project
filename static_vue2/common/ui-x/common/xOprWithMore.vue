@@ -40,7 +40,6 @@ export default async function () {
 	/* 有更多选项的 按钮组 */
 	const DID_NOT_SET_COL = "DID_NOT_SET_COL";
 	return {
-		NEED_HMR: localStorage.isDev,
 		props: ["configs"],
 		/* row index col prop COL_ACTIONS */
 		data() {

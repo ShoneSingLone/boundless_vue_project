@@ -17,7 +17,6 @@
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	return {
-		NEED_HMR: localStorage.isDev,
 		mixins: [mixins],
 		props: ["value", "options", "configs"],
 		computed: {

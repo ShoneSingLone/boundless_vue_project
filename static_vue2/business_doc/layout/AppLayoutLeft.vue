@@ -25,7 +25,6 @@
 export default async function () {
 	const MenuArray = await _.$importVue("@/router/MenuArray.vue");
 	return {
-		NEED_HMR: localStorage.isDev,
 		inject: ["APP"],
 		methods: {
 			checkMenuActive(item) {

@@ -17,7 +17,6 @@ export default async function () {
 		() => window?.i18n?.options && Object.keys(window.i18n.options).length > 0
 	);
 	return {
-		NEED_HMR: localStorage.isDev,
 		components: {
 			AppHeader: () => _.$importVue("@/layout/AppLayoutHeader.vue"),
 			AppLeft: () => _.$importVue("@/layout/AppLayoutLeft.vue")
