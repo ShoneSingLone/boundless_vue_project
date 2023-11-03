@@ -228,17 +228,18 @@
 		return name + parseInt((new Date().getTime() % 61439) + 4096).toString(16);
 	};
 
-	_.$is200 = function is200(val) {
+	_.$is200 = function (val) {
 		return String(val) === "200";
 	};
 
 	_.$isEveryInput = function (obj) {
-		if (Object.keys(obj).length > 0) {
-			return _.every(Object.entries(obj), ([val]) => {
+		let count = 0;
+		return (
+			_.every(Object.entries(obj), ([val]) => {
+				count++;
 				return _.$isInput(val);
-			});
-		}
-		return false;
+			}) && count
+		);
 	};
 
 	/**
@@ -1004,7 +1005,10 @@
 		return new Proxy(_.$getCellItemVm(rowIndex, colProp, selector), {
 			get(obj, prop) {
 				if (prop === "_$item") {
-					return value => _.find(obj?.configs?.options, { value }) || {};
+					return value => {
+						value = _.$isInput(value) ? value : obj.p_value;
+						return _.find(obj?.configs?.options, { value }) || {};
+					};
 				}
 				return obj[prop];
 			}
