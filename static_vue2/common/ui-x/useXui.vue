@@ -77,12 +77,10 @@
 	--el-fill-color-dark: #ebedf0;
 	--el-fill-color-darker: #e6e8eb;
 	--el-fill-color-blank: #ffffff;
-	--el-box-shadow: 0px 12px 32px 4px rgba(0, 0, 0, 0.04),
-		0px 8px 20px rgba(0, 0, 0, 0.08);
+	--el-box-shadow: 0px 12px 32px 4px rgba(0, 0, 0, 0.04), 0px 8px 20px rgba(0, 0, 0, 0.08);
 	--el-box-shadow-light: 0px 0px 12px rgba(0, 0, 0, 0.12);
 	--el-box-shadow-lighter: 0px 0px 6px rgba(0, 0, 0, 0.12);
-	--el-box-shadow-dark: 0px 16px 48px 16px rgba(0, 0, 0, 0.08),
-		0px 12px 32px rgba(0, 0, 0, 0.12), 0px 8px 16px -8px rgba(0, 0, 0, 0.16);
+	--el-box-shadow-dark: 0px 16px 48px 16px rgba(0, 0, 0, 0.08), 0px 12px 32px rgba(0, 0, 0, 0.12), 0px 8px 16px -8px rgba(0, 0, 0, 0.16);
 	--el-disabled-bg-color: var(--el-fill-color-light);
 	--el-disabled-text-color: var(--el-text-color-placeholder);
 	--el-disabled-border-color: var(--el-border-color-light);
@@ -94,8 +92,7 @@
 	--el-border-width: 1px;
 	--el-border-style: solid;
 	--el-border-color-hover: var(--el-text-color-disabled);
-	--el-border: var(--el-border-width) var(--el-border-style)
-		var(--el-border-color);
+	--el-border: var(--el-border-width) var(--el-border-style) var(--el-border-color);
 	--el-svg-monochrome-grey: var(--el-border-color);
 	--border-radius: 4px;
 	/*  */
@@ -1310,10 +1307,7 @@ ol.list-style-number > li {
 	right: 0;
 }
 
-.x-table
-	.table-container
-	.box-shadow_left
-	td[data-prop^="COL_"]:first-child::after {
+.x-table .table-container .box-shadow_left td[data-prop^="COL_"]:first-child::after {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -1325,10 +1319,7 @@ ol.list-style-number > li {
 	box-shadow: rgba(0, 0, 0, 0.12) 10px 0px 8px -8px;
 }
 
-.x-table
-	.table-container
-	.box-shadow_right
-	td[data-prop^="COL_"]:last-child::after {
+.x-table .table-container .box-shadow_right td[data-prop^="COL_"]:last-child::after {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -1488,16 +1479,8 @@ export default async function () {
 							}
 							if (validator) valid ||= validator(val);
 							if (!valid && allowedValues.length > 0) {
-								const allowValuesText = [...new Set(allowedValues)]
-									.map(value => JSON.stringify(value))
-									.join(", ");
-								warn(
-									`Invalid prop: validation failed${
-										key ? ` for prop "${key}"` : ""
-									}. Expected one of [${allowValuesText}], got value ${JSON.stringify(
-										val
-									)}.`
-								);
+								const allowValuesText = [...new Set(allowedValues)].map(value => JSON.stringify(value)).join(", ");
+								warn(`Invalid prop: validation failed${key ? ` for prop "${key}"` : ""}. Expected one of [${allowValuesText}], got value ${JSON.stringify(val)}.`);
 							}
 							return valid;
 					  }
@@ -1525,20 +1508,13 @@ export default async function () {
 		}
 
 		const buildProps = props => {
-			return fromPairs(
-				Object.entries(props).map(([key, option]) => [
-					key,
-					buildProp(option, key)
-				])
-			);
+			return fromPairs(Object.entries(props).map(([key, option]) => [key, buildProp(option, key)]));
 		};
 		const definePropType = val => val;
 		const defaultNamespace = "el";
 		const namespaceContextKey = Symbol("namespaceContextKey");
 		const useGetDerivedNamespace = namespaceOverrides => {
-			const derivedNamespace =
-				namespaceOverrides ||
-				inject(namespaceContextKey, ref(defaultNamespace));
+			const derivedNamespace = namespaceOverrides || inject(namespaceContextKey, ref(defaultNamespace));
 			const namespace = computed(() => {
 				return unref(derivedNamespace) || defaultNamespace;
 			});
@@ -1579,28 +1555,13 @@ export default async function () {
 		 */
 		const useNamespace = (block, namespaceOverrides) => {
 			const namespace = useGetDerivedNamespace(namespaceOverrides);
-			const b = (blockSuffix = "") =>
-				_bem(namespace.value, block, blockSuffix, "", "");
-			const e = element =>
-				element ? _bem(namespace.value, block, "", element, "") : "";
-			const m = modifier =>
-				modifier ? _bem(namespace.value, block, "", "", modifier) : "";
-			const be = (blockSuffix, element) =>
-				blockSuffix && element
-					? _bem(namespace.value, block, blockSuffix, element, "")
-					: "";
-			const em = (element, modifier) =>
-				element && modifier
-					? _bem(namespace.value, block, "", element, modifier)
-					: "";
-			const bm = (blockSuffix, modifier) =>
-				blockSuffix && modifier
-					? _bem(namespace.value, block, blockSuffix, "", modifier)
-					: "";
-			const bem = (blockSuffix, element, modifier) =>
-				blockSuffix && element && modifier
-					? _bem(namespace.value, block, blockSuffix, element, modifier)
-					: "";
+			const b = (blockSuffix = "") => _bem(namespace.value, block, blockSuffix, "", "");
+			const e = element => (element ? _bem(namespace.value, block, "", element, "") : "");
+			const m = modifier => (modifier ? _bem(namespace.value, block, "", "", modifier) : "");
+			const be = (blockSuffix, element) => (blockSuffix && element ? _bem(namespace.value, block, blockSuffix, element, "") : "");
+			const em = (element, modifier) => (element && modifier ? _bem(namespace.value, block, "", element, modifier) : "");
+			const bm = (blockSuffix, modifier) => (blockSuffix && modifier ? _bem(namespace.value, block, blockSuffix, "", modifier) : "");
+			const bem = (blockSuffix, element, modifier) => (blockSuffix && element && modifier ? _bem(namespace.value, block, blockSuffix, element, modifier) : "");
 			const is = (name, ...args) => {
 				const state = args.length >= 1 ? args[0] : true;
 				return name && state ? `${statePrefix}${name}` : "";
@@ -2010,9 +1971,7 @@ export default async function () {
 			const props = vm.proxy.$props;
 			return computed(() => {
 				const _getItemStyleCache = (_, __, ___) => ({});
-				return props.perfMode
-					? memoize(_getItemStyleCache)
-					: memoizeOne(_getItemStyleCache);
+				return props.perfMode ? memoize(_getItemStyleCache) : memoizeOne(_getItemStyleCache);
 			});
 		};
 		const useTableRow = props => {
@@ -2025,20 +1984,13 @@ export default async function () {
 			const doMeasure = (isInit = false) => {
 				const $rowRef = unref(rowRef);
 				if (!$rowRef) return;
-				const {
-					columns: columns2,
-					onRowHeightChange,
-					rowKey: rowKey2,
-					rowIndex,
-					style
-				} = props;
+				const { columns: columns2, onRowHeightChange, rowKey: rowKey2, rowIndex, style } = props;
 				const { height } = $rowRef.getBoundingClientRect();
 				measured.value = true;
 				nextTick(() => {
 					if (isInit || height !== Number.parseInt(style.height)) {
 						const firstColumn = columns2[0];
-						const isPlaceholder =
-							firstColumn?.placeholderSign === placeholderSign;
+						const isPlaceholder = firstColumn?.placeholderSign === placeholderSign;
 						onRowHeightChange?.(
 							{
 								rowKey: rowKey2,
@@ -2139,10 +2091,7 @@ export default async function () {
 				emits: [ITEM_RENDER_EVT, SCROLL_EVT],
 				components: {
 					/* 循环引用 => 异步加载 */
-					ComponentVirtualScrollBar: () =>
-						_.$importVue(
-							"/common/ui-x/common/xTableVir/ComponentVirtualScrollBar.vue"
-						)
+					ComponentVirtualScrollBar: () => _.$importVue("/common/ui-x/common/xTableVir/ComponentVirtualScrollBar.vue")
 				},
 				setup(props, { emit, expose, slots }) {
 					const ns = useNamespace("vl");
@@ -2156,54 +2105,26 @@ export default async function () {
 					const innerRef = ref(null);
 					const states = ref({
 						isScrolling: false,
-						scrollLeft: _.isNumber(props.initScrollLeft)
-							? props.initScrollLeft
-							: 0,
-						scrollTop: _.isNumber(props.initScrollTop)
-							? props.initScrollTop
-							: 0,
+						scrollLeft: _.isNumber(props.initScrollLeft) ? props.initScrollLeft : 0,
+						scrollTop: _.isNumber(props.initScrollTop) ? props.initScrollTop : 0,
 						updateRequested: false,
 						xAxisScrollDir: FORWARD,
 						yAxisScrollDir: FORWARD
 					});
 					const getItemStyleCache = useCache();
-					const parsedHeight = computed(() =>
-						Number.parseInt(`${props.height}`, 10)
-					);
-					const parsedWidth = computed(() =>
-						Number.parseInt(`${props.width}`, 10)
-					);
+					const parsedHeight = computed(() => Number.parseInt(`${props.height}`, 10));
+					const parsedWidth = computed(() => Number.parseInt(`${props.width}`, 10));
 					const columnsToRender = computed(() => {
 						const { totalColumn, totalRow, columnCache } = props;
 						const { isScrolling, xAxisScrollDir, scrollLeft } = unref(states);
 						if (totalColumn === 0 || totalRow === 0) {
 							return [0, 0, 0, 0];
 						}
-						const startIndex = getColumnStartIndexForOffset(
-							props,
-							scrollLeft,
-							unref(cache2)
-						);
-						const stopIndex = getColumnStopIndexForStartIndex(
-							props,
-							startIndex,
-							scrollLeft,
-							unref(cache2)
-						);
-						const cacheBackward =
-							!isScrolling || xAxisScrollDir === BACKWARD
-								? Math.max(1, columnCache)
-								: 1;
-						const cacheForward =
-							!isScrolling || xAxisScrollDir === FORWARD
-								? Math.max(1, columnCache)
-								: 1;
-						return [
-							Math.max(0, startIndex - cacheBackward),
-							Math.max(0, Math.min(totalColumn - 1, stopIndex + cacheForward)),
-							startIndex,
-							stopIndex
-						];
+						const startIndex = getColumnStartIndexForOffset(props, scrollLeft, unref(cache2));
+						const stopIndex = getColumnStopIndexForStartIndex(props, startIndex, scrollLeft, unref(cache2));
+						const cacheBackward = !isScrolling || xAxisScrollDir === BACKWARD ? Math.max(1, columnCache) : 1;
+						const cacheForward = !isScrolling || xAxisScrollDir === FORWARD ? Math.max(1, columnCache) : 1;
+						return [Math.max(0, startIndex - cacheBackward), Math.max(0, Math.min(totalColumn - 1, stopIndex + cacheForward)), startIndex, stopIndex];
 					});
 					const rowsToRender = computed(() => {
 						const { totalColumn, totalRow, rowCache } = props;
@@ -2211,38 +2132,14 @@ export default async function () {
 						if (totalColumn === 0 || totalRow === 0) {
 							return [0, 0, 0, 0];
 						}
-						const startIndex = getRowStartIndexForOffset(
-							props,
-							scrollTop,
-							unref(cache2)
-						);
-						const stopIndex = getRowStopIndexForStartIndex(
-							props,
-							startIndex,
-							scrollTop,
-							unref(cache2)
-						);
-						const cacheBackward =
-							!isScrolling || yAxisScrollDir === BACKWARD
-								? Math.max(1, rowCache)
-								: 1;
-						const cacheForward =
-							!isScrolling || yAxisScrollDir === FORWARD
-								? Math.max(1, rowCache)
-								: 1;
-						return [
-							Math.max(0, startIndex - cacheBackward),
-							Math.max(0, Math.min(totalRow - 1, stopIndex + cacheForward)),
-							startIndex,
-							stopIndex
-						];
+						const startIndex = getRowStartIndexForOffset(props, scrollTop, unref(cache2));
+						const stopIndex = getRowStopIndexForStartIndex(props, startIndex, scrollTop, unref(cache2));
+						const cacheBackward = !isScrolling || yAxisScrollDir === BACKWARD ? Math.max(1, rowCache) : 1;
+						const cacheForward = !isScrolling || yAxisScrollDir === FORWARD ? Math.max(1, rowCache) : 1;
+						return [Math.max(0, startIndex - cacheBackward), Math.max(0, Math.min(totalRow - 1, stopIndex + cacheForward)), startIndex, stopIndex];
 					});
-					const estimatedTotalHeight = computed(() =>
-						getEstimatedTotalHeight2(props, unref(cache2))
-					);
-					const estimatedTotalWidth = computed(() =>
-						getEstimatedTotalWidth2(props, unref(cache2))
-					);
+					const estimatedTotalHeight = computed(() => getEstimatedTotalHeight2(props, unref(cache2)));
+					const estimatedTotalWidth = computed(() => getEstimatedTotalWidth2(props, unref(cache2)));
 					const windowStyle = computed(() => [
 						{
 							position: "relative",
@@ -2252,9 +2149,7 @@ export default async function () {
 						},
 						{
 							direction: props.direction,
-							height: _.isNumber(props.height)
-								? `${props.height}px`
-								: props.height,
+							height: _.isNumber(props.height) ? `${props.height}px` : props.height,
 							width: _.isNumber(props.width) ? `${props.width}px` : props.width
 						},
 						props.styleV2 ?? {}
@@ -2271,18 +2166,8 @@ export default async function () {
 					const emitEvents = () => {
 						const { totalColumn, totalRow } = props;
 						if (totalColumn > 0 && totalRow > 0) {
-							const [
-								columnCacheStart,
-								columnCacheEnd,
-								columnVisibleStart,
-								columnVisibleEnd
-							] = unref(columnsToRender);
-							const [
-								rowCacheStart,
-								rowCacheEnd,
-								rowVisibleStart,
-								rowVisibleEnd
-							] = unref(rowsToRender);
+							const [columnCacheStart, columnCacheEnd, columnVisibleStart, columnVisibleEnd] = unref(columnsToRender);
+							const [rowCacheStart, rowCacheEnd, rowVisibleStart, rowVisibleEnd] = unref(rowsToRender);
 							emit(ITEM_RENDER_EVT, {
 								columnCacheStart,
 								columnCacheEnd,
@@ -2294,13 +2179,7 @@ export default async function () {
 								rowVisibleEnd
 							});
 						}
-						const {
-							scrollLeft,
-							scrollTop,
-							updateRequested,
-							xAxisScrollDir,
-							yAxisScrollDir
-						} = unref(states);
+						const { scrollLeft, scrollTop, updateRequested, xAxisScrollDir, yAxisScrollDir } = unref(states);
 						emit(SCROLL_EVT, {
 							xAxisScrollDir,
 							scrollLeft,
@@ -2310,19 +2189,9 @@ export default async function () {
 						});
 					};
 					const onScroll = e => {
-						const {
-							clientHeight,
-							clientWidth,
-							scrollHeight,
-							scrollLeft,
-							scrollTop,
-							scrollWidth
-						} = e.currentTarget;
+						const { clientHeight, clientWidth, scrollHeight, scrollLeft, scrollTop, scrollWidth } = e.currentTarget;
 						const _states = unref(states);
-						if (
-							_states.scrollTop === scrollTop &&
-							_states.scrollLeft === scrollLeft
-						) {
+						if (_states.scrollTop === scrollTop && _states.scrollLeft === scrollLeft) {
 							return;
 						}
 						let _scrollLeft = scrollLeft;
@@ -2340,10 +2209,7 @@ export default async function () {
 							..._states,
 							isScrolling: true,
 							scrollLeft: _scrollLeft,
-							scrollTop: Math.max(
-								0,
-								Math.min(scrollTop, scrollHeight - clientHeight)
-							),
+							scrollTop: Math.max(0, Math.min(scrollTop, scrollHeight - clientHeight)),
 							updateRequested: true,
 							xAxisScrollDir: getScrollDir(_states.scrollLeft, _scrollLeft),
 							yAxisScrollDir: getScrollDir(_states.scrollTop, scrollTop)
@@ -2354,16 +2220,14 @@ export default async function () {
 					};
 					const onVerticalScroll = (distance, totalSteps) => {
 						const height = unref(parsedHeight);
-						const offset =
-							((estimatedTotalHeight.value - height) / totalSteps) * distance;
+						const offset = ((estimatedTotalHeight.value - height) / totalSteps) * distance;
 						scrollTo({
 							scrollTop: Math.min(estimatedTotalHeight.value - height, offset)
 						});
 					};
 					const onHorizontalScroll = (distance, totalSteps) => {
 						const width = unref(parsedWidth);
-						const offset =
-							((estimatedTotalWidth.value - width) / totalSteps) * distance;
+						const offset = ((estimatedTotalWidth.value - width) / totalSteps) * distance;
 						scrollTo({
 							scrollLeft: Math.min(estimatedTotalWidth.value - width, offset)
 						});
@@ -2371,17 +2235,9 @@ export default async function () {
 					const { onWheel } = useGridWheel(
 						{
 							atXStartEdge: computed(() => states.value.scrollLeft <= 0),
-							atXEndEdge: computed(
-								() =>
-									states.value.scrollLeft >=
-									estimatedTotalWidth.value - unref(parsedWidth)
-							),
+							atXEndEdge: computed(() => states.value.scrollLeft >= estimatedTotalWidth.value - unref(parsedWidth)),
 							atYStartEdge: computed(() => states.value.scrollTop <= 0),
-							atYEndEdge: computed(
-								() =>
-									states.value.scrollTop >=
-									estimatedTotalHeight.value - unref(parsedHeight)
-							)
+							atYEndEdge: computed(() => states.value.scrollTop >= estimatedTotalHeight.value - unref(parsedHeight))
 						},
 						(x, y) => {
 							hScrollbar.value?.onMouseUp?.();
@@ -2389,28 +2245,16 @@ export default async function () {
 							const width = unref(parsedWidth);
 							const height = unref(parsedHeight);
 							scrollTo({
-								scrollLeft: Math.min(
-									states.value.scrollLeft + x,
-									estimatedTotalWidth.value - width
-								),
-								scrollTop: Math.min(
-									states.value.scrollTop + y,
-									estimatedTotalHeight.value - height
-								)
+								scrollLeft: Math.min(states.value.scrollLeft + x, estimatedTotalWidth.value - width),
+								scrollTop: Math.min(states.value.scrollTop + y, estimatedTotalHeight.value - height)
 							});
 						}
 					);
-					const scrollTo = ({
-						scrollLeft = states.value.scrollLeft,
-						scrollTop = states.value.scrollTop
-					}) => {
+					const scrollTo = ({ scrollLeft = states.value.scrollLeft, scrollTop = states.value.scrollTop }) => {
 						scrollLeft = Math.max(scrollLeft, 0);
 						scrollTop = Math.max(scrollTop, 0);
 						const _states = unref(states);
-						if (
-							scrollTop === _states.scrollTop &&
-							scrollLeft === _states.scrollLeft
-						) {
+						if (scrollTop === _states.scrollTop && scrollLeft === _states.scrollLeft) {
 							return;
 						}
 						states.value = {
@@ -2425,11 +2269,7 @@ export default async function () {
 						onUpdated();
 						emitEvents();
 					};
-					const scrollToItem = (
-						rowIndex = 0,
-						columnIdx = 0,
-						alignment = AUTO_ALIGNMENT
-					) => {
+					const scrollToItem = (rowIndex = 0, columnIdx = 0, alignment = AUTO_ALIGNMENT) => {
 						const _states = unref(states);
 						columnIdx = Math.max(0, Math.min(columnIdx, props.totalColumn - 1));
 						rowIndex = Math.max(0, Math.min(rowIndex, props.totalRow - 1));
@@ -2438,40 +2278,18 @@ export default async function () {
 						const estimatedHeight = getEstimatedTotalHeight2(props, _cache);
 						const estimatedWidth = getEstimatedTotalWidth2(props, _cache);
 						scrollTo({
-							scrollLeft: getColumnOffset(
-								props,
-								columnIdx,
-								alignment,
-								_states.scrollLeft,
-								_cache,
-								estimatedWidth > props.width ? scrollBarWidth2 : 0
-							),
-							scrollTop: getRowOffset(
-								props,
-								rowIndex,
-								alignment,
-								_states.scrollTop,
-								_cache,
-								estimatedHeight > props.height ? scrollBarWidth2 : 0
-							)
+							scrollLeft: getColumnOffset(props, columnIdx, alignment, _states.scrollLeft, _cache, estimatedWidth > props.width ? scrollBarWidth2 : 0),
+							scrollTop: getRowOffset(props, rowIndex, alignment, _states.scrollTop, _cache, estimatedHeight > props.height ? scrollBarWidth2 : 0)
 						});
 					};
 					const getItemStyle = (rowIndex, columnIndex) => {
 						const { columnWidth, direction: direction2, rowHeight } = props;
-						const itemStyleCache = getItemStyleCache.value(
-							clearCache && columnWidth,
-							clearCache && rowHeight,
-							clearCache && direction2
-						);
+						const itemStyleCache = getItemStyleCache.value(clearCache && columnWidth, clearCache && rowHeight, clearCache && direction2);
 						const key = `${rowIndex},${columnIndex}`;
 						if (hasOwn(itemStyleCache, key)) {
 							return itemStyleCache[key];
 						} else {
-							const [, left] = getColumnPosition(
-								props,
-								columnIndex,
-								unref(cache2)
-							);
+							const [, left] = getColumnPosition(props, columnIndex, unref(cache2));
 							const _cache = unref(cache2);
 							const rtl = isRTL(direction2);
 							const [height, top] = getRowPosition(props, rowIndex, _cache);
@@ -2524,8 +2342,7 @@ export default async function () {
 									}
 									default: {
 										const { clientWidth, scrollWidth } = windowElement;
-										windowElement.scrollLeft =
-											scrollWidth - clientWidth - scrollLeft;
+										windowElement.scrollLeft = scrollWidth - clientWidth - scrollLeft;
 										break;
 									}
 								}
@@ -2535,8 +2352,7 @@ export default async function () {
 							windowElement.scrollTop = Math.max(0, scrollTop);
 						}
 					};
-					const { resetAfterColumnIndex, resetAfterRowIndex, resetAfter } =
-						instance.proxy;
+					const { resetAfterColumnIndex, resetAfterRowIndex, resetAfter } = instance.proxy;
 					expose({
 						windowRef,
 						innerRef,
@@ -2549,13 +2365,7 @@ export default async function () {
 						resetAfter
 					});
 					const renderScrollbars = () => {
-						const {
-							scrollbarAlwaysOn,
-							scrollbarStartGap,
-							scrollbarEndGap,
-							totalColumn,
-							totalRow
-						} = props;
+						const { scrollbarAlwaysOn, scrollbarStartGap, scrollbarEndGap, totalColumn, totalRow } = props;
 						const width = unref(parsedWidth);
 						const height = unref(parsedHeight);
 						const estimatedWidth = unref(estimatedTotalWidth);
@@ -2598,8 +2408,7 @@ export default async function () {
 						const $vSlots = this.$vSlots;
 						const [columnStart, columnEnd] = unref(columnsToRender);
 						const [rowStart, rowEnd] = unref(rowsToRender);
-						const { data, totalColumn, totalRow, useIsScrolling, itemKey } =
-							props;
+						const { data, totalColumn, totalRow, useIsScrolling, itemKey } = props;
 						const children = [];
 						if (totalRow > 0 && totalColumn > 0) {
 							for (let row = rowStart; row <= rowEnd; row++) {
@@ -2613,9 +2422,7 @@ export default async function () {
 												data,
 												rowIndex: row
 											}),
-											isScrolling: useIsScrolling
-												? unref(states).isScrolling
-												: void 0,
+											isScrolling: useIsScrolling ? unref(states).isScrolling : void 0,
 											style: getItemStyle(row, column),
 											rowIndex: row
 										};
@@ -2651,8 +2458,7 @@ export default async function () {
 					};
 					const renderWindow = () => {
 						const Container = props.containerElement;
-						const { horizontalScrollbar, verticalScrollbar } =
-							renderScrollbars();
+						const { horizontalScrollbar, verticalScrollbar } = renderScrollbars();
 						const Inner = renderInner();
 						return h(
 							"div",
@@ -2691,18 +2497,13 @@ export default async function () {
 			});
 		};
 
-		const useGridWheel = (
-			{ atXEndEdge, atXStartEdge, atYEndEdge, atYStartEdge },
-			onWheelDelta
-		) => {
+		const useGridWheel = ({ atXEndEdge, atXStartEdge, atYEndEdge, atYStartEdge }, onWheelDelta) => {
 			let frameHandle = null;
 			let xOffset = 0;
 			let yOffset = 0;
 			const hasReachedEdge = (x, y) => {
-				const xEdgeReached =
-					(x <= 0 && atXStartEdge.value) || (x >= 0 && atXEndEdge.value);
-				const yEdgeReached =
-					(y <= 0 && atYStartEdge.value) || (y >= 0 && atYEndEdge.value);
+				const xEdgeReached = (x <= 0 && atXStartEdge.value) || (x >= 0 && atXEndEdge.value);
+				const yEdgeReached = (y <= 0 && atYStartEdge.value) || (y >= 0 && atYEndEdge.value);
 				return xEdgeReached && yEdgeReached;
 			};
 			const onWheel = e => {
@@ -2718,11 +2519,7 @@ export default async function () {
 					x = y;
 					y = 0;
 				}
-				if (
-					hasReachedEdge(xOffset, yOffset) &&
-					hasReachedEdge(xOffset + x, yOffset + y)
-				)
-					return;
+				if (hasReachedEdge(xOffset, yOffset) && hasReachedEdge(xOffset + x, yOffset + y)) return;
 				xOffset += x;
 				yOffset += y;
 				e.preventDefault();
@@ -2755,22 +2552,14 @@ export default async function () {
 			const headerHeight = computed(() => sum(props.headerHeight));
 			const gridHeight = computed(() => {
 				const { height } = props;
-				return Math.max(
-					0,
-					height - unref(headerHeight) - unref(fixedRowHeight)
-				);
+				return Math.max(0, height - unref(headerHeight) - unref(fixedRowHeight));
 			});
 			const hasHeader = computed(() => {
 				return unref(headerHeight) + unref(fixedRowHeight) > 0;
 			});
 			const itemKey = ({ data, rowIndex }) => data[rowIndex][props.rowKey];
 
-			function onItemRendered({
-				rowCacheStart,
-				rowCacheEnd,
-				rowVisibleStart,
-				rowVisibleEnd
-			}) {
+			function onItemRendered({ rowCacheStart, rowCacheEnd, rowVisibleStart, rowVisibleEnd }) {
 				props.onRowsRendered?.({
 					rowCacheStart,
 					rowCacheEnd,
@@ -2849,8 +2638,7 @@ export default async function () {
 			});
 			return style;
 		};
-		const componentToSlot = ComponentLike =>
-			isVNode(ComponentLike) ? props => h(ComponentLike, props) : ComponentLike;
+		const componentToSlot = ComponentLike => (isVNode(ComponentLike) ? props => h(ComponentLike, props) : ComponentLike);
 
 		function castArray() {
 			if (!arguments.length) {
@@ -2860,10 +2648,8 @@ export default async function () {
 			return _.isArray(value) ? value : [value];
 		}
 		const isClient = typeof window !== "undefined";
-		const rAF = fn =>
-			isClient ? window.requestAnimationFrame(fn) : setTimeout(fn, 16);
-		const cAF = handle =>
-			isClient ? window.cancelAnimationFrame(handle) : clearTimeout(handle);
+		const rAF = fn => (isClient ? window.requestAnimationFrame(fn) : setTimeout(fn, 16));
+		const cAF = handle => (isClient ? window.cancelAnimationFrame(handle) : clearTimeout(handle));
 
 		const getScrollDir = (prev, cur) => (prev < cur ? FORWARD : BACKWARD);
 		const isRTL = dir => dir === RTL;
@@ -2907,11 +2693,7 @@ export default async function () {
 				for (var _i = 0; _i < arguments.length; _i++) {
 					newArgs[_i] = arguments[_i];
 				}
-				if (
-					cache2 &&
-					cache2.lastThis === this &&
-					isEqual2(newArgs, cache2.lastArgs)
-				) {
+				if (cache2 && cache2.lastThis === this && isEqual2(newArgs, cache2.lastArgs)) {
 					return cache2.lastResult;
 				}
 				var lastResult = resultFn.apply(this, newArgs);
@@ -3006,9 +2788,7 @@ export default async function () {
 				{ window: window2 = defaultWindow } = _a2,
 				observerOptions = __objRest(_a2, ["window"]);
 			let observer;
-			const isSupported = useSupported(
-				() => window2 && "ResizeObserver" in window2
-			);
+			const isSupported = useSupported(() => window2 && "ResizeObserver" in window2);
 			const cleanup = () => {
 				if (observer) {
 					observer.disconnect();
@@ -3045,8 +2825,7 @@ export default async function () {
 			onMounted(() => {
 				resizerStopper = useResizeObserver(sizer, ([entry]) => {
 					const { width, height } = entry.contentRect;
-					const { paddingLeft, paddingRight, paddingTop, paddingBottom } =
-						getComputedStyle(entry.target);
+					const { paddingLeft, paddingRight, paddingTop, paddingBottom } = getComputedStyle(entry.target);
 					const left = Number.parseInt(paddingLeft) || 0;
 					const right = Number.parseInt(paddingRight) || 0;
 					const top = Number.parseInt(paddingTop) || 0;
@@ -3091,13 +2870,10 @@ export default async function () {
 		var __propIsEnum$f = Object.prototype.propertyIsEnumerable;
 		var __objRest = (source, exclude) => {
 			var target = {};
-			for (var prop in source)
-				if (hasOwnProperty.call(source, prop) && exclude.indexOf(prop) < 0)
-					target[prop] = source[prop];
+			for (var prop in source) if (hasOwnProperty.call(source, prop) && exclude.indexOf(prop) < 0) target[prop] = source[prop];
 			if (source != null && __getOwnPropSymbols$f)
 				for (var prop of __getOwnPropSymbols$f(source)) {
-					if (exclude.indexOf(prop) < 0 && __propIsEnum$f.call(source, prop))
-						target[prop] = source[prop];
+					if (exclude.indexOf(prop) < 0 && __propIsEnum$f.call(source, prop)) target[prop] = source[prop];
 				}
 			return target;
 		};
@@ -3225,9 +3001,7 @@ export default async function () {
 
 		Vue.ALL_COMPONENTS = ALL_COMPONENTS;
 		const load = async componentName => {
-			const component = await _.$importVue(
-				`/common/ui-x/common/${componentName}.vue`
-			);
+			const component = await _.$importVue(`/common/ui-x/common/${componentName}.vue`);
 			if (/^xCell/.test(componentName)) {
 				/**
 				 * props: ["row", "configs"], row,index,configs,prop 包含当前行、列、下标、配置信息
@@ -3250,22 +3024,14 @@ export default async function () {
 			try {
 				var $ele = $(this);
 				var width = $ele.width();
-				var $child = $(
-					`<span style="opacity:0;position:absolute;z-index:-1;"></span>`
-				)
-					.appendTo($("body"))
-					.text($ele.text());
+				var $child = $(`<span style="opacity:0;position:absolute;z-index:-1;"></span>`).appendTo($("body")).text($ele.text());
 				var widthChild = $child.width();
 				$child.remove();
 				if (width < widthChild - 2) {
-					const vlayerIndex = layer.tips(
-						`<div style="overflow: auto;">${$ele.text()}</div>`,
-						this,
-						{
-							tips: [1, "#fff"],
-							time: 1000 * 60 * 1
-						}
-					);
+					const vlayerIndex = layer.tips(`<div style="overflow: auto;">${$ele.text()}</div>`, this, {
+						tips: [1, "#fff"],
+						time: 1000 * 60 * 1
+					});
 					$ele.attr("data-tips", vlayerIndex);
 				}
 			} catch (e) {

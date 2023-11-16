@@ -7,9 +7,23 @@ export default async function RULES() {
 	 * @typedef RULES
 	 */
 	return {
+		urlStart: () => {
+			return {
+				name: "urlStart",
+				async validator({ val }) {
+					if (!_.$isInput(val)) {
+						return;
+					}
+					if (!/^\//.test(val)) {
+						return "以/开头,输入正确的路径地址";
+					}
+					return "";
+				},
+				trigger: ["change"]
+			};
+		},
 		required: defaultMsg => {
-			defaultMsg =
-				defaultMsg === undefined ? i18n("requiredFields") : defaultMsg;
+			defaultMsg = defaultMsg === undefined ? i18n("requiredFields") : defaultMsg;
 			return {
 				name: "required",
 				async validator({ val }) {
@@ -39,13 +53,36 @@ export default async function RULES() {
 				trigger: ["change", "blur"]
 			};
 		},
+		portRange: (min, max) => {
+			return {
+				async validator({ val }) {
+					if (!_.$isInput(val)) return;
+					if (!/\d+/.test(val) || val > max || val < min) {
+						return `${min}~${max}`;
+					}
+					return "";
+				},
+				trigger: ["change", "blur"]
+			};
+		},
+		port165535: () => {
+			return {
+				async validator({ val }) {
+					if (!_.$isInput(val)) return;
+					if (!/\d+/.test(val) || val > 65535 || val < 1) {
+						return "1~65535";
+					}
+					return "";
+				},
+				trigger: ["change", "blur"]
+			};
+		},
 		ipV4: size => {
 			return {
 				name: "ipV4",
 				async validator({ val }) {
 					let msg = "";
-					const reg =
-						/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\b/;
+					const reg = /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\b/;
 					if (!reg.test(val)) {
 						msg = i18n("msgEnterTheCorrectIPv4Address");
 					}
@@ -94,12 +131,11 @@ export default async function RULES() {
 			};
 		},
 		/* 匹配一个字符串，该字符串以小写英文字母或数字开头，并且只包含字母或数字 */
-		lettersOrNumbers(
-			msg = i18n("以小写英文字母或数字开头，并且只包含字母、数字或者-")
-		) {
+		lettersOrNumbers(msg = i18n("以小写英文字母或数字开头，并且只包含字母、数字或者-")) {
 			return {
 				name: "name",
 				async validator({ val }) {
+					if (!val) return;
 					if (/^[a-z0-9][a-z0-9-]*$/.test(val)) {
 						return "";
 					}

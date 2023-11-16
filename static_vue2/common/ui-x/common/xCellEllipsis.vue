@@ -1,7 +1,5 @@
 <template>
-	<div
-		style="width: 94%; height: 32px"
-		class="flex center vertical middle xCellRate">
+	<div style="width: 94%; height: 32px" class="flex center vertical middle xCellRate">
 		<div :style="rateStyle" class="progress-bar">
 			<span>{{ label }}</span>
 		</div>
@@ -16,8 +14,8 @@ export default async function () {
 		},
 		computed: {
 			rate() {
-				if (_.isFunction(this.configs?.col?.xCellRate?.rate)) {
-					return this.configs?.col?.xCellRate?.rate({
+				if (_.isFunction(this.configs?.col?.componentOptions?.rate)) {
+					return this.configs?.col?.componentOptions?.rate({
 						xCellRate: this,
 						configs: this.configs,
 						col: this.configs.col,

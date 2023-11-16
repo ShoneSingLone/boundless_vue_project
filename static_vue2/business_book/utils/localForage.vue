@@ -65,8 +65,7 @@ export default async function () {
 						function (_dereq_, module, exports) {
 							(function (global) {
 								"use strict";
-								var Mutation =
-									global.MutationObserver || global.WebKitMutationObserver;
+								var Mutation = global.MutationObserver || global.WebKitMutationObserver;
 
 								var scheduleDrain;
 
@@ -81,20 +80,13 @@ export default async function () {
 										scheduleDrain = function () {
 											element.data = called = ++called % 2;
 										};
-									} else if (
-										!global.setImmediate &&
-										typeof global.MessageChannel !== "undefined"
-									) {
+									} else if (!global.setImmediate && typeof global.MessageChannel !== "undefined") {
 										var channel = new global.MessageChannel();
 										channel.port1.onmessage = nextTick;
 										scheduleDrain = function () {
 											channel.port2.postMessage(0);
 										};
-									} else if (
-										"document" in global &&
-										"onreadystatechange" in
-											global.document.createElement("script")
-									) {
+									} else if ("document" in global && "onreadystatechange" in global.document.createElement("script")) {
 										scheduleDrain = function () {
 											// Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
 											// into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
@@ -176,22 +168,15 @@ export default async function () {
 								return this.then(null, onRejected);
 							};
 							Promise.prototype.then = function (onFulfilled, onRejected) {
-								if (
-									(typeof onFulfilled !== "function" &&
-										this.state === FULFILLED) ||
-									(typeof onRejected !== "function" && this.state === REJECTED)
-								) {
+								if ((typeof onFulfilled !== "function" && this.state === FULFILLED) || (typeof onRejected !== "function" && this.state === REJECTED)) {
 									return this;
 								}
 								var promise = new this.constructor(INTERNAL);
 								if (this.state !== PENDING) {
-									var resolver =
-										this.state === FULFILLED ? onFulfilled : onRejected;
+									var resolver = this.state === FULFILLED ? onFulfilled : onRejected;
 									unwrap(promise, resolver, this.outcome);
 								} else {
-									this.queue.push(
-										new QueueItem(promise, onFulfilled, onRejected)
-									);
+									this.queue.push(new QueueItem(promise, onFulfilled, onRejected));
 								}
 
 								return promise;
@@ -229,10 +214,7 @@ export default async function () {
 										return handlers.reject(promise, e);
 									}
 									if (returnValue === promise) {
-										handlers.reject(
-											promise,
-											new TypeError("Cannot resolve promise with itself")
-										);
+										handlers.reject(promise, new TypeError("Cannot resolve promise with itself"));
 									} else {
 										handlers.resolve(promise, returnValue);
 									}
@@ -273,11 +255,7 @@ export default async function () {
 							function getThen(obj) {
 								// Make sure we only access the accessor once as required by the spec
 								var then = obj && obj.then;
-								if (
-									obj &&
-									(typeof obj === "object" || typeof obj === "function") &&
-									typeof then === "function"
-								) {
+								if (obj && (typeof obj === "object" || typeof obj === "function") && typeof then === "function") {
 									return function appyThen() {
 										then.apply(obj, arguments);
 									};
@@ -342,9 +320,7 @@ export default async function () {
 							Promise.all = all;
 							function all(iterable) {
 								var self = this;
-								if (
-									Object.prototype.toString.call(iterable) !== "[object Array]"
-								) {
+								if (Object.prototype.toString.call(iterable) !== "[object Array]") {
 									return this.reject(new TypeError("must be an array"));
 								}
 
@@ -383,9 +359,7 @@ export default async function () {
 							Promise.race = race;
 							function race(iterable) {
 								var self = this;
-								if (
-									Object.prototype.toString.call(iterable) !== "[object Array]"
-								) {
+								if (Object.prototype.toString.call(iterable) !== "[object Array]") {
 									return this.reject(new TypeError("must be an array"));
 								}
 
@@ -429,16 +403,7 @@ export default async function () {
 								if (typeof global.Promise !== "function") {
 									global.Promise = _dereq_(2);
 								}
-							}).call(
-								this,
-								typeof global !== "undefined"
-									? global
-									: typeof self !== "undefined"
-									? self
-									: typeof window !== "undefined"
-									? window
-									: {}
-							);
+							}).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
 						},
 						{ 2: 2 }
 					],
@@ -447,18 +412,12 @@ export default async function () {
 							"use strict";
 
 							var _typeof =
-								typeof Symbol === "function" &&
-								typeof Symbol.iterator === "symbol"
+								typeof Symbol === "function" && typeof Symbol.iterator === "symbol"
 									? function (obj) {
 											return typeof obj;
 									  }
 									: function (obj) {
-											return obj &&
-												typeof Symbol === "function" &&
-												obj.constructor === Symbol &&
-												obj !== Symbol.prototype
-												? "symbol"
-												: typeof obj;
+											return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 									  };
 
 							function _classCallCheck(instance, Constructor) {
@@ -509,9 +468,7 @@ export default async function () {
 										!/Chrome/.test(navigator.userAgent) &&
 										!/BlackBerry/.test(navigator.platform);
 
-									var hasFetch =
-										typeof fetch === "function" &&
-										fetch.toString().indexOf("[native code") !== -1;
+									var hasFetch = typeof fetch === "function" && fetch.toString().indexOf("[native code") !== -1;
 
 									// Safari <10.1 does not meet our requirements for IDB support
 									// (see: https://github.com/pouchdb/pouchdb/issues/5572).
@@ -608,10 +565,7 @@ export default async function () {
 							}
 
 							function getCallback() {
-								if (
-									arguments.length &&
-									typeof arguments[arguments.length - 1] === "function"
-								) {
+								if (arguments.length && typeof arguments[arguments.length - 1] === "function") {
 									return arguments[arguments.length - 1];
 								}
 							}
@@ -619,8 +573,7 @@ export default async function () {
 							// Some code originally from async_storage.js in
 							// [Gaia](https://github.com/mozilla-b2g/gaia).
 
-							var DETECT_BLOB_SUPPORT_STORE =
-								"local-forage-detect-blob-support";
+							var DETECT_BLOB_SUPPORT_STORE = "local-forage-detect-blob-support";
 							var supportsBlobs = void 0;
 							var dbContexts = {};
 							var toString = Object.prototype.toString;
@@ -661,10 +614,7 @@ export default async function () {
 							//
 							function _checkBlobSupportWithoutCaching(idb) {
 								return new Promise$1(function (resolve) {
-									var txn = idb.transaction(
-										DETECT_BLOB_SUPPORT_STORE,
-										READ_WRITE
-									);
+									var txn = idb.transaction(DETECT_BLOB_SUPPORT_STORE, READ_WRITE);
 									var blob = createBlob([""]);
 									txn.objectStore(DETECT_BLOB_SUPPORT_STORE).put(blob, "key");
 
@@ -677,16 +627,11 @@ export default async function () {
 									};
 
 									txn.oncomplete = function () {
-										var matchedChrome =
-											navigator.userAgent.match(/Chrome\/(\d+)/);
+										var matchedChrome = navigator.userAgent.match(/Chrome\/(\d+)/);
 										var matchedEdge = navigator.userAgent.match(/Edge\//);
 										// MS Edge pretends to be Chrome 42:
 										// https://msdn.microsoft.com/en-us/library/hh869301%28v=vs.85%29.aspx
-										resolve(
-											matchedEdge ||
-												!matchedChrome ||
-												parseInt(matchedChrome[1], 10) >= 43
-										);
+										resolve(matchedEdge || !matchedChrome || parseInt(matchedChrome[1], 10) >= 43);
 									};
 								})["catch"](function () {
 									return false; // error, so assume unsupported
@@ -697,12 +642,10 @@ export default async function () {
 								if (typeof supportsBlobs === "boolean") {
 									return Promise$1.resolve(supportsBlobs);
 								}
-								return _checkBlobSupportWithoutCaching(idb).then(
-									function (value) {
-										supportsBlobs = value;
-										return supportsBlobs;
-									}
-								);
+								return _checkBlobSupportWithoutCaching(idb).then(function (value) {
+									supportsBlobs = value;
+									return supportsBlobs;
+								});
 							}
 
 							function _deferReadiness(dbInfo) {
@@ -711,10 +654,7 @@ export default async function () {
 								// Create a deferred object representing the current database operation.
 								var deferredOperation = {};
 
-								deferredOperation.promise = new Promise$1(function (
-									resolve,
-									reject
-								) {
+								deferredOperation.promise = new Promise$1(function (resolve, reject) {
 									deferredOperation.resolve = resolve;
 									deferredOperation.reject = reject;
 								});
@@ -762,8 +702,7 @@ export default async function () {
 
 							function _getConnection(dbInfo, upgradeNeeded) {
 								return new Promise$1(function (resolve, reject) {
-									dbContexts[dbInfo.name] =
-										dbContexts[dbInfo.name] || createDbContext();
+									dbContexts[dbInfo.name] = dbContexts[dbInfo.name] || createDbContext();
 
 									if (dbInfo.db) {
 										if (upgradeNeeded) {
@@ -846,9 +785,7 @@ export default async function () {
 									return true;
 								}
 
-								var isNewStore = !dbInfo.db.objectStoreNames.contains(
-									dbInfo.storeName
-								);
+								var isNewStore = !dbInfo.db.objectStoreNames.contains(dbInfo.storeName);
 								var isDowngrade = dbInfo.version < dbInfo.db.version;
 								var isUpgrade = dbInfo.version > dbInfo.db.version;
 
@@ -856,16 +793,7 @@ export default async function () {
 									// If the version is not the default one
 									// then warn for impossible downgrade.
 									if (dbInfo.version !== defaultVersion) {
-										console.warn(
-											'The database "' +
-												dbInfo.name +
-												'"' +
-												" can't be downgraded from version " +
-												dbInfo.db.version +
-												" to version " +
-												dbInfo.version +
-												"."
-										);
+										console.warn('The database "' + dbInfo.name + '"' + " can't be downgraded from version " + dbInfo.db.version + " to version " + dbInfo.version + ".");
 									}
 									// Align the versions to prevent errors.
 									dbInfo.version = dbInfo.db.version;
@@ -987,22 +915,10 @@ export default async function () {
 									var tx = dbInfo.db.transaction(dbInfo.storeName, mode);
 									callback(null, tx);
 								} catch (err) {
-									if (
-										retries > 0 &&
-										(!dbInfo.db ||
-											err.name === "InvalidStateError" ||
-											err.name === "NotFoundError")
-									) {
+									if (retries > 0 && (!dbInfo.db || err.name === "InvalidStateError" || err.name === "NotFoundError")) {
 										return Promise$1.resolve()
 											.then(function () {
-												if (
-													!dbInfo.db ||
-													(err.name === "NotFoundError" &&
-														!dbInfo.db.objectStoreNames.contains(
-															dbInfo.storeName
-														) &&
-														dbInfo.version <= dbInfo.db.version)
-												) {
+												if (!dbInfo.db || (err.name === "NotFoundError" && !dbInfo.db.objectStoreNames.contains(dbInfo.storeName) && dbInfo.version <= dbInfo.db.version)) {
 													// increase the db version, to create the new ObjectStore
 													if (dbInfo.db) {
 														dbInfo.version = dbInfo.db.version + 1;
@@ -1013,12 +929,7 @@ export default async function () {
 											})
 											.then(function () {
 												return _tryReconnect(dbInfo).then(function () {
-													createTransaction(
-														dbInfo,
-														mode,
-														callback,
-														retries - 1
-													);
+													createTransaction(dbInfo, mode, callback, retries - 1);
 												});
 											})
 											["catch"](callback);
@@ -1087,9 +998,7 @@ export default async function () {
 									var forage = dbContext.forages[j];
 									if (forage !== self) {
 										// Don't wait for itself...
-										initPromises.push(
-											forage._initReady()["catch"](ignoreErrors)
-										);
+										initPromises.push(forage._initReady()["catch"](ignoreErrors));
 									}
 								}
 
@@ -1133,42 +1042,35 @@ export default async function () {
 								key = normalizeKey(key);
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
-											createTransaction(
-												self._dbInfo,
-												READ_ONLY,
-												function (err, transaction) {
-													if (err) {
-														return reject(err);
-													}
-
-													try {
-														var store = transaction.objectStore(
-															self._dbInfo.storeName
-														);
-														var req = store.get(key);
-
-														req.onsuccess = function () {
-															var value = req.result;
-															if (value === undefined) {
-																value = null;
-															}
-															if (_isEncodedBlob(value)) {
-																value = _decodeBlob(value);
-															}
-															resolve(value);
-														};
-
-														req.onerror = function () {
-															reject(req.error);
-														};
-													} catch (e) {
-														reject(e);
-													}
+											createTransaction(self._dbInfo, READ_ONLY, function (err, transaction) {
+												if (err) {
+													return reject(err);
 												}
-											);
+
+												try {
+													var store = transaction.objectStore(self._dbInfo.storeName);
+													var req = store.get(key);
+
+													req.onsuccess = function () {
+														var value = req.result;
+														if (value === undefined) {
+															value = null;
+														}
+														if (_isEncodedBlob(value)) {
+															value = _decodeBlob(value);
+														}
+														resolve(value);
+													};
+
+													req.onerror = function () {
+														reject(req.error);
+													};
+												} catch (e) {
+													reject(e);
+												}
+											});
 										})
 										["catch"](reject);
 								});
@@ -1182,59 +1084,48 @@ export default async function () {
 								var self = this;
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
-											createTransaction(
-												self._dbInfo,
-												READ_ONLY,
-												function (err, transaction) {
-													if (err) {
-														return reject(err);
-													}
-
-													try {
-														var store = transaction.objectStore(
-															self._dbInfo.storeName
-														);
-														var req = store.openCursor();
-														var iterationNumber = 1;
-
-														req.onsuccess = function () {
-															var cursor = req.result;
-
-															if (cursor) {
-																var value = cursor.value;
-																if (_isEncodedBlob(value)) {
-																	value = _decodeBlob(value);
-																}
-																var result = iterator(
-																	value,
-																	cursor.key,
-																	iterationNumber++
-																);
-
-																// when the iterator callback returns any
-																// (non-`undefined`) value, then we stop
-																// the iteration immediately
-																if (result !== void 0) {
-																	resolve(result);
-																} else {
-																	cursor["continue"]();
-																}
-															} else {
-																resolve();
-															}
-														};
-
-														req.onerror = function () {
-															reject(req.error);
-														};
-													} catch (e) {
-														reject(e);
-													}
+											createTransaction(self._dbInfo, READ_ONLY, function (err, transaction) {
+												if (err) {
+													return reject(err);
 												}
-											);
+
+												try {
+													var store = transaction.objectStore(self._dbInfo.storeName);
+													var req = store.openCursor();
+													var iterationNumber = 1;
+
+													req.onsuccess = function () {
+														var cursor = req.result;
+
+														if (cursor) {
+															var value = cursor.value;
+															if (_isEncodedBlob(value)) {
+																value = _decodeBlob(value);
+															}
+															var result = iterator(value, cursor.key, iterationNumber++);
+
+															// when the iterator callback returns any
+															// (non-`undefined`) value, then we stop
+															// the iteration immediately
+															if (result !== void 0) {
+																resolve(result);
+															} else {
+																cursor["continue"]();
+															}
+														} else {
+															resolve();
+														}
+													};
+
+													req.onerror = function () {
+														reject(req.error);
+													};
+												} catch (e) {
+													reject(e);
+												}
+											});
 										})
 										["catch"](reject);
 								});
@@ -1251,71 +1142,59 @@ export default async function () {
 
 								var promise = new Promise$1(function (resolve, reject) {
 									var dbInfo;
-									self
-										.ready()
+									self.ready()
 										.then(function () {
 											dbInfo = self._dbInfo;
 											if (toString.call(value) === "[object Blob]") {
-												return _checkBlobSupport(dbInfo.db).then(
-													function (blobSupport) {
-														if (blobSupport) {
-															return value;
-														}
-														return _encodeBlob(value);
+												return _checkBlobSupport(dbInfo.db).then(function (blobSupport) {
+													if (blobSupport) {
+														return value;
 													}
-												);
+													return _encodeBlob(value);
+												});
 											}
 											return value;
 										})
 										.then(function (value) {
-											createTransaction(
-												self._dbInfo,
-												READ_WRITE,
-												function (err, transaction) {
-													if (err) {
-														return reject(err);
+											createTransaction(self._dbInfo, READ_WRITE, function (err, transaction) {
+												if (err) {
+													return reject(err);
+												}
+
+												try {
+													var store = transaction.objectStore(self._dbInfo.storeName);
+
+													// The reason we don't _save_ null is because IE 10 does
+													// not support saving the `null` type in IndexedDB. How
+													// ironic, given the bug below!
+													// See: https://github.com/mozilla/localForage/issues/161
+													if (value === null) {
+														value = undefined;
 													}
 
-													try {
-														var store = transaction.objectStore(
-															self._dbInfo.storeName
-														);
+													var req = store.put(value, key);
 
-														// The reason we don't _save_ null is because IE 10 does
-														// not support saving the `null` type in IndexedDB. How
-														// ironic, given the bug below!
-														// See: https://github.com/mozilla/localForage/issues/161
-														if (value === null) {
-															value = undefined;
+													transaction.oncomplete = function () {
+														// Cast to undefined so the value passed to
+														// callback/promise is the same as what one would get out
+														// of `getItem()` later. This leads to some weirdness
+														// (setItem('foo', undefined) will return `null`), but
+														// it's not my fault localStorage is our baseline and that
+														// it's weird.
+														if (value === undefined) {
+															value = null;
 														}
 
-														var req = store.put(value, key);
-
-														transaction.oncomplete = function () {
-															// Cast to undefined so the value passed to
-															// callback/promise is the same as what one would get out
-															// of `getItem()` later. This leads to some weirdness
-															// (setItem('foo', undefined) will return `null`), but
-															// it's not my fault localStorage is our baseline and that
-															// it's weird.
-															if (value === undefined) {
-																value = null;
-															}
-
-															resolve(value);
-														};
-														transaction.onabort = transaction.onerror =
-															function () {
-																var err = req.error
-																	? req.error
-																	: req.transaction.error;
-																reject(err);
-															};
-													} catch (e) {
-														reject(e);
-													}
+														resolve(value);
+													};
+													transaction.onabort = transaction.onerror = function () {
+														var err = req.error ? req.error : req.transaction.error;
+														reject(err);
+													};
+												} catch (e) {
+													reject(e);
 												}
-											);
+											});
 										})
 										["catch"](reject);
 								});
@@ -1330,48 +1209,39 @@ export default async function () {
 								key = normalizeKey(key);
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
-											createTransaction(
-												self._dbInfo,
-												READ_WRITE,
-												function (err, transaction) {
-													if (err) {
-														return reject(err);
-													}
-
-													try {
-														var store = transaction.objectStore(
-															self._dbInfo.storeName
-														);
-														// We use a Grunt task to make this safe for IE and some
-														// versions of Android (including those used by Cordova).
-														// Normally IE won't like `.delete()` and will insist on
-														// using `['delete']()`, but we have a build step that
-														// fixes this for us now.
-														var req = store["delete"](key);
-														transaction.oncomplete = function () {
-															resolve();
-														};
-
-														transaction.onerror = function () {
-															reject(req.error);
-														};
-
-														// The request will be also be aborted if we've exceeded our storage
-														// space.
-														transaction.onabort = function () {
-															var err = req.error
-																? req.error
-																: req.transaction.error;
-															reject(err);
-														};
-													} catch (e) {
-														reject(e);
-													}
+											createTransaction(self._dbInfo, READ_WRITE, function (err, transaction) {
+												if (err) {
+													return reject(err);
 												}
-											);
+
+												try {
+													var store = transaction.objectStore(self._dbInfo.storeName);
+													// We use a Grunt task to make this safe for IE and some
+													// versions of Android (including those used by Cordova).
+													// Normally IE won't like `.delete()` and will insist on
+													// using `['delete']()`, but we have a build step that
+													// fixes this for us now.
+													var req = store["delete"](key);
+													transaction.oncomplete = function () {
+														resolve();
+													};
+
+													transaction.onerror = function () {
+														reject(req.error);
+													};
+
+													// The request will be also be aborted if we've exceeded our storage
+													// space.
+													transaction.onabort = function () {
+														var err = req.error ? req.error : req.transaction.error;
+														reject(err);
+													};
+												} catch (e) {
+													reject(e);
+												}
+											});
 										})
 										["catch"](reject);
 								});
@@ -1384,39 +1254,29 @@ export default async function () {
 								var self = this;
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
-											createTransaction(
-												self._dbInfo,
-												READ_WRITE,
-												function (err, transaction) {
-													if (err) {
-														return reject(err);
-													}
-
-													try {
-														var store = transaction.objectStore(
-															self._dbInfo.storeName
-														);
-														var req = store.clear();
-
-														transaction.oncomplete = function () {
-															resolve();
-														};
-
-														transaction.onabort = transaction.onerror =
-															function () {
-																var err = req.error
-																	? req.error
-																	: req.transaction.error;
-																reject(err);
-															};
-													} catch (e) {
-														reject(e);
-													}
+											createTransaction(self._dbInfo, READ_WRITE, function (err, transaction) {
+												if (err) {
+													return reject(err);
 												}
-											);
+
+												try {
+													var store = transaction.objectStore(self._dbInfo.storeName);
+													var req = store.clear();
+
+													transaction.oncomplete = function () {
+														resolve();
+													};
+
+													transaction.onabort = transaction.onerror = function () {
+														var err = req.error ? req.error : req.transaction.error;
+														reject(err);
+													};
+												} catch (e) {
+													reject(e);
+												}
+											});
 										})
 										["catch"](reject);
 								});
@@ -1429,35 +1289,28 @@ export default async function () {
 								var self = this;
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
-											createTransaction(
-												self._dbInfo,
-												READ_ONLY,
-												function (err, transaction) {
-													if (err) {
-														return reject(err);
-													}
-
-													try {
-														var store = transaction.objectStore(
-															self._dbInfo.storeName
-														);
-														var req = store.count();
-
-														req.onsuccess = function () {
-															resolve(req.result);
-														};
-
-														req.onerror = function () {
-															reject(req.error);
-														};
-													} catch (e) {
-														reject(e);
-													}
+											createTransaction(self._dbInfo, READ_ONLY, function (err, transaction) {
+												if (err) {
+													return reject(err);
 												}
-											);
+
+												try {
+													var store = transaction.objectStore(self._dbInfo.storeName);
+													var req = store.count();
+
+													req.onsuccess = function () {
+														resolve(req.result);
+													};
+
+													req.onerror = function () {
+														reject(req.error);
+													};
+												} catch (e) {
+													reject(e);
+												}
+											});
 										})
 										["catch"](reject);
 								});
@@ -1476,58 +1329,51 @@ export default async function () {
 										return;
 									}
 
-									self
-										.ready()
+									self.ready()
 										.then(function () {
-											createTransaction(
-												self._dbInfo,
-												READ_ONLY,
-												function (err, transaction) {
-													if (err) {
-														return reject(err);
-													}
-
-													try {
-														var store = transaction.objectStore(
-															self._dbInfo.storeName
-														);
-														var advanced = false;
-														var req = store.openKeyCursor();
-
-														req.onsuccess = function () {
-															var cursor = req.result;
-															if (!cursor) {
-																// this means there weren't enough keys
-																resolve(null);
-
-																return;
-															}
-
-															if (n === 0) {
-																// We have the first key, return it if that's what they
-																// wanted.
-																resolve(cursor.key);
-															} else {
-																if (!advanced) {
-																	// Otherwise, ask the cursor to skip ahead n
-																	// records.
-																	advanced = true;
-																	cursor.advance(n);
-																} else {
-																	// When we get here, we've got the nth key.
-																	resolve(cursor.key);
-																}
-															}
-														};
-
-														req.onerror = function () {
-															reject(req.error);
-														};
-													} catch (e) {
-														reject(e);
-													}
+											createTransaction(self._dbInfo, READ_ONLY, function (err, transaction) {
+												if (err) {
+													return reject(err);
 												}
-											);
+
+												try {
+													var store = transaction.objectStore(self._dbInfo.storeName);
+													var advanced = false;
+													var req = store.openKeyCursor();
+
+													req.onsuccess = function () {
+														var cursor = req.result;
+														if (!cursor) {
+															// this means there weren't enough keys
+															resolve(null);
+
+															return;
+														}
+
+														if (n === 0) {
+															// We have the first key, return it if that's what they
+															// wanted.
+															resolve(cursor.key);
+														} else {
+															if (!advanced) {
+																// Otherwise, ask the cursor to skip ahead n
+																// records.
+																advanced = true;
+																cursor.advance(n);
+															} else {
+																// When we get here, we've got the nth key.
+																resolve(cursor.key);
+															}
+														}
+													};
+
+													req.onerror = function () {
+														reject(req.error);
+													};
+												} catch (e) {
+													reject(e);
+												}
+											});
 										})
 										["catch"](reject);
 								});
@@ -1540,44 +1386,37 @@ export default async function () {
 								var self = this;
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
-											createTransaction(
-												self._dbInfo,
-												READ_ONLY,
-												function (err, transaction) {
-													if (err) {
-														return reject(err);
-													}
-
-													try {
-														var store = transaction.objectStore(
-															self._dbInfo.storeName
-														);
-														var req = store.openKeyCursor();
-														var keys = [];
-
-														req.onsuccess = function () {
-															var cursor = req.result;
-
-															if (!cursor) {
-																resolve(keys);
-																return;
-															}
-
-															keys.push(cursor.key);
-															cursor["continue"]();
-														};
-
-														req.onerror = function () {
-															reject(req.error);
-														};
-													} catch (e) {
-														reject(e);
-													}
+											createTransaction(self._dbInfo, READ_ONLY, function (err, transaction) {
+												if (err) {
+													return reject(err);
 												}
-											);
+
+												try {
+													var store = transaction.objectStore(self._dbInfo.storeName);
+													var req = store.openKeyCursor();
+													var keys = [];
+
+													req.onsuccess = function () {
+														var cursor = req.result;
+
+														if (!cursor) {
+															resolve(keys);
+															return;
+														}
+
+														keys.push(cursor.key);
+														cursor["continue"]();
+													};
+
+													req.onerror = function () {
+														reject(req.error);
+													};
+												} catch (e) {
+													reject(e);
+												}
+											});
 										})
 										["catch"](reject);
 								});
@@ -1593,8 +1432,7 @@ export default async function () {
 								options = (typeof options !== "function" && options) || {};
 								if (!options.name) {
 									options.name = options.name || currentConfig.name;
-									options.storeName =
-										options.storeName || currentConfig.storeName;
+									options.storeName = options.storeName || currentConfig.storeName;
 								}
 
 								var self = this;
@@ -1602,8 +1440,7 @@ export default async function () {
 								if (!options.name) {
 									promise = Promise$1.reject("Invalid arguments");
 								} else {
-									var isCurrentDb =
-										options.name === currentConfig.name && self._dbInfo.db;
+									var isCurrentDb = options.name === currentConfig.name && self._dbInfo.db;
 
 									var dbPromise = isCurrentDb
 										? Promise$1.resolve(self._dbInfo.db)
@@ -1630,10 +1467,7 @@ export default async function () {
 												forage._dbInfo.db = null;
 											}
 
-											var dropDBPromise = new Promise$1(function (
-												resolve,
-												reject
-											) {
+											var dropDBPromise = new Promise$1(function (resolve, reject) {
 												var req = idb.deleteDatabase(options.name);
 
 												req.onerror = function () {
@@ -1647,11 +1481,7 @@ export default async function () {
 												req.onblocked = function () {
 													// Closing all open connections in onversionchange handler should prevent this situation, but if
 													// we do get here, it just means the request remains pending - eventually it will succeed or error
-													console.warn(
-														'dropInstance blocked for database "' +
-															options.name +
-															'" until all open connections are closed'
-													);
+													console.warn('dropInstance blocked for database "' + options.name + '" until all open connections are closed');
 												};
 
 												req.onsuccess = function () {
@@ -1672,8 +1502,7 @@ export default async function () {
 													}
 												})
 												["catch"](function (err) {
-													(_rejectReadiness(options, err) ||
-														Promise$1.resolve())["catch"](function () {});
+													(_rejectReadiness(options, err) || Promise$1.resolve())["catch"](function () {});
 													throw err;
 												});
 										});
@@ -1697,10 +1526,7 @@ export default async function () {
 												forage._dbInfo.version = newVersion;
 											}
 
-											var dropObjectPromise = new Promise$1(function (
-												resolve,
-												reject
-											) {
+											var dropObjectPromise = new Promise$1(function (resolve, reject) {
 												var req = idb.open(options.name, newVersion);
 
 												req.onerror = function (err) {
@@ -1731,8 +1557,7 @@ export default async function () {
 													}
 												})
 												["catch"](function (err) {
-													(_rejectReadiness(options, err) ||
-														Promise$1.resolve())["catch"](function () {});
+													(_rejectReadiness(options, err) || Promise$1.resolve())["catch"](function () {});
 													throw err;
 												});
 										});
@@ -1765,8 +1590,7 @@ export default async function () {
 							// Sadly, the best way to save binary data in WebSQL/localStorage is serializing
 							// it to Base64, so this is how we store it to prevent very strange errors with less
 							// verbose ways of binary <-> string data storage.
-							var BASE_CHARS =
-								"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+							var BASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 							var BLOB_TYPE_PREFIX = "~~local_forage_type~";
 							var BLOB_TYPE_PREFIX_REGEX = /^~~local_forage_type~([^~]+)~/;
@@ -1786,8 +1610,7 @@ export default async function () {
 							var TYPE_UINT32ARRAY = "ui32";
 							var TYPE_FLOAT32ARRAY = "fl32";
 							var TYPE_FLOAT64ARRAY = "fl64";
-							var TYPE_SERIALIZED_MARKER_LENGTH =
-								SERIALIZED_MARKER_LENGTH + TYPE_ARRAYBUFFER.length;
+							var TYPE_SERIALIZED_MARKER_LENGTH = SERIALIZED_MARKER_LENGTH + TYPE_ARRAYBUFFER.length;
 
 							var toString$1 = Object.prototype.toString;
 
@@ -1834,21 +1657,15 @@ export default async function () {
 								for (i = 0; i < bytes.length; i += 3) {
 									/*jslint bitwise: true */
 									base64String += BASE_CHARS[bytes[i] >> 2];
-									base64String +=
-										BASE_CHARS[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
-									base64String +=
-										BASE_CHARS[
-											((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)
-										];
+									base64String += BASE_CHARS[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
+									base64String += BASE_CHARS[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
 									base64String += BASE_CHARS[bytes[i + 2] & 63];
 								}
 
 								if (bytes.length % 3 === 2) {
-									base64String =
-										base64String.substring(0, base64String.length - 1) + "=";
+									base64String = base64String.substring(0, base64String.length - 1) + "=";
 								} else if (bytes.length % 3 === 1) {
-									base64String =
-										base64String.substring(0, base64String.length - 2) + "==";
+									base64String = base64String.substring(0, base64String.length - 2) + "==";
 								}
 
 								return base64String;
@@ -1867,12 +1684,7 @@ export default async function () {
 								// checks fail when running the tests using casper.js...
 								//
 								// TODO: See why those tests fail and use a better solution.
-								if (
-									value &&
-									(valueType === "[object ArrayBuffer]" ||
-										(value.buffer &&
-											toString$1.call(value.buffer) === "[object ArrayBuffer]"))
-								) {
+								if (value && (valueType === "[object ArrayBuffer]" || (value.buffer && toString$1.call(value.buffer) === "[object ArrayBuffer]"))) {
 									// Convert binary arrays to a string and prefix the string with
 									// a special marker.
 									var buffer;
@@ -1914,11 +1726,7 @@ export default async function () {
 
 									fileReader.onload = function () {
 										// Backwards-compatible prefix for the blob type.
-										var str =
-											BLOB_TYPE_PREFIX +
-											value.type +
-											"~" +
-											bufferToString(this.result);
+										var str = BLOB_TYPE_PREFIX + value.type + "~" + bufferToString(this.result);
 
 										callback(SERIALIZED_MARKER + TYPE_BLOB + str);
 									};
@@ -1928,10 +1736,7 @@ export default async function () {
 									try {
 										callback(JSON.stringify(value));
 									} catch (e) {
-										console.error(
-											"Couldn't convert value into a JSON string: ",
-											value
-										);
+										console.error("Couldn't convert value into a JSON string: ", value);
 
 										callback(null, e);
 									}
@@ -1950,36 +1755,23 @@ export default async function () {
 								// If we haven't marked this string as being specially serialized (i.e.
 								// something other than serialized JSON), we can just return it and be
 								// done with it.
-								if (
-									value.substring(0, SERIALIZED_MARKER_LENGTH) !==
-									SERIALIZED_MARKER
-								) {
+								if (value.substring(0, SERIALIZED_MARKER_LENGTH) !== SERIALIZED_MARKER) {
 									return JSON.parse(value);
 								}
 
 								// The following code deals with deserializing some kind of Blob or
 								// TypedArray. First we separate out the type of data we're dealing
 								// with from the data itself.
-								var serializedString = value.substring(
-									TYPE_SERIALIZED_MARKER_LENGTH
-								);
-								var type = value.substring(
-									SERIALIZED_MARKER_LENGTH,
-									TYPE_SERIALIZED_MARKER_LENGTH
-								);
+								var serializedString = value.substring(TYPE_SERIALIZED_MARKER_LENGTH);
+								var type = value.substring(SERIALIZED_MARKER_LENGTH, TYPE_SERIALIZED_MARKER_LENGTH);
 
 								var blobType;
 								// Backwards-compatible blob type serialization strategy.
 								// DBs created with older versions of localForage will simply not have the blob type.
-								if (
-									type === TYPE_BLOB &&
-									BLOB_TYPE_PREFIX_REGEX.test(serializedString)
-								) {
+								if (type === TYPE_BLOB && BLOB_TYPE_PREFIX_REGEX.test(serializedString)) {
 									var matcher = serializedString.match(BLOB_TYPE_PREFIX_REGEX);
 									blobType = matcher[1];
-									serializedString = serializedString.substring(
-										matcher[0].length
-									);
+									serializedString = serializedString.substring(matcher[0].length);
 								}
 								var buffer = stringToBuffer(serializedString);
 
@@ -2031,15 +1823,7 @@ export default async function () {
 							 */
 
 							function createDbTable(t, dbInfo, callback, errorCallback) {
-								t.executeSql(
-									"CREATE TABLE IF NOT EXISTS " +
-										dbInfo.storeName +
-										" " +
-										"(id INTEGER PRIMARY KEY, key unique, value)",
-									[],
-									callback,
-									errorCallback
-								);
+								t.executeSql("CREATE TABLE IF NOT EXISTS " + dbInfo.storeName + " " + "(id INTEGER PRIMARY KEY, key unique, value)", [], callback, errorCallback);
 							}
 
 							// Open the WebSQL database (automatically creates one if one didn't
@@ -2052,10 +1836,7 @@ export default async function () {
 
 								if (options) {
 									for (var i in options) {
-										dbInfo[i] =
-											typeof options[i] !== "string"
-												? options[i].toString()
-												: options[i];
+										dbInfo[i] = typeof options[i] !== "string" ? options[i].toString() : options[i];
 									}
 								}
 
@@ -2063,12 +1844,7 @@ export default async function () {
 									// Open the database; the openDatabase API will automatically
 									// create it for us if it doesn't exist.
 									try {
-										dbInfo.db = openDatabase(
-											dbInfo.name,
-											String(dbInfo.version),
-											dbInfo.description,
-											dbInfo.size
-										);
+										dbInfo.db = openDatabase(dbInfo.name, String(dbInfo.version), dbInfo.description, dbInfo.size);
 									} catch (e) {
 										return reject(e);
 									}
@@ -2093,14 +1869,7 @@ export default async function () {
 								return dbInfoPromise;
 							}
 
-							function tryExecuteSql(
-								t,
-								dbInfo,
-								sqlStatement,
-								args,
-								callback,
-								errorCallback
-							) {
+							function tryExecuteSql(t, dbInfo, sqlStatement, args, callback, errorCallback) {
 								t.executeSql(
 									sqlStatement,
 									args,
@@ -2108,8 +1877,7 @@ export default async function () {
 									function (t, error) {
 										if (error.code === error.SYNTAX_ERR) {
 											t.executeSql(
-												"SELECT name FROM sqlite_master " +
-													"WHERE type='table' AND name = ?",
+												"SELECT name FROM sqlite_master " + "WHERE type='table' AND name = ?",
 												[dbInfo.storeName],
 												function (t, results) {
 													if (!results.rows.length) {
@@ -2119,12 +1887,7 @@ export default async function () {
 															t,
 															dbInfo,
 															function () {
-																t.executeSql(
-																	sqlStatement,
-																	args,
-																	callback,
-																	errorCallback
-																);
+																t.executeSql(sqlStatement, args, callback, errorCallback);
 															},
 															errorCallback
 														);
@@ -2148,22 +1911,17 @@ export default async function () {
 								key = normalizeKey(key);
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
 											var dbInfo = self._dbInfo;
 											dbInfo.db.transaction(function (t) {
 												tryExecuteSql(
 													t,
 													dbInfo,
-													"SELECT * FROM " +
-														dbInfo.storeName +
-														" WHERE key = ? LIMIT 1",
+													"SELECT * FROM " + dbInfo.storeName + " WHERE key = ? LIMIT 1",
 													[key],
 													function (t, results) {
-														var result = results.rows.length
-															? results.rows.item(0).value
-															: null;
+														var result = results.rows.length ? results.rows.item(0).value : null;
 
 														// Check to see if this is serialized content we need to
 														// unpack.
@@ -2190,8 +1948,7 @@ export default async function () {
 								var self = this;
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
 											var dbInfo = self._dbInfo;
 
@@ -2246,8 +2003,7 @@ export default async function () {
 								key = normalizeKey(key);
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
 											// The localStorage API doesn't return undefined values in an
 											// "expected" way, so undefined is always cast to null in all
@@ -2260,59 +2016,46 @@ export default async function () {
 											var originalValue = value;
 
 											var dbInfo = self._dbInfo;
-											dbInfo.serializer.serialize(
-												value,
-												function (value, error) {
-													if (error) {
-														reject(error);
-													} else {
-														dbInfo.db.transaction(
-															function (t) {
-																tryExecuteSql(
-																	t,
-																	dbInfo,
-																	"INSERT OR REPLACE INTO " +
-																		dbInfo.storeName +
-																		" " +
-																		"(key, value) VALUES (?, ?)",
-																	[key, value],
-																	function () {
-																		resolve(originalValue);
-																	},
-																	function (t, error) {
-																		reject(error);
-																	}
-																);
-															},
-															function (sqlError) {
-																// The transaction failed; check
-																// to see if it's a quota error.
-																if (sqlError.code === sqlError.QUOTA_ERR) {
-																	// We reject the callback outright for now, but
-																	// it's worth trying to re-run the transaction.
-																	// Even if the user accepts the prompt to use
-																	// more storage on Safari, this error will
-																	// be called.
-																	//
-																	// Try to re-run the transaction.
-																	if (retriesLeft > 0) {
-																		resolve(
-																			_setItem.apply(self, [
-																				key,
-																				originalValue,
-																				callback,
-																				retriesLeft - 1
-																			])
-																		);
-																		return;
-																	}
-																	reject(sqlError);
+											dbInfo.serializer.serialize(value, function (value, error) {
+												if (error) {
+													reject(error);
+												} else {
+													dbInfo.db.transaction(
+														function (t) {
+															tryExecuteSql(
+																t,
+																dbInfo,
+																"INSERT OR REPLACE INTO " + dbInfo.storeName + " " + "(key, value) VALUES (?, ?)",
+																[key, value],
+																function () {
+																	resolve(originalValue);
+																},
+																function (t, error) {
+																	reject(error);
 																}
+															);
+														},
+														function (sqlError) {
+															// The transaction failed; check
+															// to see if it's a quota error.
+															if (sqlError.code === sqlError.QUOTA_ERR) {
+																// We reject the callback outright for now, but
+																// it's worth trying to re-run the transaction.
+																// Even if the user accepts the prompt to use
+																// more storage on Safari, this error will
+																// be called.
+																//
+																// Try to re-run the transaction.
+																if (retriesLeft > 0) {
+																	resolve(_setItem.apply(self, [key, originalValue, callback, retriesLeft - 1]));
+																	return;
+																}
+																reject(sqlError);
 															}
-														);
-													}
+														}
+													);
 												}
-											);
+											});
 										})
 										["catch"](reject);
 								});
@@ -2331,8 +2074,7 @@ export default async function () {
 								key = normalizeKey(key);
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
 											var dbInfo = self._dbInfo;
 											dbInfo.db.transaction(function (t) {
@@ -2363,8 +2105,7 @@ export default async function () {
 								var self = this;
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
 											var dbInfo = self._dbInfo;
 											dbInfo.db.transaction(function (t) {
@@ -2395,8 +2136,7 @@ export default async function () {
 								var self = this;
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
 											var dbInfo = self._dbInfo;
 											dbInfo.db.transaction(function (t) {
@@ -2434,22 +2174,17 @@ export default async function () {
 								var self = this;
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
 											var dbInfo = self._dbInfo;
 											dbInfo.db.transaction(function (t) {
 												tryExecuteSql(
 													t,
 													dbInfo,
-													"SELECT key FROM " +
-														dbInfo.storeName +
-														" WHERE id = ? LIMIT 1",
+													"SELECT key FROM " + dbInfo.storeName + " WHERE id = ? LIMIT 1",
 													[n + 1],
 													function (t, results) {
-														var result = results.rows.length
-															? results.rows.item(0).key
-															: null;
+														var result = results.rows.length ? results.rows.item(0).key : null;
 														resolve(result);
 													},
 													function (t, error) {
@@ -2469,8 +2204,7 @@ export default async function () {
 								var self = this;
 
 								var promise = new Promise$1(function (resolve, reject) {
-									self
-										.ready()
+									self.ready()
 										.then(function () {
 											var dbInfo = self._dbInfo;
 											dbInfo.db.transaction(function (t) {
@@ -2508,8 +2242,7 @@ export default async function () {
 									db.transaction(
 										function (t) {
 											t.executeSql(
-												"SELECT name FROM sqlite_master " +
-													"WHERE type='table' AND name <> '__WebKitDatabaseInfoTable__'",
+												"SELECT name FROM sqlite_master " + "WHERE type='table' AND name <> '__WebKitDatabaseInfoTable__'",
 												[],
 												function (t, results) {
 													var storeNames = [];
@@ -2542,8 +2275,7 @@ export default async function () {
 								options = (typeof options !== "function" && options) || {};
 								if (!options.name) {
 									options.name = options.name || currentConfig.name;
-									options.storeName =
-										options.storeName || currentConfig.storeName;
+									options.storeName = options.storeName || currentConfig.storeName;
 								}
 
 								var self = this;
@@ -2589,14 +2321,8 @@ export default async function () {
 													}
 
 													var operations = [];
-													for (
-														var i = 0, len = operationInfo.storeNames.length;
-														i < len;
-														i++
-													) {
-														operations.push(
-															dropTable(operationInfo.storeNames[i])
-														);
+													for (var i = 0, len = operationInfo.storeNames.length; i < len; i++) {
+														operations.push(dropTable(operationInfo.storeNames[i]));
 													}
 
 													Promise$1.all(operations)
@@ -2780,11 +2506,7 @@ export default async function () {
 											value = dbInfo.serializer.deserialize(value);
 										}
 
-										value = iterator(
-											value,
-											key.substring(keyPrefixLength),
-											iterationNumber++
-										);
+										value = iterator(value, key.substring(keyPrefixLength), iterationNumber++);
 
 										if (value !== void 0) {
 											return value;
@@ -2898,10 +2620,7 @@ export default async function () {
 												} catch (e) {
 													// localStorage capacity exceeded.
 													// TODO: Make this a specific error/event.
-													if (
-														e.name === "QuotaExceededError" ||
-														e.name === "NS_ERROR_DOM_QUOTA_REACHED"
-													) {
+													if (e.name === "QuotaExceededError" || e.name === "NS_ERROR_DOM_QUOTA_REACHED") {
 														reject(e);
 													}
 													reject(e);
@@ -2922,8 +2641,7 @@ export default async function () {
 								if (!options.name) {
 									var currentConfig = this.config();
 									options.name = options.name || currentConfig.name;
-									options.storeName =
-										options.storeName || currentConfig.storeName;
+									options.storeName = options.storeName || currentConfig.storeName;
 								}
 
 								var self = this;
@@ -2968,13 +2686,7 @@ export default async function () {
 							};
 
 							var sameValue = function sameValue(x, y) {
-								return (
-									x === y ||
-									(typeof x === "number" &&
-										typeof y === "number" &&
-										isNaN(x) &&
-										isNaN(y))
-								);
+								return x === y || (typeof x === "number" && typeof y === "number" && isNaN(x) && isNaN(y));
 							};
 
 							var includes = function includes(array, searchElement) {
@@ -2993,9 +2705,7 @@ export default async function () {
 							var isArray =
 								Array.isArray ||
 								function (arg) {
-									return (
-										Object.prototype.toString.call(arg) === "[object Array]"
-									);
+									return Object.prototype.toString.call(arg) === "[object Array]";
 								};
 
 							// Drivers are stored here when `defineDriver()` is called.
@@ -3010,24 +2720,11 @@ export default async function () {
 								LOCALSTORAGE: localStorageWrapper
 							};
 
-							var DefaultDriverOrder = [
-								DefaultDrivers.INDEXEDDB._driver,
-								DefaultDrivers.WEBSQL._driver,
-								DefaultDrivers.LOCALSTORAGE._driver
-							];
+							var DefaultDriverOrder = [DefaultDrivers.INDEXEDDB._driver, DefaultDrivers.WEBSQL._driver, DefaultDrivers.LOCALSTORAGE._driver];
 
 							var OptionalDriverMethods = ["dropInstance"];
 
-							var LibraryMethods = [
-								"clear",
-								"getItem",
-								"iterate",
-								"key",
-								"keys",
-								"length",
-								"removeItem",
-								"setItem"
-							].concat(OptionalDriverMethods);
+							var LibraryMethods = ["clear", "getItem", "iterate", "key", "keys", "length", "removeItem", "setItem"].concat(OptionalDriverMethods);
 
 							var DefaultConfig = {
 								description: "",
@@ -3044,10 +2741,7 @@ export default async function () {
 								localForageInstance[libraryMethod] = function () {
 									var _args = arguments;
 									return localForageInstance.ready().then(function () {
-										return localForageInstance[libraryMethod].apply(
-											localForageInstance,
-											_args
-										);
+										return localForageInstance[libraryMethod].apply(localForageInstance, _args);
 									});
 								};
 							}
@@ -3111,18 +2805,11 @@ export default async function () {
 									// If the options argument is an object, we use it to set values.
 									// Otherwise, we return either a specified config value or all
 									// config values.
-									if (
-										(typeof options === "undefined"
-											? "undefined"
-											: _typeof(options)) === "object"
-									) {
+									if ((typeof options === "undefined" ? "undefined" : _typeof(options)) === "object") {
 										// If localforage is ready and fully initialized, we can't set
 										// any new configuration values. Instead, we return an error.
 										if (this._ready) {
-											return new Error(
-												"Can't call config() after localforage " +
-													"has been used."
-											);
+											return new Error("Can't call config() after localforage " + "has been used.");
 										}
 
 										for (var i in options) {
@@ -3154,18 +2841,11 @@ export default async function () {
 								// Used to define a custom driver, shared across all instances of
 								// localForage.
 
-								LocalForage.prototype.defineDriver = function defineDriver(
-									driverObject,
-									callback,
-									errorCallback
-								) {
+								LocalForage.prototype.defineDriver = function defineDriver(driverObject, callback, errorCallback) {
 									var promise = new Promise$1(function (resolve, reject) {
 										try {
 											var driverName = driverObject._driver;
-											var complianceError = new Error(
-												"Custom driver not compliant; see " +
-													"https://mozilla.github.io/localForage/#definedriver"
-											);
+											var complianceError = new Error("Custom driver not compliant; see " + "https://mozilla.github.io/localForage/#definedriver");
 
 											// A driver name should be defined and not overlap with the
 											// library-defined, default drivers.
@@ -3175,72 +2855,41 @@ export default async function () {
 											}
 
 											var driverMethods = LibraryMethods.concat("_initStorage");
-											for (
-												var i = 0, len = driverMethods.length;
-												i < len;
-												i++
-											) {
+											for (var i = 0, len = driverMethods.length; i < len; i++) {
 												var driverMethodName = driverMethods[i];
 
 												// when the property is there,
 												// it should be a method even when optional
-												var isRequired = !includes(
-													OptionalDriverMethods,
-													driverMethodName
-												);
-												if (
-													(isRequired || driverObject[driverMethodName]) &&
-													typeof driverObject[driverMethodName] !== "function"
-												) {
+												var isRequired = !includes(OptionalDriverMethods, driverMethodName);
+												if ((isRequired || driverObject[driverMethodName]) && typeof driverObject[driverMethodName] !== "function") {
 													reject(complianceError);
 													return;
 												}
 											}
 
-											var configureMissingMethods =
-												function configureMissingMethods() {
-													var methodNotImplementedFactory =
-														function methodNotImplementedFactory(methodName) {
-															return function () {
-																var error = new Error(
-																	"Method " +
-																		methodName +
-																		" is not implemented by the current driver"
-																);
-																var promise = Promise$1.reject(error);
-																executeCallback(
-																	promise,
-																	arguments[arguments.length - 1]
-																);
-																return promise;
-															};
-														};
-
-													for (
-														var _i = 0, _len = OptionalDriverMethods.length;
-														_i < _len;
-														_i++
-													) {
-														var optionalDriverMethod =
-															OptionalDriverMethods[_i];
-														if (!driverObject[optionalDriverMethod]) {
-															driverObject[optionalDriverMethod] =
-																methodNotImplementedFactory(
-																	optionalDriverMethod
-																);
-														}
-													}
+											var configureMissingMethods = function configureMissingMethods() {
+												var methodNotImplementedFactory = function methodNotImplementedFactory(methodName) {
+													return function () {
+														var error = new Error("Method " + methodName + " is not implemented by the current driver");
+														var promise = Promise$1.reject(error);
+														executeCallback(promise, arguments[arguments.length - 1]);
+														return promise;
+													};
 												};
+
+												for (var _i = 0, _len = OptionalDriverMethods.length; _i < _len; _i++) {
+													var optionalDriverMethod = OptionalDriverMethods[_i];
+													if (!driverObject[optionalDriverMethod]) {
+														driverObject[optionalDriverMethod] = methodNotImplementedFactory(optionalDriverMethod);
+													}
+												}
+											};
 
 											configureMissingMethods();
 
-											var setDriverSupport = function setDriverSupport(
-												support
-											) {
+											var setDriverSupport = function setDriverSupport(support) {
 												if (DefinedDrivers[driverName]) {
-													console.info(
-														"Redefining LocalForage driver: " + driverName
-													);
+													console.info("Redefining LocalForage driver: " + driverName);
 												}
 												DefinedDrivers[driverName] = driverObject;
 												DriverSupport[driverName] = support;
@@ -3251,13 +2900,8 @@ export default async function () {
 											};
 
 											if ("_support" in driverObject) {
-												if (
-													driverObject._support &&
-													typeof driverObject._support === "function"
-												) {
-													driverObject
-														._support()
-														.then(setDriverSupport, reject);
+												if (driverObject._support && typeof driverObject._support === "function") {
+													driverObject._support().then(setDriverSupport, reject);
 												} else {
 													setDriverSupport(!!driverObject._support);
 												}
@@ -3277,29 +2921,15 @@ export default async function () {
 									return this._driver || null;
 								};
 
-								LocalForage.prototype.getDriver = function getDriver(
-									driverName,
-									callback,
-									errorCallback
-								) {
-									var getDriverPromise = DefinedDrivers[driverName]
-										? Promise$1.resolve(DefinedDrivers[driverName])
-										: Promise$1.reject(new Error("Driver not found."));
+								LocalForage.prototype.getDriver = function getDriver(driverName, callback, errorCallback) {
+									var getDriverPromise = DefinedDrivers[driverName] ? Promise$1.resolve(DefinedDrivers[driverName]) : Promise$1.reject(new Error("Driver not found."));
 
-									executeTwoCallbacks(
-										getDriverPromise,
-										callback,
-										errorCallback
-									);
+									executeTwoCallbacks(getDriverPromise, callback, errorCallback);
 									return getDriverPromise;
 								};
 
-								LocalForage.prototype.getSerializer = function getSerializer(
-									callback
-								) {
-									var serializerPromise = Promise$1.resolve(
-										localforageSerializer
-									);
+								LocalForage.prototype.getSerializer = function getSerializer(callback) {
+									var serializerPromise = Promise$1.resolve(localforageSerializer);
 									executeTwoCallbacks(serializerPromise, callback);
 									return serializerPromise;
 								};
@@ -3319,11 +2949,7 @@ export default async function () {
 									return promise;
 								};
 
-								LocalForage.prototype.setDriver = function setDriver(
-									drivers,
-									callback,
-									errorCallback
-								) {
+								LocalForage.prototype.setDriver = function setDriver(drivers, callback, errorCallback) {
 									var self = this;
 
 									if (!isArray(drivers)) {
@@ -3356,16 +2982,11 @@ export default async function () {
 													self._dbInfo = null;
 													self._ready = null;
 
-													return self
-														.getDriver(driverName)
-														.then(extendSelfWithDriver)
-														["catch"](driverPromiseLoop);
+													return self.getDriver(driverName).then(extendSelfWithDriver)["catch"](driverPromiseLoop);
 												}
 
 												setDriverToConfig();
-												var error = new Error(
-													"No available storage method found."
-												);
+												var error = new Error("No available storage method found.");
 												self._driverSet = Promise$1.reject(error);
 												return self._driverSet;
 											}
@@ -3399,9 +3020,7 @@ export default async function () {
 										})
 										["catch"](function () {
 											setDriverToConfig();
-											var error = new Error(
-												"No available storage method found."
-											);
+											var error = new Error("No available storage method found.");
 											self._driverSet = Promise$1.reject(error);
 											return self._driverSet;
 										});
@@ -3414,38 +3033,32 @@ export default async function () {
 									return !!DriverSupport[driverName];
 								};
 
-								LocalForage.prototype._extend = function _extend(
-									libraryMethodsAndProperties
-								) {
+								LocalForage.prototype._extend = function _extend(libraryMethodsAndProperties) {
 									extend(this, libraryMethodsAndProperties);
 								};
 
-								LocalForage.prototype._getSupportedDrivers =
-									function _getSupportedDrivers(drivers) {
-										var supportedDrivers = [];
-										for (var i = 0, len = drivers.length; i < len; i++) {
-											var driverName = drivers[i];
-											if (this.supports(driverName)) {
-												supportedDrivers.push(driverName);
-											}
+								LocalForage.prototype._getSupportedDrivers = function _getSupportedDrivers(drivers) {
+									var supportedDrivers = [];
+									for (var i = 0, len = drivers.length; i < len; i++) {
+										var driverName = drivers[i];
+										if (this.supports(driverName)) {
+											supportedDrivers.push(driverName);
 										}
-										return supportedDrivers;
-									};
+									}
+									return supportedDrivers;
+								};
 
-								LocalForage.prototype._wrapLibraryMethodsWithReady =
-									function _wrapLibraryMethodsWithReady() {
-										// Add a stub for each driver API method that delays the call to the
-										// corresponding driver method until localForage is ready. These stubs
-										// will be replaced by the driver methods as soon as the driver is
-										// loaded, so there is no performance impact.
-										for (var i = 0, len = LibraryMethods.length; i < len; i++) {
-											callWhenReady(this, LibraryMethods[i]);
-										}
-									};
+								LocalForage.prototype._wrapLibraryMethodsWithReady = function _wrapLibraryMethodsWithReady() {
+									// Add a stub for each driver API method that delays the call to the
+									// corresponding driver method until localForage is ready. These stubs
+									// will be replaced by the driver methods as soon as the driver is
+									// loaded, so there is no performance impact.
+									for (var i = 0, len = LibraryMethods.length; i < len; i++) {
+										callWhenReady(this, LibraryMethods[i]);
+									}
+								};
 
-								LocalForage.prototype.createInstance = function createInstance(
-									options
-								) {
+								LocalForage.prototype.createInstance = function createInstance(options) {
 									return new LocalForage(options);
 								};
 
@@ -3544,8 +3157,7 @@ export default async function () {
 	}
 
 	function support() {
-		const indexedDB =
-			window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || null;
+		const indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || null;
 		if (indexedDB) {
 			return true;
 		} else {

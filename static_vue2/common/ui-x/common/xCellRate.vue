@@ -14,8 +14,8 @@ export default async function () {
 		},
 		computed: {
 			rate() {
-				if (_.isFunction(this.configs?.col?.xCellRate?.rate)) {
-					return this.configs?.col?.xCellRate?.rate({
+				if (_.isFunction(this.configs?.col?.componentOptions?.rate)) {
+					return this.configs?.col?.componentOptions?.rate({
 						xCellRate: this,
 						configs: this.configs,
 						col: this.configs.col,
@@ -67,8 +67,7 @@ export default async function () {
 		margin: auto;
 		overflow: hidden;
 		text-align: center;
-		box-shadow: var(--ui-shadow-length-base, 0 2px 6px 0)
-			var(--ui-light-shadow, rgba(37, 43, 58, 0.12));
+		box-shadow: var(--ui-shadow-length-base, 0 2px 6px 0) var(--ui-light-shadow, rgba(37, 43, 58, 0.12));
 	}
 }
 </style>

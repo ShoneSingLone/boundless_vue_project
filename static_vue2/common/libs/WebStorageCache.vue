@@ -8,11 +8,7 @@ export default async function () {
     (c) 2013-2016 WQTeam, MIT license
 */
 		!(function (a, b) {
-			"function" == typeof define && define.amd
-				? define(b)
-				: "object" == typeof exports
-				? (module.exports = b())
-				: (a.WebStorageCache = b());
+			"function" == typeof define && define.amd ? define(b) : "object" == typeof exports ? (module.exports = b()) : (a.WebStorageCache = b());
 		})(window, function () {
 			"use strict";
 			function a(a, b) {
@@ -37,22 +33,11 @@ export default async function () {
 				return "string" === b && window[a] instanceof Storage ? window[a] : a;
 			}
 			function d(a) {
-				return (
-					"[object Date]" === Object.prototype.toString.call(a) &&
-					!isNaN(a.getTime())
-				);
+				return "[object Date]" === Object.prototype.toString.call(a) && !isNaN(a.getTime());
 			}
 			function e(a, b) {
-				if (
-					((b = b || new Date()),
-					"number" == typeof a
-						? (a = a === 1 / 0 ? l : new Date(b.getTime() + 1e3 * a))
-						: "string" == typeof a && (a = new Date(a)),
-					a && !d(a))
-				)
-					throw new Error(
-						"`expires` parameter cannot be converted to a valid Date instance"
-					);
+				if (((b = b || new Date()), "number" == typeof a ? (a = a === 1 / 0 ? l : new Date(b.getTime() + 1e3 * a)) : "string" == typeof a && (a = new Date(a)), a && !d(a)))
+					throw new Error("`expires` parameter cannot be converted to a valid Date instance");
 				return a;
 			}
 			function f(a) {
@@ -75,32 +60,20 @@ export default async function () {
 				(this.e = c.getTime()), (this.v = a);
 			}
 			function h(a) {
-				return "object" != typeof a
-					? !1
-					: a && "c" in a && "e" in a && "v" in a
-					? !0
-					: !1;
+				return "object" != typeof a ? !1 : a && "c" in a && "e" in a && "v" in a ? !0 : !1;
 			}
 			function i(a) {
 				var b = new Date().getTime();
 				return b < a.e;
 			}
 			function j(a) {
-				return (
-					"string" != typeof a &&
-						(console.warn(a + " used as a key, but it is not a string."),
-						(a = String(a))),
-					a
-				);
+				return "string" != typeof a && (console.warn(a + " used as a key, but it is not a string."), (a = String(a))), a;
 			}
 			function k(e) {
 				var f = { storage: "localStorage", exp: 1 / 0 },
 					g = a(f, e),
 					h = g.exp;
-				if (h && "number" != typeof h && !d(h))
-					throw new Error(
-						"Constructor `exp` parameter cannot be converted to a valid Date instance"
-					);
+				if (h && "number" != typeof h && !d(h)) throw new Error("Constructor `exp` parameter cannot be converted to a valid Date instance");
 				m = h;
 				var i = c(g.storage),
 					j = b(i);
@@ -112,11 +85,7 @@ export default async function () {
 						  (this.quotaExceedHandler = function (a, b, c) {
 								if ((console.warn("Quota exceeded!"), c && c.force === !0)) {
 									var d = this.deleteAllExpires();
-									console.warn(
-										"delete all expires CacheItem : [" +
-											d +
-											"] and try execute `set` method again!"
-									);
+									console.warn("delete all expires CacheItem : [" + d + "] and try execute `set` method again!");
 									try {
 										(c.force = !1), this.set(a, b, c);
 									} catch (e) {
@@ -148,13 +117,7 @@ export default async function () {
 				},
 				p = {
 					set: function (b, c, d) {
-						if (
-							((b = j(b)),
-							"number" == typeof d && (d = { exp: d }),
-							(d = a({ force: !0 }, d)),
-							void 0 === c)
-						)
-							return this["delete"](b);
+						if (((b = j(b)), "number" == typeof d && (d = { exp: d }), (d = a({ force: !0 }, d)), void 0 === c)) return this["delete"](b);
 						var e = n.serialize(c),
 							h = new g(e, d.exp);
 						try {
@@ -185,11 +148,7 @@ export default async function () {
 						return (a = j(a)), this.storage.removeItem(a), a;
 					},
 					deleteAllExpires: function () {
-						for (
-							var a = this.storage.length, b = [], c = this, d = 0;
-							a > d;
-							d++
-						) {
+						for (var a = this.storage.length, b = [], c = this, d = 0; a > d; d++) {
 							var e = this.storage.key(d),
 								f = null;
 							try {
@@ -211,9 +170,7 @@ export default async function () {
 						this.storage.clear();
 					},
 					add: function (b, c, d) {
-						(b = j(b)),
-							"number" == typeof d && (d = { exp: d }),
-							(d = a({ force: !0 }, d));
+						(b = j(b)), "number" == typeof d && (d = { exp: d }), (d = a({ force: !0 }, d));
 						try {
 							var e = n.deserialize(this.storage.getItem(b));
 							if (!h(e) || !i(e)) return this.set(b, c, d), !0;

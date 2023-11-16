@@ -7,16 +7,6 @@
 
 <script>
 export default async function () {
-	/**
-	 * xCellText: {
-	 *     setLabel({ row, label }) {
-	 *         if (row?.canMigratevol) {
-	 *             label = row.canMigratevol.result ? i18n("是") : i18n("否");
-	 *         }
-	 *         return label;
-	 *     }
-	 * }
-	 */
 	return {
 		data() {
 			return {};
@@ -27,16 +17,12 @@ export default async function () {
 			},
 			cpt_label() {
 				let label = "--";
-				const { cpt_label } =
-					this?.$options?.propsData?.configs?.col?.componentOptions || {};
+				const { cpt_label } = this?.$options?.propsData?.configs?.col?.componentOptions || {};
 				if (_.isString(cpt_label)) {
 					return cpt_label;
 				}
 				if (_.isFunction(cpt_label)) {
-					label = cpt_label.call(
-						this?.$options?.propsData?.configs?.col?.componentOptions,
-						{ row: this.row, label }
-					);
+					label = cpt_label.call(this?.$options?.propsData?.configs?.col?.componentOptions, { row: this.row, label });
 				}
 				return label;
 			},

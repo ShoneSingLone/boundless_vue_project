@@ -1,18 +1,10 @@
 <template>
 	<div class="ebook-loading">
 		<div class="ebook-loading-wrapper">
-			<div
-				class="ebook-loading-item"
-				v-for="(item, index) in data"
-				:key="index">
-				<div
-					class="ebook-loading-line-wrapper"
-					v-for="(subItem, subIndex) in item"
-					:key="subIndex">
+			<div class="ebook-loading-item" v-for="(item, index) in data" :key="index">
+				<div class="ebook-loading-line-wrapper" v-for="(subItem, subIndex) in item" :key="subIndex">
 					<transition name="switch-width">
-						<div
-							class="ebook-loading-line"
-							v-show="subIndex === currentIndex"></div>
+						<div class="ebook-loading-line" v-show="subIndex === currentIndex"></div>
 					</transition>
 				</div>
 			</div>

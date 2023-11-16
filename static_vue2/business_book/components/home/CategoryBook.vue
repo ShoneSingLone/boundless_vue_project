@@ -1,15 +1,8 @@
 <template>
 	<div class="category-book">
-		<title-view
-			:label="categoryText(data.category)"
-			:btn="$t('home.seeAll')"
-			@onClick="showBookCategory"></title-view>
+		<title-view :label="categoryText(data.category)" :btn="$t('home.seeAll')" @onClick="showBookCategory"></title-view>
 		<div class="category-book-list">
-			<div
-				class="category-book-item"
-				v-for="(item, index) in data.list"
-				:key="index"
-				@click="showBookDetail(item)">
+			<div class="category-book-item" v-for="(item, index) in data.list" :key="index" @click="showBookDetail(item)">
 				<div class="img-wrapper">
 					<img class="img" :src="item.cover" />
 				</div>
@@ -25,8 +18,7 @@
 <script>
 export default async function () {
 	const TitleView = await _.$importVue("./Title.vue");
-	const { categoryText, getCategoryName } =
-		await _.$importVue("../../utils/store");
+	const { categoryText, getCategoryName } = await _.$importVue("../../utils/store");
 	const { storeHomeMixin } = await _.$importVue("@/utils/mixin.vue");
 
 	return {

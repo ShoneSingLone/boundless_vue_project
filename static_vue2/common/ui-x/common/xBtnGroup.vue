@@ -27,10 +27,7 @@ export default async function () {
 					"text-align": "center"
 				};
 				if (_.isFunction(configs.style)) {
-					return _.merge(
-						styleBase,
-						configs.style({ row: this.row, configs: this.configs })
-					);
+					return _.merge(styleBase, configs.style({ row: this.row, configs: this.configs }));
 				}
 				return _.merge(styleBase, configs.style);
 			}

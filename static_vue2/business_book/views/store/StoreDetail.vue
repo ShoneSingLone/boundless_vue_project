@@ -1,17 +1,8 @@
 <template>
 	<div class="book-detail">
 		<detail-title @back="back" :showShelf="true" ref="title"></detail-title>
-		<scroll
-			class="content-wrapper"
-			:top="42"
-			:bottom="52"
-			@onScroll="onScroll"
-			ref="scroll">
-			<book-info
-				:cover="cover"
-				:title="title"
-				:author="author"
-				:desc="desc"></book-info>
+		<scroll class="content-wrapper" :top="42" :bottom="52" @onScroll="onScroll" ref="scroll">
+			<book-info :cover="cover" :title="title" :author="author" :desc="desc"></book-info>
 			<div class="book-detail-content-wrapper">
 				<div class="book-detail-content-title">
 					{{ $t("detail.copyright") }}
@@ -48,16 +39,8 @@
 						<span class="loading-text">{{ $t("detail.loading") }}</span>
 					</div>
 					<div class="book-detail-content-item-wrapper">
-						<div
-							class="book-detail-content-item"
-							v-for="(item, index) in flatNavigation"
-							:key="index"
-							@click="read(item)">
-							<div
-								class="book-detail-content-navigation-text"
-								:class="{ 'is-sub': item.deep > 1 }"
-								:style="itemStyle(item)"
-								v-if="item.label">
+						<div class="book-detail-content-item" v-for="(item, index) in flatNavigation" :key="index" @click="read(item)">
+							<div class="book-detail-content-navigation-text" :class="{ 'is-sub': item.deep > 1 }" :style="itemStyle(item)" v-if="item.label">
 								{{ item.label }}
 							</div>
 						</div>
@@ -83,11 +66,7 @@
 			</div>
 			<div class="bottom-btn" @click.stop.prevent="addOrRemoveShelf()">
 				<span class="icon-check" v-if="inBookShelf"></span>
-				{{
-					inBookShelf
-						? $t("detail.isAddedToShelf")
-						: $t("detail.addOrRemoveShelf")
-				}}
+				{{ inBookShelf ? $t("detail.isAddedToShelf") : $t("detail.addOrRemoveShelf") }}
 			</div>
 		</div>
 		<toast :text="toastText" ref="toast"></toast>

@@ -1,9 +1,7 @@
 <script>
 export default async function () {
 	const RULES = await _.$importVue("/common/utils/rules.vue");
-	const { EVENT_ARRAY } = await _.$importVue(
-		"/common/ui-x/common/ItemMixins.vue"
-	);
+	const { EVENT_ARRAY } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 
 	/* configs {
   label:string
@@ -28,46 +26,64 @@ export default async function () {
 		},
 		setup(props) {
 			const vm = this;
-			if (!this.configs) {
+			/**
+			 * 配合modifyItemsAttrs的私有变量
+			 */
+			const privateState = reactive({
+				isDisabled: ""
+			});
+			if (!vm.configs) {
 				alert("xItem的configs为必填项");
-				this.configs = {
+				vm.configs = {
 					label: "xItem的configs为必填项",
 					value: "当前xItem缺失必要configs",
 					rules: [RULES.required()]
 				};
 			}
+			vm.configs = reactive(vm.configs);
 			// this.configs = reactive(this.configs);
 			Vue.GH_FORM_ITEM_MAP = Vue.GH_FORM_ITEM_MAP || {};
 
-			let cpt_options = [];
-
 			/* options\disabled\readOnly\做统一处理，其他的使用透传 */
 
-			if (_.isFunction(props.configs?.cpt_options)) {
-				const cpt_options = computed(() => {
-					const options = props.configs.cpt_options.call(props.configs, { vm });
-					return options;
-				});
-				watch(cpt_options, options => {
-					props.configs.options = options;
-					vm.setProps();
-				});
-			}
+			/* options()计算后的数组，有find等数组的方法 */
+			vm._calOptionsArray = [];
+			let cpt_options = computed(() => {
+				const optionsProperty = _.find(props.configs, (val, prop) => prop === "options");
+				if (_.isFunction(optionsProperty) || props.configs?.options?._is_function) {
+					props.configs.options._is_function = true;
+					props.configs.options = new Proxy(props.configs.options, {
+						get(obj, prop) {
+							try {
+								return vm._calOptionsArray[prop];
+							} catch (error) {
+								return obj[prop];
+							}
+						}
+					});
+					vm._calOptionsArray = props.configs.options({
+						xItem: this
+					});
+					return vm._calOptionsArray;
+				}
+				return optionsProperty || vm._calOptionsArray;
+			});
 
 			let cpt_disabled = computed(() => {
-				if (_.isFunction(vm.configs?.disabled)) {
-					return vm.configs.disabled.call(vm.configs, { xItem: vm });
+				if (privateState.isDisabled === "disabled") {
+					return true;
 				}
-				return vm.configs.disabled;
+				if (_.isFunction(vm.configs?.disabled)) {
+					return vm.configs.disabled.call(vm.configs, { xItem: vm, val: vm.p_value });
+				} else {
+					return !!vm.configs?.disabled;
+				}
 			});
 
 			onMounted(() => {
 				Vue.GH_FORM_ITEM_MAP[this.cpt_id] = this;
 				if (this.configs?.once) {
 					this.configs.once.call(this.configs, { xItem: this });
-				}
-				if (_.isArray(this.configs.options)) {
-					this.$watch("configs.options", this.setProps);
 				}
 				if (this.configs.style) {
 					this.$watch("configs.style", this.setStyle);
@@ -98,8 +114,9 @@ export default async function () {
 			});
 
 			return {
-				cpt_options,
-				cpt_disabled
+				privateState,
+				cpt_disabled,
+				cpt_options
 			};
 		},
 		computed: {
@@ -125,10 +142,16 @@ export default async function () {
 			},
 			cpt_bindProps() {
 				return {
-					style: this.p_style,
 					class: this.cpt_class,
-					props: this.p_props,
-					attrs: this.p_attrs
+					style: this.p_style,
+					props: {
+						...this.p_props,
+						options: this.cpt_options
+					},
+					attrs: {
+						...this.p_props,
+						options: this.cpt_options
+					}
 				};
 			},
 			cpt_class() {
@@ -206,15 +229,6 @@ export default async function () {
 				p_listeners: {}
 			};
 		},
-		watch: {
-			/* attrs */
-			cpt_disabled: {
-				immediate: true,
-				handler() {
-					this.setAttrs();
-				}
-			}
-		},
 		methods: {
 			triggerOnEmitValue(val) {
 				try {
@@ -229,7 +243,11 @@ export default async function () {
 				}
 			},
 			emitValueChange(val) {
-				if (this.p_value === val && this.emitValueChange.val === val) {
+				// set=>emit=>prop=>render
+				const isRended = this.p_value === val;
+				// prop=>render=>emit
+				const isEmited = this.emitValueChange.val === val;
+				if (isRended && isEmited) {
 					return;
 				} else {
 					this.emitValueChange.val = val;
@@ -254,7 +272,7 @@ export default async function () {
 			async validate() {
 				if (this.configs.rules && this.configs.rules.length > 0) {
 					for await (const rule of this.configs.rules) {
-						const msg = await rule.validator({
+						const msg = await rule.validator.call(this.configs, {
 							val: this.p_value,
 							xItem: this
 						});
@@ -280,27 +298,23 @@ export default async function () {
 			},
 			setProps() {
 				const vm = this;
-				this.p_props = {
+				const _props = {
 					...(vm.configs.props || {}),
 					...(vm.p_attrs || {}),
 					configs: vm.configs
 				};
-				if (vm.configs.options) {
-					this.p_props.options = vm.configs.options;
-				}
+				this.p_props = _props;
 			},
 			setAttrs() {
 				const vm = this;
-				const clearable =
-					vm.configs.clearable === undefined ? true : vm.configs.clearable;
-				const disabled = vm.cpt_disabled || false;
+				const clearable = vm.configs.clearable === undefined ? false : vm.configs.clearable;
 				this.p_attrs = {
 					...(vm.configs.attrs || {}),
 					clearable,
-					disabled,
 					multiple: !!vm.configs?.multiple,
 					placeholder: vm.configs.placeholder || ""
 				};
+				this.setProps();
 			},
 			setListeners() {
 				/* TODO:透传机制，onEmitEvent,AOP */
@@ -330,6 +344,31 @@ export default async function () {
 		},
 		render() {
 			const vm = this;
+
+			const xItem_controllerProps = {
+				...vm.configs,
+				readonly: vm.configs.readonly,
+				disabled: vm.cpt_disabled,
+				attrs: {
+					...vm.cpt_bindProps.attrs,
+					disabled: vm.cpt_disabled
+				},
+				props: {
+					...vm.cpt_bindProps.props,
+					disabled: vm.cpt_disabled
+				},
+				on: vm.p_listeners,
+				configs: {
+					...vm.configs,
+					disabled: vm.cpt_disabled,
+					options: vm.cpt_options
+				},
+				value: vm.p_value,
+				onChange: val => {
+					vm.p_value = val;
+				}
+			};
+
 			return h(
 				"div",
 				{
@@ -364,15 +403,7 @@ export default async function () {
 							staticClass: "xItem_controller"
 						},
 						[
-							h(vm.itemType, {
-								...vm.cpt_disabled,
-								...vm.cpt_bindProps,
-								on: vm.p_listeners,
-								configs: vm.configs,
-								value: vm.p_value,
-								onChange: val => (vm.p_value = val)
-							}),
-
+							h(vm.itemType, xItem_controllerProps),
 							h(
 								"span",
 								{

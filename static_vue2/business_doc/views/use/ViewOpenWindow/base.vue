@@ -1,10 +1,7 @@
 <template>
 	<div>
 		<fieldset>
-			<legend>
-				可以直接使用svg的名字作为icon=============commonn/assets/SVG
-				文件夹下是UI默认的资源地址，
-			</legend>
+			<legend>可以直接使用svg的名字作为icon=============commonn/assets/SVG 文件夹下是UI默认的资源地址，</legend>
 			<xIcon icon="icon_no_data" class="empty" />
 			<xIcon icon="arrow_triangle-left" class="empty" />
 			<xIcon icon="x-loading" class="empty" />

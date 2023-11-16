@@ -19,13 +19,9 @@
 		}
 		function createStore(dbName, storeName) {
 			const request = indexedDB.open(dbName);
-			request.onupgradeneeded = () =>
-				request.result.createObjectStore(storeName);
+			request.onupgradeneeded = () => request.result.createObjectStore(storeName);
 			const dbp = promisifyRequest(request);
-			return (txMode, callback) =>
-				dbp.then(db =>
-					callback(db.transaction(storeName, txMode).objectStore(storeName))
-				);
+			return (txMode, callback) => dbp.then(db => callback(db.transaction(storeName, txMode).objectStore(storeName)));
 		}
 		let defaultGetStoreFunc;
 		function defaultGetStore() {
@@ -69,9 +65,7 @@
 					return promisifyRequest(store.getAllKeys());
 				}
 				const items = [];
-				return eachCursor(store, cursor => items.push(cursor.key)).then(
-					() => items
-				);
+				return eachCursor(store, cursor => items.push(cursor.key)).then(() => items);
 			});
 		}
 		return {
@@ -84,15 +78,13 @@
 	})();
 
 	(function loadBaseInfo() {
-		const { srcRoot, appName, appEntryName, appVersion } =
-			$$id("src-root").dataset;
+		const { srcRoot, appName, appEntryName, appVersion } = $$id("src-root").dataset;
 
 		window.SRC_ROOT_PATH = srcRoot || "";
 		window.APP_NAME = appName || "";
 		window.APP_ENTRY_NAME = appEntryName || "entry";
 		window.APP_VERSION = appVersion || "";
-		window.I18N_LANGUAGE =
-			localStorage["X-Language"] || $$tags("html")[0].lang || "zh-CN";
+		window.I18N_LANGUAGE = localStorage["X-Language"] || $$tags("html")[0].lang || "zh-CN";
 	})();
 
 	function ajax(url) {
@@ -111,10 +103,7 @@
 			function updateProgress(oEvent) {
 				if (oEvent.lengthComputable && oEvent.total) {
 					var percentComplete = (oEvent.loaded / oEvent.total) * 100;
-					console.log(
-						"🚀 ~ updateProgress ~ percentComplete:",
-						percentComplete
-					);
+					console.log("🚀 ~ updateProgress ~ percentComplete:", percentComplete);
 				} else {
 					// 总大小未知时不能计算进程信息
 				}
@@ -228,10 +217,7 @@
 
 		if (/^@/.test(url)) {
 			/* 业务代码 */
-			resolvedURL = String(url).replace(
-				/^@/,
-				`${SRC_ROOT_PATH}/business_${APP_NAME}`
-			);
+			resolvedURL = String(url).replace(/^@/, `${SRC_ROOT_PATH}/business_${APP_NAME}`);
 		}
 		if (/^\/common\//.test(url)) {
 			/* common 通用 */
@@ -297,10 +283,7 @@
 
 	function $resolveCssAssetsPath(styleSourceCode) {
 		/* 替换路径 */
-		styleSourceCode = styleSourceCode.replace(
-			/\/common\/(assets|libs|ui-element|ui-tiny)/g,
-			path => $resolvePath(path)
-		);
+		styleSourceCode = styleSourceCode.replace(/\/common\/(assets|libs|ui-element|ui-tiny)/g, path => $resolvePath(path));
 		/* 当前业务app 的相对地址*/
 		styleSourceCode = styleSourceCode.replace(/\/@\//g, $resolvePath("@/"));
 		return styleSourceCode;
@@ -381,12 +364,7 @@
 			}
 		})();
 
-		await Promise.all([
-			$appendScript("/common/libs/jquery-3.7.0.min.js"),
-			$appendScript("/common/libs/lodash.js"),
-			$appendScript("/common/libs/dayjs.js"),
-			$appendScript("/common/libs/vue.js")
-		]);
+		await Promise.all([$appendScript("/common/libs/jquery-3.7.0.min.js"), $appendScript("/common/libs/lodash.js"), $appendScript("/common/libs/dayjs.js"), $appendScript("/common/libs/vue.js")]);
 
 		(function () {
 			if (window._CURENT_IS_MOBILE) {
@@ -411,11 +389,7 @@
 		_.$loadText = _$loadText;
 
 		/* dep jQuery */
-		await Promise.all([
-			$appendStyle("/common/libs/layer/theme/default/layer.css"),
-			$appendScript("/common/libs/layer/layer.js"),
-			$appendScript("/common/libs/common.js")
-		]);
+		await Promise.all([$appendStyle("/common/libs/layer/theme/default/layer.css"), $appendScript("/common/libs/layer/layer.js"), $appendScript("/common/libs/common.js")]);
 		/*  */
 		if (window.ONLY_USE_IN_DEV_MODEL) {
 			window.ONLY_USE_IN_DEV_MODEL();

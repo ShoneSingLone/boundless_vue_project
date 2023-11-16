@@ -1,13 +1,7 @@
 <template>
 	<div class="store-shelf">
 		<shelf-title :title="shelfCategory.title"></shelf-title>
-		<scroll
-			:top="0"
-			:bottom="scrollBottom"
-			class="store-shelf-scroll-wrapper"
-			@onScroll="onScroll"
-			ref="scroll"
-			v-if="isShowList">
+		<scroll :top="0" :bottom="scrollBottom" class="store-shelf-scroll-wrapper" @onScroll="onScroll" ref="scroll" v-if="isShowList">
 			<shelf-list :top="42" :data="shelfCategory.itemList"></shelf-list>
 		</scroll>
 		<div class="store-shelf-empty-view" v-else>
@@ -19,13 +13,9 @@
 
 <script>
 export default async function () {
-	const ShelfTitle = await _.$importVue(
-		"../../components/shelf/ShelfTitle.vue"
-	);
+	const ShelfTitle = await _.$importVue("../../components/shelf/ShelfTitle.vue");
 	const ShelfList = await _.$importVue("../../components/shelf/ShelfList.vue");
-	const ShelfFooter = await _.$importVue(
-		"../../components/shelf/ShelfFooter.vue"
-	);
+	const ShelfFooter = await _.$importVue("../../components/shelf/ShelfFooter.vue");
 	const Scroll = await _.$importVue("../../components/common/Scroll.vue");
 	const { storeShelfMixin } = await _.$importVue("@/utils/mixin.vue");
 
@@ -44,9 +34,7 @@ export default async function () {
 		},
 		computed: {
 			isShowList() {
-				return (
-					this.shelfCategory.itemList && this.shelfCategory.itemList.length > 0
-				);
+				return this.shelfCategory.itemList && this.shelfCategory.itemList.length > 0;
 			}
 		},
 		watch: {

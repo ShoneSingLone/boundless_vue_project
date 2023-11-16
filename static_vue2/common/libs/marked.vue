@@ -8,8 +8,7 @@ export default async function () {
 			var block = {
 				newline: /^\n+/,
 				code: /^( {4}[^\n]+\n*)+/,
-				fences:
-					/^ {0,3}(`{3,}|~{3,})([^`~\n]*)\n(?:|([\s\S]*?)\n)(?: {0,3}\1[~`]* *(?:\n+|$)|$)/,
+				fences: /^ {0,3}(`{3,}|~{3,})([^`~\n]*)\n(?:|([\s\S]*?)\n)(?: {0,3}\1[~`]* *(?:\n+|$)|$)/,
 				hr: /^ {0,3}((?:- *){3,}|(?:_ *){3,}|(?:\* *){3,})(?:\n+|$)/,
 				heading: /^ {0,3}(#{1,6}) +([^\n]*?)(?: +#+)? *(?:\n+|$)/,
 				blockquote: /^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/,
@@ -31,31 +30,21 @@ export default async function () {
 				lheading: /^([^\n]+)\n {0,3}(=+|-+) *(?:\n+|$)/,
 				// regex template, placeholders will be replaced according to different paragraph
 				// interruption rules of commonmark and the original markdown spec:
-				_paragraph:
-					/^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html)[^\n]+)*)/,
+				_paragraph: /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html)[^\n]+)*)/,
 				text: /^[^\n]+/
 			};
 
 			block._label = /(?!\s*\])(?:\\[\[\]]|[^\[\]])+/;
-			block._title =
-				/(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/;
-			block.def = edit(block.def)
-				.replace("label", block._label)
-				.replace("title", block._title)
-				.getRegex();
+			block._title = /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/;
+			block.def = edit(block.def).replace("label", block._label).replace("title", block._title).getRegex();
 
 			block.bullet = /(?:[*+-]|\d{1,9}\.)/;
 			block.item = /^( *)(bull) ?[^\n]*(?:\n(?!\1bull ?)[^\n]*)*/;
-			block.item = edit(block.item, "gm")
-				.replace(/bull/g, block.bullet)
-				.getRegex();
+			block.item = edit(block.item, "gm").replace(/bull/g, block.bullet).getRegex();
 
 			block.list = edit(block.list)
 				.replace(/bull/g, block.bullet)
-				.replace(
-					"hr",
-					"\\n+(?=\\1?(?:(?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$))"
-				)
+				.replace("hr", "\\n+(?=\\1?(?:(?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$))")
 				.replace("def", "\\n+(?=" + block.def.source + ")")
 				.getRegex();
 
@@ -70,10 +59,7 @@ export default async function () {
 			block.html = edit(block.html, "i")
 				.replace("comment", block._comment)
 				.replace("tag", block._tag)
-				.replace(
-					"attribute",
-					/ +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/
-				)
+				.replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/)
 				.getRegex();
 
 			block.paragraph = edit(block._paragraph)
@@ -87,9 +73,7 @@ export default async function () {
 				.replace("tag", block._tag) // pars can be interrupted by type (6) html blocks
 				.getRegex();
 
-			block.blockquote = edit(block.blockquote)
-				.replace("paragraph", block.paragraph)
-				.getRegex();
+			block.blockquote = edit(block.blockquote).replace("paragraph", block.paragraph).getRegex();
 
 			/**
 			 * Normal Block Grammar
@@ -102,10 +86,8 @@ export default async function () {
 			 */
 
 			block.gfm = merge({}, block.normal, {
-				nptable:
-					/^ *([^|\n ].*\|.*)\n *([-:]+ *\|[-| :]*)(?:\n((?:.*[^>\n ].*(?:\n|$))*)\n*|$)/,
-				table:
-					/^ *\|(.+)\n *\|?( *[-:]+[-| :]*)(?:\n((?: *[^>\n ].*(?:\n|$))*)\n*|$)/
+				nptable: /^ *([^|\n ].*\|.*)\n *([-:]+ *\|[-| :]*)(?:\n((?:.*[^>\n ].*(?:\n|$))*)\n*|$)/,
+				table: /^ *\|(.+)\n *\|?( *[-:]+[-| :]*)(?:\n((?: *[^>\n ].*(?:\n|$))*)\n*|$)/
 			});
 
 			/**
@@ -189,22 +171,7 @@ export default async function () {
 
 			Lexer.prototype.token = function (src, top) {
 				src = src.replace(/^ +$/gm, "");
-				var next,
-					loose,
-					cap,
-					bull,
-					b,
-					item,
-					listStart,
-					listItems,
-					t,
-					space,
-					i,
-					tag,
-					l,
-					isordered,
-					istask,
-					ischecked;
+				var next, loose, cap, bull, b, item, listStart, listItems, t, space, i, tag, l, isordered, istask, ischecked;
 
 				while (src) {
 					// newline
@@ -357,20 +324,14 @@ export default async function () {
 							// list item contains. Hacky.
 							if (~item.indexOf("\n ")) {
 								space -= item.length;
-								item = !this.options.pedantic
-									? item.replace(new RegExp("^ {1," + space + "}", "gm"), "")
-									: item.replace(/^ {1,4}/gm, "");
+								item = !this.options.pedantic ? item.replace(new RegExp("^ {1," + space + "}", "gm"), "") : item.replace(/^ {1,4}/gm, "");
 							}
 
 							// Determine whether the next list item belongs here.
 							// Backpedal if it does not belong in this list.
 							if (i !== l - 1) {
 								b = block.bullet.exec(cap[i + 1])[0];
-								if (
-									bull.length > 1
-										? b.length === 1
-										: b.length > 1 || (this.options.smartLists && b !== bull)
-								) {
+								if (bull.length > 1 ? b.length === 1 : b.length > 1 || (this.options.smartLists && b !== bull)) {
 									src = cap.slice(i + 1).join("\n") + src;
 									i = l - 1;
 								}
@@ -435,14 +396,8 @@ export default async function () {
 						src = src.substring(cap[0].length);
 						this.tokens.push({
 							type: this.options.sanitize ? "paragraph" : "html",
-							pre:
-								!this.options.sanitizer &&
-								(cap[1] === "pre" || cap[1] === "script" || cap[1] === "style"),
-							text: this.options.sanitize
-								? this.options.sanitizer
-									? this.options.sanitizer(cap[0])
-									: escape(cap[0])
-								: cap[0]
+							pre: !this.options.sanitizer && (cap[1] === "pre" || cap[1] === "script" || cap[1] === "style"),
+							text: this.options.sanitize ? (this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape(cap[0])) : cap[0]
 						});
 						continue;
 					}
@@ -486,10 +441,7 @@ export default async function () {
 							}
 
 							for (i = 0; i < item.cells.length; i++) {
-								item.cells[i] = splitCells(
-									item.cells[i].replace(/^ *\| *| *\| *$/g, ""),
-									item.header.length
-								);
+								item.cells[i] = splitCells(item.cells[i].replace(/^ *\| *| *\| *$/g, ""), item.header.length);
 							}
 
 							this.tokens.push(item);
@@ -514,10 +466,7 @@ export default async function () {
 						src = src.substring(cap[0].length);
 						this.tokens.push({
 							type: "paragraph",
-							text:
-								cap[1].charAt(cap[1].length - 1) === "\n"
-									? cap[1].slice(0, -1)
-									: cap[1]
+							text: cap[1].charAt(cap[1].length - 1) === "\n" ? cap[1].slice(0, -1) : cap[1]
 						});
 						continue;
 					}
@@ -559,8 +508,7 @@ export default async function () {
 				link: /^!?\[(label)\]\(\s*(href)(?:\s+(title))?\s*\)/,
 				reflink: /^!?\[(label)\]\[(?!\s*\])((?:\\[\[\]]?|[^\[\]\\])+)\]/,
 				nolink: /^!?\[(?!\s*\])((?:\[[^\[\]]*\]|\\[\[\]]|[^\[\]])*)\](?:\[\])?/,
-				strong:
-					/^__([^\s_])__(?!_)|^\*\*([^\s*])\*\*(?!\*)|^__([^\s][\s\S]*?[^\s])__(?!_)|^\*\*([^\s][\s\S]*?[^\s])\*\*(?!\*)/,
+				strong: /^__([^\s_])__(?!_)|^\*\*([^\s*])\*\*(?!\*)|^__([^\s][\s\S]*?[^\s])__(?!_)|^\*\*([^\s][\s\S]*?[^\s])\*\*(?!\*)/,
 				em: /^_([^\s_])_(?!_)|^\*([^\s*<\[])\*(?!\*)|^_([^\s<][\s\S]*?[^\s_])_(?!_|[^\spunctuation])|^_([^\s_<][\s\S]*?[^\s])_(?!_|[^\spunctuation])|^\*([^\s<"][\s\S]*?[^\s\*])\*(?!\*|[^\spunctuation])|^\*([^\s*"<\[][\s\S]*?[^\s])\*(?!\*)/,
 				code: /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/,
 				br: /^( {2,}|\\)\n(?!\s*$)/,
@@ -578,35 +526,20 @@ export default async function () {
 			inline._escapes = /\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/g;
 
 			inline._scheme = /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/;
-			inline._email =
-				/[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/;
-			inline.autolink = edit(inline.autolink)
-				.replace("scheme", inline._scheme)
-				.replace("email", inline._email)
-				.getRegex();
+			inline._email = /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/;
+			inline.autolink = edit(inline.autolink).replace("scheme", inline._scheme).replace("email", inline._email).getRegex();
 
-			inline._attribute =
-				/\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/;
+			inline._attribute = /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/;
 
-			inline.tag = edit(inline.tag)
-				.replace("comment", block._comment)
-				.replace("attribute", inline._attribute)
-				.getRegex();
+			inline.tag = edit(inline.tag).replace("comment", block._comment).replace("attribute", inline._attribute).getRegex();
 
 			inline._label = /(?:\[[^\[\]]*\]|\\.|`[^`]*`|[^\[\]\\`])*?/;
 			inline._href = /<(?:\\[<>]?|[^\s<>\\])*>|[^\s\x00-\x1f]*/;
-			inline._title =
-				/"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/;
+			inline._title = /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/;
 
-			inline.link = edit(inline.link)
-				.replace("label", inline._label)
-				.replace("href", inline._href)
-				.replace("title", inline._title)
-				.getRegex();
+			inline.link = edit(inline.link).replace("label", inline._label).replace("href", inline._href).replace("title", inline._title).getRegex();
 
-			inline.reflink = edit(inline.reflink)
-				.replace("label", inline._label)
-				.getRegex();
+			inline.reflink = edit(inline.reflink).replace("label", inline._label).getRegex();
 
 			/**
 			 * Normal Inline Grammar
@@ -619,8 +552,7 @@ export default async function () {
 			 */
 
 			inline.pedantic = merge({}, inline.normal, {
-				strong:
-					/^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,
+				strong: /^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,
 				em: /^_(?=\S)([\s\S]*?\S)_(?!_)|^\*(?=\S)([\s\S]*?\S)\*(?!\*)/,
 				link: edit(/^!?\[(label)\]\((.*?)\)/)
 					.replace("label", inline._label)
@@ -636,18 +568,14 @@ export default async function () {
 
 			inline.gfm = merge({}, inline.normal, {
 				escape: edit(inline.escape).replace("])", "~|])").getRegex(),
-				_extended_email:
-					/[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/,
+				_extended_email: /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/,
 				url: /^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/,
-				_backpedal:
-					/(?:[^?!.,:;*_~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_~)]+(?!$))+/,
+				_backpedal: /(?:[^?!.,:;*_~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_~)]+(?!$))+/,
 				del: /^~+(?=\S)([\s\S]*?\S)~+/,
 				text: /^(`+|[^`])(?:[\s\S]*?(?:(?=[\\<!\[`*~]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))|(?= {2,}\n|[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))/
 			});
 
-			inline.gfm.url = edit(inline.gfm.url, "i")
-				.replace("email", inline.gfm._extended_email)
-				.getRegex();
+			inline.gfm.url = edit(inline.gfm.url, "i").replace("email", inline.gfm._extended_email).getRegex();
 			/**
 			 * GFM + Line Breaks Inline Grammar
 			 */
@@ -729,24 +657,14 @@ export default async function () {
 						} else if (this.inLink && /^<\/a>/i.test(cap[0])) {
 							this.inLink = false;
 						}
-						if (
-							!this.inRawBlock &&
-							/^<(pre|code|kbd|script)(\s|>)/i.test(cap[0])
-						) {
+						if (!this.inRawBlock && /^<(pre|code|kbd|script)(\s|>)/i.test(cap[0])) {
 							this.inRawBlock = true;
-						} else if (
-							this.inRawBlock &&
-							/^<\/(pre|code|kbd|script)(\s|>)/i.test(cap[0])
-						) {
+						} else if (this.inRawBlock && /^<\/(pre|code|kbd|script)(\s|>)/i.test(cap[0])) {
 							this.inRawBlock = false;
 						}
 
 						src = src.substring(cap[0].length);
-						out += this.options.sanitize
-							? this.options.sanitizer
-								? this.options.sanitizer(cap[0])
-								: escape(cap[0])
-							: cap[0];
+						out += this.options.sanitize ? (this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape(cap[0])) : cap[0];
 						continue;
 					}
 
@@ -784,10 +702,7 @@ export default async function () {
 					}
 
 					// reflink, nolink
-					if (
-						(cap = this.rules.reflink.exec(src)) ||
-						(cap = this.rules.nolink.exec(src))
-					) {
+					if ((cap = this.rules.reflink.exec(src)) || (cap = this.rules.nolink.exec(src))) {
 						src = src.substring(cap[0].length);
 						link = (cap[2] || cap[1]).replace(/\s+/g, " ");
 						link = this.links[link.toLowerCase()];
@@ -805,20 +720,14 @@ export default async function () {
 					// strong
 					if ((cap = this.rules.strong.exec(src))) {
 						src = src.substring(cap[0].length);
-						out += this.renderer.strong(
-							this.output(cap[4] || cap[3] || cap[2] || cap[1])
-						);
+						out += this.renderer.strong(this.output(cap[4] || cap[3] || cap[2] || cap[1]));
 						continue;
 					}
 
 					// em
 					if ((cap = this.rules.em.exec(src))) {
 						src = src.substring(cap[0].length);
-						out += this.renderer.em(
-							this.output(
-								cap[6] || cap[5] || cap[4] || cap[3] || cap[2] || cap[1]
-							)
-						);
+						out += this.renderer.em(this.output(cap[6] || cap[5] || cap[4] || cap[3] || cap[2] || cap[1]));
 						continue;
 					}
 
@@ -884,13 +793,7 @@ export default async function () {
 					if ((cap = this.rules.text.exec(src))) {
 						src = src.substring(cap[0].length);
 						if (this.inRawBlock) {
-							out += this.renderer.text(
-								this.options.sanitize
-									? this.options.sanitizer
-										? this.options.sanitizer(cap[0])
-										: escape(cap[0])
-									: cap[0]
-							);
+							out += this.renderer.text(this.options.sanitize ? (this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape(cap[0])) : cap[0]);
 						} else {
 							out += this.renderer.text(escape(this.smartypants(cap[0])));
 						}
@@ -917,9 +820,7 @@ export default async function () {
 				var href = link.href,
 					title = link.title ? escape(link.title) : null;
 
-				return cap[0].charAt(0) !== "!"
-					? this.renderer.link(href, title, this.output(cap[1]))
-					: this.renderer.image(href, title, escape(cap[1]));
+				return cap[0].charAt(0) !== "!" ? this.renderer.link(href, title, this.output(cap[1])) : this.renderer.image(href, title, escape(cap[1]));
 			};
 
 			/**
@@ -988,22 +889,9 @@ export default async function () {
 				}
 
 				if (!lang) {
-					return (
-						"<pre><code>" +
-						(escaped ? code : escape(code, true)) +
-						"</code></pre>"
-					);
+					return "<pre><code>" + (escaped ? code : escape(code, true)) + "</code></pre>";
 				}
-				return (
-					'<pre><code class="' +
-					marked.options.langClass +
-					" " +
-					this.options.langPrefix +
-					escape(lang, true) +
-					'">' +
-					(escaped ? code : escape(code, true)) +
-					"</code></pre>\n"
-				);
+				return '<pre><code class="' + marked.options.langClass + " " + this.options.langPrefix + escape(lang, true) + '">' + (escaped ? code : escape(code, true)) + "</code></pre>\n";
 			};
 
 			Renderer.prototype.blockquote = function (quote) {
@@ -1016,18 +904,7 @@ export default async function () {
 
 			Renderer.prototype.heading = function (text, level, raw, slugger) {
 				if (this.options.headerIds) {
-					return (
-						"<h" +
-						level +
-						' id="' +
-						this.options.headerPrefix +
-						slugger.slug(raw) +
-						'">' +
-						text +
-						"</h" +
-						level +
-						">\n"
-					);
+					return "<h" + level + ' id="' + this.options.headerPrefix + slugger.slug(raw) + '">' + text + "</h" + level + ">\n";
 				}
 				// ignore IDs
 				return "<h" + level + ">" + text + "</h" + level + ">\n";
@@ -1048,13 +925,7 @@ export default async function () {
 			};
 
 			Renderer.prototype.checkbox = function (checked) {
-				return (
-					"<input " +
-					(checked ? 'checked="" ' : "") +
-					'disabled="" type="checkbox"' +
-					(this.options.xhtml ? " /" : "") +
-					"> "
-				);
+				return "<input " + (checked ? 'checked="" ' : "") + 'disabled="" type="checkbox"' + (this.options.xhtml ? " /" : "") + "> ";
 			};
 
 			Renderer.prototype.paragraph = function (text) {
@@ -1064,14 +935,7 @@ export default async function () {
 			Renderer.prototype.table = function (header, body) {
 				if (body) body = "<tbody>" + body + "</tbody>";
 
-				return (
-					"<table>\n" +
-					"<thead>\n" +
-					header +
-					"</thead>\n" +
-					body +
-					"</table>\n"
-				);
+				return "<table>\n" + "<thead>\n" + header + "</thead>\n" + body + "</table>\n";
 			};
 
 			Renderer.prototype.tablerow = function (content) {
@@ -1080,9 +944,7 @@ export default async function () {
 
 			Renderer.prototype.tablecell = function (content, flags) {
 				var type = flags.header ? "th" : "td";
-				var tag = flags.align
-					? "<" + type + ' align="' + flags.align + '">'
-					: "<" + type + ">";
+				var tag = flags.align ? "<" + type + ' align="' + flags.align + '">' : "<" + type + ">";
 				return tag + content + "</" + type + ">\n";
 			};
 
@@ -1163,11 +1025,7 @@ export default async function () {
 						return text;
 					};
 
-			TextRenderer.prototype.link = TextRenderer.prototype.image = function (
-				href,
-				title,
-				text
-			) {
+			TextRenderer.prototype.link = TextRenderer.prototype.image = function (href, title, text) {
 				return "" + text;
 			};
 
@@ -1265,19 +1123,10 @@ export default async function () {
 						return this.renderer.hr();
 					}
 					case "heading": {
-						return this.renderer.heading(
-							this.inline.output(this.token.text),
-							this.token.depth,
-							unescape(this.inlineText.output(this.token.text)),
-							this.slugger
-						);
+						return this.renderer.heading(this.inline.output(this.token.text), this.token.depth, unescape(this.inlineText.output(this.token.text)), this.slugger);
 					}
 					case "code": {
-						return this.renderer.code(
-							this.token.text,
-							this.token.lang,
-							this.token.escaped
-						);
+						return this.renderer.code(this.token.text, this.token.lang, this.token.escaped);
 					}
 					case "table": {
 						var header = "",
@@ -1290,13 +1139,10 @@ export default async function () {
 						// header
 						cell = "";
 						for (i = 0; i < this.token.header.length; i++) {
-							cell += this.renderer.tablecell(
-								this.inline.output(this.token.header[i]),
-								{
-									header: true,
-									align: this.token.align[i]
-								}
-							);
+							cell += this.renderer.tablecell(this.inline.output(this.token.header[i]), {
+								header: true,
+								align: this.token.align[i]
+							});
 						}
 						header += this.renderer.tablerow(cell);
 
@@ -1345,8 +1191,7 @@ export default async function () {
 							if (loose) {
 								if (this.peek().type === "text") {
 									var nextToken = this.peek();
-									nextToken.text =
-										this.renderer.checkbox(checked) + " " + nextToken.text;
+									nextToken.text = this.renderer.checkbox(checked) + " " + nextToken.text;
 								} else {
 									this.tokens.push({
 										type: "text",
@@ -1359,10 +1204,7 @@ export default async function () {
 						}
 
 						while (this.next().type !== "list_item_end") {
-							body +=
-								!loose && this.token.type === "text"
-									? this.parseText()
-									: this.tok();
+							body += !loose && this.token.type === "text" ? this.parseText() : this.tok();
 						}
 						return this.renderer.listitem(body, task, checked);
 					}
@@ -1377,8 +1219,7 @@ export default async function () {
 						return this.renderer.paragraph(this.parseText());
 					}
 					default: {
-						var errMsg =
-							'Token with "' + this.token.type + '" type was not found.';
+						var errMsg = 'Token with "' + this.token.type + '" type was not found.';
 						if (this.options.silent) {
 							console.log(errMsg);
 						} else {
@@ -1404,10 +1245,7 @@ export default async function () {
 				var slug = value
 					.toLowerCase()
 					.trim()
-					.replace(
-						/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g,
-						""
-					)
+					.replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g, "")
 					.replace(/\s/g, "-");
 
 				if (this.seen.hasOwnProperty(slug)) {
@@ -1459,19 +1297,14 @@ export default async function () {
 
 			function unescape(html) {
 				// explicitly match decimal, hex, and named HTML entities
-				return html.replace(
-					/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/gi,
-					function (_, n) {
-						n = n.toLowerCase();
-						if (n === "colon") return ":";
-						if (n.charAt(0) === "#") {
-							return n.charAt(1) === "x"
-								? String.fromCharCode(parseInt(n.substring(2), 16))
-								: String.fromCharCode(+n.substring(1));
-						}
-						return "";
+				return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/gi, function (_, n) {
+					n = n.toLowerCase();
+					if (n === "colon") return ":";
+					if (n.charAt(0) === "#") {
+						return n.charAt(1) === "x" ? String.fromCharCode(parseInt(n.substring(2), 16)) : String.fromCharCode(+n.substring(1));
 					}
-				);
+					return "";
+				});
 			}
 
 			function edit(regex, opt) {
@@ -1499,11 +1332,7 @@ export default async function () {
 					} catch (e) {
 						return null;
 					}
-					if (
-						prot.indexOf("javascript:") === 0 ||
-						prot.indexOf("vbscript:") === 0 ||
-						prot.indexOf("data:") === 0
-					) {
+					if (prot.indexOf("javascript:") === 0 || prot.indexOf("vbscript:") === 0 || prot.indexOf("data:") === 0) {
 						return null;
 					}
 				}
@@ -1664,11 +1493,7 @@ export default async function () {
 					throw new Error("marked(): input parameter is undefined or null");
 				}
 				if (typeof src !== "string") {
-					throw new Error(
-						"marked(): input parameter is of type " +
-							Object.prototype.toString.call(src) +
-							", string expected"
-					);
+					throw new Error("marked(): input parameter is of type " + Object.prototype.toString.call(src) + ", string expected");
 				}
 
 				if (callback || typeof opt === "function") {
@@ -1744,14 +1569,9 @@ export default async function () {
 					checkSanitizeDeprecation(opt);
 					return Parser.parse(Lexer.lex(src, opt), opt);
 				} catch (e) {
-					e.message +=
-						"\nPlease report this to https://github.com/markedjs/marked.";
+					e.message += "\nPlease report this to https://github.com/markedjs/marked.";
 					if ((opt || marked.defaults).silent) {
-						return (
-							"<p>An error occurred:</p><pre>" +
-							escape(e.message + "", true) +
-							"</pre>"
-						);
+						return "<p>An error occurred:</p><pre>" + escape(e.message + "", true) + "</pre>";
 					}
 					throw e;
 				}

@@ -10,25 +10,15 @@
 				<slot name="extra" />
 			</div>
 		</div>
-		<div
-			class="el-descriptions__body el-descriptions__table is-bordered el-descriptions--small"
-			:style="cellStyle"
-			v-for="(layoutRow, index) in layout"
-			:key="index">
-			<xInfoCardItem
-				v-for="prop in layoutRow"
-				:key="prop + index"
-				:item="filterItemPropSpan(prop)"
-				:unitWidth="unitWidth" />
+		<div class="el-descriptions__body el-descriptions__table is-bordered el-descriptions--small" :style="cellStyle" v-for="(layoutRow, index) in layout" :key="index">
+			<xInfoCardItem v-for="prop in layoutRow" :key="prop + index" :item="filterItemPropSpan(prop)" :unitWidth="unitWidth" />
 		</div>
 	</div>
 </template>
 
 <script>
 export default async function () {
-	const { useElementSize } = await _.$importVue(
-		"/common/utils/compositionAPI.vue"
-	);
+	const { useElementSize } = await _.$importVue("/common/utils/compositionAPI.vue");
 	const { ref, watch } = Vue;
 	return {
 		props: ["configs"],

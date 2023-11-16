@@ -8,14 +8,8 @@
 				<span class="ebook-popup-title-text">{{ $t("book.selectFont") }}</span>
 			</div>
 			<div class="ebook-popup-list-wrapper">
-				<div
-					class="ebook-popup-item"
-					v-for="(item, index) of fontFamily"
-					:key="index"
-					@click="setFontFamily(item.font)">
-					<div
-						class="ebook-popup-item-text"
-						:class="{ selected: isSelected(item) }">
+				<div class="ebook-popup-item" v-for="(item, index) of fontFamily" :key="index" @click="setFontFamily(item.font)">
+					<div class="ebook-popup-item-text" :class="{ selected: isSelected(item) }">
 						{{ item.font }}
 					</div>
 					<div class="ebook-popup-item-check" v-if="isSelected(item)">

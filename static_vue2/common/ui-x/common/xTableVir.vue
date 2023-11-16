@@ -335,15 +335,11 @@ export default async function () {
 	const exports = {};
 	_.each(
 		{
-			ComponentTableV2HeaderRow:
-				"/common/ui-x/common/xTableVir/ComponentTableV2HeaderRow.vue",
-			ComponentTableV2Grid:
-				"/common/ui-x/common/xTableVir/ComponentTableV2Grid.vue",
-			ComponentTableV2Row:
-				"/common/ui-x/common/xTableVir/ComponentTableV2Row.vue"
+			ComponentTableV2HeaderRow: "/common/ui-x/common/xTableVir/ComponentTableV2HeaderRow.vue",
+			ComponentTableV2Grid: "/common/ui-x/common/xTableVir/ComponentTableV2Grid.vue",
+			ComponentTableV2Row: "/common/ui-x/common/xTableVir/ComponentTableV2Row.vue"
 		},
-		(componentURL, name) =>
-			Vue.component(name, () => _.$importVue(componentURL))
+		(componentURL, name) => Vue.component(name, () => _.$importVue(componentURL))
 	);
 
 	const {
@@ -368,22 +364,9 @@ export default async function () {
 	const { merge_hFnProps } = Vue;
 	var _a;
 
-	isClient &&
-		((_a = window == null ? void 0 : window.navigator) == null
-			? void 0
-			: _a.userAgent) &&
-		/iP(ad|hone|od)/.test(window.navigator.userAgent);
+	isClient && ((_a = window == null ? void 0 : window.navigator) == null ? void 0 : _a.userAgent) && /iP(ad|hone|od)/.test(window.navigator.userAgent);
 
-	const _global =
-		typeof globalThis !== "undefined"
-			? globalThis
-			: typeof window !== "undefined"
-			? window
-			: typeof global !== "undefined"
-			? global
-			: typeof self !== "undefined"
-			? self
-			: {};
+	const _global = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
 	const globalKey = "__vueuse_ssr_handlers__";
 	_global[globalKey] = _global[globalKey] || {};
 	_global[globalKey];
@@ -409,8 +392,7 @@ export default async function () {
 			  })
 			: (obj[key] = value);
 	var __spreadValues = (a, b) => {
-		for (var prop in b || (b = {}))
-			if (hasOwnProperty.call(b, prop)) __defNormalProp(a, prop, b[prop]);
+		for (var prop in b || (b = {})) if (hasOwnProperty.call(b, prop)) __defNormalProp(a, prop, b[prop]);
 		if (__getOwnPropSymbols)
 			for (var prop of __getOwnPropSymbols(b)) {
 				if (__propIsEnum.call(b, prop)) __defNormalProp(a, prop, b[prop]);
@@ -450,10 +432,8 @@ export default async function () {
 		_TransitionPresets
 	);
 
-	var freeGlobal =
-		typeof global == "object" && global && global.Object === Object && global;
-	var freeSelf =
-		typeof self == "object" && self && self.Object === Object && self;
+	var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
+	var freeSelf = typeof self == "object" && self && self.Object === Object && self;
 	var root = freeGlobal || freeSelf || Function("return this")();
 	var symToStringTag$1 = root.Symbol ? root.Symbol.toStringTag : void 0;
 
@@ -483,9 +463,7 @@ export default async function () {
 		if (value == null) {
 			return value === void 0 ? undefinedTag : nullTag;
 		}
-		return symToStringTag && symToStringTag in Object(value)
-			? getRawTag(value)
-			: _toString(value);
+		return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : _toString(value);
 	}
 
 	function isObjectLike(value) {
@@ -495,10 +473,7 @@ export default async function () {
 	var symbolTag = "[object Symbol]";
 
 	function isSymbol(value) {
-		return (
-			typeof value == "symbol" ||
-			(isObjectLike(value) && baseGetTag(value) == symbolTag)
-		);
+		return typeof value == "symbol" || (isObjectLike(value) && baseGetTag(value) == symbolTag);
 	}
 
 	function arrayMap(array, iteratee) {
@@ -540,9 +515,7 @@ export default async function () {
 	var reTrimStart = /^\s+/;
 
 	function baseTrim(string) {
-		return string
-			? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, "")
-			: string;
+		return string ? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, "") : string;
 	}
 
 	function isObject(value) {
@@ -572,11 +545,7 @@ export default async function () {
 		}
 		value = baseTrim(value);
 		var isBinary = reIsBinary.test(value);
-		return isBinary || reIsOctal.test(value)
-			? freeParseInt(value.slice(2), isBinary ? 2 : 8)
-			: reIsBadHex.test(value)
-			? NAN
-			: +value;
+		return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
 	}
 
 	var asyncTag = "[object AsyncFunction]",
@@ -589,17 +558,13 @@ export default async function () {
 			return false;
 		}
 		var tag = baseGetTag(value);
-		return (
-			tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag
-		);
+		return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
 	}
 
 	var coreJsData = root["__core-js_shared__"];
 	var coreJsData$1 = coreJsData;
 	var maskSrcKey = (function () {
-		var uid = /[^.]+$/.exec(
-			(coreJsData$1 && coreJsData$1.keys && coreJsData$1.keys.IE_PROTO) || ""
-		);
+		var uid = /[^.]+$/.exec((coreJsData$1 && coreJsData$1.keys && coreJsData$1.keys.IE_PROTO) || "");
 		return uid ? "Symbol(src)_1." + uid : "";
 	})();
 
@@ -631,10 +596,7 @@ export default async function () {
 			funcToString
 				.call(hasOwnProperty)
 				.replace(reRegExpChar, "\\$&")
-				.replace(
-					/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g,
-					"$1.*?"
-				) +
+				.replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") +
 			"$"
 	);
 
@@ -667,20 +629,10 @@ export default async function () {
 			return false;
 		}
 		var type = typeof value;
-		if (
-			type == "number" ||
-			type == "symbol" ||
-			type == "boolean" ||
-			value == null ||
-			isSymbol(value)
-		) {
+		if (type == "number" || type == "symbol" || type == "boolean" || value == null || isSymbol(value)) {
 			return true;
 		}
-		return (
-			reIsPlainProp.test(value) ||
-			!reIsDeepProp.test(value) ||
-			(object != null && value in Object(object))
-		);
+		return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || (object != null && value in Object(object));
 	}
 
 	var nativeCreate = getNative(Object, "create");
@@ -710,9 +662,7 @@ export default async function () {
 
 	function hashHas(key) {
 		var data = this.__data__;
-		return nativeCreate$1
-			? data[key] !== void 0
-			: hasOwnProperty.call(data, key);
+		return nativeCreate$1 ? data[key] !== void 0 : hasOwnProperty.call(data, key);
 	}
 
 	var HASH_UNDEFINED = "__lodash_hash_undefined__";
@@ -825,19 +775,12 @@ export default async function () {
 
 	function isKeyable(value) {
 		var type = typeof value;
-		return type == "string" ||
-			type == "number" ||
-			type == "symbol" ||
-			type == "boolean"
-			? value !== "__proto__"
-			: value === null;
+		return type == "string" || type == "number" || type == "symbol" || type == "boolean" ? value !== "__proto__" : value === null;
 	}
 
 	function getMapData(map, key) {
 		var data = map.__data__;
-		return isKeyable(key)
-			? data[typeof key == "string" ? "string" : "hash"]
-			: data.map;
+		return isKeyable(key) ? data[typeof key == "string" ? "string" : "hash"] : data.map;
 	}
 
 	function mapCacheDelete(key) {
@@ -880,10 +823,7 @@ export default async function () {
 	var FUNC_ERROR_TEXT$1 = "Expected a function";
 
 	function memoize(func, resolver) {
-		if (
-			typeof func != "function" ||
-			(resolver != null && typeof resolver != "function")
-		) {
+		if (typeof func != "function" || (resolver != null && typeof resolver != "function")) {
 			throw new TypeError(FUNC_ERROR_TEXT$1);
 		}
 		var memoized = function () {
@@ -915,8 +855,7 @@ export default async function () {
 		return result;
 	}
 
-	var rePropName =
-		/[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
+	var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
 	var reEscapeChar = /\\(\\)?/g;
 	var stringToPath = memoizeCapped(function (string) {
 		var result = [];
@@ -924,9 +863,7 @@ export default async function () {
 			result.push("");
 		}
 		string.replace(rePropName, function (match, number, quote, subString) {
-			result.push(
-				quote ? subString.replace(reEscapeChar, "$1") : number || match
-			);
+			result.push(quote ? subString.replace(reEscapeChar, "$1") : number || match);
 		});
 		return result;
 	});
@@ -994,9 +931,7 @@ export default async function () {
 		if (isObject(options)) {
 			leading = !!options.leading;
 			maxing = "maxWait" in options;
-			maxWait = maxing
-				? nativeMax(toNumber(options.maxWait) || 0, wait)
-				: maxWait;
+			maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
 			trailing = "trailing" in options ? !!options.trailing : trailing;
 		}
 
@@ -1019,20 +954,13 @@ export default async function () {
 			var timeSinceLastCall = time - lastCallTime,
 				timeSinceLastInvoke = time - lastInvokeTime,
 				timeWaiting = wait - timeSinceLastCall;
-			return maxing
-				? nativeMin(timeWaiting, maxWait - timeSinceLastInvoke)
-				: timeWaiting;
+			return maxing ? nativeMin(timeWaiting, maxWait - timeSinceLastInvoke) : timeWaiting;
 		}
 
 		function shouldInvoke(time) {
 			var timeSinceLastCall = time - lastCallTime,
 				timeSinceLastInvoke = time - lastInvokeTime;
-			return (
-				lastCallTime === void 0 ||
-				timeSinceLastCall >= wait ||
-				timeSinceLastCall < 0 ||
-				(maxing && timeSinceLastInvoke >= maxWait)
-			);
+			return lastCallTime === void 0 || timeSinceLastCall >= wait || timeSinceLastCall < 0 || (maxing && timeSinceLastInvoke >= maxWait);
 		}
 
 		function timerExpired() {
@@ -1216,8 +1144,7 @@ export default async function () {
 				confirm: "OK",
 				clear: "Clear",
 				defaultLabel: "color picker",
-				description:
-					"current color is {color}. press enter to select a new color."
+				description: "current color is {color}. press enter to select a new color."
 			},
 			datepicker: {
 				now: "Now",
@@ -1225,8 +1152,7 @@ export default async function () {
 				cancel: "Cancel",
 				clear: "Clear",
 				confirm: "OK",
-				dateTablePrompt:
-					"Use the arrow keys and enter to select the day of the month",
+				dateTablePrompt: "Use the arrow keys and enter to select the day of the month",
 				monthTablePrompt: "Use the arrow keys and enter to select the month",
 				yearTablePrompt: "Use the arrow keys and enter to select the year",
 				selectedDate: "Selected date",
@@ -1317,8 +1243,7 @@ export default async function () {
 				currentPage: "page {pager}",
 				prevPages: "Previous {pager} pages",
 				nextPages: "Next {pager} pages",
-				deprecationWarning:
-					"Deprecated usages detected, please refer to the el-pagination documentation for more details"
+				deprecationWarning: "Deprecated usages detected, please refer to the el-pagination documentation for more details"
 			},
 			dialog: {
 				close: "Close this dialog"
@@ -1374,13 +1299,8 @@ export default async function () {
 			}
 		}
 	};
-	const buildTranslator = locale => (path, option) =>
-		translate(path, option, unref(locale));
-	const translate = (path, option, locale) =>
-		get(locale, path, path).replace(
-			/\{(\w+)\}/g,
-			(_, key) => `${option?.[key] ?? `{${key}}`}`
-		);
+	const buildTranslator = locale => (path, option) => translate(path, option, unref(locale));
+	const translate = (path, option, locale) => get(locale, path, path).replace(/\{(\w+)\}/g, (_, key) => `${option?.[key] ?? `{${key}}`}`);
 	const buildLocaleContext = locale => {
 		const lang = computed(() => unref(locale).name);
 		const localeRef = isRef(locale) ? locale : ref(locale);
@@ -1420,18 +1340,12 @@ export default async function () {
 	};
 	const ID_INJECTION_KEY = Symbol("elIdInjection");
 	const useIdInjection = () => {
-		return getCurrentInstance()
-			? inject(ID_INJECTION_KEY, defaultIdInjection)
-			: defaultIdInjection;
+		return getCurrentInstance() ? inject(ID_INJECTION_KEY, defaultIdInjection) : defaultIdInjection;
 	};
 	const useId = deterministicId => {
 		const idInjection = useIdInjection();
 		const namespace = useGetDerivedNamespace();
-		const idRef = computed(
-			() =>
-				unref(deterministicId) ||
-				`${namespace.value}-id-${idInjection.prefix}-${idInjection.current++}`
-		);
+		const idRef = computed(() => unref(deterministicId) || `${namespace.value}-id-${idInjection.prefix}-${idInjection.current++}`);
 		return idRef;
 	};
 	buildProps({
@@ -1506,17 +1420,9 @@ export default async function () {
 		const visibleColumns = computed(() => {
 			return unref(columns2).filter(column => !column.hidden);
 		});
-		const fixedColumnsOnLeft = computed(() =>
-			unref(visibleColumns).filter(
-				column => column.fixed === "left" || column.fixed === true
-			)
-		);
-		const fixedColumnsOnRight = computed(() =>
-			unref(visibleColumns).filter(column => column.fixed === "right")
-		);
-		const normalColumns = computed(() =>
-			unref(visibleColumns).filter(column => !column.fixed)
-		);
+		const fixedColumnsOnLeft = computed(() => unref(visibleColumns).filter(column => column.fixed === "left" || column.fixed === true));
+		const fixedColumnsOnRight = computed(() => unref(visibleColumns).filter(column => column.fixed === "right"));
+		const normalColumns = computed(() => unref(visibleColumns).filter(column => !column.fixed));
 		const mainColumns = computed(() => {
 			const ret = [];
 			unref(fixedColumnsOnLeft).forEach(column => {
@@ -1537,9 +1443,7 @@ export default async function () {
 			return ret;
 		});
 		const hasFixedColumns = computed(() => {
-			return (
-				unref(fixedColumnsOnLeft).length || unref(fixedColumnsOnRight).length
-			);
+			return unref(fixedColumnsOnLeft).length || unref(fixedColumnsOnRight).length;
 		});
 		const columnsStyles = computed(() => {
 			const _columns = unref(columns2);
@@ -1549,10 +1453,7 @@ export default async function () {
 			}, {});
 		});
 		const columnsTotalWidth = computed(() => {
-			return unref(visibleColumns).reduce(
-				(width, column) => width + column.width,
-				0
-			);
+			return unref(visibleColumns).reduce((width, column) => width + column.width, 0);
 		});
 		const getColumn = key => {
 			return unref(columns2).find(column => column.key === key);
@@ -1594,10 +1495,7 @@ export default async function () {
 		};
 	}
 
-	const useScrollbar = (
-		props,
-		{ mainTableRef, leftTableRef, rightTableRef, onMaybeEndReached }
-	) => {
+	const useScrollbar = (props, { mainTableRef, leftTableRef, rightTableRef, onMaybeEndReached }) => {
 		const scrollPos = ref({ scrollLeft: 0, scrollTop: 0 });
 
 		function doScroll(params) {
@@ -1733,10 +1631,7 @@ export default async function () {
 			pendingRowHeights.value[rowKey2] = height;
 		}
 
-		function onRowHeightChange(
-			{ rowKey: rowKey2, height, rowIndex },
-			fixedDir
-		) {
+		function onRowHeightChange({ rowKey: rowKey2, height, rowIndex }, fixedDir) {
 			if (!fixedDir) {
 				mainTableHeights.value[rowKey2] = height;
 			} else {
@@ -1746,11 +1641,7 @@ export default async function () {
 					leftTableHeights.value[rowKey2] = height;
 				}
 			}
-			const maximumHeight = Math.max(
-				...[leftTableHeights, rightTableHeights, mainTableHeights].map(
-					records => records.value[rowKey2] || 0
-				)
-			);
+			const maximumHeight = Math.max(...[leftTableHeights, rightTableHeights, mainTableHeights].map(records => records.value[rowKey2] || 0));
 			if (unref(rowHeights)[rowKey2] !== maximumHeight) {
 				resetHeights(rowKey2, maximumHeight, rowIndex);
 				flushingRowHeights();
@@ -1771,10 +1662,7 @@ export default async function () {
 			onRowHeightChange
 		};
 	};
-	const useData = (
-		props,
-		{ expandedRowKeys, lastRenderedRowIndex, resetAfterIndex }
-	) => {
+	const useData = (props, { expandedRowKeys, lastRenderedRowIndex, resetAfterIndex }) => {
 		const depthMap = ref({});
 		const flattenedData = computed(() => {
 			const depths = {};
@@ -1789,15 +1677,9 @@ export default async function () {
 			while (copy.length > 0) {
 				const item = copy.shift();
 				array.push(item);
-				if (
-					keysSet.has(item[rowKey2]) &&
-					Array.isArray(item.children) &&
-					item.children.length > 0
-				) {
+				if (keysSet.has(item[rowKey2]) && Array.isArray(item.children) && item.children.length > 0) {
 					copy = [...item.children, ...copy];
-					item.children.forEach(
-						child => (depths[child[rowKey2]] = depths[item[rowKey2]] + 1)
-					);
+					item.children.forEach(child => (depths[child[rowKey2]] = depths[item[rowKey2]] + 1));
 				}
 			}
 			depthMap.value = depths;
@@ -1818,31 +1700,20 @@ export default async function () {
 			depthMap
 		};
 	};
-	const useStyles = (
-		props,
-		{ columnsTotalWidth, data, fixedColumnsOnLeft, fixedColumnsOnRight }
-	) => {
+	const useStyles = (props, { columnsTotalWidth, data, fixedColumnsOnLeft, fixedColumnsOnRight }) => {
 		const bodyWidth = computed(() => {
 			const { fixed, width, vScrollbarSize } = props;
 			const ret = width - vScrollbarSize;
 			return fixed ? Math.max(Math.round(unref(columnsTotalWidth)), ret) : ret;
 		});
-		const headerWidth = computed(
-			() => unref(bodyWidth) + (props.fixed ? props.vScrollbarSize : 0)
-		);
+		const headerWidth = computed(() => unref(bodyWidth) + (props.fixed ? props.vScrollbarSize : 0));
 		const mainTableHeight = computed(() => {
-			const {
-				height = 0,
-				maxHeight = 0,
-				footerHeight: footerHeight2,
-				hScrollbarSize
-			} = props;
+			const { height = 0, maxHeight = 0, footerHeight: footerHeight2, hScrollbarSize } = props;
 			if (maxHeight > 0) {
 				const _fixedRowsHeight = unref(fixedRowsHeight);
 				const _rowsHeight = unref(rowsHeight);
 				const _headerHeight = unref(headerHeight);
-				const total2 =
-					_headerHeight + _fixedRowsHeight + _rowsHeight + hScrollbarSize;
+				const total2 = _headerHeight + _fixedRowsHeight + _rowsHeight + hScrollbarSize;
 				return Math.min(total2, maxHeight - footerHeight2);
 			}
 			return height - footerHeight2;
@@ -1859,25 +1730,18 @@ export default async function () {
 			const { maxHeight } = props;
 			const tableHeight = unref(mainTableHeight);
 			if (_.isNumber(maxHeight) && maxHeight > 0) return tableHeight;
-			const totalHeight =
-				unref(rowsHeight) + unref(headerHeight) + unref(fixedRowsHeight);
+			const totalHeight = unref(rowsHeight) + unref(headerHeight) + unref(fixedRowsHeight);
 			return Math.min(tableHeight, totalHeight);
 		});
 		const mapColumn = column => column.width;
-		const leftTableWidth = computed(() =>
-			sum(unref(fixedColumnsOnLeft).map(mapColumn))
-		);
-		const rightTableWidth = computed(() =>
-			sum(unref(fixedColumnsOnRight).map(mapColumn))
-		);
+		const leftTableWidth = computed(() => sum(unref(fixedColumnsOnLeft).map(mapColumn)));
+		const rightTableWidth = computed(() => sum(unref(fixedColumnsOnRight).map(mapColumn)));
 		const headerHeight = computed(() => sum(props.headerHeight));
 		const fixedRowsHeight = computed(() => {
 			return (props.fixedData?.length || 0) * props.rowHeight;
 		});
 		const windowHeight = computed(() => {
-			return (
-				unref(mainTableHeight) - unref(headerHeight) - unref(fixedRowsHeight)
-			);
+			return unref(mainTableHeight) - unref(headerHeight) - unref(fixedRowsHeight);
 		});
 		const rootStyle = computed(() => {
 			const { style = {}, height, width } = props;
@@ -1887,9 +1751,7 @@ export default async function () {
 				width
 			});
 		});
-		const footerHeight = computed(() =>
-			enforceUnit({ height: props.footerHeight })
-		);
+		const footerHeight = computed(() => enforceUnit({ height: props.footerHeight }));
 		const emptyStyle = computed(() => ({
 			top: addUnit(unref(headerHeight)),
 			bottom: addUnit(props.footerHeight),
@@ -1925,76 +1787,45 @@ export default async function () {
 			mainColumns,
 			onColumnSorted
 		} = useColumns(props, toRef(props, "columns"), toRef(props, "fixed"));
-		const {
-			scrollTo,
-			scrollToLeft,
-			scrollToTop,
-			scrollToRow,
-			onScroll,
-			onVerticalScroll,
-			scrollPos
-		} = useScrollbar(props, {
+		const { scrollTo, scrollToLeft, scrollToTop, scrollToRow, onScroll, onVerticalScroll, scrollPos } = useScrollbar(props, {
 			mainTableRef,
 			leftTableRef,
 			rightTableRef,
 			onMaybeEndReached
 		});
-		const {
-			expandedRowKeys,
-			hoveringRowKey,
-			lastRenderedRowIndex,
-			isDynamic,
-			isResetting,
-			rowHeights,
-			resetAfterIndex,
-			onRowExpanded,
-			onRowHeightChange,
-			onRowHovered,
-			onRowsRendered
-		} = useRow(props, {
-			mainTableRef,
-			leftTableRef,
-			rightTableRef
-		});
+		const { expandedRowKeys, hoveringRowKey, lastRenderedRowIndex, isDynamic, isResetting, rowHeights, resetAfterIndex, onRowExpanded, onRowHeightChange, onRowHovered, onRowsRendered } = useRow(
+			props,
+			{
+				mainTableRef,
+				leftTableRef,
+				rightTableRef
+			}
+		);
 		const { data, depthMap } = useData(props, {
 			expandedRowKeys,
 			lastRenderedRowIndex,
 			resetAfterIndex
 		});
-		const {
-			bodyWidth,
-			fixedTableHeight,
-			mainTableHeight,
-			leftTableWidth,
-			rightTableWidth,
-			headerWidth,
-			rowsHeight,
-			windowHeight,
-			footerHeight,
-			emptyStyle,
-			rootStyle,
-			headerHeight
-		} = useStyles(props, {
-			columnsTotalWidth,
-			data,
-			fixedColumnsOnLeft,
-			fixedColumnsOnRight
-		});
+		const { bodyWidth, fixedTableHeight, mainTableHeight, leftTableWidth, rightTableWidth, headerWidth, rowsHeight, windowHeight, footerHeight, emptyStyle, rootStyle, headerHeight } = useStyles(
+			props,
+			{
+				columnsTotalWidth,
+				data,
+				fixedColumnsOnLeft,
+				fixedColumnsOnRight
+			}
+		);
 		const isScrolling = shallowRef(false);
 		const containerRef = ref();
 		const showEmpty = computed(() => {
 			const noData = unref(data).length === 0;
-			return _.isArray(props.fixedData)
-				? props.fixedData.length === 0 && noData
-				: noData;
+			return _.isArray(props.fixedData) ? props.fixedData.length === 0 && noData : noData;
 		});
 
 		function getRowHeight(rowIndex) {
 			const { estimatedRowHeight, rowHeight, rowKey: rowKey2 } = props;
 			if (!estimatedRowHeight) return rowHeight;
-			return (
-				unref(rowHeights)[unref(data)[rowIndex][rowKey2]] || estimatedRowHeight
-			);
+			return unref(rowHeights)[unref(data)[rowIndex][rowKey2]] || estimatedRowHeight;
 		}
 
 		function onMaybeEndReached() {
@@ -2003,13 +1834,8 @@ export default async function () {
 			const { scrollTop } = unref(scrollPos);
 			const _totalHeight = unref(rowsHeight);
 			const clientHeight = unref(windowHeight);
-			const heightUntilEnd =
-				_totalHeight - (scrollTop + clientHeight) + props.hScrollbarSize;
-			if (
-				unref(lastRenderedRowIndex) >= 0 &&
-				_totalHeight ===
-					scrollTop + unref(mainTableHeight) - unref(headerHeight)
-			) {
+			const heightUntilEnd = _totalHeight - (scrollTop + clientHeight) + props.hScrollbarSize;
+			if (unref(lastRenderedRowIndex) >= 0 && _totalHeight === scrollTop + unref(mainTableHeight) - unref(headerHeight)) {
 				onEndReached(heightUntilEnd);
 			}
 		}
@@ -2074,11 +1900,7 @@ export default async function () {
 		row: "lastVisitedRowIndex"
 	};
 	const getItemFromCache = (props, index, gridCache, type) => {
-		const [cachedItems, sizer, lastVisited] = [
-			gridCache[type],
-			props[ACCESS_SIZER_KEY_MAP[type]],
-			gridCache[ACCESS_LAST_VISITED_KEY_MAP[type]]
-		];
+		const [cachedItems, sizer, lastVisited] = [gridCache[type], props[ACCESS_SIZER_KEY_MAP[type]], gridCache[ACCESS_LAST_VISITED_KEY_MAP[type]]];
 		if (index > lastVisited) {
 			let offset = 0;
 			if (lastVisited >= 0) {
@@ -2188,16 +2010,7 @@ export default async function () {
 		);
 	};
 	var _sfc_staticRenderFns$2 = [];
-	var __component__$2 = /* @__PURE__ */ normalizeComponent(
-		_sfc_main$2,
-		_sfc_render$2,
-		_sfc_staticRenderFns$2,
-		false,
-		null,
-		null,
-		null,
-		null
-	);
+	var __component__$2 = /* @__PURE__ */ normalizeComponent(_sfc_main$2, _sfc_render$2, _sfc_staticRenderFns$2, false, null, null, null, null);
 	var Icon = __component__$2.exports;
 	const ElIcon = withInstall(Icon);
 	var ElIcon$1 = ElIcon;
@@ -2214,11 +2027,7 @@ export default async function () {
 					},
 					class: props.classV2
 				},
-				[
-					sortOrder === SortOrder.ASC
-						? h(sort_up_default)
-						: h(sort_down_default)
-				]
+				[sortOrder === SortOrder.ASC ? h(sort_up_default) : h(sort_down_default)]
 			);
 		}
 	};
@@ -2449,16 +2258,9 @@ export default async function () {
 				rowIndex
 			};
 			const Cell = CellComponent(cellProps);
-			const kls = [
-				ns.e("row-cell"),
-				column.class,
-				column.align === Alignment.CENTER && ns.is("align-center"),
-				column.align === Alignment.RIGHT && ns.is("align-right")
-			];
-			const expandable =
-				rowIndex >= 0 && expandColumnKey2 && column.key === expandColumnKey2;
-			const expanded =
-				rowIndex >= 0 && expandedRowKeys.includes(rowData[rowKey2]);
+			const kls = [ns.e("row-cell"), column.class, column.align === Alignment.CENTER && ns.is("align-center"), column.align === Alignment.RIGHT && ns.is("align-right")];
+			const expandable = rowIndex >= 0 && expandColumnKey2 && column.key === expandColumnKey2;
+			const expanded = rowIndex >= 0 && expandedRowKeys.includes(rowData[rowKey2]);
 			let IconOrPlaceholder;
 			const iconStyle = `margin-inline-start: ${depth * indentSize}px;`;
 			if (expandable) {
@@ -2481,10 +2283,7 @@ export default async function () {
 					);
 				} else {
 					IconOrPlaceholder = h("div", {
-						style: [
-							iconStyle,
-							`width: ${iconSize}px; height: ${iconSize}px;`
-						].join(" ")
+						style: [iconStyle, `width: ${iconSize}px; height: ${iconSize}px;`].join(" ")
 					});
 				}
 			}
@@ -2509,21 +2308,7 @@ export default async function () {
 	CellRenderer.inheritAttrs = false;
 	const HeaderRenderer = {
 		functional: true,
-		render: (
-			h,
-			{
-				data: {
-					columns: columns2,
-					columnsStyles,
-					headerIndex,
-					style,
-					headerClass,
-					headerProps,
-					ns,
-					$vSlots
-				}
-			}
-		) => {
+		render: (h, { data: { columns: columns2, columnsStyles, headerIndex, style, headerClass, headerProps, ns, $vSlots } }) => {
 			const param = {
 				columns: columns2,
 				headerIndex
@@ -2673,17 +2458,13 @@ export default async function () {
 							[
 								_c("stop", {
 									attrs: {
-										"stop-color": `var(${_setup.ns.cssVarBlockName(
-											"fill-color-1"
-										)})`,
+										"stop-color": `var(${_setup.ns.cssVarBlockName("fill-color-1")})`,
 										offset: "0%"
 									}
 								}),
 								_c("stop", {
 									attrs: {
-										"stop-color": `var(${_setup.ns.cssVarBlockName(
-											"fill-color-4"
-										)})`,
+										"stop-color": `var(${_setup.ns.cssVarBlockName("fill-color-4")})`,
 										offset: "100%"
 									}
 								})
@@ -2704,17 +2485,13 @@ export default async function () {
 							[
 								_c("stop", {
 									attrs: {
-										"stop-color": `var(${_setup.ns.cssVarBlockName(
-											"fill-color-1"
-										)})`,
+										"stop-color": `var(${_setup.ns.cssVarBlockName("fill-color-1")})`,
 										offset: "0%"
 									}
 								}),
 								_c("stop", {
 									attrs: {
-										"stop-color": `var(${_setup.ns.cssVarBlockName(
-											"fill-color-6"
-										)})`,
+										"stop-color": `var(${_setup.ns.cssVarBlockName("fill-color-6")})`,
 										offset: "100%"
 									}
 								})
@@ -2767,19 +2544,14 @@ export default async function () {
 											attrs: {
 												id: "Oval-Copy-2",
 												d: "M39.5,86 C61.3152476,86 79,83.9106622 79,81.3333333 C79,78.7560045 57.3152476,78 35.5,78 C13.6847524,78 0,78.7560045 0,81.3333333 C0,83.9106622 17.6847524,86 39.5,86 Z",
-												fill: `var(${_setup.ns.cssVarBlockName(
-													"fill-color-3"
-												)})`
+												fill: `var(${_setup.ns.cssVarBlockName("fill-color-3")})`
 											}
 										}),
 										_c("polygon", {
 											attrs: {
 												id: "Rectangle-Copy-14",
-												fill: `var(${_setup.ns.cssVarBlockName(
-													"fill-color-7"
-												)})`,
-												transform:
-													"translate(27.500000, 51.500000) scale(1, -1) translate(-27.500000, -51.500000) ",
+												fill: `var(${_setup.ns.cssVarBlockName("fill-color-7")})`,
+												transform: "translate(27.500000, 51.500000) scale(1, -1) translate(-27.500000, -51.500000) ",
 												points: "13 58 53 58 42 45 2 45"
 											}
 										}),
@@ -2788,38 +2560,30 @@ export default async function () {
 											{
 												attrs: {
 													id: "Group-Copy",
-													transform:
-														"translate(34.500000, 31.500000) scale(-1, 1) rotate(-25.000000) translate(-34.500000, -31.500000) translate(7.000000, 10.000000)"
+													transform: "translate(34.500000, 31.500000) scale(-1, 1) rotate(-25.000000) translate(-34.500000, -31.500000) translate(7.000000, 10.000000)"
 												}
 											},
 											[
 												_c("polygon", {
 													attrs: {
 														id: "Rectangle-Copy-10",
-														fill: `var(${_setup.ns.cssVarBlockName(
-															"fill-color-7"
-														)})`,
-														transform:
-															"translate(11.500000, 5.000000) scale(1, -1) translate(-11.500000, -5.000000) ",
+														fill: `var(${_setup.ns.cssVarBlockName("fill-color-7")})`,
+														transform: "translate(11.500000, 5.000000) scale(1, -1) translate(-11.500000, -5.000000) ",
 														points: "2.84078316e-14 3 18 3 23 7 5 7"
 													}
 												}),
 												_c("polygon", {
 													attrs: {
 														id: "Rectangle-Copy-11",
-														fill: `var(${_setup.ns.cssVarBlockName(
-															"fill-color-5"
-														)})`,
-														points:
-															"-3.69149156e-15 7 38 7 38 43 -3.69149156e-15 43"
+														fill: `var(${_setup.ns.cssVarBlockName("fill-color-5")})`,
+														points: "-3.69149156e-15 7 38 7 38 43 -3.69149156e-15 43"
 													}
 												}),
 												_c("rect", {
 													attrs: {
 														id: "Rectangle-Copy-12",
 														fill: `url(#linearGradient-1-${_setup.id})`,
-														transform:
-															"translate(46.500000, 25.000000) scale(-1, 1) translate(-46.500000, -25.000000) ",
+														transform: "translate(46.500000, 25.000000) scale(-1, 1) translate(-46.500000, -25.000000) ",
 														x: "38",
 														y: "7",
 														width: "17",
@@ -2829,13 +2593,9 @@ export default async function () {
 												_c("polygon", {
 													attrs: {
 														id: "Rectangle-Copy-13",
-														fill: `var(${_setup.ns.cssVarBlockName(
-															"fill-color-2"
-														)})`,
-														transform:
-															"translate(39.500000, 3.500000) scale(-1, 1) translate(-39.500000, -3.500000) ",
-														points:
-															"24 7 41 7 55 -3.63806207e-12 38 -3.63806207e-12"
+														fill: `var(${_setup.ns.cssVarBlockName("fill-color-2")})`,
+														transform: "translate(39.500000, 3.500000) scale(-1, 1) translate(-39.500000, -3.500000) ",
+														points: "24 7 41 7 55 -3.63806207e-12 38 -3.63806207e-12"
 													}
 												})
 											]
@@ -2862,23 +2622,17 @@ export default async function () {
 												_c("use", {
 													attrs: {
 														id: "Mask",
-														fill: `var(${_setup.ns.cssVarBlockName(
-															"fill-color-8"
-														)})`,
-														transform:
-															"translate(8.500000, 18.000000) scale(-1, 1) translate(-8.500000, -18.000000) ",
+														fill: `var(${_setup.ns.cssVarBlockName("fill-color-8")})`,
+														transform: "translate(8.500000, 18.000000) scale(-1, 1) translate(-8.500000, -18.000000) ",
 														"xlink:href": `#path-3-${_setup.id}`
 													}
 												}),
 												_c("polygon", {
 													attrs: {
 														id: "Rectangle-Copy",
-														fill: `var(${_setup.ns.cssVarBlockName(
-															"fill-color-9"
-														)})`,
+														fill: `var(${_setup.ns.cssVarBlockName("fill-color-9")})`,
 														mask: `url(#mask-4-${_setup.id})`,
-														transform:
-															"translate(12.000000, 9.000000) scale(-1, 1) translate(-12.000000, -9.000000) ",
+														transform: "translate(12.000000, 9.000000) scale(-1, 1) translate(-12.000000, -9.000000) ",
 														points: "7 0 24 0 20 18 7 16.5"
 													}
 												})
@@ -2887,11 +2641,8 @@ export default async function () {
 										_c("polygon", {
 											attrs: {
 												id: "Rectangle-Copy-18",
-												fill: `var(${_setup.ns.cssVarBlockName(
-													"fill-color-2"
-												)})`,
-												transform:
-													"translate(66.000000, 51.500000) scale(-1, 1) translate(-66.000000, -51.500000) ",
+												fill: `var(${_setup.ns.cssVarBlockName("fill-color-2")})`,
+												transform: "translate(66.000000, 51.500000) scale(-1, 1) translate(-66.000000, -51.500000) ",
 												points: "62 45 79 45 70 58 53 58"
 											}
 										})
@@ -2905,16 +2656,7 @@ export default async function () {
 		);
 	};
 	var _sfc_staticRenderFns$1 = [];
-	var __component__$1 = /* @__PURE__ */ normalizeComponent(
-		_sfc_main$1,
-		_sfc_render$1,
-		_sfc_staticRenderFns$1,
-		false,
-		null,
-		null,
-		null,
-		null
-	);
+	var __component__$1 = /* @__PURE__ */ normalizeComponent(_sfc_main$1, _sfc_render$1, _sfc_staticRenderFns$1, false, null, null, null, null);
 	var ImgEmpty = __component__$1.exports;
 	const emptyProps = buildProps({
 		image: {
@@ -2937,9 +2679,7 @@ export default async function () {
 			});
 			const { t } = useLocale();
 			const ns = useNamespace("empty");
-			const emptyDescription = computed(
-				() => props.description || t("el.table.emptyText")
-			);
+			const emptyDescription = computed(() => props.description || t("el.table.emptyText"));
 			const imageStyle = computed(() => ({
 				width: addUnit(props.imageSize)
 			}));
@@ -2980,32 +2720,12 @@ export default async function () {
 				],
 				2
 			),
-			_c(
-				"div",
-				{ class: _setup.ns.e("description") },
-				[
-					_vm.$slots.description
-						? _vm._t("description")
-						: _c("p", [_vm._v(_vm._s(_setup.emptyDescription))])
-				],
-				2
-			),
-			_vm.$slots.default
-				? _c("div", { class: _setup.ns.e("bottom") }, [_vm._t("default")], 2)
-				: _vm._e()
+			_c("div", { class: _setup.ns.e("description") }, [_vm.$slots.description ? _vm._t("description") : _c("p", [_vm._v(_vm._s(_setup.emptyDescription))])], 2),
+			_vm.$slots.default ? _c("div", { class: _setup.ns.e("bottom") }, [_vm._t("default")], 2) : _vm._e()
 		]);
 	};
 	var _sfc_staticRenderFns = [];
-	var __component__ = /* @__PURE__ */ normalizeComponent(
-		_sfc_main,
-		_sfc_render,
-		_sfc_staticRenderFns,
-		false,
-		null,
-		null,
-		null,
-		null
-	);
+	var __component__ = /* @__PURE__ */ normalizeComponent(_sfc_main, _sfc_render, _sfc_staticRenderFns, false, null, null, null, null);
 	var Empty = __component__.exports;
 	const ElEmpty = withInstall(Empty);
 	var ElEmpty$1 = ElEmpty;
@@ -3171,8 +2891,7 @@ export default async function () {
 					onScroll: onVerticalScroll
 				};
 				const rightColumnsWidth = unref(rightTableWidth);
-				const rightColumnsWidthWithScrollbar =
-					rightColumnsWidth + vScrollbarSize;
+				const rightColumnsWidthWithScrollbar = rightColumnsWidth + vScrollbarSize;
 
 				const rightTableProps = {
 					cache: cache2,
@@ -3191,9 +2910,7 @@ export default async function () {
 					scrollbarStartGap: 2,
 					scrollbarEndGap: vScrollbarSize,
 					width: rightColumnsWidthWithScrollbar,
-					style: `--${unref(
-						ns.namespace
-					)}-table-scrollbar-size: ${vScrollbarSize}px`,
+					style: `--${unref(ns.namespace)}-table-scrollbar-size: ${vScrollbarSize}px`,
 					useIsScrolling,
 					getRowHeight,
 					onScroll: onVerticalScroll
@@ -3274,22 +2991,14 @@ export default async function () {
 						]);
 					},
 					header: props2 => {
-						const HeaderRendererProps = merge_hFnProps([
-							props2,
-							tableHeaderProps
-						]);
+						const HeaderRendererProps = merge_hFnProps([props2, tableHeaderProps]);
 						return h(HeaderRenderer, HeaderRendererProps, [
 							{
 								header: vmTable.$vSlots.header,
 								cell: cellProps => {
 									if (vmTable.$vSlots["header-cell"]) {
-										const HeaderCellRendererProps = merge_hFnProps([
-											props2,
-											tableHeaderProps
-										]);
-										return h(HeaderCellRenderer, HeaderCellRendererProps, [
-											vmTable.$vSlots["header-cell"](cellProps)
-										]);
+										const HeaderCellRendererProps = merge_hFnProps([props2, tableHeaderProps]);
+										return h(HeaderCellRenderer, HeaderCellRendererProps, [vmTable.$vSlots["header-cell"](cellProps)]);
 									} else {
 										const HeaderCellRendererProps = merge_hFnProps([
 											cellProps,
@@ -3338,9 +3047,7 @@ export default async function () {
 						createEmptyVNode("ComponentFooter"),
 						(function () {
 							if (vmTable.$vSlots.footer) {
-								return h(ComponentFooter, footerProps, [
-									{ default: vmTable.$vSlots.footer }
-								]);
+								return h(ComponentFooter, footerProps, [{ default: vmTable.$vSlots.footer }]);
 							}
 						})(),
 						createEmptyVNode("ComponentFooter"),
@@ -3349,7 +3056,10 @@ export default async function () {
 							if (unref(showEmpty)) {
 								return h(
 									ComponentEmpty,
-									{ class: ns.e("empty"), style: unref(emptyStyle) },
+									{
+										class: ns.e("empty"),
+										style: unref(emptyStyle)
+									},
 									[{ default: vmTable.$vSlots.empty }]
 								);
 							}
@@ -3357,9 +3067,7 @@ export default async function () {
 						createEmptyVNode("ComponentOverlay"),
 						(function () {
 							if (vmTable.$vSlots.overlay) {
-								return h(ComponentOverlay, { class: ns.e("overlay") }, [
-									{ default: vmTable.$vSlots.overlay }
-								]);
+								return h(ComponentOverlay, { class: ns.e("overlay") }, [{ default: vmTable.$vSlots.overlay }]);
 							}
 						})(),
 						createEmptyVNode("ComponentOverlay")
@@ -3385,42 +3093,30 @@ export default async function () {
 
 	const sResizer = id => `.xDataGrid[data-table-resizer-id=${id}]`;
 	const sMask = id => `.xDataGrid_mask[data-table-mask=${id}]`;
-	const sLine = id =>
-		`.xDataGrid_mask[data-table-mask=${id}] .xDataGrid_mask-line`;
+	const sLine = id => `.xDataGrid_mask[data-table-mask=${id}] .xDataGrid_mask-line`;
 
-	$("body").on(
-		"mousedown.colResize",
-		".el-table-v2__header-cell",
-		function (event) {
-			const { offsetX, offsetY, pageX, pageY, target, clientX, screenX } =
-				event;
-			const $cell = $(this);
-			if ($cell.width() - offsetX < 3) {
-				curr.id = $(target)
-					.parents(".el-auto-resizer")
-					.attr("data-table-resizer-id");
-				$(sMask(curr.id)).addClass("active");
-				const { left } = $(sResizer(curr.id)).offset();
-				$(sLine(curr.id)).css("left", `${clientX - left}px`);
-				const prop = $cell.attr("data-key");
-				curr = {
-					prop,
-					id: curr.id,
-					x: pageX
-				};
-			}
+	$("body").on("mousedown.colResize", ".el-table-v2__header-cell", function (event) {
+		const { offsetX, offsetY, pageX, pageY, target, clientX, screenX } = event;
+		const $cell = $(this);
+		if ($cell.width() - offsetX < 3) {
+			curr.id = $(target).parents(".el-auto-resizer").attr("data-table-resizer-id");
+			$(sMask(curr.id)).addClass("active");
+			const { left } = $(sResizer(curr.id)).offset();
+			$(sLine(curr.id)).css("left", `${clientX - left}px`);
+			const prop = $cell.attr("data-key");
+			curr = {
+				prop,
+				id: curr.id,
+				x: pageX
+			};
 		}
-	);
-	$("body").on(
-		"mousemove.colResize",
-		".xDataGrid_mask.active",
-		function (event) {
-			const { offsetX, offsetY, pageX, pageY, target } = event;
-			const $target = $(target);
-			$target.find(".xDataGrid_mask-line").css("left", `${offsetX}px`);
-			curr.grow = pageX - curr.x;
-		}
-	);
+	});
+	$("body").on("mousemove.colResize", ".xDataGrid_mask.active", function (event) {
+		const { offsetX, offsetY, pageX, pageY, target } = event;
+		const $target = $(target);
+		$target.find(".xDataGrid_mask-line").css("left", `${offsetX}px`);
+		curr.grow = pageX - curr.x;
+	});
 
 	$("body").on("mouseup.colResize", () => {
 		$(`.xDataGrid_mask`).removeClass("active");
@@ -3495,16 +3191,9 @@ export default async function () {
 								attrs: { "data-table-mask": vm._uid }
 							};
 
-							const vDomLine = h(
-								"div",
-								{ staticClass: "xDataGrid_mask-line" },
-								[]
-							);
+							const vDomLine = h("div", { staticClass: "xDataGrid_mask-line" }, []);
 
-							return [
-								h(xTableVir, xTableVirProps),
-								h("div", divProps, [vDomLine])
-							];
+							return [h(xTableVir, xTableVirProps), h("div", divProps, [vDomLine])];
 						}
 					}
 				]

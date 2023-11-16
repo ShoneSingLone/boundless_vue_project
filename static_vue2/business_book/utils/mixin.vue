@@ -2,15 +2,10 @@
 
 <script>
 export default async function () {
-	const { mapGetters, mapActions } = await _.$importVue(
-		"/common/libs/Vuex.vue"
-	);
-	const { themeList, addCss, getReadTimeByMinute } =
-		await _.$importVue("@/utils/book.vue");
-	const { saveLocation, getBookmark, getBookShelf, saveBookShelf } =
-		await _.$importVue("@/utils/localStorage.vue");
-	const { gotoBookDetail, appendAddToShelf, removeAddFromShelf, computeId } =
-		await _.$importVue("@/utils/store.vue");
+	const { mapGetters, mapActions } = await _.$importVue("/common/libs/Vuex.vue");
+	const { themeList, addCss, getReadTimeByMinute } = await _.$importVue("@/utils/book.vue");
+	const { saveLocation, getBookmark, getBookShelf, saveBookShelf } = await _.$importVue("@/utils/localStorage.vue");
+	const { gotoBookDetail, appendAddToShelf, removeAddFromShelf, computeId } = await _.$importVue("@/utils/store.vue");
 	const { shelf } = await _.$importVue("@/api/store.vue");
 
 	const ebookMixin = {
@@ -88,9 +83,7 @@ export default async function () {
 				const currentLocation = this.currentBook.rendition.currentLocation();
 				if (currentLocation && currentLocation.start) {
 					const startCfi = currentLocation.start.cfi;
-					const progress = this.currentBook.locations.percentageFromCfi(
-						currentLocation.start.cfi
-					);
+					const progress = this.currentBook.locations.percentageFromCfi(currentLocation.start.cfi);
 					this.setProgress(Math.floor(progress * 100));
 					this.setSection(currentLocation.start.index);
 					saveLocation(this.fileName, startCfi);
@@ -140,10 +133,7 @@ export default async function () {
 				this.setFontFamilyVisible(false);
 			},
 			getReadTimeText() {
-				return this.$t("book.haveRead").replace(
-					"$1",
-					getReadTimeByMinute(this.fileName)
-				);
+				return this.$t("book.haveRead").replace("$1", getReadTimeByMinute(this.fileName));
 			}
 		}
 	};
@@ -153,11 +143,7 @@ export default async function () {
 			...mapGetters(["offsetY", "hotSearchOffsetY", "flapCardVisible"])
 		},
 		methods: {
-			...mapActions([
-				"setOffsetY",
-				"setHotSearchOffsetY",
-				"setFlapCardVisible"
-			]),
+			...mapActions(["setOffsetY", "setHotSearchOffsetY", "setFlapCardVisible"]),
 			showBookDetail(book) {
 				gotoBookDetail(this, book);
 			}
@@ -166,26 +152,10 @@ export default async function () {
 
 	const storeShelfMixin = {
 		computed: {
-			...mapGetters([
-				"isEditMode",
-				"shelfList",
-				"shelfSelected",
-				"shelfTitleVisible",
-				"offsetY",
-				"shelfCategory",
-				"currentType"
-			])
+			...mapGetters(["isEditMode", "shelfList", "shelfSelected", "shelfTitleVisible", "offsetY", "shelfCategory", "currentType"])
 		},
 		methods: {
-			...mapActions([
-				"setIsEditMode",
-				"setShelfList",
-				"setShelfSelected",
-				"setShelfTitleVisible",
-				"setOffsetY",
-				"setShelfCategory",
-				"setCurrentType"
-			]),
+			...mapActions(["setIsEditMode", "setShelfList", "setShelfSelected", "setShelfTitleVisible", "setOffsetY", "setShelfCategory", "setCurrentType"]),
 			showBookDetail(book) {
 				gotoBookDetail(this, book);
 			},
@@ -201,11 +171,7 @@ export default async function () {
 				let shelfList = getBookShelf();
 				if (!shelfList) {
 					shelf().then(response => {
-						if (
-							response.status === 200 &&
-							response.data &&
-							response.data.bookList
-						) {
+						if (response.status === 200 && response.data && response.data.bookList) {
 							shelfList = appendAddToShelf(response.data.bookList);
 							saveBookShelf(shelfList);
 							return this.setShelfList(shelfList);

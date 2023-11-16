@@ -2,15 +2,8 @@
 	<transition name="slide-up">
 		<div class="setting-wrapper" v-show="menuVisible && settingVisible === 1">
 			<div class="setting-theme">
-				<div
-					class="setting-theme-item"
-					v-for="(item, index) in themeList"
-					:key="index"
-					@click="setTheme(index)">
-					<div
-						class="preview"
-						:style="{ background: item.style.body.background }"
-						:class="{ selected: item.name === defaultTheme }"></div>
+				<div class="setting-theme-item" v-for="(item, index) in themeList" :key="index" @click="setTheme(index)">
+					<div class="preview" :style="{ background: item.style.body.background }" :class="{ selected: item.name === defaultTheme }"></div>
 					<div class="text" :class="{ selected: item.name === defaultTheme }">
 						{{ item.alias }}
 					</div>

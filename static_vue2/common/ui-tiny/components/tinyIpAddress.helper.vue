@@ -20,10 +20,7 @@ export default async function () {
 							value
 						);
 				} else if (api.isIP4(props.type)) {
-					result =
-						/^((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}$/.test(
-							value
-						);
+					result = /^((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}$/.test(value);
 				}
 			}
 
@@ -62,10 +59,7 @@ export default async function () {
 					item.value && valueArr.push(item.value);
 				});
 
-				result =
-					state.address.filter(item => item.value).length === 8
-						? valueArr.join(":")
-						: "";
+				result = state.address.filter(item => item.value).length === 8 ? valueArr.join(":") : "";
 			} else {
 				state.address.forEach(item => {
 					if (api.isIP4(props.type) && item.value) {
@@ -75,10 +69,7 @@ export default async function () {
 					item.value && valueArr.push(item.value);
 				});
 
-				result =
-					state.address.filter(item => item.value).length === 4
-						? valueArr.join(".")
-						: "";
+				result = state.address.filter(item => item.value).length === 4 ? valueArr.join(".") : "";
 			}
 
 			return result;
@@ -101,7 +92,9 @@ export default async function () {
 								}
 							});
 							for (var i = 0; i <= 8 - state.address.length; i++) {
-								state.address.splice(insertIndex, 0, { value: "0000" });
+								state.address.splice(insertIndex, 0, {
+									value: "0000"
+								});
 							}
 						}
 					} else {
@@ -109,17 +102,12 @@ export default async function () {
 					}
 				}
 			} else {
-				state.address = api.isIP6(props.type)
-					? new Array(8).fill({ value: "" })
-					: new Array(4).fill({ value: "" });
+				state.address = api.isIP6(props.type) ? new Array(8).fill({ value: "" }) : new Array(4).fill({ value: "" });
 			}
 		};
 
 	const activeEvent = ({ emit, parent, state, index, event, type }) => {
-		const target =
-			event && event.target
-				? event.target
-				: parent.$el.querySelectorAll("input")[index || 0];
+		const target = event && event.target ? event.target : parent.$el.querySelectorAll("input")[index || 0];
 
 		type === "focus" && (state.active = true);
 
@@ -160,11 +148,7 @@ export default async function () {
 			if (api.isIP4(props.type)) {
 				if (!index && api.ipValidator(val)) {
 					api.setValue(val);
-				} else if (
-					isNaN(val) ||
-					val < IPTHRESHOLD.Min ||
-					val > IPTHRESHOLD.Max
-				) {
+				} else if (isNaN(val) || val < IPTHRESHOLD.Min || val > IPTHRESHOLD.Max) {
 					item.value = "";
 				}
 			} else {
@@ -215,26 +199,13 @@ export default async function () {
 					return false;
 				}
 
-				if (
-					[
-						KEY_CODE.Tab,
-						KEY_CODE.Space,
-						KEY_CODE.NumpadDecimal,
-						KEY_CODE.NumpadComma
-					].includes(keyCode) &&
-					value
-				) {
+				if ([KEY_CODE.Tab, KEY_CODE.Space, KEY_CODE.NumpadDecimal, KEY_CODE.NumpadComma].includes(keyCode) && value) {
 					api.select({ index: nextIndex });
 					return false;
 				}
 
 				/* istanbul ignore next */
-				if (
-					(value === "0" ||
-						value > IPTHRESHOLD.NonNumeric ||
-						value.length === 3) &&
-					!isNaN(event.key)
-				) {
+				if ((value === "0" || value > IPTHRESHOLD.NonNumeric || value.length === 3) && !isNaN(event.key)) {
 					api.focus({ index: nextIndex });
 					api.select({ index: nextIndex });
 
@@ -242,24 +213,12 @@ export default async function () {
 				}
 			}
 			if (api.isIP6(props.type)) {
-				if (
-					[
-						KEY_CODE.Tab,
-						KEY_CODE.Space,
-						KEY_CODE.NumpadDecimal,
-						KEY_CODE.NumpadComma
-					].includes(keyCode) &&
-					value
-				) {
+				if ([KEY_CODE.Tab, KEY_CODE.Space, KEY_CODE.NumpadDecimal, KEY_CODE.NumpadComma].includes(keyCode) && value) {
 					api.select({ index: nextIndex });
 
 					return false;
 				}
-				if (
-					(value.length === 4 || value === "0000") &&
-					(!isNaN(event.key) ||
-						(keyCode >= KEY_CODE.KeyA && keyCode <= KEY_CODE.KeyF))
-				) {
+				if ((value.length === 4 || value === "0000") && (!isNaN(event.key) || (keyCode >= KEY_CODE.KeyA && keyCode <= KEY_CODE.KeyF))) {
 					api.focus({ index: nextIndex });
 					api.select({ index: nextIndex });
 
@@ -268,55 +227,43 @@ export default async function () {
 			}
 		};
 
-	const checkError1 = ({
-		Tab,
-		Space,
-		NumpadDecimal,
-		NumpadComma,
-		keyCode,
-		value
-	}) => [Tab, Space, NumpadDecimal, NumpadComma].includes(keyCode) && value;
+	const checkError1 = ({ Tab, Space, NumpadDecimal, NumpadComma, keyCode, value }) => [Tab, Space, NumpadDecimal, NumpadComma].includes(keyCode) && value;
 
 	// NEXT 屏蔽选中时，替换值大于255
-	const checkError2 = newValue =>
-		newValue && (isNaN(newValue) || newValue > IPTHRESHOLD.Max);
+	const checkError2 = newValue => newValue && (isNaN(newValue) || newValue > IPTHRESHOLD.Max);
 
 	// NEXT 当内容为"0"时，屏蔽输入
-	const checkError3 = ({ isfilterKeyCodes, isSelected, value }) =>
-		!isfilterKeyCodes && !isSelected && value === "0";
+	const checkError3 = ({ isfilterKeyCodes, isSelected, value }) => !isfilterKeyCodes && !isSelected && value === "0";
 
 	// NEXT 当内容加输入的数字大于255时，屏蔽输入
-	const checkError4 = ({ isfilterKeyCodes, isSelected, value, key }) =>
-		!isfilterKeyCodes && !isSelected && value + key > IPTHRESHOLD.Max;
+	const checkError4 = ({ isfilterKeyCodes, isSelected, value, key }) => !isfilterKeyCodes && !isSelected && value + key > IPTHRESHOLD.Max;
 
 	// NEXT 屏蔽非数字键
-	const checkError5 = ({
-		key,
-		isfilterKeyCodes,
-		value,
-		ctrlKey,
-		keyCode,
-		KeyV
-	}) =>
-		isNaN(key) && !isfilterKeyCodes && !(!value && ctrlKey && keyCode === KeyV);
+	const checkError5 = ({ key, isfilterKeyCodes, value, ctrlKey, keyCode, KeyV }) => isNaN(key) && !isfilterKeyCodes && !(!value && ctrlKey && keyCode === KeyV);
 
-	const isError = ({
-		key,
-		value,
-		isSelected,
-		isfilterKeyCodes,
-		ctrlKey,
-		keyCode,
-		newValue
-	}) => {
+	const isError = ({ key, value, isSelected, isfilterKeyCodes, ctrlKey, keyCode, newValue }) => {
 		const { Tab, Space, NumpadDecimal, NumpadComma, KeyV } = KEY_CODE;
 
 		return (
-			checkError1({ Tab, Space, NumpadDecimal, NumpadComma, keyCode, value }) ||
+			checkError1({
+				Tab,
+				Space,
+				NumpadDecimal,
+				NumpadComma,
+				keyCode,
+				value
+			}) ||
 			checkError2(newValue) ||
 			checkError3({ isfilterKeyCodes, isSelected, value }) ||
 			checkError4({ isfilterKeyCodes, isSelected, value, key }) ||
-			checkError5({ key, isfilterKeyCodes, value, ctrlKey, keyCode, KeyV })
+			checkError5({
+				key,
+				isfilterKeyCodes,
+				value,
+				ctrlKey,
+				keyCode,
+				KeyV
+			})
 		);
 	};
 
@@ -332,18 +279,10 @@ export default async function () {
 			const isfilterKeyCodes = state.filterKeyCodes.includes(keyCode);
 			const nextIndex = index + 1;
 			const lastIndex = index - 1;
-			const newValue =
-				isSelected &&
-				!isfilterKeyCodes &&
-				value.substr(0, selectionStart) + key + value.substr(selectionEnd);
-			state.isDel =
-				keyCode === KEY_CODE.Backspace || keyCode === KEY_CODE.Delete;
+			const newValue = isSelected && !isfilterKeyCodes && value.substr(0, selectionStart) + key + value.substr(selectionEnd);
+			state.isDel = keyCode === KEY_CODE.Backspace || keyCode === KEY_CODE.Delete;
 
-			if (
-				keyCode === KEY_CODE.Backspace &&
-				cursorPosition === 0 &&
-				!selectionEnd
-			) {
+			if (keyCode === KEY_CODE.Backspace && cursorPosition === 0 && !selectionEnd) {
 				api.focus({ index: lastIndex });
 
 				return false;
@@ -394,16 +333,7 @@ export default async function () {
 		return sizePX ? isLineHeight + ":" + sizePX + ";" : "";
 	};
 
-	const api = [
-		"state",
-		"focus",
-		"inputEvent",
-		"blur",
-		"keyup",
-		"keydown",
-		"change",
-		"select"
-	];
+	const api = ["state", "focus", "inputEvent", "blur", "keyup", "keydown", "change", "select"];
 
 	const initState = ({ reactive, computed, handleValue, parent, props }) => {
 		const state = reactive({
@@ -411,41 +341,19 @@ export default async function () {
 			active: false,
 			isSelected: false,
 
-			filterKeyCodes: [
-				KEY_CODE.AtMark,
-				KEY_CODE.Backspace,
-				KEY_CODE.ArrowLeft,
-				KEY_CODE.ArrowRight,
-				KEY_CODE.Tab,
-				KEY_CODE.Delete
-			],
+			filterKeyCodes: [KEY_CODE.AtMark, KEY_CODE.Backspace, KEY_CODE.ArrowLeft, KEY_CODE.ArrowRight, KEY_CODE.Tab, KEY_CODE.Delete],
 
 			formDisabled: computed(() => (parent.tinyForm || {}).disabled),
 			disabled: computed(() => props.disabled || state.formDisabled),
 			heightStyle: computed(() => getHeightOfSize(props.size)),
-			lineHeightStyle: computed(() =>
-				getHeightOfSize(props.size, "line-height")
-			),
-			allHeightStyle: computed(
-				() => `${state.heightStyle}${state.lineHeightStyle}`
-			)
+			lineHeightStyle: computed(() => getHeightOfSize(props.size, "line-height")),
+			allHeightStyle: computed(() => `${state.heightStyle}${state.lineHeightStyle}`)
 		});
 
 		return state;
 	};
 
-	const initApi = ({
-		state,
-		api,
-		dispatch,
-		handleValue,
-		emit,
-		broadcast,
-		parent,
-		componentName,
-		props,
-		eventName
-	}) => {
+	const initApi = ({ state, api, dispatch, handleValue, emit, broadcast, parent, componentName, props, eventName }) => {
 		Object.assign(api, {
 			...handleValue.api,
 			state,
@@ -475,15 +383,7 @@ export default async function () {
 		});
 	};
 
-	const useHandleValue = ({
-		componentName,
-		dispatch,
-		eventName,
-		props,
-		reactive,
-		toRefs,
-		watch
-	}) => {
+	const useHandleValue = ({ componentName, dispatch, eventName, props, reactive, toRefs, watch }) => {
 		const state = reactive({
 			address: [],
 			isDel: false
@@ -515,11 +415,7 @@ export default async function () {
 		};
 	};
 
-	const renderless = (
-		props,
-		{ reactive, toRefs, watch, inject, computed },
-		{ $prefix, emit, parent, broadcast, dispatch }
-	) => {
+	const renderless = (props, { reactive, toRefs, watch, inject, computed }, { $prefix, emit, parent, broadcast, dispatch }) => {
 		const api = {};
 		const componentName = "FormItem";
 		const eventName = {
@@ -539,7 +435,13 @@ export default async function () {
 			watch
 		});
 
-		const state = initState({ reactive, computed, handleValue, parent, props });
+		const state = initState({
+			reactive,
+			computed,
+			handleValue,
+			parent,
+			props
+		});
 
 		initApi({
 			api,
@@ -578,8 +480,7 @@ export default async function () {
 				return ~["pc", "mobile", "mobile-first"].indexOf(mode);
 			};
 			var config = rootConfig(context);
-			var tinyModeProp =
-				typeof props2.tiny_mode === "string" ? props2.tiny_mode : null;
+			var tinyModeProp = typeof props2.tiny_mode === "string" ? props2.tiny_mode : null;
 			var tinyModeInject = hooks__namespace.inject("TinyMode", null);
 			var tinyModeGlobal = config.tiny_mode && config.tiny_mode.value;
 			if (!isRightMode(tinyModeProp)) tinyModeProp = null;

@@ -106,8 +106,7 @@ export default async function () {
 			barSelector: '[role="bar"]',
 			spinnerSelector: '[role="spinner"]',
 			parent: "body",
-			template:
-				'<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
+			template: '<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
 		});
 
 		/**
@@ -121,8 +120,7 @@ export default async function () {
 			var key, value;
 			for (key in options) {
 				value = options[key];
-				if (value !== undefined && options.hasOwnProperty(key))
-					Settings[key] = value;
+				if (value !== undefined && options.hasOwnProperty(key)) Settings[key] = value;
 			}
 
 			return this;
@@ -156,8 +154,7 @@ export default async function () {
 
 			queue(function (next) {
 				// Set positionUsing if it hasn't already been set
-				if (Settings.positionUsing === "")
-					Settings.positionUsing = NProgress.getPositioningCSS();
+				if (Settings.positionUsing === "") Settings.positionUsing = NProgress.getPositioningCSS();
 
 				// Add transition
 				css(bar, barPositionCSS(n, speed, ease));
@@ -335,10 +332,7 @@ export default async function () {
 
 		NProgress.remove = function () {
 			removeClass(document.documentElement, "nprogress-busy");
-			removeClass(
-				document.querySelector(Settings.parent),
-				"nprogress-custom-parent"
-			);
+			removeClass(document.querySelector(Settings.parent), "nprogress-custom-parent");
 			var progress = document.getElementById("nprogress");
 			progress && removeElement(progress);
 		};
@@ -360,16 +354,7 @@ export default async function () {
 			var bodyStyle = document.body.style;
 
 			// Sniff prefixes
-			var vendorPrefix =
-				"WebkitTransform" in bodyStyle
-					? "Webkit"
-					: "MozTransform" in bodyStyle
-					? "Moz"
-					: "msTransform" in bodyStyle
-					? "ms"
-					: "OTransform" in bodyStyle
-					? "O"
-					: "";
+			var vendorPrefix = "WebkitTransform" in bodyStyle ? "Webkit" : "MozTransform" in bodyStyle ? "Moz" : "msTransform" in bodyStyle ? "ms" : "OTransform" in bodyStyle ? "O" : "";
 
 			if (vendorPrefix + "Perspective" in bodyStyle) {
 				// Modern browsers with 3D support, e.g. Webkit, IE10
@@ -411,7 +396,9 @@ export default async function () {
 			var barCSS;
 
 			if (Settings.positionUsing === "translate3d") {
-				barCSS = { transform: "translate3d(" + toBarPerc(n) + "%,0,0)" };
+				barCSS = {
+					transform: "translate3d(" + toBarPerc(n) + "%,0,0)"
+				};
 			} else if (Settings.positionUsing === "translate") {
 				barCSS = { transform: "translate(" + toBarPerc(n) + "%,0)" };
 			} else {
@@ -456,11 +443,9 @@ export default async function () {
 				cssProps = {};
 
 			function camelCase(string) {
-				return string
-					.replace(/^-ms-/, "ms-")
-					.replace(/-([\da-z])/gi, function (match, letter) {
-						return letter.toUpperCase();
-					});
+				return string.replace(/^-ms-/, "ms-").replace(/-([\da-z])/gi, function (match, letter) {
+					return letter.toUpperCase();
+				});
 			}
 
 			function getVendorProp(name) {
@@ -496,8 +481,7 @@ export default async function () {
 				if (args.length == 2) {
 					for (prop in properties) {
 						value = properties[prop];
-						if (value !== undefined && properties.hasOwnProperty(prop))
-							applyCss(element, prop, value);
+						if (value !== undefined && properties.hasOwnProperty(prop)) applyCss(element, prop, value);
 					}
 				} else {
 					applyCss(element, args[1], args[2]);

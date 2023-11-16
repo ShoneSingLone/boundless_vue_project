@@ -1,18 +1,12 @@
-<template>
-	<xItem :configs="innerComponentConfigs" :value="privateModel" size="mini" />
-</template>
-
 <script>
 export default async function () {
-	const { useCellArgs } = await _.$importVue(
-		"/common/ui-x/common/ItemMixins.vue"
-	);
+	const { useCellArgs } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	return {
 		setup() {
 			onMounted(() => {
-				if (this.configs?.col?.xCellInput?.props) {
+				if (this.configs?.col?.componentOptions?.props) {
 					this.$watch(
-						"configs.col.xCellInput.props",
+						"configs.col.componentOptions.props",
 						(options, oldOptions) => {
 							const a = JSON.stringify(options);
 							const b = JSON.stringify(oldOptions);
@@ -24,11 +18,22 @@ export default async function () {
 					);
 				}
 			});
-			return useCellArgs({
+
+			const { innerComponentConfigs, privateModel } = useCellArgs({
 				vm: this,
-				itemType: "xCellInput",
-				cellConfigs: this.configs?.col?.xCellInput
+				itemType: "xItemInput",
+				cellConfigs: this.configs?.col?.componentOptions
 			});
+			this.innerComponentConfigs = innerComponentConfigs;
+
+			return function () {
+				_.$val(innerComponentConfigs, "payload", _.merge(innerComponentConfigs.payload, this.configs));
+				return h("xItem", {
+					configs: innerComponentConfigs,
+					value: privateModel.value,
+					size: "mini"
+				});
+			};
 		}
 	};
 }

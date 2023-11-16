@@ -8,12 +8,7 @@
 				<div class="popup-title" v-if="title && title.length > 0">
 					{{ title }}
 				</div>
-				<div
-					class="popup-btn"
-					v-for="(item, index) in btn"
-					:key="index"
-					:class="{ danger: item.type === 'danger' }"
-					@click="item.click">
+				<div class="popup-btn" v-for="(item, index) in btn" :key="index" :class="{ danger: item.type === 'danger' }" @click="item.click">
 					{{ item.text }}
 				</div>
 			</div></transition

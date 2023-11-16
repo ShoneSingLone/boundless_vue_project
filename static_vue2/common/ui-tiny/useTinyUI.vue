@@ -95,12 +95,8 @@ export default async function () {
 		NumpadDivide: 111,
 		NumpadComma: 190
 	};
-	const components = [
-		["tinyIpAddress", `/common/ui-tiny/components/tinyIpAddress.vue`]
-	];
-	_.each(components, ([name, url]) =>
-		Vue.component(name, () => _.$importVue(url))
-	);
+	const components = [["tinyIpAddress", `/common/ui-tiny/components/tinyIpAddress.vue`]];
+	_.each(components, ([name, url]) => Vue.component(name, () => _.$importVue(url)));
 	return {};
 }
 </script>

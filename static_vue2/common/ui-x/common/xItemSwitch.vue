@@ -1,6 +1,5 @@
 <template>
-	<el-switch v-model="mixin_value" v-bind="$attrs" v-on="mixin_listeners">
-	</el-switch>
+	<el-switch v-model="mixin_value" v-bind="$attrs" v-on="mixin_listeners"> </el-switch>
 </template>
 
 <script>

@@ -3,7 +3,7 @@ const bodyparser = require("koa-bodyparser");
 const fs = require("fs");
 const path = require("path");
 const cheerio = require("cheerio");
-const SERVER_CONFIGS = require("./server.configs");
+const { SERVER_CONFIGS } = require("./server.configs");
 
 exports.appUseKoaAssets = function (app) {
 	/**
@@ -14,15 +14,24 @@ exports.appUseKoaAssets = function (app) {
 
 	/* 处理静态资源 */
 	app.use(async (ctx, next) => {
-		if (ctx.path === "/") {
+
+
+		const pathArray = ctx.path.split("/");
+
+		if (pathArray.join("") === "") {
 			ctx.path = "/doc.html";
 		}
 		try {
-			const targetPath = app.pathResolve(
-				ctx.path.replace(/^\/(static)?/, "static_vue2/")
+			let targetPath = app.pathResolve(
+				ctx.path.replace(/^\/(static)?/, "../../static_vue2/")
 			);
+			let extname = path.extname(targetPath);
+			/* 如果没有明确的文件后缀，添加html尝试返回页面 */
+			if (!extname) {
+				extname = ".html";
+				targetPath += extname;
+			}
 
-			const extname = path.extname(targetPath);
 			const basename = path.basename(targetPath);
 
 			async function handleIndexHtml() {
@@ -32,14 +41,14 @@ exports.appUseKoaAssets = function (app) {
 				const $ = cheerio.load(indexHtmlString);
 				/* 首页注入 hmr 代码 */
 				let scriptBlockString = await fs.promises.readFile(
-					app.pathResolve("preprocess/server/hmr.socket.io.script_block.vue"),
+					app.pathResolve("./hmr.socket.io.script_block.vue"),
 					"utf-8"
 				);
 				scriptBlockString = scriptBlockString.replace("LOCALHOST_PORT", app.LOCALHOST_PORT);
 
 
 				socketIoString = await fs.promises.readFile(
-					app.pathResolve("preprocess/server/hmr.socket.io.script_block.socket.io.js"),
+					app.pathResolve("./hmr.socket.io.script_block.socket.io.js"),
 					"utf-8"
 				);
 
@@ -57,11 +66,8 @@ exports.appUseKoaAssets = function (app) {
 						`<script only-use-in-dev-model>window.MOCK_URL_PREFIX="${MOCK_URL_PREFIX}";</script>`
 					);
 				}
-				console.log(
-					"🚀 middleware.appUseKoaAssets.js handleIndexHtml:",
-					APP_NAME,
-					MOCK_URL_PREFIX
-				);
+				console.log("🚀 middleware.appUseKoaAssets.js handleIndexHtml:", APP_NAME, MOCK_URL_PREFIX);
+
 				ctx.body = $.html();
 			}
 

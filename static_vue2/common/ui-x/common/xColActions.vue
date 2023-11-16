@@ -1,8 +1,5 @@
 <template>
-	<component
-		class="xColActions"
-		:is="currentComponent"
-		:configs="this.configs" />
+	<component class="xColActions" :is="currentComponent" :configs="this.configs" />
 </template>
 
 <script>

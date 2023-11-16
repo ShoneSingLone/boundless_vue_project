@@ -1,24 +1,15 @@
 <template>
 	<transition name="fade">
-		<div
-			class="shelf-title"
-			:class="{ 'hide-shadow': ifHideShadown }"
-			v-show="shelfTitleVisible">
+		<div class="shelf-title" :class="{ 'hide-shadow': ifHideShadown }" v-show="shelfTitleVisible">
 			<div class="shelf-title-text-wrapper">
 				<span class="shelf-title-text">{{ title }}</span>
-				<span class="shelf-title-sub-text" v-show="isEditMode">{{
-					selectedText
-				}}</span>
+				<span class="shelf-title-sub-text" v-show="isEditMode">{{ selectedText }}</span>
 			</div>
 			<div class="shelf-title-btn-wrapper shelf-title-left" v-if="showClear">
-				<span class="shelf-title-btn-text" @click="clearCache">{{
-					$t("shelf.clearCache")
-				}}</span>
+				<span class="shelf-title-btn-text" @click="clearCache">{{ $t("shelf.clearCache") }}</span>
 			</div>
 			<div class="shelf-title-btn-wrapper shelf-title-right" v-if="showEdit">
-				<span class="shelf-title-btn-text" @click="onEditClick">{{
-					isEditMode ? $t("shelf.cancel") : $t("shelf.edit")
-				}}</span>
+				<span class="shelf-title-btn-text" @click="onEditClick">{{ isEditMode ? $t("shelf.cancel") : $t("shelf.edit") }}</span>
 			</div>
 			<div class="shelf-title-btn-wrapper shelf-title-left" v-if="showBack">
 				<span class="icon-back" @click="back"></span>
@@ -40,9 +31,7 @@
 <script>
 export default async function () {
 	const { storeShelfMixin } = await _.$importVue("@/utils/mixin.vue");
-	const { clearLocalStorage, saveBookShelf } = await _.$importVue(
-		"@/utils/localStorage.vue"
-	);
+	const { clearLocalStorage, saveBookShelf } = await _.$importVue("@/utils/localStorage.vue");
 	const { clearLocalForage } = await _.$importVue("@/utils/localForage.vue");
 
 	return {
@@ -66,11 +55,7 @@ export default async function () {
 		},
 		computed: {
 			emptyCategory() {
-				return (
-					!this.shelfCategory ||
-					!this.shelfCategory.itemList ||
-					this.shelfCategory.itemList.length === 0
-				);
+				return !this.shelfCategory || !this.shelfCategory.itemList || this.shelfCategory.itemList.length === 0;
 			},
 			showEdit() {
 				return this.currentType === 1 || !this.emptyCategory;
@@ -82,9 +67,7 @@ export default async function () {
 				return this.currentType === 2 && !this.isEditMode;
 			},
 			showChangeGroup() {
-				return (
-					this.currentType === 2 && (this.isEditMode || this.emptyCategory)
-				);
+				return this.currentType === 2 && (this.isEditMode || this.emptyCategory);
 			},
 			changeGroupLeft() {
 				return !this.emptyCategory;
@@ -93,9 +76,7 @@ export default async function () {
 				return this.emptyCategory;
 			},
 			selectedText() {
-				const selectedNumber = this.shelfSelected
-					? this.shelfSelected.length
-					: 0;
+				const selectedNumber = this.shelfSelected ? this.shelfSelected.length : 0;
 
 				return selectedNumber <= 0
 					? this.$t("shelf.selectBook")
@@ -112,9 +93,7 @@ export default async function () {
 		methods: {
 			onComplete() {
 				this.hidePopup();
-				this.setShelfList(
-					this.shelfList.filter(book => book.id !== this.shelfCategory.id)
-				).then(() => {
+				this.setShelfList(this.shelfList.filter(book => book.id !== this.shelfCategory.id)).then(() => {
 					saveBookShelf(this.shelfList);
 					this.$router.go(-1);
 					this.setIsEditMode(false);

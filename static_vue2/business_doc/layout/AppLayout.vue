@@ -13,9 +13,7 @@
 
 <script>
 export default async function () {
-	await _.$ensure(
-		() => window?.i18n?.options && Object.keys(window.i18n.options).length > 0
-	);
+	await _.$ensure(() => window?.i18n?.options && Object.keys(window.i18n.options).length > 0);
 	return {
 		components: {
 			AppHeader: () => _.$importVue("@/layout/AppLayoutHeader.vue"),

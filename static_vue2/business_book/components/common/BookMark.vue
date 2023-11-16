@@ -24,9 +24,7 @@ export default async function () {
 		methods: {
 			refresh() {
 				if (this.width && this.height) {
-					this.$refs.bookmark.style.borderWidth = `${px2rem(
-						this.height - 5
-					)} ${px2rem(this.width / 2)}rem`;
+					this.$refs.bookmark.style.borderWidth = `${px2rem(this.height - 5)} ${px2rem(this.width / 2)}rem`;
 				}
 			}
 		},

@@ -10,9 +10,7 @@ export default async function () {
 		props: ["configs", "type", "slotname", "row", "index"],
 		methods: {
 			getDisableByDisabledBy() {
-				return _.isFunction(this.disabledBy)
-					? this.disabledBy(this.row, this.index)
-					: !!this.row[this.disabledBy];
+				return _.isFunction(this.disabledBy) ? this.disabledBy(this.row, this.index) : !!this.row[this.disabledBy];
 			},
 			setSelectedRows(rows) {
 				this.configs.data.selected = rows;
@@ -56,9 +54,7 @@ export default async function () {
 							if (vm.configs.data.list.length === 0) {
 								return false;
 							}
-							return (
-								vm.configs.data.selected.length === vm.configs.data.list.length
-							);
+							return vm.configs.data.selected.length === vm.configs.data.list.length;
 						})();
 						const property = {
 							style: {
@@ -66,9 +62,7 @@ export default async function () {
 							},
 							props: {
 								value: isSelectAll,
-								indeterminate:
-									vm.configs.data.selected.length > 0 &&
-									vm.configs.data.selected.length < vm.configs.data.list.length
+								indeterminate: vm.configs.data.selected.length > 0 && vm.configs.data.selected.length < vm.configs.data.list.length
 							},
 							on: {
 								change: () => {
@@ -76,40 +70,27 @@ export default async function () {
 									const handleSetDisabled = () => {
 										const canSelectRows = (() => {
 											if (_.isFunction(vm.disabledBy)) {
-												return vm.configs.data.list.filter(
-													(row, index) => !vm.disabledBy(row, index)
-												);
+												return vm.configs.data.list.filter((row, index) => !vm.disabledBy(row, index));
 											}
 											if (_.isString(vm.disabledBy)) {
-												return vm.configs.data.list.filter(
-													row => !row[vm.disabledBy]
-												);
+												return vm.configs.data.list.filter(row => !row[vm.disabledBy]);
 											}
 											return vm.configs.data.list;
 										})();
 
-										if (
-											vm.configs.data.selected.length === canSelectRows.length
-										) {
+										if (vm.configs.data.selected.length === canSelectRows.length) {
 											vm.setSelectedRows([]);
 										} else {
-											const currentSelectedRows = canSelectRows.map(
-												row => row[vm.selectedBy]
-											);
+											const currentSelectedRows = canSelectRows.map(row => row[vm.selectedBy]);
 											vm.setSelectedRows(currentSelectedRows);
 										}
 									};
 									/**/
 									const handleUnsetDisabled = () => {
-										if (
-											vm.configs.data.selected.length ===
-											vm.configs.data.list.length
-										) {
+										if (vm.configs.data.selected.length === vm.configs.data.list.length) {
 											vm.setSelectedRows([]);
 										} else {
-											const currentSelectedRows = vm.configs.data.list.map(
-												row => row[vm.selectedBy]
-											);
+											const currentSelectedRows = vm.configs.data.list.map(row => row[vm.selectedBy]);
 											vm.setSelectedRows(currentSelectedRows);
 										}
 									};
@@ -129,9 +110,7 @@ export default async function () {
 						return h("el-checkbox", {
 							props: {
 								width: 35,
-								value: vm.configs.data.selected.includes(
-									this.row[vm.selectedBy]
-								),
+								value: vm.configs.data.selected.includes(this.row[vm.selectedBy]),
 								disabled
 							},
 							on: {
@@ -149,8 +128,7 @@ export default async function () {
 					header: () => null,
 					default: () => {
 						const disabled = vm.getDisableByDisabledBy();
-						const value =
-							vm.configs.data.selected[0] === this.row[vm.selectedBy];
+						const value = vm.configs.data.selected[0] === this.row[vm.selectedBy];
 						return h("el-checkbox", {
 							props: {
 								width: 35,

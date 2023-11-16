@@ -6,8 +6,8 @@ export default async function () {
 		useCellArgs({ vm, itemType, cellConfigs }) {
 			const innerComponentConfigs = reactive({
 				...cellConfigs,
+				itemType,
 				payload: {
-					itemType,
 					xCell: vm,
 					configs: vm.configs,
 					row: vm.configs.row,

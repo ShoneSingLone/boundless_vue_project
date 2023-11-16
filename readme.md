@@ -34,7 +34,8 @@ window._CURENT_IS_MOBILE
 window.APP_VERSION,
 window.APP_ENTRY_NAME 默认entry 其他的也可以
 
-## HMR
+## ~~HMR~~
+- 方案有重大bug，暂时不用。
 -  使用defineComponent定义Vue组件，默认添加NEED_HMR: localStorage.isDev；用于热替换。 
 - （目前有多级属性传递问题，尚不稳定。）
 - 函数式组件的render是否支持async 异步？

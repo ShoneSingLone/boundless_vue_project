@@ -3,26 +3,16 @@
 		<template #header>
 			<div class="flex middle">
 				<label class="form-check-label">
-					<ElCheckbox
-						:value="isSelectAll"
-						:indeterminate="!isSelectAll && value.length > 0"
-						@change="setSelectAll">
+					<ElCheckbox :value="isSelectAll" :indeterminate="!isSelectAll && value.length > 0" @change="setSelectAll">
 						{{ title }}
 					</ElCheckbox>
 				</label>
 				<span class="flex1"></span>
-				<div
-					v-if="slotSearchForm"
-					:is="slotSearchForm"
-					:vm-search-list="vmSearchList"></div>
+				<div v-if="slotSearchForm" :is="slotSearchForm" :vm-search-list="vmSearchList"></div>
 				<div v-else class="flex middle">
-					<xItem
-						v-model="searchForm.field"
-						:configs="configsSearchForm.field" />
+					<xItem v-model="searchForm.field" :configs="configsSearchForm.field" />
 					<span />
-					<xItem
-						v-model="searchForm.value"
-						:configs="configsSearchForm.value" />
+					<xItem v-model="searchForm.value" :configs="configsSearchForm.value" />
 					<span class="mr10" />
 					<xInquire @click="onQuery" />
 				</div>
@@ -31,9 +21,7 @@
 		<div class="wrapper">
 			<div class="form-check flex" v-for="item in items" :key="item.key">
 				<label class="ml10 form-check-label flex1 ellipsis" :title="item.label">
-					<ElCheckbox
-						:value="value.includes(item.key)"
-						@change="handleValueChange(item.key)">
+					<ElCheckbox :value="value.includes(item.key)" @change="handleValueChange(item.key)">
 						{{ item.label }}
 					</ElCheckbox>
 				</label>

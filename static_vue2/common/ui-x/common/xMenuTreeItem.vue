@@ -30,9 +30,7 @@ export default async function () {
 						return props.renders?.label.call(vm, { item: vm.item });
 					}
 
-					return h("div", { staticClass: "el-submenu__title-text" }, [
-						vm.cpt_label
-					]);
+					return h("div", { staticClass: "el-submenu__title-text" }, [vm.cpt_label]);
 				},
 				toggle() {
 					/* 如果折叠就不跳转 */
@@ -64,21 +62,7 @@ export default async function () {
 			}
 		},
 		render() {
-			const {
-				$attrs,
-				toggle,
-				item,
-				createTextVNode,
-				scopeSlotsDefault,
-				cpt_children,
-				isFolder,
-				isActive,
-				state,
-				active,
-				clickItem,
-				renders,
-				$router
-			} = this;
+			const { $attrs, toggle, item, createTextVNode, scopeSlotsDefault, cpt_children, isFolder, isActive, state, active, clickItem, renders, $router } = this;
 
 			return h(
 				"div",
@@ -147,7 +131,9 @@ export default async function () {
 									}
 								],
 								key: index,
-								staticStyle: { "padding-left": "var(--ui-one)" },
+								staticStyle: {
+									"padding-left": "var(--ui-one)"
+								},
 								renders,
 								active: active,
 								clickItem: clickItem,

@@ -1,8 +1,5 @@
 <template>
-	<div
-		data-role="cell"
-		:data-span="cpt_span"
-		class="el-descriptions-row flex cell">
+	<div data-role="cell" :data-span="cpt_span" class="el-descriptions-row flex cell">
 		<div class="el-descriptions-item__label is-bordered-label">
 			<span :style="labelStyle">
 				{{ cpt_label }}

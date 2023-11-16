@@ -39,7 +39,11 @@ export default async function () {
 		methods: {
 			emitChange({ count, current, pagesize }) {
 				/* 给外部查询用 */
-				let pagination = { count, current: (current - 1) * pagesize, pagesize };
+				let pagination = {
+					count,
+					current: (current - 1) * pagesize,
+					pagesize
+				};
 
 				if (this.configs?.pagination) {
 					this.configs.pagination = pagination;

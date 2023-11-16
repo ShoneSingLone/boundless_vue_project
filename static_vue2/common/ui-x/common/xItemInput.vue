@@ -19,8 +19,8 @@ export default async function () {
 			if (this.isNumber) {
 				tag = "el-input-number";
 			}
-
 			let attrs = {
+				...vm.$attrs,
 				showWordLimit: "",
 				showPassword: vm.isShowPassword,
 				autocomplete: "on",
@@ -33,22 +33,18 @@ export default async function () {
 			if (vm.configs?.type === "textarea") {
 				attrs.rows = 4;
 			}
-
 			return h(
 				tag,
 				merge_hFnProps([
-					{ on: vm.mixin_listeners },
-					this?.$options?.propsData || {},
-					this?.$vnode?.data || {},
-					this?.$vnode?.data?.attrs || {},
-					attrs,
 					{
-						value: vm.mixin_value,
+						attrs,
+						on: vm.mixin_listeners,
+						/* configs,value */
 						onInput(val) {
 							vm.mixin_value = val;
 						}
 					},
-					{ attrs: vm.$attrs }
+					this?.$vnode?.data
 				]),
 				[]
 			);

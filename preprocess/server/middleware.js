@@ -5,19 +5,10 @@ const {
 	appUseSocketMiddleware
 } = require("./middleware.appUseSocketMiddleware");
 const { appUseHMR } = require("./middleware.appUseHMR");
-
-const proxyOptions = {
-	targets: {
-		"/mock/(.*)": {
-			target: "http://10.143.133.216:3001",
-			secure: false,
-			changeOrigin: true
-		}
-	}
-};
+const { PROXY_OPTIONS } = require("./server.configs");
 
 function appUseProxy(app) {
-	app.use(useProxy(proxyOptions));
+	app.use(useProxy(PROXY_OPTIONS));
 }
 
 function appRun(app, port = 3000) {

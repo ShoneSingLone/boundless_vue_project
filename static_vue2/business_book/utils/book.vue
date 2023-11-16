@@ -124,9 +124,7 @@ export default async function () {
 	}
 
 	function flatten(array) {
-		return [].concat(
-			...array.map(item => [].concat(item, ...flatten(item.subitems)))
-		);
+		return [].concat(...array.map(item => [].concat(item, ...flatten(item.subitems))));
 	}
 
 	return {

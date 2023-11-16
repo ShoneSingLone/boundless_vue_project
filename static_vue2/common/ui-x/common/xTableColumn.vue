@@ -1,17 +1,9 @@
 <template>
 	<el-table class="xTable" :data="dataList" ref="xTable" v-bind="$attrs">
-		<el-table-column
-			v-for="prop in displayProps"
-			:key="prop"
-			:prop="prop"
-			:width="getWidthBy(prop)"
-			:fixed="getFixedBy(prop)">
+		<el-table-column v-for="prop in displayProps" :key="prop" :prop="prop" :width="getWidthBy(prop)" :fixed="getFixedBy(prop)">
 			<template #header="{ $index, column, store, _self }">
 				<div v-if="isCOL(prop)" class="fixed-right table-header">
-					<xTableColSelected
-						slotname="header"
-						:configs="configs"
-						:type="prop" />
+					<xTableColSelected slotname="header" :configs="configs" :type="prop" />
 				</div>
 				<div v-else class="table-header">
 					{{ getLabelBy(prop) }}
@@ -19,32 +11,23 @@
 			</template>
 			<template #default="{ $index, column, row, store, _self }">
 				<div v-if="isCOL(prop)" class="fixed-right">
-					<xTableColSelected
-						slotname="default"
-						:configs="configs"
-						:type="prop"
-						:row="row"
-						:index="$index" />
+					<xTableColSelected slotname="default" :configs="configs" :type="prop" :row="row" :index="$index" />
 				</div>
-				<xRender
-					v-else-if="allColInfo[prop].render"
-					:render="allColInfo[prop].render"
-					:payload="{ row, index: $index }" />
+				<xRender v-else-if="allColInfo[prop].render" :render="allColInfo[prop].render" :payload="{ row, index: $index }" />
 				<component
 					v-else-if="isUseComponent(prop)"
 					:is="useComponent(prop)"
 					:index="$index"
 					:row="row"
-					:configs="{ row, index: $index, col: allColInfo[prop], prop }">
+					:configs="{
+						row,
+						index: $index,
+						col: allColInfo[prop],
+						prop
+					}">
 				</component>
-				<xColActions
-					v-else-if="isACTION(prop)"
-					:prop="prop"
-					:row="row"
-					:configs="allColInfo.COL_ACTIONS" />
-				<div
-					v-else-if="allColInfo[prop].html"
-					v-html="allColInfo[prop].html(row, $index)">
+				<xColActions v-else-if="isACTION(prop)" :prop="prop" :row="row" :configs="allColInfo.COL_ACTIONS" />
+				<div v-else-if="allColInfo[prop].html" v-html="allColInfo[prop].html(row, $index)">
 					{{ row[prop] }}
 				</div>
 				<div v-else>
@@ -66,15 +49,9 @@ export default async function () {
 			const setColActionWidthImmediate = () => {
 				try {
 					if (this?.configs?.data?.list?.length > 0) {
-						const $xColActions = $(this.$refs.xTable.$el).find(
-							".xColActions"
-						)[0];
+						const $xColActions = $(this.$refs.xTable.$el).find(".xColActions")[0];
 						/* TODO: 列表中最长的操作 */
-						if (
-							$xColActions &&
-							$xColActions.children &&
-							$xColActions.children.length > 0
-						) {
+						if ($xColActions && $xColActions.children && $xColActions.children.length > 0) {
 							const length = $xColActions.children.length;
 							const gap = length * 16;
 							let width = _.reduce(
@@ -189,10 +166,7 @@ export default async function () {
 				return _.reduce(
 					this.allColInfo,
 					(target, item, prop) => {
-						if (
-							["COL_SINGLE", "COL_MULTIPLE", "COL_ACTIONS"].includes(prop) ||
-							item.isShow
-						) {
+						if (["COL_SINGLE", "COL_MULTIPLE", "COL_ACTIONS"].includes(prop) || item.isShow) {
 							target.push(prop);
 						}
 						return target;

@@ -39,8 +39,7 @@ window.i18n.options = {
 		medicineAndPublicHealth: "Medicine And Public Health",
 		philosophy: "Philosophy",
 		physics: "Physics",
-		politicalScienceAndInternationalRelations:
-			"Political Science And International Relations",
+		politicalScienceAndInternationalRelations: "Political Science And International Relations",
 		psychology: "Psychology",
 		statistics: "Statistics"
 	},
@@ -54,20 +53,16 @@ window.i18n.options = {
 		download: "Download",
 		move: "Move...",
 		remove: "Remove",
-		setPrivateTitle:
-			"When opened, the reading history of selected books will not be made public",
+		setPrivateTitle: "When opened, the reading history of selected books will not be made public",
 		open: "Open",
-		closePrivateTitle:
-			"Whether to close the private reading of selected books?",
+		closePrivateTitle: "Whether to close the private reading of selected books?",
 		close: "Close",
-		setPrivateSuccess:
-			"Private reading has been open and reading history will no longer be published",
+		setPrivateSuccess: "Private reading has been open and reading history will no longer be published",
 		closePrivateSuccess: "Private reading has been closed",
 		setDownloadTitle: "When opened, selected books will automatically download",
 		setDownloadSuccess: "Opened, will automatically download purchased books",
 		setDownloadError: "Offline download exception, please try again",
-		removeDownloadTitle:
-			"Once confirmed, the offline books of selected will be remove",
+		removeDownloadTitle: "Once confirmed, the offline books of selected will be remove",
 		removeDownloadSuccess: "Offline books of selected has been remove",
 		delete: "Remove",
 		clearCache: "Clear Cache",
@@ -89,8 +84,7 @@ window.i18n.options = {
 		editGroup: "Edit Group",
 		editGroupName: "Edit Group Name",
 		deleteGroup: "Delete Group",
-		deleteGroupTitle:
-			"After deleting a group, the books in the group will be automatically moved out of the group",
+		deleteGroupTitle: "After deleting a group, the books in the group will be automatically moved out of the group",
 		groupNone: "There are no books in the current group",
 		groupName: "Group Name",
 		confirm: "Confirm",
@@ -100,8 +94,7 @@ window.i18n.options = {
 		startDownload: "Start download...",
 		progressDownload: "Downloading：$1",
 		downloadFirst: "Please download book first",
-		welcome:
-			'Welcome to visit iMooc<br>Learning "Practical WeChat Reading - Enterprise Web Book Store of Amami Native APP"<br>--------  Author: Sam  --------',
+		welcome: 'Welcome to visit iMooc<br>Learning "Practical WeChat Reading - Enterprise Web Book Store of Amami Native APP"<br>--------  Author: Sam  --------',
 		find: "Go to book store",
 		changeLanguage: "Change Language"
 	},

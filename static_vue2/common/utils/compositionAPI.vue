@@ -16,12 +16,10 @@ export default async function compositionAPI() {
 				y: 0
 			});
 			function setContentRect(contentRect, values) {
-				["bottom", "height", "left", "right", "top", "width", "x", "y"].forEach(
-					prop => {
-						const value = values[prop];
-						_.$val(contentRect, prop, value);
-					}
-				);
+				["bottom", "height", "left", "right", "top", "width", "x", "y"].forEach(prop => {
+					const value = values[prop];
+					_.$val(contentRect, prop, value);
+				});
 			}
 			onMounted(() => {
 				const eleRect = vm.$refs[refName].getBoundingClientRect();

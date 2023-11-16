@@ -2,7 +2,9 @@
 	"use strict";
 	function _interopNamespace(e) {
 		if (e && e.__esModule) return e;
-		var n = Object.create(null, { [Symbol.toStringTag]: { value: "Module" } });
+		var n = Object.create(null, {
+			[Symbol.toStringTag]: { value: "Module" }
+		});
 		if (e) {
 			Object.keys(e).forEach(function (k) {
 				if (k !== "default") {
@@ -42,8 +44,7 @@
 			  })
 			: (obj[key] = value);
 	var __spreadValues = (a, b) => {
-		for (var prop in b || (b = {}))
-			if (__hasOwnProp.call(b, prop)) __defNormalProp(a, prop, b[prop]);
+		for (var prop in b || (b = {})) if (__hasOwnProp.call(b, prop)) __defNormalProp(a, prop, b[prop]);
 		if (__getOwnPropSymbols)
 			for (var prop of __getOwnPropSymbols(b)) {
 				if (__propIsEnum.call(b, prop)) __defNormalProp(a, prop, b[prop]);
@@ -68,8 +69,7 @@
 		"[object Boolean]": "boolean"
 	};
 	const isNull = x => x === null || x === void 0;
-	const typeOf = obj =>
-		isNull(obj) ? String(obj) : class2type[toString.call(obj)] || "object";
+	const typeOf = obj => (isNull(obj) ? String(obj) : class2type[toString.call(obj)] || "object");
 	const isObject = obj => typeOf(obj) === "object";
 	const isPlainObject = obj => {
 		if (!obj || toString.call(obj) !== "[object Object]") {
@@ -80,10 +80,7 @@
 			return true;
 		}
 		const Ctor = hasOwn.call(proto, "constructor") && proto.constructor;
-		return (
-			typeof Ctor === "function" &&
-			fnToString.call(Ctor) === ObjectFunctionString
-		);
+		return typeof Ctor === "function" && fnToString.call(Ctor) === ObjectFunctionString;
 	};
 	const isNumber = value => typeof value === "number" && isFinite(value);
 	const isNumeric = value => value - parseFloat(value) >= 0;
@@ -143,17 +140,9 @@
 				tmpl = target;
 			}
 			item = nameArr[len];
-			isMerge
-				? isPlainObject(tmpl[item])
-					? extend(true, tmpl[item], value)
-					: (tmpl[item] = value)
-				: (tmpl[item] = value);
+			isMerge ? (isPlainObject(tmpl[item]) ? extend(true, tmpl[item], value) : (tmpl[item] = value)) : (tmpl[item] = value);
 		} else {
-			isMerge
-				? isPlainObject(obj[item])
-					? extend(true, obj[item], value)
-					: (obj[item] = value)
-				: (obj[item] = value);
+			isMerge ? (isPlainObject(obj[item]) ? extend(true, obj[item], value) : (obj[item] = value)) : (obj[item] = value);
 		}
 		return obj;
 	};
@@ -178,20 +167,14 @@
 		const innerCopyFields = (obj, fields2, isMerge2, isExclude2) => {
 			const result = {};
 			if (isExclude2) {
-				each(obj, name =>
-					fields2.forEach(key => setValue2(obj, result, name, key, isMerge2))
-				);
+				each(obj, name => fields2.forEach(key => setValue2(obj, result, name, key, isMerge2)));
 			} else {
-				fields2.forEach(field =>
-					setObj(result, field, getObj(obj, field), isMerge2)
-				);
+				fields2.forEach(field => setObj(result, field, getObj(obj, field), isMerge2));
 			}
 			return result;
 		};
 		if (isPlainObject(data)) {
-			return Array.isArray(fields)
-				? innerCopyFields(data, fields, isMerge, isExclude)
-				: extend(isMerge !== false, {}, data);
+			return Array.isArray(fields) ? innerCopyFields(data, fields, isMerge, isExclude) : extend(isMerge !== false, {}, data);
 		}
 		return data;
 	};
@@ -200,11 +183,7 @@
 	};
 	const deepCopy = (target, name, deep, copy, src) => {
 		let copyIsArray;
-		if (
-			deep &&
-			copy &&
-			(isPlainObject(copy) || (copyIsArray = Array.isArray(copy)))
-		) {
+		if (deep && copy && (isPlainObject(copy) || (copyIsArray = Array.isArray(copy)))) {
 			if (copyIsArray) {
 				copyIsArray = false;
 				target[name] = copyArray(copy);
@@ -269,10 +248,7 @@
 			browser.edge = true;
 		}
 	};
-	const isBrowser =
-		typeof window !== "undefined" &&
-		typeof document !== "undefined" &&
-		window.document === document;
+	const isBrowser = typeof window !== "undefined" && typeof document !== "undefined" && window.document === document;
 	(() => {
 		const browser = {
 			name: void 0,
@@ -283,17 +259,11 @@
 			isNode: typeof window === "undefined"
 		};
 		if (isBrowser) {
-			const isMobile =
-				/(Android|webOS|iPhone|iPad|iPod|SymbianOS|BlackBerry|Windows Phone)/.test(
-					navigator.userAgent
-				);
+			const isMobile = /(Android|webOS|iPhone|iPad|iPod|SymbianOS|BlackBerry|Windows Phone)/.test(navigator.userAgent);
 			browser.isMobile = isMobile;
 			browser.isPC = !isMobile;
 			let matches;
-			if (
-				!!window.chrome &&
-				(!!window.chrome.webstore || /^Google\b/.test(window.navigator.vendor))
-			) {
+			if (!!window.chrome && (!!window.chrome.webstore || /^Google\b/.test(window.navigator.vendor))) {
 				browser.name = "chrome";
 				browser.chrome = true;
 				matches = navigator.userAgent.match(/chrome\/(\d+)/i);
@@ -306,11 +276,7 @@
 			} else if (typeof window.InstallTrigger !== "undefined") {
 				browser.name = "firefox";
 				browser.firefox = true;
-			} else if (
-				Object.prototype.toString
-					.call(window.HTMLElement)
-					.indexOf("Constructor") > 0
-			) {
+			} else if (Object.prototype.toString.call(window.HTMLElement).indexOf("Constructor") > 0) {
 				browser.name = "safari";
 				browser.safari = true;
 			} else if ((!!window.opr && !!window.opr.addons) || !!window.opera) {
@@ -378,42 +344,28 @@
 		if (!num) {
 			return false;
 		}
-		return (
-			/^\s*-?\d+(\.\d+)?\s*$/.test(num) ||
-			/^\s*-?\d+\.\s*$/.test(num) ||
-			/^\s*-?\.\d+\s*$/.test(num)
-		);
+		return /^\s*-?\d+(\.\d+)?\s*$/.test(num) || /^\s*-?\d+\.\s*$/.test(num) || /^\s*-?\.\d+\s*$/.test(num);
 	}
 	function getNumberPrecision(number) {
 		let numStr = String(number);
 		if (isE(number)) {
 			let precision = Number(numStr.slice(numStr.indexOf("e-") + 2));
 			let decimalMatch = numStr.match(/\.(\d+)/);
-			if (
-				decimalMatch === null || decimalMatch === void 0
-					? void 0
-					: decimalMatch[1]
-			) {
+			if (decimalMatch === null || decimalMatch === void 0 ? void 0 : decimalMatch[1]) {
 				precision += decimalMatch[1].length;
 			}
 			return precision;
 		}
-		return ~numStr.indexOf(".") && validateNumber(numStr)
-			? numStr.length - numStr.indexOf(".") - 1
-			: 0;
+		return ~numStr.indexOf(".") && validateNumber(numStr) ? numStr.length - numStr.indexOf(".") - 1 : 0;
 	}
 	function num2str(number) {
 		let numStr = String(number);
 		if (isE(number)) {
 			if (number > Number.MAX_SAFE_INTEGER) {
-				return String(
-					supportBigInt() ? BigInt(number).toString() : Number.MAX_SAFE_INTEGER
-				);
+				return String(supportBigInt() ? BigInt(number).toString() : Number.MAX_SAFE_INTEGER);
 			}
 			if (number < Number.MIN_SAFE_INTEGER) {
-				return String(
-					supportBigInt() ? BigInt(number).toString() : Number.MIN_SAFE_INTEGER
-				);
+				return String(supportBigInt() ? BigInt(number).toString() : Number.MIN_SAFE_INTEGER);
 			}
 			numStr = number.toFixed(getNumberPrecision(numStr));
 		}
@@ -469,8 +421,7 @@
 				const trimRet = trimNumber(mergedValue);
 				this.negative = trimRet.negative;
 				const numbers = trimRet.trimStr.split(".");
-				this.integer =
-					numbers[0].indexOf("e") === -1 ? BigInt(numbers[0]) : numbers[0];
+				this.integer = numbers[0].indexOf("e") === -1 ? BigInt(numbers[0]) : numbers[0];
 				const decimalStr = numbers[1] || "0";
 				this.decimal = convertBigInt(decimalStr);
 				this.decimalLen = decimalStr.length;
@@ -488,10 +439,7 @@
 			return this.negative ? "-" : "";
 		}
 		alignDecimal(decimalLength) {
-			const string = `${this.getMark()}${this.getIntegerStr()}${this.getDecimalStr().padEnd(
-				decimalLength,
-				"0"
-			)}`;
+			const string = `${this.getMark()}${this.getIntegerStr()}${this.getDecimalStr().padEnd(decimalLength, "0")}`;
 			return BigInt(string);
 		}
 		add(value) {
@@ -502,23 +450,13 @@
 			if (offsetObj.isInvalidate()) {
 				return this;
 			}
-			const maxDecimalLength = Math.max(
-				this.getDecimalStr().length,
-				offsetObj.getDecimalStr().length
-			);
+			const maxDecimalLength = Math.max(this.getDecimalStr().length, offsetObj.getDecimalStr().length);
 			const offsetAlignedDecimal = offsetObj.alignDecimal(maxDecimalLength);
 			const myAlignedDecimal = this.alignDecimal(maxDecimalLength);
 			const valueStr = `${myAlignedDecimal + offsetAlignedDecimal}`;
 			const { negativeStr: str, trimStr } = trimNumber(valueStr);
-			const hydrateValueStr = `${str}${trimStr.padStart(
-				maxDecimalLength + 1,
-				"0"
-			)}`;
-			return getMiniDecimal(
-				`${hydrateValueStr.slice(0, -maxDecimalLength)}.${hydrateValueStr.slice(
-					-maxDecimalLength
-				)}`
-			);
+			const hydrateValueStr = `${str}${trimStr.padStart(maxDecimalLength + 1, "0")}`;
+			return getMiniDecimal(`${hydrateValueStr.slice(0, -maxDecimalLength)}.${hydrateValueStr.slice(-maxDecimalLength)}`);
 		}
 		negate() {
 			const clone = new BigIntDecimal(this.toString());
@@ -553,9 +491,7 @@
 			if (this.isInvalidate()) {
 				return "";
 			}
-			return trimNumber(
-				`${this.getMark()}${this.getIntegerStr()}.${this.getDecimalStr()}`
-			).fullStr;
+			return trimNumber(`${this.getMark()}${this.getIntegerStr()}.${this.getDecimalStr()}`).fullStr;
 		}
 	}
 	class NumberDecimal {
@@ -588,10 +524,7 @@
 			if (number > Number.MAX_SAFE_INTEGER) {
 				return new NumberDecimal(Number.MAX_SAFE_INTEGER);
 			}
-			const maxPrecision = Math.max(
-				getNumberPrecision(target),
-				getNumberPrecision(this.number)
-			);
+			const maxPrecision = Math.max(getNumberPrecision(target), getNumberPrecision(this.number));
 			return new NumberDecimal(number.toFixed(maxPrecision));
 		}
 		isNaN() {
@@ -623,11 +556,7 @@
 		}
 	}
 	setDecimalClass = function (decimaljs) {
-		DecimalCls.CLS = supportBigInt()
-			? BigIntDecimal
-			: typeof decimaljs === "function"
-			? decimaljs
-			: NumberDecimal;
+		DecimalCls.CLS = supportBigInt() ? BigIntDecimal : typeof decimaljs === "function" ? decimaljs : NumberDecimal;
 	};
 	function toFixed(numStr, precision, rounding = 5) {
 		if (numStr === "") {
@@ -640,39 +569,27 @@
 		if (precision >= 0) {
 			const advancedNum = Number(decimalStr[precision]);
 			if (advancedNum >= rounding && rounding !== 0) {
-				const advancedDecimal = getMiniDecimal(
-					`${integerStr}${separatorStr}${decimalStr}`
-				).add(`0.${fillChar("", precision, true)}${10 - advancedNum}`);
+				const advancedDecimal = getMiniDecimal(`${integerStr}${separatorStr}${decimalStr}`).add(`0.${fillChar("", precision, true)}${10 - advancedNum}`);
 				return toFixed(negativeStr + advancedDecimal.toString(), precision, 0);
 			}
 			if (precision === 0) {
 				return numberWithoutDecimal;
 			}
-			return `${numberWithoutDecimal}${separatorStr}${fillChar(
-				decimalStr,
-				precision,
-				true
-			).slice(0, precision)}`;
+			return `${numberWithoutDecimal}${separatorStr}${fillChar(decimalStr, precision, true).slice(0, precision)}`;
 		}
 		if (precisionDecimalStr === ".0") {
 			return numberWithoutDecimal;
 		}
 		return `${numberWithoutDecimal}${precisionDecimalStr}`;
 	}
-	const formatInteger = (
-		value,
-		{ secondaryGroupSize = 3, groupSize = 0, groupSeparator = "," }
-	) => {
+	const formatInteger = (value, { secondaryGroupSize = 3, groupSize = 0, groupSeparator = "," }) => {
 		const negative = /^-\d+/.test(value);
 		let result = negative ? value.slice(1) : value;
 		const secSize = secondaryGroupSize || groupSize;
 		if (groupSize && result.length > groupSize) {
 			let left = result.slice(0, 0 - groupSize);
 			const right = result.slice(0 - groupSize);
-			left = left.replace(
-				new RegExp(`\\B(?=(\\d{${secSize}})+(?!\\d))`, "g"),
-				groupSeparator
-			);
+			left = left.replace(new RegExp(`\\B(?=(\\d{${secSize}})+(?!\\d))`, "g"), groupSeparator);
 			result = `${left}${groupSeparator}${right}`;
 		}
 		return `${negative ? "-" : ""}${result}`;
@@ -684,38 +601,23 @@
 		}
 		return arr.reverse().join("");
 	};
-	const formatDecimal = (
-		num,
-		{ fractionGroupSize = 0, fractionGroupSeparator = "\xA0" }
-	) => {
+	const formatDecimal = (num, { fractionGroupSize = 0, fractionGroupSeparator = "\xA0" }) => {
 		const RE = new RegExp(`\\B(?=(\\d{${fractionGroupSize}})+(?!\\d))`, "g");
-		return reverseString(
-			reverseString(num).replace(RE, fractionGroupSeparator)
-		);
+		return reverseString(reverseString(num).replace(RE, fractionGroupSeparator));
 	};
 	const formatNumber = (value, format2 = {}) => {
-		const {
-			fraction,
-			rounding,
-			prefix = "",
-			decimalSeparator = ".",
-			suffix = ""
-		} = format2;
+		const { fraction, rounding, prefix = "", decimalSeparator = ".", suffix = "" } = format2;
 		let reslut = getMiniDecimal(value);
 		if (reslut.isNaN() || !reslut.toString()) {
 			return value;
 		}
 		reslut = toFixed(reslut.toString(), fraction, rounding);
-		format2.zeroize === false &&
-			reslut.match(/\./) &&
-			(reslut = reslut.replace(/\.?0+$/g, ""));
+		format2.zeroize === false && reslut.match(/\./) && (reslut = reslut.replace(/\.?0+$/g, ""));
 		const number = reslut
 			.toString()
 			.split(".")
 			.slice(0, 2)
-			.map((str, index2) =>
-				index2 ? formatDecimal(str, format2) : formatInteger(str, format2)
-			)
+			.map((str, index2) => (index2 ? formatDecimal(str, format2) : formatInteger(str, format2)))
 			.join(decimalSeparator);
 		return `${prefix}${number}${suffix}`;
 	};
@@ -739,15 +641,9 @@
 		};
 	}
 	const hyphenateRE = /\B([A-Z])/g;
-	const hyphenate = cached(str =>
-		str.replace(hyphenateRE, "-$1").toLowerCase()
-	);
+	const hyphenate = cached(str => str.replace(hyphenateRE, "-$1").toLowerCase());
 	const fillChar = (string, length, append, chr = "0") => {
-		if (
-			typeof string === "string" &&
-			typeof chr === "string" &&
-			isNumber(length)
-		) {
+		if (typeof string === "string" && typeof chr === "string" && isNumber(length)) {
 			let len = string.length - length;
 			if (len > 0) {
 				return append ? string.substr(0, length) : string.substr(len, length);
@@ -781,28 +677,12 @@
 		SECOND: 59,
 		MILLISECOND: 999
 	};
-	const timezone1 =
-		"-12:00,-11:00,-10:00,-09:30,-08:00,-07:00,-06:00,-05:00,-04:30,-04:00,-03:30,-02:00,-01:00";
-	const timezone2 =
-		"-00:00,+00:00,+01:00,+02:00,+03:00,+03:30,+04:00,+04:30,+05:00,+05:30,+05:45,+06:00";
-	const timezone3 =
-		"+06:30,+07:00,+08:00,+09:00,+10:00,+10:30,+11:00,+11:30,+12:00,+12:45,+13:00,+14:00";
-	const timezones = [].concat(
-		timezone1.split(","),
-		timezone2.split(","),
-		timezone3.split(",")
-	);
-	const isLeapYear = year =>
-		year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
-	const getDateFromData = ({
-		year,
-		month,
-		date,
-		hours,
-		minutes,
-		seconds,
-		milliseconds
-	}) => {
+	const timezone1 = "-12:00,-11:00,-10:00,-09:30,-08:00,-07:00,-06:00,-05:00,-04:30,-04:00,-03:30,-02:00,-01:00";
+	const timezone2 = "-00:00,+00:00,+01:00,+02:00,+03:00,+03:30,+04:00,+04:30,+05:00,+05:30,+05:45,+06:00";
+	const timezone3 = "+06:30,+07:00,+08:00,+09:00,+10:00,+10:30,+11:00,+11:30,+12:00,+12:45,+13:00,+14:00";
+	const timezones = [].concat(timezone1.split(","), timezone2.split(","), timezone3.split(","));
+	const isLeapYear = year => year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
+	const getDateFromData = ({ year, month, date, hours, minutes, seconds, milliseconds }) => {
 		let daysInMonth = daysInMonths[month];
 		if (isLeapYear(year) && month === 1) {
 			daysInMonth += 1;
@@ -884,24 +764,10 @@
 				if (!timezones.includes(timeZone)) {
 					return;
 				}
-				actHours =
-					sign === "+"
-						? hours - offsetHours - offset / 60
-						: Number(hours) + Number(offsetHours) - offset / 60;
-				actMinutes =
-					sign === "+"
-						? minutes - offsetMinutes
-						: Number(minutes) + Number(offsetMinutes);
+				actHours = sign === "+" ? hours - offsetHours - offset / 60 : Number(hours) + Number(offsetHours) - offset / 60;
+				actMinutes = sign === "+" ? minutes - offsetMinutes : Number(minutes) + Number(offsetMinutes);
 			}
-			return new Date(
-				year,
-				month,
-				date,
-				actHours,
-				actMinutes,
-				seconds,
-				milliseconds
-			);
+			return new Date(year, month, date, actHours, actMinutes, seconds, milliseconds);
 		}
 	};
 	const dateParsers = [
@@ -969,10 +835,7 @@
 					value = str.substring(valuePos, i);
 					valuePos = i + 1;
 					const end = dateFormat.indexOf(charValue, textPos);
-					text = dateFormat.substring(
-						textPos,
-						end === -1 ? dateFormat.length : end
-					);
+					text = dateFormat.substring(textPos, end === -1 ? dateFormat.length : end);
 					textPos = end + 1;
 				} else {
 					value = str.substring(valuePos, len);
@@ -985,17 +848,8 @@
 		}
 		return arr;
 	};
-	const invalideTime = (time, min, max) =>
-		isNaN(time) || time < min || time > max;
-	const invalideValue = ({
-		year,
-		month,
-		date,
-		hours,
-		minutes,
-		seconds,
-		milliseconds
-	}) =>
+	const invalideTime = (time, min, max) => isNaN(time) || time < min || time > max;
+	const invalideValue = ({ year, month, date, hours, minutes, seconds, milliseconds }) =>
 		invalideTime(year, 0, maxDateValues.YEAR) ||
 		invalideTime(month, 0, maxDateValues.MONTH) ||
 		invalideTime(date, 0, maxDateValues.DATE) ||
@@ -1157,8 +1011,7 @@
 		NumpadComma: 190
 	};
 	const IPTHRESHOLD = { Min: 0, Max: 255, NonNumeric: 25 };
-	const TriggerTypes =
-		"date,datetime,time,time-select,week,month,year,years,yearrange,daterange,monthrange,timerange,datetimerange,dates";
+	const TriggerTypes = "date,datetime,time,time-select,week,month,year,years,yearrange,daterange,monthrange,timerange,datetimerange,dates";
 	const DATEPICKER = {
 		Day: "day",
 		Date: "date",
@@ -1187,33 +1040,9 @@
 		Selected: "selected",
 		Disabled: "disabled",
 		Range: "range",
-		fullMonths:
-			"January,February,March,April,May,June,July,August,September,October,November,December".split(
-				","
-			),
-		fullWeeks: [
-			"Sunday",
-			"Monday",
-			"Tuesday",
-			"Wednesday",
-			"Thursday",
-			"Friday",
-			"Saturday"
-		],
-		MonhtList: [
-			"jan",
-			"feb",
-			"mar",
-			"apr",
-			"may",
-			"jun",
-			"jul",
-			"aug",
-			"sep",
-			"oct",
-			"nov",
-			"dec"
-		],
+		fullMonths: "January,February,March,April,May,June,July,August,September,October,November,December".split(","),
+		fullWeeks: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+		MonhtList: ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"],
 		Weeks: ["sun", "mon", "tue", "wed", "thu", "fri", "sat"],
 		PlacementMap: {
 			left: "bottom-start",
@@ -1286,9 +1115,7 @@
 		return newArr;
 	};
 	const monthUpdate = arrName => (date, value, i18n) => {
-		const index2 = i18n[arrName].indexOf(
-			value.charAt(0).toUpperCase() + value.substr(1).toLowerCase()
-		);
+		const index2 = i18n[arrName].indexOf(value.charAt(0).toUpperCase() + value.substr(1).toLowerCase());
 		if (~index2) {
 			date.month = index2;
 		}
@@ -1302,8 +1129,7 @@
 		return val;
 	};
 	const regexEscape = str => str.replace(/[|\\{()[^$+*?.-]/g, "\\$&");
-	const fullTimeReg =
-		/d{1,4}|M{1,4}|yy(?:yy)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
+	const fullTimeReg = /d{1,4}|M{1,4}|yy(?:yy)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
 	const dayNames = DATEPICKER.fullWeeks;
 	const monthNames = DATEPICKER.fullMonths;
 	const monthNamesShort = shorten(monthNames, 3);
@@ -1342,21 +1168,11 @@
 		S: dateObj => Math.round(dateObj.getMilliseconds() / 100),
 		SS: dateObj => pad(Math.round(dateObj.getMilliseconds() / 10), 2),
 		SSS: dateObj => pad(dateObj.getMilliseconds(), 3),
-		a: (dateObj, i18n) =>
-			dateObj.getHours() < 12 ? i18n.amPm[0] : i18n.amPm[1],
-		A: (dateObj, i18n) =>
-			dateObj.getHours() < 12
-				? i18n.amPm[0].toUpperCase()
-				: i18n.amPm[1].toUpperCase(),
+		a: (dateObj, i18n) => (dateObj.getHours() < 12 ? i18n.amPm[0] : i18n.amPm[1]),
+		A: (dateObj, i18n) => (dateObj.getHours() < 12 ? i18n.amPm[0].toUpperCase() : i18n.amPm[1].toUpperCase()),
 		ZZ: dateObj => {
 			const offset = dateObj.getTimezoneOffset();
-			return (
-				(offset > 0 ? "-" : "+") +
-				pad(
-					Math.floor(Math.abs(offset) / 60) * 100 + (Math.abs(offset) % 60),
-					4
-				)
-			);
+			return (offset > 0 ? "-" : "+") + pad(Math.floor(Math.abs(offset) / 60) * 100 + (Math.abs(offset) % 60), 4);
 		}
 	};
 	const parseFlags = {
@@ -1479,11 +1295,7 @@
 			literals.push($1);
 			return "@@@";
 		});
-		mask = mask.replace(fullTimeReg, $0 =>
-			$0 in formatFlags
-				? formatFlags[$0](dateObj, i18n)
-				: $0.slice(1, $0.length - 1)
-		);
+		mask = mask.replace(fullTimeReg, $0 => ($0 in formatFlags ? formatFlags[$0](dateObj, i18n) : $0.slice(1, $0.length - 1)));
 		return mask.replace(/@@@/g, () => literals.shift());
 	};
 	const getNewFormat = (format2, parseInfo) => {
@@ -1503,31 +1315,12 @@
 		let date;
 		const today = /* @__PURE__ */ new Date();
 		if (!isNull(dateInfo.timezoneOffset)) {
-			dateInfo.minute =
-				Number(dateInfo.minute || 0) - Number(dateInfo.timezoneOffset);
+			dateInfo.minute = Number(dateInfo.minute || 0) - Number(dateInfo.timezoneOffset);
 			const { year, month, day, hour, minute, second, millisecond } = dateInfo;
-			date = new Date(
-				Date.UTC(
-					year || today.getFullYear(),
-					month || 0,
-					day || 1,
-					hour || 0,
-					minute || 0,
-					second || 0,
-					millisecond || 0
-				)
-			);
+			date = new Date(Date.UTC(year || today.getFullYear(), month || 0, day || 1, hour || 0, minute || 0, second || 0, millisecond || 0));
 		} else {
 			const { year, month, day, hour, minute, second, millisecond } = dateInfo;
-			date = new Date(
-				year || today.getFullYear(),
-				month || 0,
-				day || 1,
-				hour || 0,
-				minute || 0,
-				second || 0,
-				millisecond || 0
-			);
+			date = new Date(year || today.getFullYear(), month || 0, day || 1, hour || 0, minute || 0, second || 0, millisecond || 0);
 		}
 		return date;
 	};
@@ -1553,11 +1346,7 @@
 		for (let i = 1, len = matches.length; i < len; i++) {
 			parseInfo[i - 1](dateInfo, matches[i], i18n);
 		}
-		if (
-			dateInfo.isPm === true &&
-			!isNull(dateInfo.hour) &&
-			Number(dateInfo.hour) !== 12
-		) {
+		if (dateInfo.isPm === true && !isNull(dateInfo.hour) && Number(dateInfo.hour) !== 12) {
 			dateInfo.hour = Number(dateInfo.hour) + 12;
 		} else if (dateInfo.isPm === false && Number(dateInfo.hour) === 12) {
 			dateInfo.hour = 0;
@@ -1572,9 +1361,7 @@
 		dayNamesShort: weeks.map(week => t2(`ui.datepicker.weeks.${week}`)),
 		dayNames: weeks.map(week => t2(`ui.datepicker.weeks.${week}`)),
 		monthNamesShort: months.map(month => t2(`ui.datepicker.months.${month}`)),
-		monthNames: months.map((month, index2) =>
-			t2(`ui.datepicker.month${index2 + 1}`)
-		),
+		monthNames: months.map((month, index2) => t2(`ui.datepicker.month${index2 + 1}`)),
 		amPm: ["am", "pm"]
 	});
 	const isDate = function (date) {
@@ -1595,11 +1382,7 @@
 		if (!date) {
 			return "";
 		}
-		return date_default.format(
-			date,
-			format2 || defaultYMD,
-			getI18nSettings(t2)
-		);
+		return date_default.format(date, format2 || defaultYMD, getI18nSettings(t2));
 	};
 	function _extends$2() {
 		_extends$2 = Object.assign
@@ -1848,22 +1631,16 @@
 				nonews: "\u6682\u65E0\u6700\u65B0\u6D88\u606F",
 				pagenoperm: "403:\u65E0\u8BBF\u95EE\u6743\u9650",
 				pageweaknet: "\u7F51\u7EDC\u5F02\u5E38",
-				pagenothing:
-					"404:\u4F60\u8BBF\u95EE\u7684\u9875\u9762\u4E0D\u5B58\u5728",
+				pagenothing: "404:\u4F60\u8BBF\u95EE\u7684\u9875\u9762\u4E0D\u5B58\u5728",
 				pageservererror: "500:\u670D\u52A1\u5668\u5F02\u5E38"
 			},
 			fileUpload: {
-				largefile:
-					"\u6587\u4EF6\u8FC7\u5927\uFF0C\u5C06\u4F1A\u5206\u7247\u4E0A\u4F20\uFF0C\u8BF7\u8010\u5FC3\u7B49\u5F85!",
-				folder:
-					"\u6587\u4EF6\u6240\u5728\u6587\u4EF6\u5939\u5C42\u6570\u5DF2\u8D85\u8FC7 5 \u5C42\uFF0C\u5C06\u4E0D\u4F1A\u4E0A\u4F20\u8BE5\u6587\u4EF6",
+				largefile: "\u6587\u4EF6\u8FC7\u5927\uFF0C\u5C06\u4F1A\u5206\u7247\u4E0A\u4F20\uFF0C\u8BF7\u8010\u5FC3\u7B49\u5F85!",
+				folder: "\u6587\u4EF6\u6240\u5728\u6587\u4EF6\u5939\u5C42\u6570\u5DF2\u8D85\u8FC7 5 \u5C42\uFF0C\u5C06\u4E0D\u4F1A\u4E0A\u4F20\u8BE5\u6587\u4EF6",
 				init: "\u670D\u52A1\u62A5\u9519\uFF0C\u8BF7\u91CD\u8BD5",
-				token:
-					"\u8BF7\u5148\u8FDB\u884C EDM \u9274\u6743\uFF0C\u83B7\u53D6 token",
-				exceed:
-					"\u6587\u4EF6\u4E0A\u4F20\u5931\u8D25\uFF1A\u5927\u5C0F\u8D85\u8FC7\u9650\u5236\uFF08{maxSize}MB\uFF09",
-				largeFile:
-					"\u6587\u4EF6\u5927\u5C0F\u8D85\u51FA\u9650\u5236 2G \uFF01\uFF01\uFF01",
+				token: "\u8BF7\u5148\u8FDB\u884C EDM \u9274\u6743\uFF0C\u83B7\u53D6 token",
+				exceed: "\u6587\u4EF6\u4E0A\u4F20\u5931\u8D25\uFF1A\u5927\u5C0F\u8D85\u8FC7\u9650\u5236\uFF08{maxSize}MB\uFF09",
+				largeFile: "\u6587\u4EF6\u5927\u5C0F\u8D85\u51FA\u9650\u5236 2G \uFF01\uFF01\uFF01",
 				fileSize: "{name}\u5927\u5C0F\u4E0D\u80FD\u5C0F\u4E8E ",
 				deleteTip: "\u6309 delete \u952E\u53EF\u5220\u9664",
 				downloadFile: "\u4E0B\u8F7D\u6587\u4EF6",
@@ -1873,8 +1650,7 @@
 				empty: "\u662F\u7A7A\u6587\u4EF6\uFF01",
 				kiaScanTip:
 					"\u62B1\u6B49\uFF0C\u4ECE\u516C\u7F51\u63A5\u5165\u4E0B\u8F7D\u6587\u6863\uFF0C\u9700\u8981\u901A\u8FC7KIA\u68C0\u6D4B\uFF1B\u5F53\u524D\u6587\u6863\u6B63\u5728KIA\u68C0\u6D4B\u4E2D\uFF0C\u8BF7\u7A0D\u540E\u51E0\u5206\u949F\u540E\u518D\u4E0B\u8F7D\uFF01",
-				fileNameExceeds:
-					"\u8D85\u8FC7255\u4E2A\u5B57\u7B26\uFF0C\u8BF7\u4FEE\u6539\u6587\u4EF6\u540D\u3002",
+				fileNameExceeds: "\u8D85\u8FC7255\u4E2A\u5B57\u7B26\uFF0C\u8BF7\u4FEE\u6539\u6587\u4EF6\u540D\u3002",
 				fileName: "\u8BE5\u6587\u4EF6\u540D",
 				calcHash: "\u6587\u6863\u6B63\u5728\u8BA1\u7B97\u52A0\u5BC6\u4E2D",
 				uploadFile: "\u6587\u4EF6\u4E0A\u4F20",
@@ -1882,12 +1658,10 @@
 				onlySupport: "\u4EC5\u652F\u6301{type}\u683C\u5F0F\u6587\u4EF6",
 				fileNotLessThan: "\u6587\u4EF6\u4E0D\u80FD\u5C0F\u4E8E",
 				fileNotMoreThan: "\u6587\u4EF6\u4E0D\u80FD\u8D85\u8FC7",
-				notSupport:
-					"\u6587\u4EF6\u4E0A\u4F20\u5931\u8D25\uFF1A\u4E0D\u652F\u6301\u8BE5\u683C\u5F0F\uFF08.{format}\uFF09",
+				notSupport: "\u6587\u4EF6\u4E0A\u4F20\u5931\u8D25\uFF1A\u4E0D\u652F\u6301\u8BE5\u683C\u5F0F\uFF08.{format}\uFF09",
 				attachment: "\u9644\u4EF6",
 				uploadList: "\u4E0A\u4F20\u5217\u8868",
-				numberExceed:
-					"\u6587\u4EF6\u4E0A\u4F20\u5931\u8D25\uFF1A\u6279\u91CF\u4E0A\u4F20\u4E2A\u6570\u8D85\u8FC7\u9650\u5236\uFF08{number}\uFF09"
+				numberExceed: "\u6587\u4EF6\u4E0A\u4F20\u5931\u8D25\uFF1A\u6279\u91CF\u4E0A\u4F20\u4E2A\u6570\u8D85\u8FC7\u9650\u5236\uFF08{number}\uFF09"
 			},
 			uploadList: {
 				pictureUploading: "\u56FE\u7247\u4E0A\u4F20\u4E2D",
@@ -1899,14 +1673,11 @@
 				noAttachments: "\u6682\u65E0\u9644\u4EF6",
 				cancel: "\u53D6\u6D88",
 				preview: "\u9884\u89C8",
-				releaseAndUpload:
-					"\u91CA\u653E\u9F20\u6807\uFF0C\u4E0A\u4F20\u6587\u4EF6",
-				dragOrClickImport:
-					"\u5C06\u6587\u4EF6\u62D6\u5230\u6B64\u5904\uFF0C\u6216\u70B9\u51FB\u5BFC\u5165",
+				releaseAndUpload: "\u91CA\u653E\u9F20\u6807\uFF0C\u4E0A\u4F20\u6587\u4EF6",
+				dragOrClickImport: "\u5C06\u6587\u4EF6\u62D6\u5230\u6B64\u5904\uFF0C\u6216\u70B9\u51FB\u5BFC\u5165",
 				shoot: "\u62CD\u6444",
 				selectFromAlbum: "\u4ECE\u76F8\u518C\u9009\u62E9",
-				uploadFailedAndReupload:
-					"\u4E0A\u4F20\u5931\u8D25\uFF0C\u70B9\u51FB\u91CD\u65B0\u4E0A\u4F20"
+				uploadFailedAndReupload: "\u4E0A\u4F20\u5931\u8D25\uFF0C\u70B9\u51FB\u91CD\u65B0\u4E0A\u4F20"
 			},
 			upload: {
 				addPicture: "\u6DFB\u52A0\u56FE\u7247",
@@ -1915,55 +1686,35 @@
 			},
 			grid: {
 				dataUnchanged: "\u6570\u636E\u672A\u6539\u52A8\uFF01",
-				deleteSelectRecord:
-					"\u60A8\u786E\u5B9A\u8981\u5220\u9664\u6240\u9009\u8BB0\u5F55\u5417\uFF1F",
+				deleteSelectRecord: "\u60A8\u786E\u5B9A\u8981\u5220\u9664\u6240\u9009\u8BB0\u5F55\u5417\uFF1F",
 				emptyText: "\u6682\u65E0\u6570\u636E",
 				error: {
-					cellEditRender:
-						"\u6E32\u67D3\u5668 cell-render \u548C edit-render \u4E0D\u80FD\u540C\u65F6\u4F7F\u7528",
-					delGetAllRecords:
-						"\u65B9\u6CD5 getAllRecords \u5DF2\u5E9F\u5F03\uFF0C\u8BF7\u4F7F\u7528 getRecordset",
-					delGetRecords:
-						"\u65B9\u6CD5 getRecords \u5DF2\u5E9F\u5F03\uFF0C\u8BF7\u4F7F\u7528 getData",
-					delLabel:
-						"\u53C2\u6570 label \u5DF2\u5E9F\u5F03\uFF0C\u8BF7\u4F7F\u7528 title",
-					delProp:
-						"\u53C2\u6570 prop \u5DF2\u5E9F\u5F03\uFF0C\u8BF7\u4F7F\u7528 field",
-					delRevert:
-						"\u65B9\u6CD5 revert \u5DF2\u5E9F\u5F03\uFF0C\u8BF7\u4F7F\u7528 revertData",
-					groupFixed:
-						"\u5982\u679C\u4F7F\u7528\u5206\u7EC4\u8868\u5934\uFF0C\u56FA\u5B9A\u5217\u5FC5\u987B\u5728\u5DE6\u53F3\u4E24\u4FA7",
+					cellEditRender: "\u6E32\u67D3\u5668 cell-render \u548C edit-render \u4E0D\u80FD\u540C\u65F6\u4F7F\u7528",
+					delGetAllRecords: "\u65B9\u6CD5 getAllRecords \u5DF2\u5E9F\u5F03\uFF0C\u8BF7\u4F7F\u7528 getRecordset",
+					delGetRecords: "\u65B9\u6CD5 getRecords \u5DF2\u5E9F\u5F03\uFF0C\u8BF7\u4F7F\u7528 getData",
+					delLabel: "\u53C2\u6570 label \u5DF2\u5E9F\u5F03\uFF0C\u8BF7\u4F7F\u7528 title",
+					delProp: "\u53C2\u6570 prop \u5DF2\u5E9F\u5F03\uFF0C\u8BF7\u4F7F\u7528 field",
+					delRevert: "\u65B9\u6CD5 revert \u5DF2\u5E9F\u5F03\uFF0C\u8BF7\u4F7F\u7528 revertData",
+					groupFixed: "\u5982\u679C\u4F7F\u7528\u5206\u7EC4\u8868\u5934\uFF0C\u56FA\u5B9A\u5217\u5FC5\u987B\u5728\u5DE6\u53F3\u4E24\u4FA7",
 					notDelete: "Delete \u65B9\u6CD5\u4E0D\u5B58\u5728",
 					notMouse: "\u865A\u62DF\u6EDA\u52A8\u4E0D\u652F\u6301 mouse-config",
 					notQuery: "query \u65B9\u6CD5\u4E0D\u5B58\u5728",
-					notResizable:
-						"\u6A2A\u5411\u865A\u62DF\u6EDA\u52A8\u4E0D\u652F\u6301 resizable",
+					notResizable: "\u6A2A\u5411\u865A\u62DF\u6EDA\u52A8\u4E0D\u652F\u6301 resizable",
 					notSave: "save \u65B9\u6CD5\u4E0D\u5B58\u5728",
 					reqModule: "\u7F3A\u5C11 {{name}} \u6A21\u5757",
 					rowIdEmpty: "\u53C2\u6570 row-id \u4E0D\u5141\u8BB8\u4E3A\u7A7A",
-					scrollOriginal:
-						"\u865A\u62DF\u6EDA\u52A8\u542F\u7528\u540E\u53EA\u80FD\u5BFC\u51FA\u6E90\u6570\u636E\uFF0C\u8BF7\u5C06\u8BBE\u7F6E original=true",
-					scrollYHeight:
-						"\u542F\u7528\u865A\u62DF\u6EDA\u52A8\u5FC5\u987B\u8981\u8BBE\u7F6E height \u6216 max-height",
-					toolbarId:
-						"\u5DE5\u5177\u680F\u9700\u8981\u8BBE\u7F6E\u552F\u4E00 id",
-					treeFixedExpand:
-						"\u6811\u7ED3\u6784\u7684\u56FA\u5B9A\u5217\u4E0E\u5C55\u5F00\u884C\u529F\u80FD\u6709\u51B2\u7A81",
-					treeInsert:
-						"\u6811\u7ED3\u6784\u4E0D\u652F\u6301 insert \u64CD\u4F5C",
-					treeRemove:
-						"\u6811\u7ED3\u6784\u4E0D\u652F\u6301 remove \u64CD\u4F5C",
-					unableInsert:
-						"\u65E0\u6CD5\u63D2\u5165\u5230\u6307\u5B9A\u4F4D\u7F6E",
-					dargSelf:
-						"\u4E0D\u5141\u8BB8\u81EA\u5DF1\u7ED9\u81EA\u5DF1\u62D6\u52A8",
+					scrollOriginal: "\u865A\u62DF\u6EDA\u52A8\u542F\u7528\u540E\u53EA\u80FD\u5BFC\u51FA\u6E90\u6570\u636E\uFF0C\u8BF7\u5C06\u8BBE\u7F6E original=true",
+					scrollYHeight: "\u542F\u7528\u865A\u62DF\u6EDA\u52A8\u5FC5\u987B\u8981\u8BBE\u7F6E height \u6216 max-height",
+					toolbarId: "\u5DE5\u5177\u680F\u9700\u8981\u8BBE\u7F6E\u552F\u4E00 id",
+					treeFixedExpand: "\u6811\u7ED3\u6784\u7684\u56FA\u5B9A\u5217\u4E0E\u5C55\u5F00\u884C\u529F\u80FD\u6709\u51B2\u7A81",
+					treeInsert: "\u6811\u7ED3\u6784\u4E0D\u652F\u6301 insert \u64CD\u4F5C",
+					treeRemove: "\u6811\u7ED3\u6784\u4E0D\u652F\u6301 remove \u64CD\u4F5C",
+					unableInsert: "\u65E0\u6CD5\u63D2\u5165\u5230\u6307\u5B9A\u4F4D\u7F6E",
+					dargSelf: "\u4E0D\u5141\u8BB8\u81EA\u5DF1\u7ED9\u81EA\u5DF1\u62D6\u52A8",
 					dargFixed: "\u56FA\u5B9A\u5217\u4E0D\u5141\u8BB8\u62D6\u52A8",
-					remoteMethod:
-						"\u4E2A\u6027\u5316\u6A21\u677F\u7BA1\u7406\u8FDC\u7AEF\u5B58\u50A8\u9700\u8981\u8BBE\u7F6E multipleHistory.remoteMethod",
-					remoteSelectedMethod:
-						"\u4E2A\u6027\u5316\u6A21\u677F\u7BA1\u7406\u8FDC\u7AEF\u5B58\u50A8\u9700\u8981\u8BBE\u7F6E multipleHistory.remoteSelectedMethod",
-					chainCallError:
-						"\u5217\u7684\u9ED8\u8BA4\u63D2\u69FD\u4E2D\u5B58\u5728\u8BED\u6CD5\u9519\u8BEF\uFF0C\u8BF7\u68C0\u67E5\u3002"
+					remoteMethod: "\u4E2A\u6027\u5316\u6A21\u677F\u7BA1\u7406\u8FDC\u7AEF\u5B58\u50A8\u9700\u8981\u8BBE\u7F6E multipleHistory.remoteMethod",
+					remoteSelectedMethod: "\u4E2A\u6027\u5316\u6A21\u677F\u7BA1\u7406\u8FDC\u7AEF\u5B58\u50A8\u9700\u8981\u8BBE\u7F6E multipleHistory.remoteSelectedMethod",
+					chainCallError: "\u5217\u7684\u9ED8\u8BA4\u63D2\u69FD\u4E2D\u5B58\u5728\u8BED\u6CD5\u9519\u8BEF\uFF0C\u8BF7\u68C0\u67E5\u3002"
 				},
 				filter: {
 					allFilter: "\u5168\u90E8",
@@ -2012,10 +1763,8 @@
 					selectTemplate: "\u9009\u62E9\u6A21\u677F",
 					hideMsg: "\u81F3\u5C11\u4FDD\u7559\u4E00\u5217\u663E\u793A",
 					maxFreezeNumMsg: "\u51BB\u7ED3\u5217\u4E0D\u53EF\u8D85\u8FC76\u9879",
-					defaultTemplateName:
-						"\u8BF7\u8F93\u5165\u540D\u79F0\uFF0C\u5982\u672A\u586B\u5199\u7531\u7CFB\u7EDF\u6309\u65F6\u95F4\u751F\u6210",
-					reserveTemplateName:
-						"\u5982\u672A\u586B\u5199\u540D\u79F0\u5C06\u4FDD\u7559\u4E4B\u524D\u7684\u540D\u79F0",
+					defaultTemplateName: "\u8BF7\u8F93\u5165\u540D\u79F0\uFF0C\u5982\u672A\u586B\u5199\u7531\u7CFB\u7EDF\u6309\u65F6\u95F4\u751F\u6210",
+					reserveTemplateName: "\u5982\u672A\u586B\u5199\u540D\u79F0\u5C06\u4FDD\u7559\u4E4B\u524D\u7684\u540D\u79F0",
 					resetBtn: "\u91CD\u7F6E",
 					saveBtn: "\u786E\u5B9A",
 					tabs: {
@@ -2043,20 +1792,15 @@
 					switchonlytemp: "\u4FDD\u5B58\u6A21\u677F",
 					switchtempapply: "\u4FDD\u5B58\u5E76\u4F7F\u7528\u6A21\u677F",
 					switchtempoverwrite: "\u8986\u76D6\u5E76\u4F7F\u7528\u6A21\u677F",
-					switchdelcon:
-						"\u786E\u5B9A\u8981\u5220\u9664\u8FD9\u4E2A\u6A21\u677F\uFF1F",
+					switchdelcon: "\u786E\u5B9A\u8981\u5220\u9664\u8FD9\u4E2A\u6A21\u677F\uFF1F",
 					switchdelyes: "\u786E\u5B9A",
 					switchdelno: "\u53D6\u6D88",
-					switchapplycon:
-						"\u786E\u5B9A\u8981\u4F7F\u7528\u8FD9\u4E2A\u6A21\u677F\uFF1F"
+					switchapplycon: "\u786E\u5B9A\u8981\u4F7F\u7528\u8FD9\u4E2A\u6A21\u677F\uFF1F"
 				},
-				removeSelectRecord:
-					"\u60A8\u786E\u5B9A\u8981\u79FB\u9664\u6240\u9009\u8BB0\u5F55\u5417\uFF1F",
+				removeSelectRecord: "\u60A8\u786E\u5B9A\u8981\u79FB\u9664\u6240\u9009\u8BB0\u5F55\u5417\uFF1F",
 				saveSuccess: "\u4FDD\u5B58\u6210\u529F",
-				selectOneRecord:
-					"\u8BF7\u81F3\u5C11\u9009\u62E9\u4E00\u6761\u8BB0\u5F55\uFF01",
-				isSaveMsg:
-					"\u6709\u4FEE\u6539\u7684\u6570\u636E\uFF0C\u662F\u5426\u8981\u4FDD\u5B58\uFF1F"
+				selectOneRecord: "\u8BF7\u81F3\u5C11\u9009\u62E9\u4E00\u6761\u8BB0\u5F55\uFF01",
+				isSaveMsg: "\u6709\u4FEE\u6539\u7684\u6570\u636E\uFF0C\u662F\u5426\u8981\u4FDD\u5B58\uFF1F"
 			},
 			hrapprover: {
 				approver: "\u6743\u7B7E\u4EBA",
@@ -2114,16 +1858,11 @@
 				uploadButtonText: "\u9009\u62E9\u6587\u4EF6",
 				uploadsButtonText: "\u9009\u62E9\u6279\u91CF\u6587\u4EF6",
 				errorTypeTips: "\u4E0A\u4F20\u6587\u4EF6\u7C7B\u578B\u4E0D\u5339\u914D",
-				errorNumTips:
-					"\u4E0A\u4F20\u6587\u4EF6\u6570\u91CF\u8D85\u51FA\u9650\u5236,\u5DF2\u53D6\u6D88\u8BE5\u64CD\u4F5C",
-				errorSizeTips:
-					"\u4E0A\u4F20\u6587\u4EF6\u5927\u5C0F\u8D85\u51FA\u9650\u5236",
-				limitUploadFileNumber:
-					"\u4E0A\u4F20\u6587\u4EF6\u6570\u9650\u5236\u4E3A",
-				limitUploadFileType:
-					"\u4E0A\u4F20\u6587\u4EF6\u7C7B\u578B\u9650\u5236\u4E3A",
-				limitUploadFileSize:
-					"\u4E0A\u4F20\u6587\u4EF6\u5927\u5C0F\u4E0D\u8D85\u8FC7"
+				errorNumTips: "\u4E0A\u4F20\u6587\u4EF6\u6570\u91CF\u8D85\u51FA\u9650\u5236,\u5DF2\u53D6\u6D88\u8BE5\u64CD\u4F5C",
+				errorSizeTips: "\u4E0A\u4F20\u6587\u4EF6\u5927\u5C0F\u8D85\u51FA\u9650\u5236",
+				limitUploadFileNumber: "\u4E0A\u4F20\u6587\u4EF6\u6570\u9650\u5236\u4E3A",
+				limitUploadFileType: "\u4E0A\u4F20\u6587\u4EF6\u7C7B\u578B\u9650\u5236\u4E3A",
+				limitUploadFileSize: "\u4E0A\u4F20\u6587\u4EF6\u5927\u5C0F\u4E0D\u8D85\u8FC7"
 			},
 			rate: {
 				level: {
@@ -2166,10 +1905,8 @@
 			tree: {
 				emptyText: "\u6682\u65E0\u6570\u636E",
 				switchText: "\u540C\u65F6\u52FE\u9009\u4E0B\u7EA7",
-				deleteTip:
-					"\u5220\u9664\u540E\u6570\u636E\u4E0D\u53EF\u6062\u590D\uFF0C\u786E\u5B9A\u5220\u9664\u5417\uFF1F",
-				preserveSubnodeTip:
-					"\u8BE5\u8282\u70B9\u5B58\u5728\u4E0B\u7EA7\u8282\u70B9\uFF0C\u662F\u5426\u4FDD\u7559\u4E0B\u7EA7\u8282\u70B9\u6570\u636E\uFF1F",
+				deleteTip: "\u5220\u9664\u540E\u6570\u636E\u4E0D\u53EF\u6062\u590D\uFF0C\u786E\u5B9A\u5220\u9664\u5417\uFF1F",
+				preserveSubnodeTip: "\u8BE5\u8282\u70B9\u5B58\u5728\u4E0B\u7EA7\u8282\u70B9\uFF0C\u662F\u5426\u4FDD\u7559\u4E0B\u7EA7\u8282\u70B9\u6570\u636E\uFF1F",
 				preserveSubnodeData: "\u4FDD\u7559\u4E0B\u7EA7\u8282\u70B9\u6570\u636E",
 				newNodeTitle: "\u65B0\u589E\u4E0B\u7EA7"
 			},
@@ -2250,8 +1987,7 @@
 				deleteTable: "\u5220\u9664\u8868\u683C",
 				colorPicker: "\u80CC\u666F\u989C\u8272",
 				placeholder: "\u5728\u6B64\u5904\u63D2\u5165\u6587\u672C...",
-				maxLength:
-					"\u6587\u672C\u957F\u5EA6\u8D85\u8FC7\u9650\u5236\uFF0C\u652F\u6301\u7684\u6700\u5927\u957F\u5EA6\u662F "
+				maxLength: "\u6587\u672C\u957F\u5EA6\u8D85\u8FC7\u9650\u5236\uFF0C\u652F\u6301\u7684\u6700\u5927\u957F\u5EA6\u662F "
 			},
 			steps: {
 				done: "\u5DF2\u5B8C\u6210",
@@ -2369,8 +2105,7 @@
 				len: "%s \u7684\u957F\u5EA6\u5FC5\u987B\u4E3A %s",
 				min: "%s \u957F\u5EA6\u4E0D\u80FD\u5C0F\u4E8E %s",
 				max: "%s \u7684\u957F\u5EA6\u4E0D\u80FD\u5927\u4E8E %s",
-				range:
-					"%s \u7684\u957F\u5EA6\u5FC5\u987B\u4ECB\u4E8E %s \u548C %s \u4E4B\u95F4"
+				range: "%s \u7684\u957F\u5EA6\u5FC5\u987B\u4ECB\u4E8E %s \u548C %s \u4E4B\u95F4"
 			},
 			date: {
 				format: "%s \u65E5\u671F %s \u5BF9\u4E8E\u683C\u5F0F %s \u65E0\u6548",
@@ -2393,8 +2128,7 @@
 				len: "%s \u5FC5\u987B\u662F %s \u4E2A\u5B57\u7B26",
 				min: "%s \u5FC5\u987B\u81F3\u5C11\u4E3A %s \u4E2A\u5B57\u7B26",
 				max: "%s\u4E0D \u80FD\u5927\u4E8E %s \u4E2A\u5B57\u7B26",
-				range:
-					"%s \u5FC5\u987B\u4ECB\u4E8E %s \u548C %s \u4E2A\u5B57\u7B26\u4E4B\u95F4"
+				range: "%s \u5FC5\u987B\u4ECB\u4E8E %s \u548C %s \u4E2A\u5B57\u7B26\u4E4B\u95F4"
 			},
 			types: {
 				acceptFile: "\u53EA\u63A5\u53D7\u6587\u4EF6",
@@ -2402,31 +2136,23 @@
 				array: "\u975E\u6CD5\u6570\u7EC4",
 				boolean: "\u975E\u6CD5\u5E03\u5C14\u503C",
 				date: "\u4E0D\u7B26\u5408\u89C4\u5219\u7684\u65E5\u671F\u683C\u5F0F",
-				dateTime:
-					"\u4E0D\u7B26\u5408\u89C4\u5219\u7684\u65E5\u671F\u65F6\u95F4\u683C\u5F0F",
-				dateYM:
-					"\u4E0D\u7B26\u5408\u89C4\u5219\u7684\u65E5\u671F\u683C\u5F0F(yyyy-mm)",
-				dateYMD:
-					"\u4E0D\u7B26\u5408\u89C4\u5219\u7684\u65E5\u671F\u683C\u5F0F(yyyy-MM-dd)",
+				dateTime: "\u4E0D\u7B26\u5408\u89C4\u5219\u7684\u65E5\u671F\u65F6\u95F4\u683C\u5F0F",
+				dateYM: "\u4E0D\u7B26\u5408\u89C4\u5219\u7684\u65E5\u671F\u683C\u5F0F(yyyy-mm)",
+				dateYMD: "\u4E0D\u7B26\u5408\u89C4\u5219\u7684\u65E5\u671F\u683C\u5F0F(yyyy-MM-dd)",
 				digits: "\u975E\u6CD5\u7EAF\u6570\u5B57",
 				email: "\u975E\u6CD5\u90AE\u4EF6\u5730\u5740",
-				fileSize:
-					"\u6587\u4EF6\u5927\u5C0F\u7684\u683C\u5F0F\u4E0D\u6B63\u786E,\u5E94\u5982 3kb",
+				fileSize: "\u6587\u4EF6\u5927\u5C0F\u7684\u683C\u5F0F\u4E0D\u6B63\u786E,\u5E94\u5982 3kb",
 				float: "\u975E\u6CD5\u6D6E\u70B9\u6570",
 				hex: "\u975E\u6CD5\u5341\u516D\u8FDB\u5236",
 				integer: "\u975E\u6CD5\u6574\u6570",
-				longDateTime:
-					"\u4E0D\u7B26\u5408\u89C4\u5219\u7684\u957F\u65E5\u671F\u683C\u5F0F",
+				longDateTime: "\u4E0D\u7B26\u5408\u89C4\u5219\u7684\u957F\u65E5\u671F\u683C\u5F0F",
 				method: "\u5FC5\u987B\u662F\u51FD\u6570\uFF08Function\uFF09",
 				number: "\u975E\u6CD5\u6570\u5B57",
 				object: "\u975E\u6CD5\u5BF9\u8C61",
 				regexp: "\u975E\u6CD5\u6B63\u5219\u8868\u8FBE\u5F0F",
-				specialch:
-					"\u53EA\u80FD\u5305\u542B\u6570\u5B57\u3001\u5B57\u6BCD\u3001\u4E0B\u5212\u7EBF\u3001\u6A2A\u6760\u3001\u70B9\u53F7",
-				specialch2:
-					"\u53EA\u80FD\u5305\u542B\u6570\u5B57\u3001\u5B57\u6BCD\u3001\u4E0B\u5212\u7EBF\u3001\u6A2A\u6760",
-				speczh:
-					"\u53EA\u80FD\u5305\u542B\u6570\u5B57\u3001\u5B57\u6BCD\u3001\u4E0B\u5212\u7EBF\u3001\u6C49",
+				specialch: "\u53EA\u80FD\u5305\u542B\u6570\u5B57\u3001\u5B57\u6BCD\u3001\u4E0B\u5212\u7EBF\u3001\u6A2A\u6760\u3001\u70B9\u53F7",
+				specialch2: "\u53EA\u80FD\u5305\u542B\u6570\u5B57\u3001\u5B57\u6BCD\u3001\u4E0B\u5212\u7EBF\u3001\u6A2A\u6760",
+				speczh: "\u53EA\u80FD\u5305\u542B\u6570\u5B57\u3001\u5B57\u6BCD\u3001\u4E0B\u5212\u7EBF\u3001\u6C49",
 				string: "\u975E\u6CD5\u5B57\u7B26\u4E32",
 				time: "\u4E0D\u7B26\u5408\u89C4\u5219\u7684\u65F6\u95F4\u683C\u5F0F",
 				url: "\u975E\u6CD5 URL \u5730\u5740",
@@ -2670,14 +2396,11 @@
 				pageservererror: "500:Server exception"
 			},
 			fileUpload: {
-				largefile:
-					" is too large and will be uploaded in segments. Please wait.",
-				folder:
-					" has more than five layers of folders. The file will not be uploaded",
+				largefile: " is too large and will be uploaded in segments. Please wait.",
+				folder: " has more than five layers of folders. The file will not be uploaded",
 				init: "Service error. Please try again.",
 				token: "Perform EDM authentication first and obtain the token",
-				exceed:
-					"Failed to upload the file. The file size exceeds the upper limit ({maxSize} MB).",
+				exceed: "Failed to upload the file. The file size exceeds the upper limit ({maxSize} MB).",
 				largeFile: "The file size exceeds the upper limit by 2 GB !!!",
 				fileSize: "The file size of {name} cannot be less than ",
 				deleteTip: "Press delete to remove",
@@ -2696,12 +2419,10 @@
 				onlySupport: "Only support {type} file",
 				fileNotLessThan: "The file cannot be less than",
 				fileNotMoreThan: "The file cannot be more than",
-				notSupport:
-					"File upload failed: The format (.{format}) is not supported.",
+				notSupport: "File upload failed: The format (.{format}) is not supported.",
 				attachment: "Attachment",
 				uploadList: "Upload List",
-				numberExceed:
-					"Failed to upload the file. The number of files to be uploaded in batches exceeds the upper limit ({number})."
+				numberExceed: "Failed to upload the file. The number of files to be uploaded in batches exceeds the upper limit ({number})."
 			},
 			uploadList: {
 				pictureUploading: "Picture uploading",
@@ -2726,49 +2447,35 @@
 			},
 			grid: {
 				dataUnchanged: "Data unchanged!",
-				deleteSelectRecord:
-					"Are you sure you want to delete the selected record?",
+				deleteSelectRecord: "Are you sure you want to delete the selected record?",
 				emptyText: "No Data",
 				error: {
-					cellEditRender:
-						"The renderer cell-render and edit-render cannot be used together.",
-					delGetAllRecords:
-						"The function getAllRecords is deprecated, please use getRecordset.",
-					delGetRecords:
-						"The function getRecords is deprecated, please use getData.",
+					cellEditRender: "The renderer cell-render and edit-render cannot be used together.",
+					delGetAllRecords: "The function getAllRecords is deprecated, please use getRecordset.",
+					delGetRecords: "The function getRecords is deprecated, please use getData.",
 					delLabel: "The property label is deprecated, please use title.",
 					delProp: "The property prop is deprecated, please use field.",
-					delRevert:
-						"The function revert is deprecated, please use revertData.",
-					groupFixed:
-						"If grouping headers are used, fixed columns must be on the left and right sides.",
+					delRevert: "The function revert is deprecated, please use revertData.",
+					groupFixed: "If grouping headers are used, fixed columns must be on the left and right sides.",
 					notDelete: "delete method not exist.",
-					notMouse:
-						"Horizontal virtual scrolling does not support mouse-config.",
+					notMouse: "Horizontal virtual scrolling does not support mouse-config.",
 					notQuery: "query method not exist.",
-					notResizable:
-						"Horizontal virtual scrolling does not support resizable.",
+					notResizable: "Horizontal virtual scrolling does not support resizable.",
 					notSave: "save method not exist.",
 					reqModule: "require {{name}} module.",
 					rowIdEmpty: "The property row-id is not allowed to be empty.",
-					scrollOriginal:
-						"Virtual scrolling can only export source data, please set original=true.",
-					scrollYHeight:
-						"You must set the height or max-height to enable virtual scrolling.",
+					scrollOriginal: "Virtual scrolling can only export source data, please set original=true.",
+					scrollYHeight: "You must set the height or max-height to enable virtual scrolling.",
 					toolbarId: "Toolbar must have a unique id",
-					treeFixedExpand:
-						"The fixed columns of the tree structure conflict with the expanded row.",
+					treeFixedExpand: "The fixed columns of the tree structure conflict with the expanded row.",
 					treeInsert: "The tree structure does not support insert operations.",
 					treeRemove: "The tree structure does not support remove operations.",
 					unableInsert: "Unable to insert to the specified location.",
 					dargSelf: "Self dragging is not allowed.",
 					dargFixed: "Fixed columns cannot be dragged.",
-					remoteMethod:
-						'"remoteMethod" needs to be set for remote storage for personalized template management.',
-					remoteSelectedMethod:
-						'"remoteSelectedMethod" needs to be set for remote storage for personalized template management.',
-					chainCallError:
-						"There is a syntax error in the default slot for the column, please check."
+					remoteMethod: '"remoteMethod" needs to be set for remote storage for personalized template management.',
+					remoteSelectedMethod: '"remoteSelectedMethod" needs to be set for remote storage for personalized template management.',
+					chainCallError: "There is a syntax error in the default slot for the column, please check."
 				},
 				filter: {
 					allFilter: "All",
@@ -2817,10 +2524,8 @@
 					selectTemplate: "Select Template",
 					hideMsg: "Leave one column to show at least.",
 					maxFreezeNumMsg: "Maxium number of frozen columns is 6",
-					defaultTemplateName:
-						"Please enter a name, if not filled in, it will be generated by the system according to time",
-					reserveTemplateName:
-						"If the name is not filled in, the previous name will be retained",
+					defaultTemplateName: "Please enter a name, if not filled in, it will be generated by the system according to time",
+					reserveTemplateName: "If the name is not filled in, the previous name will be retained",
 					resetBtn: "Reset",
 					saveBtn: "OK",
 					tabs: {
@@ -2853,8 +2558,7 @@
 					switchdelno: "No",
 					switchapplycon: "Are you sure to use this template?"
 				},
-				removeSelectRecord:
-					"Are you sure you want to remove the selected record?",
+				removeSelectRecord: "Are you sure you want to remove the selected record?",
 				saveSuccess: "Save successfully.",
 				selectOneRecord: "Please choose at least one piece of record!",
 				isSaveMsg: "There are change records, do you want to save them?"
@@ -2919,8 +2623,7 @@
 				limitUploadFileType: "Upload file type is limited to",
 				limitUploadFileNumber: "Limit the number of uploaded files to",
 				limitUploadFileSize: "The size of the uploaded file does not exceed",
-				errorNumTips:
-					"The number of uploaded files exceeds the limit. The operation has been cancelled"
+				errorNumTips: "The number of uploaded files exceeds the limit. The operation has been cancelled"
 			},
 			rate: {
 				level: {
@@ -2963,10 +2666,8 @@
 			tree: {
 				emptyText: "No data",
 				switchText: "check easily",
-				deleteTip:
-					"Data will be permanently deleted, are you sure you want to proceed with the deletion?",
-				preserveSubnodeTip:
-					"This node have child nodes, Would you like to preserve the data of the child nodes?",
+				deleteTip: "Data will be permanently deleted, are you sure you want to proceed with the deletion?",
+				preserveSubnodeTip: "This node have child nodes, Would you like to preserve the data of the child nodes?",
 				preserveSubnodeData: "To preserve child nodes' data.",
 				newNodeTitle: "Add Child Nodes"
 			},
@@ -3223,13 +2924,7 @@
 	};
 	var RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g;
 	function format(string) {
-		for (
-			var _len = arguments.length,
-				args = new Array(_len > 1 ? _len - 1 : 0),
-				_key = 1;
-			_key < _len;
-			_key++
-		) {
+		for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
 			args[_key - 1] = arguments[_key];
 		}
 		if (args.length === 1 && typeof args[0] === "object") {
@@ -3382,11 +3077,9 @@
 	};
 	var getDateFormat = function getDateFormat2(config) {
 		var _config$DateFormat = config.DateFormat,
-			DateFormat =
-				_config$DateFormat === void 0 ? "yyyy-MM-dd" : _config$DateFormat,
+			DateFormat = _config$DateFormat === void 0 ? "yyyy-MM-dd" : _config$DateFormat,
 			_config$TimeFormat = config.TimeFormat,
-			TimeFormat =
-				_config$TimeFormat === void 0 ? "HH:mm:ss" : _config$TimeFormat;
+			TimeFormat = _config$TimeFormat === void 0 ? "HH:mm:ss" : _config$TimeFormat;
 		return {
 			DateFormat,
 			DateTimeFormat: DateFormat + " " + TimeFormat,
@@ -3395,8 +3088,7 @@
 	};
 	var TZRE = /(-|\+)(\d{2}):?(\d{2})$/;
 	var getStrTimezone = function getStrTimezone2(value) {
-		var localTimeZone =
-			0 - /* @__PURE__ */ /* @__PURE__ */ new Date().getTimezoneOffset() / 60;
+		var localTimeZone = 0 - /* @__PURE__ */ /* @__PURE__ */ new Date().getTimezoneOffset() / 60;
 		var match = typeof value === "string" && value.match(TZRE);
 		if (match) {
 			var minoffset = match[2] * 1 + (match[3] * 1) / 60;
@@ -3448,24 +3140,15 @@
 					if (!convers) {
 						date = this.getDateWithNewTimezone(date, dbtimezone, opt.Timezone);
 					}
-					return isDate$1(date)
-						? formatDate(date, format2 || opt.DateFormat, t2)
-						: null;
+					return isDate$1(date) ? formatDate(date, format2 || opt.DateFormat, t2) : null;
 				},
 				formatNumber: function formatNumber$1(value, format2) {
 					return formatNumber(value, _extends$2({}, opt.NumberFormat, format2));
 				},
 				recoverNumber: function recoverNumber$1(value, format2) {
-					return recoverNumber(
-						value,
-						_extends$2({}, opt.NumberFormat, format2)
-					);
+					return recoverNumber(value, _extends$2({}, opt.NumberFormat, format2));
 				},
-				getDateWithNewTimezone: function getDateWithNewTimezone$1(
-					value,
-					from,
-					to
-				) {
+				getDateWithNewTimezone: function getDateWithNewTimezone$1(value, from, to) {
 					from = from === 0 ? from : from || opt.DbTimezone;
 					to = to === 0 ? to : to || opt.Timezone;
 					return getDateWithNewTimezone(value, from, to);
@@ -3510,11 +3193,7 @@
 			if (once === void 0) {
 				once = false;
 			}
-			if (
-				event &&
-				typeof event === "string" &&
-				typeof callback === "function"
-			) {
+			if (event && typeof event === "string" && typeof callback === "function") {
 				var callbacks = listeners[event] || [];
 				listeners[event] = callbacks;
 				callbacks.push(callback);
@@ -3599,69 +3278,43 @@
 			_ref6$extend = _ref6.extend,
 			extend2 = _ref6$extend === void 0 ? {} : _ref6$extend;
 		return function () {
-			return hooks__namespace.h(
-				(view && view.value) || component,
-				_extends2({}, props2, attrs, extend2),
-				slots
-			);
+			return hooks__namespace.h((view && view.value) || component, _extends2({}, props2, attrs, extend2), slots);
 		};
 	};
 	var rootConfig = function rootConfig2(context) {
 		var instance = hooks__namespace.getCurrentInstance();
 		context && setInstanceEmitter(instance);
-		return instance == null
-			? void 0
-			: instance.appContext.config.globalProperties;
+		return instance == null ? void 0 : instance.appContext.config.globalProperties;
 	};
 	var getComponentName = function getComponentName2() {
 		var _instance$type;
 		var instance = hooks__namespace.getCurrentInstance();
-		var componentName =
-			instance == null
-				? void 0
-				: (_instance$type = instance.type) == null
-				? void 0
-				: _instance$type.name;
+		var componentName = instance == null ? void 0 : (_instance$type = instance.type) == null ? void 0 : _instance$type.name;
 		if (!componentName) {
 			var _instance$parent, _instance$parent$type;
 			componentName =
-				instance == null
-					? void 0
-					: (_instance$parent = instance.parent) == null
-					? void 0
-					: (_instance$parent$type = _instance$parent.type) == null
-					? void 0
-					: _instance$parent$type.name;
+				instance == null ? void 0 : (_instance$parent = instance.parent) == null ? void 0 : (_instance$parent$type = _instance$parent.type) == null ? void 0 : _instance$parent$type.name;
 		}
 		return componentName || "";
 	};
 	var appContext = function appContext2() {
 		var _hooks$getCurrentInst;
 		return (
-			((_hooks$getCurrentInst = hooks__namespace.getCurrentInstance()) == null
-				? void 0
-				: _hooks$getCurrentInst.appContext) || {
+			((_hooks$getCurrentInst = hooks__namespace.getCurrentInstance()) == null ? void 0 : _hooks$getCurrentInst.appContext) || {
 				component: function component() {}
 			}
 		);
 	};
 	var appProperties = function appProperties2() {
 		var instance = hooks__namespace.getCurrentInstance();
-		return (
-			(instance == null
-				? void 0
-				: instance.appContext.config.globalProperties) || {}
-		);
+		return (instance == null ? void 0 : instance.appContext.config.globalProperties) || {};
 	};
 	var useRouter = function useRouter2(instance) {
 		var _instance;
 		if (instance === void 0) {
 			instance = hooks__namespace.getCurrentInstance();
 		}
-		var router =
-			(_instance = instance) == null
-				? void 0
-				: _instance.appContext.config.globalProperties.$router;
+		var router = (_instance = instance) == null ? void 0 : _instance.appContext.config.globalProperties.$router;
 		var route = router && router.currentRoute.value;
 		return {
 			route,
@@ -3703,11 +3356,7 @@
 				if (parent22) {
 					var _parent, _parent2$$emitter;
 					(_parent = parent22).emit.apply(_parent, [eventName].concat(params));
-					parent22.$emitter &&
-						(_parent2$$emitter = parent22.$emitter).emit.apply(
-							_parent2$$emitter,
-							[eventName].concat(params)
-						);
+					parent22.$emitter && (_parent2$$emitter = parent22.$emitter).emit.apply(_parent2$$emitter, [eventName].concat(params));
 				}
 			},
 			broadcast: function broadcast(componentName, eventName, params) {
@@ -3716,10 +3365,7 @@
 		};
 	};
 	var getRealParent = function getRealParent2(vm) {
-		if (vm && vm.parent)
-			return vm.parent.type.name === "AsyncComponentWrapper" && vm.parent.parent
-				? vm.parent.parent
-				: vm.parent;
+		if (vm && vm.parent) return vm.parent.type.name === "AsyncComponentWrapper" && vm.parent.parent ? vm.parent.parent : vm.parent;
 	};
 	var parent = function parent2(vm) {
 		return function (handler) {
@@ -3733,8 +3379,7 @@
 					options: parent3.type
 				};
 			};
-			if (typeof handler !== "function")
-				return parent22 ? parentObject(parent22) : {};
+			if (typeof handler !== "function") return parent22 ? parentObject(parent22) : {};
 			level++;
 			while (parent22) {
 				if (handler(parentObject(parent22))) break;
@@ -3812,12 +3457,7 @@
 		}
 		return children22;
 	};
-	var defineProperties = function defineProperties2(
-		vm,
-		instance,
-		property,
-		filter22
-	) {
+	var defineProperties = function defineProperties2(vm, instance, property, filter22) {
 		var _loop = function _loop2(name2) {
 			if (typeof filter22 === "function" && filter22(name2)) return 1;
 			Object.defineProperty(vm, name2, {
@@ -3858,11 +3498,7 @@
 			$emitter = instance.$emitter;
 		}
 		var emit = function emit2() {
-			for (
-				var _len2 = arguments.length, args = new Array(_len2), _key2 = 0;
-				_key2 < _len2;
-				_key2++
-			) {
+			for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
 				args[_key2] = arguments[_key2];
 			}
 			instance.emit.apply(instance, args);
@@ -3983,19 +3619,11 @@
 	var tools = function tools2(context, mode) {
 		var _instance$proxy, _instance$proxy$$root;
 		var instance = hooks__namespace.getCurrentInstance();
-		var root =
-			instance == null ? void 0 : instance.appContext.config.globalProperties;
+		var root = instance == null ? void 0 : instance.appContext.config.globalProperties;
 		var _useRouter = useRouter(instance),
 			route = _useRouter.route,
 			router = _useRouter.router;
-		var i18n =
-			instance == null
-				? void 0
-				: (_instance$proxy = instance.proxy) == null
-				? void 0
-				: (_instance$proxy$$root = _instance$proxy.$root) == null
-				? void 0
-				: _instance$proxy$$root.$i18n;
+		var i18n = instance == null ? void 0 : (_instance$proxy = instance.proxy) == null ? void 0 : (_instance$proxy$$root = _instance$proxy.$root) == null ? void 0 : _instance$proxy$$root.$i18n;
 		var _emitEvent = emitEvent(instance),
 			dispatch = _emitEvent.dispatch,
 			broadcast = _emitEvent.broadcast;
@@ -4004,25 +3632,13 @@
 		var vm = createVm({}, instance, context);
 		var emit = context.emit;
 		var refs = {};
-		var grandParent =
-			typeof instance.props.tiny_template === "undefined" &&
-			getRealParent(instance);
-		var parentVm = grandParent
-			? createVm({}, grandParent)
-			: instance.parent
-			? createVm({}, instance.parent)
-			: null;
+		var grandParent = typeof instance.props.tiny_template === "undefined" && getRealParent(instance);
+		var parentVm = grandParent ? createVm({}, grandParent) : instance.parent ? createVm({}, instance.parent) : null;
 		var setParentAttribute = function setParentAttribute2(_ref7) {
 			var _instance$parent2;
 			var name = _ref7.name,
 				value = _ref7.value;
-			var ctx = grandParent
-				? grandParent.ctx
-				: instance == null
-				? void 0
-				: (_instance$parent2 = instance.parent) == null
-				? void 0
-				: _instance$parent2.ctx;
+			var ctx = grandParent ? grandParent.ctx : instance == null ? void 0 : (_instance$parent2 = instance.parent) == null ? void 0 : _instance$parent2.ctx;
 			ctx[name] = value;
 			parentVm[name] = value;
 		};
@@ -4030,10 +3646,9 @@
 			Object.defineProperties(vm, props2);
 			Object.defineProperties(instance == null ? void 0 : instance.ctx, props2);
 		};
-		var defineParentInstanceProperties =
-			function defineParentInstanceProperties2(props2) {
-				parentVm && Object.defineProperties(parentVm, props2);
-			};
+		var defineParentInstanceProperties = function defineParentInstanceProperties2(props2) {
+			parentVm && Object.defineProperties(parentVm, props2);
+		};
 		hooks__namespace.onBeforeMount(function () {
 			return defineInstanceVm(vm, instance);
 		});
@@ -4072,9 +3687,7 @@
 		};
 	};
 	var defineComponent = hooks__namespace.defineComponent;
-	var stringifyCssClassObject = function stringifyCssClassObject2(
-		cssClassObject
-	) {
+	var stringifyCssClassObject = function stringifyCssClassObject2(cssClassObject) {
 		var allCssClass = [];
 		Object.keys(cssClassObject).forEach(function (cssClass) {
 			return cssClassObject[cssClass] && allCssClass.push(cssClass);
@@ -4093,8 +3706,7 @@
 		return allCssClass.join(" ");
 	};
 	var stringifyCssClass = function stringifyCssClass2(cssClasses) {
-		if (!cssClasses || (Array.isArray(cssClasses) && !cssClasses.length))
-			return "";
+		if (!cssClasses || (Array.isArray(cssClasses) && !cssClasses.length)) return "";
 		var allCssClass = [];
 		cssClasses.forEach(function (cssClass) {
 			if (cssClass) {
@@ -4205,10 +3817,7 @@
 			if (classParts[0] === "" && classParts.length !== 1) {
 				classParts.shift();
 			}
-			return (
-				getGroupRecursive(classParts, classMap) ||
-				getGroupIdForArbitraryProperty(className)
-			);
+			return getGroupRecursive(classParts, classMap) || getGroupIdForArbitraryProperty(className);
 		}
 		function getConflictingClassGroupIds(classGroupId) {
 			return config.conflictingClassGroups[classGroupId] || [];
@@ -4225,9 +3834,7 @@
 		}
 		var currentClassPart = classParts[0];
 		var nextClassPartObject = classPartObject.nextPart.get(currentClassPart);
-		var classGroupFromNextClassPart = nextClassPartObject
-			? getGroupRecursive(classParts.slice(1), nextClassPartObject)
-			: void 0;
+		var classGroupFromNextClassPart = nextClassPartObject ? getGroupRecursive(classParts.slice(1), nextClassPartObject) : void 0;
 		if (classGroupFromNextClassPart) {
 			return classGroupFromNextClassPart;
 		}
@@ -4235,27 +3842,18 @@
 			return void 0;
 		}
 		var classRest = classParts.join(CLASS_PART_SEPARATOR);
-		return (_classPartObject$vali = classPartObject.validators.find(
-			function (_ref) {
-				var validator = _ref.validator;
-				return validator(classRest);
-			}
-		)) == null
+		return (_classPartObject$vali = classPartObject.validators.find(function (_ref) {
+			var validator = _ref.validator;
+			return validator(classRest);
+		})) == null
 			? void 0
 			: _classPartObject$vali.classGroupId;
 	}
 	var arbitraryPropertyRegex = /^\[(.+)\]$/;
 	function getGroupIdForArbitraryProperty(className) {
 		if (arbitraryPropertyRegex.test(className)) {
-			var arbitraryPropertyClassName =
-				arbitraryPropertyRegex.exec(className)[1];
-			var property =
-				arbitraryPropertyClassName == null
-					? void 0
-					: arbitraryPropertyClassName.substring(
-							0,
-							arbitraryPropertyClassName.indexOf(":")
-					  );
+			var arbitraryPropertyClassName = arbitraryPropertyRegex.exec(className)[1];
+			var property = arbitraryPropertyClassName == null ? void 0 : arbitraryPropertyClassName.substring(0, arbitraryPropertyClassName.indexOf(":"));
 			if (property) {
 				return "arbitrary.." + property;
 			}
@@ -4268,10 +3866,7 @@
 			nextPart: /* @__PURE__ */ new Map(),
 			validators: []
 		};
-		var prefixedClassGroupEntries = getPrefixedClassGroupEntries(
-			Object.entries(config.classGroups),
-			prefix
-		);
+		var prefixedClassGroupEntries = getPrefixedClassGroupEntries(Object.entries(config.classGroups), prefix);
 		prefixedClassGroupEntries.forEach(function (_ref2) {
 			var classGroupId = _ref2[0],
 				classGroup = _ref2[1];
@@ -4279,29 +3874,16 @@
 		});
 		return classMap;
 	}
-	function processClassesRecursively(
-		classGroup,
-		classPartObject,
-		classGroupId,
-		theme
-	) {
+	function processClassesRecursively(classGroup, classPartObject, classGroupId, theme) {
 		classGroup.forEach(function (classDefinition) {
 			if (typeof classDefinition === "string") {
-				var classPartObjectToEdit =
-					classDefinition === ""
-						? classPartObject
-						: getPart(classPartObject, classDefinition);
+				var classPartObjectToEdit = classDefinition === "" ? classPartObject : getPart(classPartObject, classDefinition);
 				classPartObjectToEdit.classGroupId = classGroupId;
 				return;
 			}
 			if (typeof classDefinition === "function") {
 				if (isThemeGetter(classDefinition)) {
-					processClassesRecursively(
-						classDefinition(theme),
-						classPartObject,
-						classGroupId,
-						theme
-					);
+					processClassesRecursively(classDefinition(theme), classPartObject, classGroupId, theme);
 					return;
 				}
 				classPartObject.validators.push({
@@ -4313,12 +3895,7 @@
 			Object.entries(classDefinition).forEach(function (_ref3) {
 				var key = _ref3[0],
 					classGroup2 = _ref3[1];
-				processClassesRecursively(
-					classGroup2,
-					getPart(classPartObject, key),
-					classGroupId,
-					theme
-				);
+				processClassesRecursively(classGroup2, getPart(classPartObject, key), classGroupId, theme);
 			});
 		});
 	}
@@ -4373,10 +3950,7 @@
 			for (var index2 = 0; index2 < className.length; index2++) {
 				var _char = className[index2];
 				if (bracketDepth === 0 && _char === separator[0]) {
-					if (
-						separator.length === 1 ||
-						className.slice(index2, index2 + separator.length) === separator
-					) {
+					if (separator.length === 1 || className.slice(index2, index2 + separator.length) === separator) {
 						modifiers.push(className.slice(modifierStart, index2));
 						modifierStart = index2 + separator.length;
 					}
@@ -4387,13 +3961,9 @@
 					bracketDepth--;
 				}
 			}
-			var baseClassNameWithImportantModifier =
-				modifiers.length === 0 ? className : className.substring(modifierStart);
-			var hasImportantModifier =
-				baseClassNameWithImportantModifier.startsWith(IMPORTANT_MODIFIER);
-			var baseClassName = hasImportantModifier
-				? baseClassNameWithImportantModifier.substring(1)
-				: baseClassNameWithImportantModifier;
+			var baseClassNameWithImportantModifier = modifiers.length === 0 ? className : className.substring(modifierStart);
+			var hasImportantModifier = baseClassNameWithImportantModifier.startsWith(IMPORTANT_MODIFIER);
+			var baseClassName = hasImportantModifier ? baseClassNameWithImportantModifier.substring(1) : baseClassNameWithImportantModifier;
 			return {
 				modifiers,
 				hasImportantModifier,
@@ -4410,10 +3980,7 @@
 		modifiers.forEach(function (modifier) {
 			var isArbitraryVariant = modifier[0] === "[";
 			if (isArbitraryVariant) {
-				sortedModifiers.push.apply(
-					sortedModifiers,
-					unsortedModifiers.sort().concat([modifier])
-				);
+				sortedModifiers.push.apply(sortedModifiers, unsortedModifiers.sort().concat([modifier]));
 				unsortedModifiers = [];
 			} else {
 				unsortedModifiers.push(modifier);
@@ -4453,9 +4020,7 @@
 					};
 				}
 				var variantModifier = sortModifiers(modifiers).join(":");
-				var modifierId = hasImportantModifier
-					? variantModifier + IMPORTANT_MODIFIER
-					: variantModifier;
+				var modifierId = hasImportantModifier ? variantModifier + IMPORTANT_MODIFIER : variantModifier;
 				return {
 					isTailwindClass: true,
 					modifierId,
@@ -4487,11 +4052,7 @@
 			.join(" ");
 	}
 	function createTailwindMerge() {
-		for (
-			var _len = arguments.length, createConfig = new Array(_len), _key = 0;
-			_key < _len;
-			_key++
-		) {
+		for (var _len = arguments.length, createConfig = new Array(_len), _key = 0; _key < _len; _key++) {
 			createConfig[_key] = arguments[_key];
 		}
 		var configUtils;
@@ -4501,10 +4062,7 @@
 		function initTailwindMerge(classList) {
 			var firstCreateConfig = createConfig[0],
 				restCreateConfig = createConfig.slice(1);
-			var config = restCreateConfig.reduce(function (
-				previousConfig,
-				createConfigCurrent
-			) {
+			var config = restCreateConfig.reduce(function (previousConfig, createConfigCurrent) {
 				return createConfigCurrent(previousConfig);
 			}, firstCreateConfig());
 			configUtils = createConfigUtils(config);
@@ -4537,74 +4095,42 @@
 	var fractionRegex = /^\d+\/\d+$/;
 	var stringLengths = /* @__PURE__ */ new Set(["px", "full", "screen"]);
 	var tshirtUnitRegex = /^(\d+)?(xs|sm|md|lg|xl)$/;
-	var lengthUnitRegex =
-		/\d+(%|px|r?em|[sdl]?v([hwib]|min|max)|pt|pc|in|cm|mm|cap|ch|ex|r?lh)/;
+	var lengthUnitRegex = /\d+(%|px|r?em|[sdl]?v([hwib]|min|max)|pt|pc|in|cm|mm|cap|ch|ex|r?lh)/;
 	var shadowRegex = /^-?((\d+)?\.?(\d+)[a-z]+|0)_-?((\d+)?\.?(\d+)[a-z]+|0)/;
 	function isLength(classPart) {
-		return (
-			!Number.isNaN(Number(classPart)) ||
-			stringLengths.has(classPart) ||
-			fractionRegex.test(classPart) ||
-			isArbitraryLength(classPart)
-		);
+		return !Number.isNaN(Number(classPart)) || stringLengths.has(classPart) || fractionRegex.test(classPart) || isArbitraryLength(classPart);
 	}
 	function isArbitraryLength(classPart) {
 		var _arbitraryValueRegex$;
-		var arbitraryValue =
-			(_arbitraryValueRegex$ = arbitraryValueRegex.exec(classPart)) == null
-				? void 0
-				: _arbitraryValueRegex$[1];
+		var arbitraryValue = (_arbitraryValueRegex$ = arbitraryValueRegex.exec(classPart)) == null ? void 0 : _arbitraryValueRegex$[1];
 		if (arbitraryValue) {
-			return (
-				arbitraryValue.startsWith("length:") ||
-				lengthUnitRegex.test(arbitraryValue)
-			);
+			return arbitraryValue.startsWith("length:") || lengthUnitRegex.test(arbitraryValue);
 		}
 		return false;
 	}
 	function isArbitrarySize(classPart) {
 		var _arbitraryValueRegex$2;
-		var arbitraryValue =
-			(_arbitraryValueRegex$2 = arbitraryValueRegex.exec(classPart)) == null
-				? void 0
-				: _arbitraryValueRegex$2[1];
+		var arbitraryValue = (_arbitraryValueRegex$2 = arbitraryValueRegex.exec(classPart)) == null ? void 0 : _arbitraryValueRegex$2[1];
 		return arbitraryValue ? arbitraryValue.startsWith("size:") : false;
 	}
 	function isArbitraryPosition(classPart) {
 		var _arbitraryValueRegex$3;
-		var arbitraryValue =
-			(_arbitraryValueRegex$3 = arbitraryValueRegex.exec(classPart)) == null
-				? void 0
-				: _arbitraryValueRegex$3[1];
+		var arbitraryValue = (_arbitraryValueRegex$3 = arbitraryValueRegex.exec(classPart)) == null ? void 0 : _arbitraryValueRegex$3[1];
 		return arbitraryValue ? arbitraryValue.startsWith("position:") : false;
 	}
 	function isArbitraryUrl(classPart) {
 		var _arbitraryValueRegex$4;
-		var arbitraryValue =
-			(_arbitraryValueRegex$4 = arbitraryValueRegex.exec(classPart)) == null
-				? void 0
-				: _arbitraryValueRegex$4[1];
-		return arbitraryValue
-			? arbitraryValue.startsWith("url(") || arbitraryValue.startsWith("url:")
-			: false;
+		var arbitraryValue = (_arbitraryValueRegex$4 = arbitraryValueRegex.exec(classPart)) == null ? void 0 : _arbitraryValueRegex$4[1];
+		return arbitraryValue ? arbitraryValue.startsWith("url(") || arbitraryValue.startsWith("url:") : false;
 	}
 	function isArbitraryNumber(classPart) {
 		var _arbitraryValueRegex$5;
-		var arbitraryValue =
-			(_arbitraryValueRegex$5 = arbitraryValueRegex.exec(classPart)) == null
-				? void 0
-				: _arbitraryValueRegex$5[1];
-		return arbitraryValue
-			? !Number.isNaN(Number(arbitraryValue)) ||
-					arbitraryValue.startsWith("number:")
-			: false;
+		var arbitraryValue = (_arbitraryValueRegex$5 = arbitraryValueRegex.exec(classPart)) == null ? void 0 : _arbitraryValueRegex$5[1];
+		return arbitraryValue ? !Number.isNaN(Number(arbitraryValue)) || arbitraryValue.startsWith("number:") : false;
 	}
 	function isInteger(classPart) {
 		var _arbitraryValueRegex$6;
-		var arbitraryValue =
-			(_arbitraryValueRegex$6 = arbitraryValueRegex.exec(classPart)) == null
-				? void 0
-				: _arbitraryValueRegex$6[1];
+		var arbitraryValue = (_arbitraryValueRegex$6 = arbitraryValueRegex.exec(classPart)) == null ? void 0 : _arbitraryValueRegex$6[1];
 		if (arbitraryValue) {
 			return Number.isInteger(Number(arbitraryValue));
 		}
@@ -4621,10 +4147,7 @@
 	}
 	function isArbitraryShadow(classPart) {
 		var _arbitraryValueRegex$7;
-		var arbitraryValue =
-			(_arbitraryValueRegex$7 = arbitraryValueRegex.exec(classPart)) == null
-				? void 0
-				: _arbitraryValueRegex$7[1];
+		var arbitraryValue = (_arbitraryValueRegex$7 = arbitraryValueRegex.exec(classPart)) == null ? void 0 : _arbitraryValueRegex$7[1];
 		if (arbitraryValue) {
 			return shadowRegex.test(arbitraryValue);
 		}
@@ -4671,17 +4194,7 @@
 			return ["auto", isInteger];
 		};
 		var getPositions = function getPositions2() {
-			return [
-				"bottom",
-				"center",
-				"left",
-				"left-bottom",
-				"left-top",
-				"right",
-				"right-bottom",
-				"right-top",
-				"top"
-			];
+			return ["bottom", "center", "left", "left-bottom", "left-top", "right", "right-bottom", "right-top", "top"];
 		};
 		var getLineStyles = function getLineStyles2() {
 			return ["solid", "dashed", "dotted", "double", "none"];
@@ -4714,16 +4227,7 @@
 			return ["", "0", isArbitraryValue];
 		};
 		var getBreaks = function getBreaks2() {
-			return [
-				"auto",
-				"avoid",
-				"all",
-				"avoid-page",
-				"page",
-				"left",
-				"right",
-				"column"
-			];
+			return ["auto", "avoid", "all", "avoid-page", "page", "left", "right", "column"];
 		};
 		return {
 			cacheSize: 500,
@@ -5200,18 +4704,7 @@
 				"font-style": ["italic", "not-italic"],
 				"font-weight": [
 					{
-						font: [
-							"thin",
-							"extralight",
-							"light",
-							"normal",
-							"medium",
-							"semibold",
-							"bold",
-							"extrabold",
-							"black",
-							isArbitraryNumber
-						]
+						font: ["thin", "extralight", "light", "normal", "medium", "semibold", "bold", "extrabold", "black", isArbitraryNumber]
 					}
 				],
 				"font-family": [
@@ -5227,28 +4720,12 @@
 				"fvn-fraction": ["diagonal-fractions", "stacked-fractons"],
 				tracking: [
 					{
-						tracking: [
-							"tighter",
-							"tight",
-							"normal",
-							"wide",
-							"wider",
-							"widest",
-							isArbitraryLength
-						]
+						tracking: ["tighter", "tight", "normal", "wide", "wider", "widest", isArbitraryLength]
 					}
 				],
 				leading: [
 					{
-						leading: [
-							"none",
-							"tight",
-							"snug",
-							"normal",
-							"relaxed",
-							"loose",
-							isLength
-						]
+						leading: ["none", "tight", "snug", "normal", "relaxed", "loose", isLength]
 					}
 				],
 				"list-style-type": [
@@ -5286,12 +4763,7 @@
 						"text-opacity": [opacity]
 					}
 				],
-				"text-decoration": [
-					"underline",
-					"overline",
-					"line-through",
-					"no-underline"
-				],
+				"text-decoration": ["underline", "overline", "line-through", "no-underline"],
 				"text-decoration-style": [
 					{
 						decoration: [].concat(getLineStyles(), ["wavy"])
@@ -5312,12 +4784,7 @@
 						decoration: [colors]
 					}
 				],
-				"text-transform": [
-					"uppercase",
-					"lowercase",
-					"capitalize",
-					"normal-case"
-				],
+				"text-transform": ["uppercase", "lowercase", "capitalize", "normal-case"],
 				"text-overflow": ["truncate", "text-ellipsis", "text-clip"],
 				indent: [
 					{
@@ -5326,17 +4793,7 @@
 				],
 				"vertical-align": [
 					{
-						align: [
-							"baseline",
-							"top",
-							"middle",
-							"bottom",
-							"text-top",
-							"text-bottom",
-							"sub",
-							"super",
-							isArbitraryLength
-						]
+						align: ["baseline", "top", "middle", "bottom", "text-top", "text-bottom", "sub", "super", isArbitraryLength]
 					}
 				],
 				whitespace: [
@@ -5775,16 +5232,7 @@
 				],
 				transition: [
 					{
-						transition: [
-							"none",
-							"all",
-							"",
-							"colors",
-							"opacity",
-							"shadow",
-							"transform",
-							isArbitraryValue
-						]
+						transition: ["none", "all", "", "colors", "opacity", "shadow", "transform", isArbitraryValue]
 					}
 				],
 				duration: [
@@ -5804,14 +5252,7 @@
 				],
 				animate: [
 					{
-						animate: [
-							"none",
-							"spin",
-							"ping",
-							"pulse",
-							"bounce",
-							isArbitraryValue
-						]
+						animate: ["none", "spin", "ping", "pulse", "bounce", isArbitraryValue]
 					}
 				],
 				transform: [
@@ -5861,18 +5302,7 @@
 				],
 				"transform-origin": [
 					{
-						origin: [
-							"center",
-							"top",
-							"top-right",
-							"right",
-							"bottom-right",
-							"bottom",
-							"bottom-left",
-							"left",
-							"top-left",
-							isArbitraryValue
-						]
+						origin: ["center", "top", "top-right", "right", "bottom-right", "bottom", "bottom-left", "left", "top-left", isArbitraryValue]
 					}
 				],
 				accent: [
@@ -6054,13 +5484,7 @@
 				],
 				"will-change": [
 					{
-						"will-change": [
-							"auto",
-							"scroll",
-							"contents",
-							"transform",
-							isArbitraryValue
-						]
+						"will-change": ["auto", "scroll", "contents", "transform", isArbitraryValue]
 					}
 				],
 				fill: [
@@ -6097,28 +5521,13 @@
 				mx: ["mr", "ml"],
 				my: ["mt", "mb"],
 				"font-size": ["leading"],
-				"fvn-normal": [
-					"fvn-ordinal",
-					"fvn-slashed-zero",
-					"fvn-figure",
-					"fvn-spacing",
-					"fvn-fraction"
-				],
+				"fvn-normal": ["fvn-ordinal", "fvn-slashed-zero", "fvn-figure", "fvn-spacing", "fvn-fraction"],
 				"fvn-ordinal": ["fvn-normal"],
 				"fvn-slashed-zero": ["fvn-normal"],
 				"fvn-figure": ["fvn-normal"],
 				"fvn-spacing": ["fvn-normal"],
 				"fvn-fraction": ["fvn-normal"],
-				rounded: [
-					"rounded-t",
-					"rounded-r",
-					"rounded-b",
-					"rounded-l",
-					"rounded-tl",
-					"rounded-tr",
-					"rounded-br",
-					"rounded-bl"
-				],
+				rounded: ["rounded-t", "rounded-r", "rounded-b", "rounded-l", "rounded-tl", "rounded-tr", "rounded-br", "rounded-bl"],
 				"rounded-t": ["rounded-tl", "rounded-tr"],
 				"rounded-r": ["rounded-tr", "rounded-br"],
 				"rounded-b": ["rounded-br", "rounded-bl"],
@@ -6127,32 +5536,13 @@
 				"border-w": ["border-w-t", "border-w-r", "border-w-b", "border-w-l"],
 				"border-w-x": ["border-w-r", "border-w-l"],
 				"border-w-y": ["border-w-t", "border-w-b"],
-				"border-color": [
-					"border-color-t",
-					"border-color-r",
-					"border-color-b",
-					"border-color-l"
-				],
+				"border-color": ["border-color-t", "border-color-r", "border-color-b", "border-color-l"],
 				"border-color-x": ["border-color-r", "border-color-l"],
 				"border-color-y": ["border-color-t", "border-color-b"],
-				"scroll-m": [
-					"scroll-mx",
-					"scroll-my",
-					"scroll-mt",
-					"scroll-mr",
-					"scroll-mb",
-					"scroll-ml"
-				],
+				"scroll-m": ["scroll-mx", "scroll-my", "scroll-mt", "scroll-mr", "scroll-mb", "scroll-ml"],
 				"scroll-mx": ["scroll-mr", "scroll-ml"],
 				"scroll-my": ["scroll-mt", "scroll-mb"],
-				"scroll-p": [
-					"scroll-px",
-					"scroll-py",
-					"scroll-pt",
-					"scroll-pr",
-					"scroll-pb",
-					"scroll-pl"
-				],
+				"scroll-p": ["scroll-px", "scroll-py", "scroll-pt", "scroll-pr", "scroll-pb", "scroll-pl"],
 				"scroll-px": ["scroll-pr", "scroll-pl"],
 				"scroll-py": ["scroll-pt", "scroll-pb"]
 			}
@@ -6168,22 +5558,13 @@
 		tiny_theme: String,
 		tiny_chart_theme: Object
 	};
-	var props = [
-		"tiny_mode",
-		"tiny_mode_root",
-		"tiny_template",
-		"tiny_renderless",
-		"_constants",
-		"tiny_theme",
-		"tiny_chart_theme"
-	];
+	var props = ["tiny_mode", "tiny_mode_root", "tiny_template", "tiny_renderless", "_constants", "tiny_theme", "tiny_chart_theme"];
 	var resolveMode = function resolveMode2(props2, context) {
 		var isRightMode = function isRightMode2(mode) {
 			return ~["pc", "mobile", "mobile-first"].indexOf(mode);
 		};
 		var config = rootConfig(context);
-		var tinyModeProp =
-			typeof props2.tiny_mode === "string" ? props2.tiny_mode : null;
+		var tinyModeProp = typeof props2.tiny_mode === "string" ? props2.tiny_mode : null;
 		var tinyModeInject = hooks__namespace.inject("TinyMode", null);
 		var tinyModeGlobal = config.tiny_mode && config.tiny_mode.value;
 		if (!isRightMode(tinyModeProp)) tinyModeProp = null;
@@ -6207,15 +5588,13 @@
 			return ~["tiny", "saas"].indexOf(theme);
 		};
 		var config = rootConfig(context);
-		var tinyThemeProp =
-			typeof props2.tiny_theme === "string" ? props2.tiny_theme : null;
+		var tinyThemeProp = typeof props2.tiny_theme === "string" ? props2.tiny_theme : null;
 		var tinyThemeInject = hooks__namespace.inject("TinyTheme", null);
 		var tinyThemeGlobal = config.tiny_theme && config.tiny_theme.value;
 		if (!isRightTheme(tinyThemeProp)) tinyThemeProp = null;
 		if (!isRightTheme(tinyThemeInject)) tinyThemeInject = null;
 		if (!isRightTheme(tinyThemeGlobal)) tinyThemeGlobal = null;
-		var tinyTheme =
-			tinyThemeProp || tinyThemeInject || tinyThemeGlobal || "tiny";
+		var tinyTheme = tinyThemeProp || tinyThemeInject || tinyThemeGlobal || "tiny";
 		return (utils.vm.theme = tinyTheme);
 	};
 	var resolveChartTheme = function resolveChartTheme2(_ref10) {
@@ -6223,15 +5602,10 @@
 			context = _ref10.context,
 			utils = _ref10.utils;
 		var config = rootConfig(context);
-		var tinyChartProp =
-			typeof props2.tiny_chart_theme === "object"
-				? props2.tiny_chart_theme
-				: null;
+		var tinyChartProp = typeof props2.tiny_chart_theme === "object" ? props2.tiny_chart_theme : null;
 		var tinyChartInject = hooks__namespace.inject("TinyChartTheme", null);
-		var tinyChartGlobal =
-			config.tiny_chart_theme && config.tiny_chart_theme.value;
-		var tinyChartTheme =
-			tinyChartProp || tinyChartInject || tinyChartGlobal || null;
+		var tinyChartGlobal = config.tiny_chart_theme && config.tiny_chart_theme.value;
+		var tinyChartTheme = tinyChartProp || tinyChartInject || tinyChartGlobal || null;
 		return (utils.vm.chart_theme = tinyChartTheme);
 	};
 	var $setup = function $setup2(_ref11) {
@@ -6241,12 +5615,9 @@
 			_ref11$extend = _ref11.extend,
 			extend2 = _ref11$extend === void 0 ? {} : _ref11$extend;
 		var view = hooks__namespace.computed(function () {
-			if (typeof props2.tiny_template !== "undefined")
-				return props2.tiny_template;
+			if (typeof props2.tiny_template !== "undefined") return props2.tiny_template;
 			var component = template2(resolveMode(props2, context), props2);
-			return typeof component === "function"
-				? defineAsyncComponent(component)
-				: component;
+			return typeof component === "function" ? defineAsyncComponent(component) : component;
 		});
 		initComponent();
 		return renderComponent({
@@ -6257,11 +5628,7 @@
 		});
 	};
 	var mergeClass = function mergeClass2() {
-		for (
-			var _len3 = arguments.length, cssClasses = new Array(_len3), _key3 = 0;
-			_key3 < _len3;
-			_key3++
-		) {
+		for (var _len3 = arguments.length, cssClasses = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
 			cssClasses[_key3] = arguments[_key3];
 		}
 		return twMerge(stringifyCssClass(cssClasses));
@@ -6277,23 +5644,15 @@
 			renderless2 = _ref12.renderless,
 			api2 = _ref12.api,
 			_ref12$extendOptions = _ref12.extendOptions,
-			extendOptions =
-				_ref12$extendOptions === void 0 ? {} : _ref12$extendOptions,
+			extendOptions = _ref12$extendOptions === void 0 ? {} : _ref12$extendOptions,
 			_ref12$mono = _ref12.mono,
 			mono = _ref12$mono === void 0 ? false : _ref12$mono,
 			_ref12$classes = _ref12.classes,
 			classes = _ref12$classes === void 0 ? {} : _ref12$classes;
-		var render2 =
-			typeof props2.tiny_renderless === "function"
-				? props2.tiny_renderless
-				: renderless2;
+		var render2 = typeof props2.tiny_renderless === "function" ? props2.tiny_renderless : renderless2;
 		var globalDesignConfig = hooks__namespace.inject(design.configKey, {});
 		var designConfig =
-			globalDesignConfig == null
-				? void 0
-				: (_globalDesignConfig$c = globalDesignConfig.components) == null
-				? void 0
-				: _globalDesignConfig$c[getComponentName().replace($prefix, "")];
+			globalDesignConfig == null ? void 0 : (_globalDesignConfig$c = globalDesignConfig.components) == null ? void 0 : _globalDesignConfig$c[getComponentName().replace($prefix, "")];
 		var utils = _extends2(
 			{
 				$prefix,
@@ -6317,14 +5676,8 @@
 			utils
 		});
 		var sdk = render2(props2, hooks__namespace, utils, extendOptions);
-		if (
-			typeof (designConfig == null ? void 0 : designConfig.renderless) ===
-			"function"
-		) {
-			Object.assign(
-				sdk,
-				designConfig.renderless(props2, hooks__namespace, utils, sdk)
-			);
+		if (typeof (designConfig == null ? void 0 : designConfig.renderless) === "function") {
+			Object.assign(sdk, designConfig.renderless(props2, hooks__namespace, utils, sdk));
 		}
 		var attrs = {
 			t,
@@ -6399,13 +5752,7 @@
 							"data-tag": isMobileFirst ? "tiny-svg" : null
 						};
 						var attrs = tinyTag;
-						var className = isMobileFirst
-							? mergeClass(
-									"h-4 w-4 inline-block",
-									customClass || "",
-									mergeProps.class || ""
-							  )
-							: "tiny-svg";
+						var className = isMobileFirst ? mergeClass("h-4 w-4 inline-block", customClass || "", mergeProps.class || "") : "tiny-svg";
 						var extend2 = Object.assign(
 							{
 								style: {
@@ -6478,10 +5825,7 @@
 							value
 						);
 				} else if (api2.isIP4(props2.type)) {
-					result =
-						/^((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}$/.test(
-							value
-						);
+					result = /^((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}$/.test(value);
 				}
 			}
 			return result;
@@ -6511,10 +5855,7 @@
 					}
 					item.value && valueArr.push(item.value);
 				});
-				result =
-					state.address.filter(item => item.value).length === 8
-						? valueArr.join(":")
-						: "";
+				result = state.address.filter(item => item.value).length === 8 ? valueArr.join(":") : "";
 			} else {
 				state.address.forEach(item => {
 					if (api2.isIP4(props2.type) && item.value) {
@@ -6522,10 +5863,7 @@
 					}
 					item.value && valueArr.push(item.value);
 				});
-				result =
-					state.address.filter(item => item.value).length === 4
-						? valueArr.join(".")
-						: "";
+				result = state.address.filter(item => item.value).length === 4 ? valueArr.join(".") : "";
 			}
 			return result;
 		};
@@ -6545,7 +5883,9 @@
 								}
 							});
 							for (var i = 0; i <= 8 - state.address.length; i++) {
-								state.address.splice(insertIndex, 0, { value: "0000" });
+								state.address.splice(insertIndex, 0, {
+									value: "0000"
+								});
 							}
 						}
 					} else {
@@ -6553,23 +5893,11 @@
 					}
 				}
 			} else {
-				state.address = api2.isIP6(props2.type)
-					? new Array(8).fill({ value: "" })
-					: new Array(4).fill({ value: "" });
+				state.address = api2.isIP6(props2.type) ? new Array(8).fill({ value: "" }) : new Array(4).fill({ value: "" });
 			}
 		};
-	const activeEvent = ({
-		emit,
-		parent: parent2,
-		state,
-		index: index2,
-		event,
-		type
-	}) => {
-		const target =
-			event && event.target
-				? event.target
-				: parent2.$el.querySelectorAll("input")[index2 || 0];
+	const activeEvent = ({ emit, parent: parent2, state, index: index2, event, type }) => {
+		const target = event && event.target ? event.target : parent2.$el.querySelectorAll("input")[index2 || 0];
 		type === "focus" && (state.active = true);
 		if (!event) {
 			if (target && !state.isSelected) {
@@ -6616,11 +5944,7 @@
 			if (api2.isIP4(props2.type)) {
 				if (!index2 && api2.ipValidator(val)) {
 					api2.setValue(val);
-				} else if (
-					isNaN(val) ||
-					val < IPTHRESHOLD.Min ||
-					val > IPTHRESHOLD.Max
-				) {
+				} else if (isNaN(val) || val < IPTHRESHOLD.Min || val > IPTHRESHOLD.Max) {
 					item.value = "";
 				}
 			} else {
@@ -6662,92 +5986,55 @@
 					item.value = item.value.replace(/\D/g, "");
 					return false;
 				}
-				if (
-					[
-						KEY_CODE.Tab,
-						KEY_CODE.Space,
-						KEY_CODE.NumpadDecimal,
-						KEY_CODE.NumpadComma
-					].includes(keyCode) &&
-					value
-				) {
+				if ([KEY_CODE.Tab, KEY_CODE.Space, KEY_CODE.NumpadDecimal, KEY_CODE.NumpadComma].includes(keyCode) && value) {
 					api2.select({ index: nextIndex });
 					return false;
 				}
-				if (
-					(value === "0" ||
-						value > IPTHRESHOLD.NonNumeric ||
-						value.length === 3) &&
-					!isNaN(event.key)
-				) {
+				if ((value === "0" || value > IPTHRESHOLD.NonNumeric || value.length === 3) && !isNaN(event.key)) {
 					api2.focus({ index: nextIndex });
 					api2.select({ index: nextIndex });
 					return false;
 				}
 			}
 			if (api2.isIP6(props2.type)) {
-				if (
-					[
-						KEY_CODE.Tab,
-						KEY_CODE.Space,
-						KEY_CODE.NumpadDecimal,
-						KEY_CODE.NumpadComma
-					].includes(keyCode) &&
-					value
-				) {
+				if ([KEY_CODE.Tab, KEY_CODE.Space, KEY_CODE.NumpadDecimal, KEY_CODE.NumpadComma].includes(keyCode) && value) {
 					api2.select({ index: nextIndex });
 					return false;
 				}
-				if (
-					(value.length === 4 || value === "0000") &&
-					(!isNaN(event.key) ||
-						(keyCode >= KEY_CODE.KeyA && keyCode <= KEY_CODE.KeyF))
-				) {
+				if ((value.length === 4 || value === "0000") && (!isNaN(event.key) || (keyCode >= KEY_CODE.KeyA && keyCode <= KEY_CODE.KeyF))) {
 					api2.focus({ index: nextIndex });
 					api2.select({ index: nextIndex });
 					return false;
 				}
 			}
 		};
-	const checkError1 = ({
-		Tab,
-		Space,
-		NumpadDecimal,
-		NumpadComma,
-		keyCode,
-		value
-	}) => [Tab, Space, NumpadDecimal, NumpadComma].includes(keyCode) && value;
-	const checkError2 = newValue =>
-		newValue && (isNaN(newValue) || newValue > IPTHRESHOLD.Max);
-	const checkError3 = ({ isfilterKeyCodes, isSelected, value }) =>
-		!isfilterKeyCodes && !isSelected && value === "0";
-	const checkError4 = ({ isfilterKeyCodes, isSelected, value, key }) =>
-		!isfilterKeyCodes && !isSelected && value + key > IPTHRESHOLD.Max;
-	const checkError5 = ({
-		key,
-		isfilterKeyCodes,
-		value,
-		ctrlKey,
-		keyCode,
-		KeyV
-	}) =>
-		isNaN(key) && !isfilterKeyCodes && !(!value && ctrlKey && keyCode === KeyV);
-	const isError = ({
-		key,
-		value,
-		isSelected,
-		isfilterKeyCodes,
-		ctrlKey,
-		keyCode,
-		newValue
-	}) => {
+	const checkError1 = ({ Tab, Space, NumpadDecimal, NumpadComma, keyCode, value }) => [Tab, Space, NumpadDecimal, NumpadComma].includes(keyCode) && value;
+	const checkError2 = newValue => newValue && (isNaN(newValue) || newValue > IPTHRESHOLD.Max);
+	const checkError3 = ({ isfilterKeyCodes, isSelected, value }) => !isfilterKeyCodes && !isSelected && value === "0";
+	const checkError4 = ({ isfilterKeyCodes, isSelected, value, key }) => !isfilterKeyCodes && !isSelected && value + key > IPTHRESHOLD.Max;
+	const checkError5 = ({ key, isfilterKeyCodes, value, ctrlKey, keyCode, KeyV }) => isNaN(key) && !isfilterKeyCodes && !(!value && ctrlKey && keyCode === KeyV);
+	const isError = ({ key, value, isSelected, isfilterKeyCodes, ctrlKey, keyCode, newValue }) => {
 		const { Tab, Space, NumpadDecimal, NumpadComma, KeyV } = KEY_CODE;
 		return (
-			checkError1({ Tab, Space, NumpadDecimal, NumpadComma, keyCode, value }) ||
+			checkError1({
+				Tab,
+				Space,
+				NumpadDecimal,
+				NumpadComma,
+				keyCode,
+				value
+			}) ||
 			checkError2(newValue) ||
 			checkError3({ isfilterKeyCodes, isSelected, value }) ||
 			checkError4({ isfilterKeyCodes, isSelected, value, key }) ||
-			checkError5({ key, isfilterKeyCodes, value, ctrlKey, keyCode, KeyV })
+			checkError5({
+				key,
+				isfilterKeyCodes,
+				value,
+				ctrlKey,
+				keyCode,
+				KeyV
+			})
 		);
 	};
 	const keydown =
@@ -6762,17 +6049,9 @@
 			const isfilterKeyCodes = state.filterKeyCodes.includes(keyCode);
 			const nextIndex = index2 + 1;
 			const lastIndex = index2 - 1;
-			const newValue =
-				isSelected &&
-				!isfilterKeyCodes &&
-				value.substr(0, selectionStart) + key + value.substr(selectionEnd);
-			state.isDel =
-				keyCode === KEY_CODE.Backspace || keyCode === KEY_CODE.Delete;
-			if (
-				keyCode === KEY_CODE.Backspace &&
-				cursorPosition === 0 &&
-				!selectionEnd
-			) {
+			const newValue = isSelected && !isfilterKeyCodes && value.substr(0, selectionStart) + key + value.substr(selectionEnd);
+			state.isDel = keyCode === KEY_CODE.Backspace || keyCode === KEY_CODE.Delete;
+			if (keyCode === KEY_CODE.Backspace && cursorPosition === 0 && !selectionEnd) {
 				api2.focus({ index: lastIndex });
 				return false;
 			}
@@ -6812,60 +6091,23 @@
 		const sizePX = sizeMap[size];
 		return sizePX ? isLineHeight + ":" + sizePX + ";" : "";
 	};
-	const api = [
-		"state",
-		"focus",
-		"inputEvent",
-		"blur",
-		"keyup",
-		"keydown",
-		"change",
-		"select"
-	];
-	const initState = ({
-		reactive,
-		computed,
-		handleValue,
-		parent: parent2,
-		props: props2
-	}) => {
+	const api = ["state", "focus", "inputEvent", "blur", "keyup", "keydown", "change", "select"];
+	const initState = ({ reactive, computed, handleValue, parent: parent2, props: props2 }) => {
 		const state = reactive(
 			__spreadProps(__spreadValues({}, handleValue.state), {
 				active: false,
 				isSelected: false,
-				filterKeyCodes: [
-					KEY_CODE.AtMark,
-					KEY_CODE.Backspace,
-					KEY_CODE.ArrowLeft,
-					KEY_CODE.ArrowRight,
-					KEY_CODE.Tab,
-					KEY_CODE.Delete
-				],
+				filterKeyCodes: [KEY_CODE.AtMark, KEY_CODE.Backspace, KEY_CODE.ArrowLeft, KEY_CODE.ArrowRight, KEY_CODE.Tab, KEY_CODE.Delete],
 				formDisabled: computed(() => (parent2.tinyForm || {}).disabled),
 				disabled: computed(() => props2.disabled || state.formDisabled),
 				heightStyle: computed(() => getHeightOfSize(props2.size)),
-				lineHeightStyle: computed(() =>
-					getHeightOfSize(props2.size, "line-height")
-				),
-				allHeightStyle: computed(
-					() => `${state.heightStyle}${state.lineHeightStyle}`
-				)
+				lineHeightStyle: computed(() => getHeightOfSize(props2.size, "line-height")),
+				allHeightStyle: computed(() => `${state.heightStyle}${state.lineHeightStyle}`)
 			})
 		);
 		return state;
 	};
-	const initApi = ({
-		state,
-		api: api2,
-		dispatch,
-		handleValue,
-		emit,
-		broadcast,
-		parent: parent2,
-		componentName,
-		props: props2,
-		eventName
-	}) => {
+	const initApi = ({ state, api: api2, dispatch, handleValue, emit, broadcast, parent: parent2, componentName, props: props2, eventName }) => {
 		Object.assign(
 			api2,
 			__spreadProps(__spreadValues({}, handleValue.api), {
@@ -6896,15 +6138,7 @@
 			})
 		);
 	};
-	const useHandleValue = ({
-		componentName,
-		dispatch,
-		eventName,
-		props: props2,
-		reactive,
-		toRefs,
-		watch
-	}) => {
+	const useHandleValue = ({ componentName, dispatch, eventName, props: props2, reactive, toRefs, watch }) => {
 		const state = reactive({
 			address: [],
 			isDel: false
@@ -6931,11 +6165,7 @@
 			api: api2
 		};
 	};
-	const renderless = (
-		props2,
-		{ reactive, toRefs, watch, inject, computed },
-		{ $prefix: $prefix2, emit, parent: parent2, broadcast, dispatch }
-	) => {
+	const renderless = (props2, { reactive, toRefs, watch, inject, computed }, { $prefix: $prefix2, emit, parent: parent2, broadcast, dispatch }) => {
 		const api2 = {};
 		const componentName = "FormItem";
 		const eventName = {
@@ -6991,10 +6221,7 @@
 	);
 	var _hoisted_3$1 = [_hoisted_2$1];
 	function render(_ctx, _cache) {
-		return (
-			hooks.openBlock(),
-			hooks.createElementBlock("svg", _hoisted_1$1, _hoisted_3$1)
-		);
+		return hooks.openBlock(), hooks.createElementBlock("svg", _hoisted_1$1, _hoisted_3$1);
 	}
 	var DotIpv4 = {
 		render
@@ -7006,14 +6233,9 @@
 		})();
 	};
 	function _createForOfIteratorHelperLoose_tiny(o, allowArrayLike) {
-		var it =
-			(typeof Symbol !== "undefined" && o[Symbol.iterator]) || o["@@iterator"];
+		var it = (typeof Symbol !== "undefined" && o[Symbol.iterator]) || o["@@iterator"];
 		if (it) return (it = it.call(o)).next.bind(it);
-		if (
-			Array.isArray(o) ||
-			(it = _unsupportedIterableToArray_tiny(o)) ||
-			(allowArrayLike && o && typeof o.length === "number")
-		) {
+		if (Array.isArray(o) || (it = _unsupportedIterableToArray_tiny(o)) || (allowArrayLike && o && typeof o.length === "number")) {
 			if (it) o = it;
 			var i = 0;
 			return function () {
@@ -7021,9 +6243,7 @@
 				return { done: false, value: o[i++] };
 			};
 		}
-		throw new TypeError(
-			"Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
-		);
+		throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 	}
 	function _unsupportedIterableToArray_tiny(o, minLen) {
 		if (!o) return;
@@ -7031,8 +6251,7 @@
 		var n = Object.prototype.toString.call(o).slice(8, -1);
 		if (n === "Object" && o.constructor) n = o.constructor.name;
 		if (n === "Map" || n === "Set") return Array.from(o);
-		if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-			return _arrayLikeToArray_tiny(o, minLen);
+		if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray_tiny(o, minLen);
 	}
 	function _arrayLikeToArray_tiny(arr, len) {
 		if (len == null || len > arr.length) len = arr.length;
@@ -7041,11 +6260,7 @@
 	}
 	var _export_sfc = function _export_sfc2(sfc, props2) {
 		var target = sfc.__vccOpts || sfc;
-		for (
-			var _iterator = _createForOfIteratorHelperLoose_tiny(props2), _step;
-			!(_step = _iterator()).done;
-
-		) {
+		for (var _iterator = _createForOfIteratorHelperLoose_tiny(props2), _step; !(_step = _iterator()).done; ) {
 			var _step$value = _step.value,
 				key = _step$value[0],
 				val = _step$value[1];
@@ -7054,22 +6269,8 @@
 		return target;
 	};
 	var _sfc_main = defineComponent({
-		props: [].concat(props, [
-			"size",
-			"modelValue",
-			"type",
-			"readonly",
-			"disabled",
-			"delimiter"
-		]),
-		emits: [
-			"update:modelValue",
-			"change",
-			"blur",
-			"focus",
-			"select",
-			"inputEvent"
-		],
+		props: [].concat(props, ["size", "modelValue", "type", "readonly", "disabled", "delimiter"]),
+		emits: ["update:modelValue", "change", "blur", "focus", "select", "inputEvent"],
 		components: {
 			IconDotIpv4: index$1()
 		},
@@ -7085,17 +6286,7 @@
 	var _hoisted_1 = {
 		class: "tiny-ip-address"
 	};
-	var _hoisted_2 = [
-		"readonly",
-		"disabled",
-		"onUpdate:modelValue",
-		"onSelect",
-		"onFocus",
-		"onInput",
-		"onBlur",
-		"onKeyup",
-		"onKeydown"
-	];
+	var _hoisted_2 = ["readonly", "disabled", "onUpdate:modelValue", "onSelect", "onFocus", "onInput", "onBlur", "onKeyup", "onKeydown"];
 	var _hoisted_3 = {
 		key: 0,
 		class: "tiny-ip-address__input__ipv6-delimiter"
@@ -7133,16 +6324,12 @@
 												hooks.createElementVNode(
 													"input",
 													{
-														style: hooks.normalizeStyle(
-															_ctx.state.allHeightStyle
-														),
+														style: hooks.normalizeStyle(_ctx.state.allHeightStyle),
 														ref_for: true,
 														ref: "inputs",
 														readonly: _ctx.readonly,
 														disabled: _ctx.state.disabled,
-														"onUpdate:modelValue": function onUpdateModelValue(
-															$event
-														) {
+														"onUpdate:modelValue": function onUpdateModelValue($event) {
 															return (item.value = $event);
 														},
 														type: "text",
@@ -7168,10 +6355,7 @@
 														onChange:
 															_cache[0] ||
 															(_cache[0] = function () {
-																return (
-																	_ctx.change &&
-																	_ctx.change.apply(_ctx, arguments)
-																);
+																return _ctx.change && _ctx.change.apply(_ctx, arguments);
 															}),
 														onBlur: function onBlur($event) {
 															return _ctx.blur({
@@ -7215,24 +6399,13 @@
 														},
 														function () {
 															return [
-																_ctx.type === "IPv6" &&
-																_ctx.delimiter === "icon-dot-ipv4"
-																	? (hooks.openBlock(),
-																	  hooks.createElementBlock(
-																			"span",
-																			_hoisted_3,
-																			":"
-																	  ))
+																_ctx.type === "IPv6" && _ctx.delimiter === "icon-dot-ipv4"
+																	? (hooks.openBlock(), hooks.createElementBlock("span", _hoisted_3, ":"))
 																	: (hooks.openBlock(),
-																	  hooks.createBlock(
-																			hooks.resolveDynamicComponent(
-																				_ctx.delimiter
-																			),
-																			{
-																				key: 1,
-																				class: "tiny-svg-size"
-																			}
-																	  ))
+																	  hooks.createBlock(hooks.resolveDynamicComponent(_ctx.delimiter), {
+																			key: 1,
+																			class: "tiny-svg-size"
+																	  }))
 															];
 														}
 												  )

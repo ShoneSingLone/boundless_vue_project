@@ -1,6 +1,8 @@
 (function () {
 	/* lodash 主要是纯函数 $前缀的是自定义函数*/
-	window.defItem = options => {
+	window.defItem = (...args) => {
+		let options = _.merge.apply(_, args);
+
 		if (!Vue.hasOwn(options, "disabled")) {
 			options.disabled = false;
 		}
@@ -20,13 +22,7 @@
 		 * @returns
 		 * */
 		function configs(API_OPTIONS) {
-			const {
-				type,
-				url,
-				options,
-				success: resolve,
-				error: reject
-			} = API_OPTIONS;
+			let { type, url, options, success: resolve, error: reject } = API_OPTIONS;
 
 			const data = (isUseBodyParams => {
 				if (isUseBodyParams) {
@@ -37,37 +33,23 @@
 									return url + "?" + options.query;
 								}
 								if (_.isPlainObject(options.query)) {
-									return (
-										url +
-										"?" +
-										_.map(
-											options.query,
-											(value, key) => `${key}=${encodeURIComponent(value)}`
-										).join("&")
-									);
+									return url + "?" + _.map(options.query, (value, key) => `${key}=${encodeURIComponent(value)}`).join("&");
 								}
 							}
 						})();
-					} else {
-						return JSON.stringify(options.data || {});
 					}
+					return JSON.stringify(options.data || {});
 				} else {
 					if (_.isString(options.data)) {
 						return options.data;
 					}
 					if (_.isPlainObject(options.data)) {
-						return _.map(
-							options.data,
-							(value, key) => `${key}=${encodeURIComponent(value)}`
-						).join("&");
+						return _.map(options.data, (value, key) => `${key}=${encodeURIComponent(value)}`).join("&");
 					}
 				}
 			})(["POST", "PUT"].includes(_.toUpper(type)));
 
-			const headers = _.merge(
-				{ "X-Language": localStorage["X-Language"] },
-				options.headers
-			);
+			const headers = _.merge({ "X-Language": localStorage["X-Language"] }, options.headers);
 
 			const errorCodeArray = [400, 404, 500, 555];
 			return {
@@ -103,10 +85,7 @@
 						location.assign(locationUrl);
 					} else {
 						if (errorCodeArray.includes(response.status)) {
-							reject(
-								response?.responseJSON?.message ||
-									JSON?.stringify(response?.responseJSON, null, 2)
-							);
+							reject(response?.responseJSON?.message || JSON?.stringify(response?.responseJSON, null, 2));
 						} else {
 							reject(response);
 						}
@@ -228,18 +207,17 @@
 		return name + parseInt((new Date().getTime() % 61439) + 4096).toString(16);
 	};
 
-	_.$is200 = function (val) {
+	_.$is200 = function is200(val) {
 		return String(val) === "200";
 	};
 
 	_.$isEveryInput = function (obj) {
-		let count = 0;
-		return (
-			_.every(Object.entries(obj), ([val]) => {
-				count++;
+		if (Object.keys(obj).length > 0) {
+			return _.every(Object.entries(obj), ([val]) => {
 				return _.$isInput(val);
-			}) && count
-		);
+			});
+		}
+		return false;
 	};
 
 	/**
@@ -273,6 +251,38 @@
 	 */
 	_.$sleep = timeout => new Promise(r => setTimeout(r, timeout));
 
+	/**
+	 *
+	 * @param {*} vm 绑定当前实例
+	 * @param {*} fn
+	 * @param {*} wait time
+	 * @returns
+	 */
+	_.$asyncDebounce = (vm, fn, wait = 1000) => {
+		fn.queue = [];
+		fn.timmer = null;
+		return function (...args) {
+			const vm = this;
+			fn.bindFn = fn.bind(vm);
+			if (fn.timmer) {
+				clearTimeout(fn.timmer);
+			}
+			fn.timmer = setTimeout(async () => {
+				try {
+					const res = await fn.bindFn.apply(vm, args);
+					_.each(fn.queue, r => r(res));
+					fn.queue = [];
+				} catch (error) {
+					console.error(error);
+				} finally {
+					fn.queue = [];
+				}
+			}, wait);
+			return new Promise(resolve => {
+				fn.queue.push(resolve);
+			});
+		}.bind(vm);
+	};
 	/**
 	 * @name _.$isArrayFill
 	 * @param {any} val
@@ -354,15 +364,12 @@
 				</div>`;
 			}
 
-			const WindowConfirm = await _.$importVue(
-				"/common/ui-x/msg/WindowConfirm.vue",
-				{
-					onOk: resolve,
-					onCancel: reject,
-					content,
-					isDelete
-				}
-			);
+			const WindowConfirm = await _.$importVue("/common/ui-x/msg/WindowConfirm.vue", {
+				onOk: resolve,
+				onCancel: reject,
+				content,
+				isDelete
+			});
 			_.$openWindow(title, WindowConfirm, { offset: "200px" });
 		});
 	};
@@ -446,9 +453,60 @@
 			}, 300)
 		);
 
-		_.$openWindow = async (title, VueOptions, options = {}) => {
-			if (!VueOptions) {
-				throw new Error("openWindow VueOptions is null ");
+		_.$privateSetWindowVmDefaultMethods = function (WindowVueCtor, indexPanel) {
+			WindowVueCtor.propsData = WindowVueCtor.propsData || {};
+			WindowVueCtor.propsData.$closeWindow = () => layer.close(indexPanel);
+			WindowVueCtor.propsData.$layerMax = () => layer.full(indexPanel);
+			WindowVueCtor.propsData.$layerMin = () => layer.min(indexPanel);
+			WindowVueCtor.propsData.$layerRestore = () => layer.restore(indexPanel);
+			return new Vue(WindowVueCtor);
+		};
+
+		_.$privateLayerSuccessThenMountVueComponent = function (WindowVueCtor, indexPanel, vm, layero, options, id, DIALOG_CACHE, layerVM) {
+			if (WindowVueCtor.parent) {
+				if (!WindowVueCtor.parent._isVue) {
+					console.error(new Error("_.$importVue 的 parent 必须是Vue的实例，当前传入的不是"));
+					alert(e);
+				}
+			}
+
+			// WindowVueCtor.el = `#${id}`;
+			vm = _.$privateSetWindowVmDefaultMethods(WindowVueCtor, indexPanel);
+			/* 在window内可以直接调用 */
+			vm.$bus = _.merge({ layero, indexPanel }, WindowVueCtor?.bus || {});
+
+			vm.layero = layero;
+			vm.indexPanel = indexPanel;
+
+			options.beforeMount && options.beforeMount(vm);
+			vm.$mount(`#${id}`);
+			options.mounted && options.mounted(vm);
+
+			/* resize之后调用offset重新布局 */
+			if (options.fullscreen) {
+				/* 全屏 */
+				DIALOG_CACHE[indexPanel] = () => layer.full(indexPanel);
+				DIALOG_CACHE[indexPanel]();
+			}
+			/* resize之后调用offset重新布局 */
+			layerVM.offset();
+			setTimeout(() => {
+				layerVM.offset();
+				(function () {
+					vm.$resizeObserver = new ResizeObserver(entries => {
+						// const entry = _.first(entries);
+						//
+						layerVM.offset();
+					});
+					vm.$resizeObserver.observe(vm.$el);
+				})();
+			}, 64);
+			return vm;
+		};
+
+		_.$openWindow = async (title, WindowVueCtor, options = {}) => {
+			if (!WindowVueCtor) {
+				throw new Error("openWindow WindowVueCtor is null ");
 			}
 			/* 保留，取消layer自己的btns */
 			options.btn = options.btn || null;
@@ -474,61 +532,7 @@
 								// layerVM.layero.addClass("opacity0");
 							},
 							success(layero, indexPanel, layerVM) {
-								if (VueOptions.$parent) {
-									if (!VueOptions.$parent._isVue) {
-										const e =
-											"_.$importVue 的 $parent 必须是Vue的实例，当前传入的不是";
-										console.error(e);
-										console.error(VueOptions.$parent);
-										alert(e);
-									}
-									VueOptions.parent = VueOptions.$parent;
-								}
-
-								// VueOptions.el = `#${id}`;
-								VueOptions.propsData = VueOptions.propsData || {};
-								VueOptions.propsData.$closeWindow = () =>
-									layer.close(indexPanel);
-								VueOptions.propsData.$layerMax = () => layer.full(indexPanel);
-								VueOptions.propsData.$layerMin = () => layer.min(indexPanel);
-								VueOptions.propsData.$layerRestore = () =>
-									layer.restore(indexPanel);
-								vm = new Vue(VueOptions);
-								/* 在window内可以直接调用 */
-
-								vm.$bus = _.merge(
-									{ layero, indexPanel },
-									VueOptions?.bus || {}
-								);
-
-								vm.layero = layero;
-								vm.indexPanel = indexPanel;
-								VueOptions.vm = vm;
-								VueOptions.indexPanel = indexPanel;
-								options.beforeMount && options.beforeMount(vm);
-								vm.$mount(`#${id}`);
-								options.mounted && options.mounted(vm);
-
-								/* resize之后调用offset重新布局 */
-								if (options.fullscreen) {
-									/* 全屏 */
-									DIALOG_CACHE[indexPanel] = () => layer.full(indexPanel);
-									DIALOG_CACHE[indexPanel]();
-								}
-								/* resize之后调用offset重新布局 */
-
-								layerVM.offset();
-								setTimeout(() => {
-									layerVM.offset();
-									(function () {
-										vm.$resizeObserver = new ResizeObserver(entries => {
-											// const entry = _.first(entries);
-											//
-											layerVM.offset();
-										});
-										vm.$resizeObserver.observe(vm.$el);
-									})();
-								}, 64);
+								vm = _.$privateLayerSuccessThenMountVueComponent(WindowVueCtor, indexPanel, vm, layero, options, id, DIALOG_CACHE, layerVM);
 							},
 							yes(indexPanel, layero) {
 								if (_.isFunction(options._yes)) {
@@ -541,9 +545,7 @@
 							},
 							cancel: _.$doNoting,
 							end(indexPanel) {
-								const $layerPanel = $(vm.$el).parents(
-									".layui-layer.layui-layer-page.layer-anim-close"
-								);
+								const $layerPanel = $(vm.$el).parents(".layui-layer.layui-layer-page.layer-anim-close");
 								$layerPanel.remove();
 								vm.$resizeObserver.disconnect();
 								vm.$resizeObserver = null;
@@ -562,12 +564,15 @@
 		};
 	})();
 
+	const logEnsure = _.debounce(function () {
+		console.log("🚀:", "$ensure", _.$ensure.collection);
+	}, 1000);
+
 	/* 等待fnGetValue为真值，duration为0就不断尝试，若不在给定时间内完成，则失败 */
 	_.$ensure = async (fnGetValue, duration = 0) => {
 		var fnString = fnGetValue.toString();
 		_.$ensure.collection.add(fnString);
-		console.log("🚀:", "$ensure", _.$ensure.collection);
-
+		logEnsure();
 		return new Promise(async (resolve, reject) => {
 			var timer;
 			if (duration) {
@@ -584,7 +589,7 @@
 					}
 					resolve();
 					_.$ensure.collection.delete(fnString);
-					console.log("🚀:", "$ensure", _.$ensure.collection);
+					logEnsure();
 					return;
 				} else {
 					setTimeout(exeFnGetValue, 64);
@@ -599,16 +604,11 @@
 	async function $globalVar(globalName, url) {
 		url = _.$resolvePath(url);
 		return new Promise(async resolve => {
-			if (
-				_.$val(window, globalName) &&
-				$globalVar[globalName] === _.$val(window, globalName)
-			) {
+			if (_.$val(window, globalName) && $globalVar[globalName] === _.$val(window, globalName)) {
 				return resolve(_.$val(window, globalName));
 			}
 			if ($globalVar[globalName] === "IS_PENDDING") {
-				await _.$ensure(
-					() => $globalVar[globalName] === _.$val(window, globalName)
-				);
+				await _.$ensure(() => $globalVar[globalName] === _.$val(window, globalName));
 				return resolve(_.$val(window, globalName));
 			}
 			const id = _.camelCase(url);
@@ -661,10 +661,7 @@
 						return [targetSource, {}];
 					} else {
 						openingTag = openingTag[0];
-						targetSource = source.slice(
-							source.indexOf(openingTag) + openingTag.length,
-							source.lastIndexOf("</" + pickType + ">")
-						);
+						targetSource = source.slice(source.indexOf(openingTag) + openingTag.length, source.lastIndexOf("</" + pickType + ">"));
 					}
 					/* TODO: jsx解析*/
 					if (["template", "setup-render"].includes(pickType)) {
@@ -680,10 +677,7 @@
 				const [scritpSourceCode] = getSource(sourceCodeString, "script");
 				const [templateSourceCode] = getSource(sourceCodeString, "template");
 				const [styleSourceCode] = getSource(sourceCodeString, "style");
-				const [setupRenderSourceCode, { scope }] = getSource(
-					sourceCodeString,
-					"setup-render"
-				);
+				const [setupRenderSourceCode, { scope }] = getSource(sourceCodeString, "setup-render");
 				return {
 					scritpSourceCode,
 					templateSourceCode,
@@ -701,10 +695,7 @@
 		 * @param {any} param1
 		 * @returns
 		 */
-		async function GenComponentOptions(
-			url,
-			{ scritpSourceCode, templateSourceCode, payload }
-		) {
+		async function GenComponentOptions(url, { scritpSourceCode, templateSourceCode, payload }) {
 			payload = payload || {};
 			try {
 				scritpSourceCode = scritpSourceCode.replace("export default", "");
@@ -712,11 +703,7 @@
 				const innerCode = [
 					`console.info("${url}");`,
 					isShowTemplate ? `(()=>\`${templateSourceCode}\`)();` : ``,
-					`try{const ${_.camelCase(
-						url
-					)} = ${scritpSourceCode};return ${_.camelCase(
-						url
-					)}.call({THIS_FILE_URL:"${url}"},payload);}catch(e){console.error(e)}`
+					`try{const ${_.camelCase(url)} = ${scritpSourceCode};return ${_.camelCase(url)}.call({THIS_FILE_URL:"${url}"},payload);}catch(e){console.error(e)}`
 				].join("\n");
 				let scfObjAsyncFn;
 				let component = {};
@@ -787,19 +774,15 @@
 				await _.$appendScript("/common/libs/less.js");
 				const { render } = window.less;
 				let cssContent = await new Promise(resolve => {
-					render(
-						_.$resolveCssAssetsPath(styleSourceCode),
-						{},
-						(error, cssContent) => {
-							if (error) {
-								console.error(styleSourceCode);
-								console.error(error);
-								resolve({ css: "" });
-							} else {
-								resolve(cssContent.css);
-							}
+					render(_.$resolveCssAssetsPath(styleSourceCode), {}, (error, cssContent) => {
+						if (error) {
+							console.error(styleSourceCode);
+							console.error(error);
+							resolve({ css: "" });
+						} else {
+							resolve(cssContent.css);
 						}
-					);
+					});
 				});
 				_.$appendStyle(url, cssContent);
 			}
@@ -834,8 +817,7 @@
 				_.$importVue?.Nprogress.start();
 			}
 			try {
-				const { scritpSourceCode, templateSourceCode } =
-					await _.$SourceCode_SFC(resolvedURL);
+				const { scritpSourceCode, templateSourceCode } = await _.$SourceCode_SFC(resolvedURL);
 				/* script and template*/
 				const ComponentOptions =
 					(await _.$GenComponentOptions(url, {
@@ -843,8 +825,8 @@
 						templateSourceCode,
 						payload
 					})) || {};
-				if (payload?.$parent) {
-					ComponentOptions.$parent = payload?.$parent;
+				if (payload?.parent) {
+					ComponentOptions.parent = payload?.parent;
 				}
 				ComponentOptions.FILE_URL = resolvedURL;
 				return ComponentOptions;
@@ -967,16 +949,26 @@
 			return [];
 		}
 	};
+
+	/**
+	 * 修改xItem的属性
+	 * @param {*} selector
+	 * @param {*} attrs
+	 */
 	_.$modifyItemsAttrs = async (selector, attrs) => {
 		const $target = getTargetBy(selector);
 		for (const dom of $target) {
 			const { formItemId } = dom.dataset || {};
 			const vm = Vue.GH_FORM_ITEM_MAP?.[formItemId || "________No"];
-			if (vm?.configs) {
-				_.each(attrs, (val, key) => {
-					Vue.set(vm.configs, key, val);
-				});
-			}
+			_.each(attrs, (val, key) => {
+				if (vm && key === "disabled") {
+					vm.privateState.isDisabled = val ? "disabled" : "";
+				} else {
+					if (vm?.configs) {
+						Vue.set(vm.configs, key, val);
+					}
+				}
+			});
 		}
 	};
 
@@ -1006,8 +998,10 @@
 			get(obj, prop) {
 				if (prop === "_$item") {
 					return value => {
-						value = _.$isInput(value) ? value : obj.p_value;
-						return _.find(obj?.configs?.options, { value }) || {};
+						if (value === undefined) {
+							value = obj.p_value;
+						}
+						return obj?.configs?.options?.find(i => i.value === value) || {};
 					};
 				}
 				return obj[prop];
@@ -1084,9 +1078,7 @@
 	})();
 
 	document.title = window.i18n("adminConsole");
-	const APP = await _.$importVue(
-		`${SRC_ROOT_PATH}/business_${APP_NAME}/${APP_ENTRY_NAME}.vue`
-	);
+	const APP = await _.$importVue(`${SRC_ROOT_PATH}/business_${APP_NAME}/${APP_ENTRY_NAME}.vue`);
 	if (localStorage.isDev) {
 		window.APP = APP;
 	}

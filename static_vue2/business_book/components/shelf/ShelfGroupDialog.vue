@@ -1,16 +1,9 @@
 <template>
 	<ebook-dialog :title="title" ref="dialog">
 		<div class="dialog-list-wrapper" v-if="!ifNewGroup">
-			<div
-				class="dialog-list-item"
-				:class="{ 'is-add': item.edit ? item.edit === 1 : false }"
-				v-for="(item, index) in categoryList"
-				:key="index"
-				@click="onGroupClick(item)">
+			<div class="dialog-list-item" :class="{ 'is-add': item.edit ? item.edit === 1 : false }" v-for="(item, index) in categoryList" :key="index" @click="onGroupClick(item)">
 				<div class="dialog-list-item-text">{{ item.title }}</div>
-				<div
-					class="dialog-list-icon-wrapper"
-					v-if="isInGroup && shelfCategory.id === item.id">
+				<div class="dialog-list-icon-wrapper" v-if="isInGroup && shelfCategory.id === item.id">
 					<span class="icon-check"></span>
 				</div>
 			</div>
@@ -21,15 +14,8 @@
 			</div>
 			<div class="dialog-input-wrapper">
 				<div class="dialog-input-inner-wrapper">
-					<input
-						type="text"
-						class="dialog-input"
-						v-model="newGroupName"
-						ref="dialogInput" />
-					<div
-						class="dialog-input-clear-wrapper"
-						@click="clear"
-						v-show="newGroupName.length > 0">
+					<input type="text" class="dialog-input" v-model="newGroupName" ref="dialogInput" />
+					<div class="dialog-input-clear-wrapper" @click="clear" v-show="newGroupName.length > 0">
 						<span class="icon-close-circle-fill"></span>
 					</div>
 				</div>
@@ -37,11 +23,7 @@
 		</div>
 		<div slot="btn" class="group-dialog-btn-wrapper">
 			<div class="dialog-btn" @click="hide">{{ $t("shelf.cancel") }}</div>
-			<div
-				class="dialog-btn"
-				@click="createNewGroup"
-				:class="{ 'is-empty': newGroupName.length === 0 }"
-				v-if="ifNewGroup">
+			<div class="dialog-btn" @click="createNewGroup" :class="{ 'is-empty': newGroupName.length === 0 }" v-if="ifNewGroup">
 				{{ $t("shelf.confirm") }}
 			</div>
 		</div>
@@ -52,8 +34,7 @@
 export default async function () {
 	const EbookDialog = await _.$importVue("@/common/Dialog.vue");
 	const { storeShelfMixin } = await _.$importVue("@/utils/mixin.vue");
-	const { removeAddFromShelf, appendAddToShelf } =
-		await _.$importVue("@/utils/store.vue");
+	const { removeAddFromShelf, appendAddToShelf } = await _.$importVue("@/utils/store.vue");
 	const { saveBookShelf } = await _.$importVue("@/utils/localStorage.vue");
 
 	return {
@@ -90,15 +71,11 @@ export default async function () {
 			},
 			categoryList() {
 				return [...this.defaultCategory, ...this.category].filter(item => {
-					return (
-						(item.edit === 2 && this.isInGroup) || item.edit !== 2 || !item.edit
-					);
+					return (item.edit === 2 && this.isInGroup) || item.edit !== 2 || !item.edit;
 				});
 			},
 			title() {
-				return !this.ifNewGroup
-					? this.$t("shelf.moveBook")
-					: this.$t("shelf.newGroup");
+				return !this.ifNewGroup ? this.$t("shelf.moveBook") : this.$t("shelf.newGroup");
 			}
 		},
 		data() {
@@ -138,9 +115,7 @@ export default async function () {
 				this.setShelfList(
 					this.shelfList.filter(book => {
 						if (book.itemList) {
-							book.itemList = book.itemList.filter(
-								subBook => this.shelfSelected.indexOf(subBook) < 0
-							);
+							book.itemList = book.itemList.filter(subBook => this.shelfSelected.indexOf(subBook) < 0);
 						}
 						return this.shelfSelected.indexOf(book) < 0;
 					})
@@ -151,9 +126,7 @@ export default async function () {
 					group.itemList.forEach((item, index) => {
 						item.id = index + 1;
 					});
-					this.simpleToast(
-						this.$t("shelf.moveBookInSuccess").replace("$1", group.title)
-					);
+					this.simpleToast(this.$t("shelf.moveBookInSuccess").replace("$1", group.title));
 					this.onComplete();
 				});
 			},

@@ -1,10 +1,6 @@
 <template>
 	<div>
-		value1: {{ value1 }}
-		<tiny-ip-address
-			v-model="value1"
-			style="margin-bottom: 8px"></tiny-ip-address
-		><br />
+		value1: {{ value1 }} <tiny-ip-address v-model="value1" style="margin-bottom: 8px"></tiny-ip-address><br />
 		value2:{{ value2 }}
 		<tiny-ip-address type="IPv6" v-model="value2"></tiny-ip-address>
 	</div>

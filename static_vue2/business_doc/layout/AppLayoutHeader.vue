@@ -1,8 +1,6 @@
 <template>
 	<div class="AppLayoutHeader">
-		<xIcon
-			img="@/assets/svg/icon_report.svg"
-			style="width: 48px; height: 48px" />
+		<xIcon img="@/assets/svg/icon_report.svg" style="width: 48px; height: 48px" />
 	</div>
 </template>
 

@@ -11,8 +11,7 @@ export default async function () {
 		})(function () {
 			"use strict";
 
-			var devtoolHook =
-				typeof window !== "undefined" && window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+			var devtoolHook = typeof window !== "undefined" && window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
 
 			function devtoolPlugin(store) {
 				if (!devtoolHook) {
@@ -45,9 +44,7 @@ export default async function () {
 					Vue.prototype._init = function (options) {
 						if (options === void 0) options = {};
 
-						options.init = options.init
-							? [vuexInit].concat(options.init)
-							: vuexInit;
+						options.init = options.init ? [vuexInit].concat(options.init) : vuexInit;
 						_init.call(this, options);
 					};
 				}
@@ -74,9 +71,7 @@ export default async function () {
 					var val = ref.val;
 
 					res[key] = function mappedState() {
-						return typeof val === "function"
-							? val.call(this, this.$store.state, this.$store.getters)
-							: this.$store.state[val];
+						return typeof val === "function" ? val.call(this, this.$store.state, this.$store.getters) : this.$store.state[val];
 					};
 				});
 				return res;
@@ -162,14 +157,8 @@ export default async function () {
 				var this$1 = this;
 				if (options === void 0) options = {};
 
-				assert(
-					Vue,
-					"must call Vue.use(Vuex) before creating a store instance."
-				);
-				assert(
-					typeof Promise !== "undefined",
-					"vuex requires a Promise polyfill in this browser."
-				);
+				assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
+				assert(typeof Promise !== "undefined", "vuex requires a Promise polyfill in this browser.");
 
 				var state = options.state;
 				if (state === void 0) state = {};
@@ -225,10 +214,7 @@ export default async function () {
 			};
 
 			prototypeAccessors.state.set = function (v) {
-				assert(
-					false,
-					"Use store.replaceState() to explicit replace store state."
-				);
+				assert(false, "Use store.replaceState() to explicit replace store state.");
 			};
 
 			Store.prototype.commit = function commit(type, payload, options) {
@@ -294,10 +280,7 @@ export default async function () {
 			Store.prototype.watch = function watch(getter, cb, options) {
 				var this$1 = this;
 
-				assert(
-					typeof getter === "function",
-					"store.watch only accepts a function."
-				);
+				assert(typeof getter === "function", "store.watch only accepts a function.");
 				return this._watcherVM.$watch(
 					function () {
 						return getter(this$1.state);
@@ -319,10 +302,7 @@ export default async function () {
 				if (typeof path === "string") {
 					path = [path];
 				}
-				assert(
-					Array.isArray(path),
-					"module path must be a string or an Array."
-				);
+				assert(Array.isArray(path), "module path must be a string or an Array.");
 				this._runtimeModules[path.join(".")] = module;
 				installModule(this, this.state, path, module);
 				// reset store to update getters...
@@ -335,10 +315,7 @@ export default async function () {
 				if (typeof path === "string") {
 					path = [path];
 				}
-				assert(
-					Array.isArray(path),
-					"module path must be a string or an Array."
-				);
+				assert(Array.isArray(path), "module path must be a string or an Array.");
 				delete this._runtimeModules[path.join(".")];
 				this._withCommit(function () {
 					var parentState = getNestedState(this$1.state, path.slice(0, -1));
@@ -374,12 +351,7 @@ export default async function () {
 				if (newModule.modules) {
 					for (var key in newModule.modules) {
 						if (!(targetModule.modules && targetModule.modules[key])) {
-							console.warn(
-								"[vuex] trying to add a new module '" +
-									key +
-									"' on hot reloading, " +
-									"manual reload is needed"
-							);
+							console.warn("[vuex] trying to add a new module '" + key + "' on hot reloading, " + "manual reload is needed");
 							return;
 						}
 						updateModule(targetModule.modules[key], newModule.modules[key]);
@@ -396,13 +368,7 @@ export default async function () {
 				installModule(store, state, [], store._options, true);
 				// init all runtime modules
 				Object.keys(store._runtimeModules).forEach(function (key) {
-					installModule(
-						store,
-						state,
-						key.split("."),
-						store._runtimeModules[key],
-						true
-					);
+					installModule(store, state, key.split("."), store._runtimeModules[key], true);
 				});
 				// reset vm
 				resetStoreVM(store, state);
@@ -491,13 +457,7 @@ export default async function () {
 
 				if (modules) {
 					Object.keys(modules).forEach(function (key) {
-						installModule(
-							store,
-							rootState,
-							path.concat(key),
-							modules[key],
-							hot
-						);
+						installModule(store, rootState, path.concat(key), modules[key], hot);
 					});
 				}
 			}
@@ -564,10 +524,7 @@ export default async function () {
 				store._vm.$watch(
 					"state",
 					function () {
-						assert(
-							store._committing,
-							"Do not mutate vuex store state outside mutation handlers."
-						);
+						assert(store._committing, "Do not mutate vuex store state outside mutation handlers.");
 					},
 					{ deep: true, sync: true }
 				);
@@ -583,9 +540,7 @@ export default async function () {
 
 			function install(_Vue) {
 				if (Vue) {
-					console.error(
-						"[vuex] already installed. Vue.use(Vuex) should be called only once."
-					);
+					console.error("[vuex] already installed. Vue.use(Vuex) should be called only once.");
 					return;
 				}
 				Vue = _Vue;

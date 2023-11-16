@@ -2,18 +2,12 @@
 	<transition name="slide-up">
 		<div class="setting-wrapper" v-show="menuVisible && settingVisible === 0">
 			<div class="setting-font-size">
-				<div
-					class="preview"
-					:style="{ fontSize: fontSizeList[0].fontSize + 'px' }">
-					A
-				</div>
+				<div class="preview" :style="{ fontSize: fontSizeList[0].fontSize + 'px' }">A</div>
 				<div
 					class="select-wrapper"
 					v-for="(item, index) of fontSizeList"
 					:key="index"
-					:style="
-						index === 0 || index === fontSizeList.length - 1 ? flexRadio : ''
-					"
+					:style="index === 0 || index === fontSizeList.length - 1 ? flexRadio : ''"
 					@click="setFontSize(item.fontSize)">
 					<div class="line" :style="index === 0 ? noBorder : ''"></div>
 					<div class="point-wrapper">
@@ -21,9 +15,7 @@
 							<div class="small-point"></div>
 						</div>
 					</div>
-					<div
-						class="line"
-						:style="index === fontSizeList.length - 1 ? noBorder : ''"></div>
+					<div class="line" :style="index === fontSizeList.length - 1 ? noBorder : ''"></div>
 				</div>
 				<div
 					class="preview"

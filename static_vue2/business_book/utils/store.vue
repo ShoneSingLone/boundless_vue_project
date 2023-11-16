@@ -2,9 +2,7 @@
 
 <script>
 export default async function () {
-	const { getLocalStorage, getBookShelf, saveBookShelf } = await _.$importVue(
-		"@/utils/localStorage.vue"
-	);
+	const { getLocalStorage, getBookShelf, saveBookShelf } = await _.$importVue("@/utils/localStorage.vue");
 
 	function addToShelf(book) {
 		let shelfList = getBookShelf();

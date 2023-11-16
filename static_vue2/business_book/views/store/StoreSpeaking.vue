@@ -1,18 +1,8 @@
 <template>
 	<div class="book-speaking">
 		<detail-title @back="back" ref="title"></detail-title>
-		<scroll
-			class="content-wrapper"
-			:top="42"
-			:bottom="scrollBottom"
-			:ifNoScroll="disableScroll"
-			@onScroll="onScroll"
-			ref="scroll">
-			<book-info
-				:cover="cover"
-				:title="title"
-				:author="author"
-				:desc="desc"></book-info>
+		<scroll class="content-wrapper" :top="42" :bottom="scrollBottom" :ifNoScroll="disableScroll" @onScroll="onScroll" ref="scroll">
+			<book-info :cover="cover" :title="title" :author="author" :desc="desc"></book-info>
 			<div class="book-speak-title-wrapper">
 				<div class="icon-speak-wrapper">
 					<span class="icon-speak"></span>
@@ -34,30 +24,16 @@
 						<span class="loading-text">{{ $t("detail.loading") }}</span>
 					</div>
 					<div class="book-detail-content-item-wrapper">
-						<div
-							class="book-detail-content-item"
-							v-for="(item, index) in flatNavigation"
-							:key="index"
-							@click="speak(item, index)">
-							<speak-playing
-								v-if="playingIndex === index"
-								:number="5"
-								ref="speakPlaying"></speak-playing>
-							<div
-								class="book-detail-content-navigation-text"
-								:class="{ 'is-playing': playingIndex === index }"
-								v-if="item.label">
+						<div class="book-detail-content-item" v-for="(item, index) in flatNavigation" :key="index" @click="speak(item, index)">
+							<speak-playing v-if="playingIndex === index" :number="5" ref="speakPlaying"></speak-playing>
+							<div class="book-detail-content-navigation-text" :class="{ 'is-playing': playingIndex === index }" v-if="item.label">
 								{{ item.label }}
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<audio
-				@canplay="onCanPlay"
-				@timeupdate="onTimeUpdate"
-				@ended="onAudioEnded"
-				ref="audio"></audio>
+			<audio @canplay="onCanPlay" @timeupdate="onTimeUpdate" @ended="onAudioEnded" ref="audio"></audio>
 		</scroll>
 		<bottom
 			:chapter="chapter"

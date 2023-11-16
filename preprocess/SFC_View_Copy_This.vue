@@ -71,7 +71,7 @@ export default async function () {
 				const DialogTypeVueSFC = await _.$importVue(
 					"@/DialogTypeVueSFC.vue",
 					{
-						$parent: this,
+						parent: this,
 						row
 					}
 				);
@@ -161,15 +161,17 @@ export default async function () {
 						status: {
 							label: i18n("status"),
 							isShow: true,
-							xCellText: {
-								setLabel({ row, label }) {
-									if (row.status == "1") {
-										label = i18n("available");
-									} else {
-										label = i18n("unavailable");
+							xCellText() {
+								return {
+									setLabel({ row, label }) {
+										if (row.status == "1") {
+											label = i18n("available");
+										} else {
+											label = i18n("unavailable");
+										}
+										return label;
 									}
-									return label;
-								}
+								};
 							}
 						},
 						arch: { label: i18n("arch"), isShow: true },
@@ -182,10 +184,12 @@ export default async function () {
 						createTime: {
 							label: i18n("creationTime"),
 							isShow: true,
-							xCellText: {
-								setLabel({ row }) {
-									return _.$dateFormat(row.createTime);
-								}
+							xCellText() {
+								return {
+									setLabel({ row }) {
+										return _.$dateFormat(row.createTime);
+									}
+								};
 							}
 						},
 						COL_ACTIONS: {

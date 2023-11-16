@@ -6,14 +6,7 @@
 				hide: !isOpen
 			}">
 			<div class="sidebar-menu">
-				<xMenuTreeItem
-					v-for="menu in menuArray"
-					:item="menu"
-					:data-route-name="$route.name"
-					:data-menu-href="menu.href"
-					:active="checkMenuActive"
-					:key="menu.href"
-					:renders="vSlots" />
+				<xMenuTreeItem v-for="menu in menuArray" :item="menu" :data-route-name="$route.name" :data-menu-href="menu.href" :active="checkMenuActive" :key="menu.href" :renders="vSlots" />
 			</div>
 			<div class="leftmenu-toggle" @click="isOpen = !isOpen">
 				<xIcon :icon="cpt_iconName" />

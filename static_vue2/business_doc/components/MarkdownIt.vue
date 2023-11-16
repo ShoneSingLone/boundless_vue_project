@@ -7,10 +7,7 @@
 
 <script>
 export default async function ({ code }) {
-	const [hljs, marked] = await Promise.all([
-		_.$importVue("/common/libs/highlight.vue"),
-		_.$importVue("/common/libs/marked.vue")
-	]);
+	const [hljs, marked] = await Promise.all([_.$importVue("/common/libs/highlight.vue"), _.$importVue("/common/libs/marked.vue")]);
 
 	return {
 		props: ["md" /* md text content */],

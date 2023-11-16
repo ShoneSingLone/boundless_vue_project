@@ -21,9 +21,7 @@ export default async function () {
 					height: props.height
 				})
 			);
-			const headerHeights = computed(() =>
-				castArray(unref(props.headerHeight))
-			);
+			const headerHeights = computed(() => castArray(unref(props.headerHeight)));
 			const scrollToLeft = left => {
 				const headerEl = unref(headerRef);
 				nextTick(() => {

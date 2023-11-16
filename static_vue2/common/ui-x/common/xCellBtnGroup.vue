@@ -10,8 +10,8 @@ export default async function () {
 		},
 		computed: {
 			cpt_btnList() {
-				if (this.configs?.col?.xCellBtnGroup?.btnList) {
-					return this.configs?.col?.xCellBtnGroup?.btnList({
+				if (this.configs?.col?.componentOptions?.btnList) {
+					return this.configs?.col?.componentOptions?.btnList({
 						xCellBtnGroup: this,
 						configs: this.configs,
 						col: this.configs.col,

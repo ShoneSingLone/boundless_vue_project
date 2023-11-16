@@ -56,8 +56,7 @@ html #layuicss-layer {
 }
 
 .layui-layer-load {
-	background: url(/common/libs/layer/theme/default/loading-1.gif) center center
-		no-repeat #eee;
+	background: url(/common/libs/layer/theme/default/loading-1.gif) center center no-repeat #eee;
 }
 
 .layui-layer-ico {

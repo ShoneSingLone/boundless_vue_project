@@ -10,12 +10,7 @@ export default async function () {
 		delay: 75,
 		disabled: false
 	};
-	const createContainer = ({
-		borderTopLeftRadius,
-		borderTopRightRadius,
-		borderBottomLeftRadius,
-		borderBottomRightRadius
-	}) => {
+	const createContainer = ({ borderTopLeftRadius, borderTopRightRadius, borderBottomLeftRadius, borderBottomRightRadius }) => {
 		const rippleContainer = document.createElement("div");
 		rippleContainer.style.top = "0";
 		rippleContainer.style.left = "0";
@@ -25,8 +20,7 @@ export default async function () {
 		rippleContainer.style.borderRadius = `${borderTopLeftRadius} ${borderTopRightRadius} ${borderBottomRightRadius} ${borderBottomLeftRadius}`;
 		rippleContainer.style.overflow = "hidden";
 		rippleContainer.style.pointerEvents = "none";
-		rippleContainer.style.webkitMaskImage =
-			"-webkit-radial-gradient(white, black)";
+		rippleContainer.style.webkitMaskImage = "-webkit-radial-gradient(white, black)";
 		return rippleContainer;
 	};
 	const createrippleElement = (x, y, size, options) => {
@@ -40,9 +34,7 @@ export default async function () {
 		rippleElement.style.borderRadius = "50%";
 		rippleElement.style.opacity = `${options.initialOpacity}`;
 		rippleElement.style.transform = `translate(-50%,-50%) scale(0)`;
-		rippleElement.style.transition = `transform ${options.duration / 1e3}s ${
-			options.easing
-		}, opacity ${options.duration / 1e3}s ${options.easing}`;
+		rippleElement.style.transition = `transform ${options.duration / 1e3}s ${options.easing}, opacity ${options.duration / 1e3}s ${options.easing}`;
 		return rippleElement;
 	};
 	function magnitude(x1, y1, x2, y2) {

@@ -4,7 +4,7 @@ export default async function () {
 	 * 如果有COL_MULTIPLE ，就必须有vm.selectedBy:"id", selected：[]
 	 */
 
-	return {
+	return defineComponent({
 		props: ["configs"],
 		setup(props) {
 			const { useAutoResize } = useXui;
@@ -15,11 +15,7 @@ export default async function () {
 					if (this?.configs?.data?.list?.length > 0) {
 						const $xColActions = $(refxTable.value.$el).find(".xColActions")[0];
 						/* TODO: 列表中最长的操作 */
-						if (
-							$xColActions &&
-							$xColActions.children &&
-							$xColActions.children.length > 0
-						) {
+						if ($xColActions && $xColActions.children && $xColActions.children.length > 0) {
 							const WORD_WIDTH = 12;
 
 							let cellWidth = _.reduce(
@@ -36,9 +32,7 @@ export default async function () {
 
 							let currentWidth = this.configs.colInfo.COL_ACTIONS.width || 100;
 
-							const isResetWidth =
-								currentWidth < cellWidth ||
-								currentWidth > cellWidth + WORD_WIDTH;
+							const isResetWidth = currentWidth < cellWidth || currentWidth > cellWidth + WORD_WIDTH;
 							if (isResetWidth) {
 								currentWidth = cellWidth;
 							}
@@ -71,7 +65,14 @@ export default async function () {
 						/* 无数据显示 */
 						empty: () =>
 							h("div", { staticClass: "flex vertical middle center" }, [
-								h("xIcon", { icon: "icon_no_data", staticClass: "empty" }, []),
+								h(
+									"xIcon",
+									{
+										icon: "icon_no_data",
+										staticClass: "empty"
+									},
+									[]
+								),
 								h("span", {}, [i18n("暂无数据")])
 							]),
 						/* 列信息 */
@@ -110,7 +111,6 @@ export default async function () {
 									/* 列 cell */
 									default: (params = {}) => {
 										const { $index, column, store, _self, row } = params;
-
 										const [tag, tableCellProps, children] = (function () {
 											const configsProps = {
 												prop,
@@ -130,7 +130,9 @@ export default async function () {
 												};
 												return [
 													"div",
-													{ staticClass: "fixed-right" },
+													{
+														staticClass: "fixed-right"
+													},
 													[h("xTableColSelected", componentProps, [])]
 												];
 											}
@@ -285,8 +287,15 @@ export default async function () {
 					for (const prop in colInfo) {
 						if (/^xCell/.test(prop)) {
 							isUse = true;
+							const componentOptions = colInfo[prop].call(colInfo, {
+								xCell: colInfo
+							});
+
+							if (prop === "xCellSelect" && componentOptions.options === undefined) {
+								componentOptions.options = [];
+							}
+							_.$val(colInfo, "componentOptions", componentOptions);
 							colInfo.component = prop;
-							colInfo.componentOptions = colInfo[prop];
 							break;
 						}
 					}
@@ -347,10 +356,7 @@ export default async function () {
 						if (!item) {
 							console.error(prop + "不存在");
 						}
-						if (
-							["COL_SINGLE", "COL_MULTIPLE", "COL_ACTIONS"].includes(prop) ||
-							item.isShow
-						) {
+						if (["COL_SINGLE", "COL_MULTIPLE", "COL_ACTIONS"].includes(prop) || item.isShow) {
 							target.push(prop);
 						}
 						return target;
@@ -378,7 +384,7 @@ export default async function () {
 		updated() {
 			this.setColActionWidthImmediate();
 		}
-	};
+	});
 }
 </script>
 

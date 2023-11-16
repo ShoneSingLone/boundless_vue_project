@@ -1,12 +1,12 @@
 <script>
 export default async function () {
 	Vue._CurrentCellId = Vue._CurrentCellId || ref(0);
-	return {
+	return defineComponent({
 		created() {
-			if (_.isArray(this.configs?.col?.xCellSelect?.options)) {
+			if (_.isArray(this.configs?.col?.componentOptions?.options)) {
 				/* 
 				this.$watch(
-					"configs.col.xCellSelect.options",
+					"configs.col.options",
 					(options, oldOptions) => {
 						const a = JSON.stringify(options || []);
 						const b = JSON.stringify(oldOptions || []);
@@ -16,7 +16,7 @@ export default async function () {
 					},
 					{ immediate: true }
 				);
-				if (this.configs?.col?.xCellSelect?.props) {
+				if (this.configs?.col?.componentOptions?.props) {
 					this.$watch(
 						"configs.col.xCellSelect.props",
 						(options, oldOptions) => {
@@ -37,9 +37,16 @@ export default async function () {
 			return {};
 		},
 		computed: {
+			configsMerged() {
+				return {
+					payload: this.params,
+					...(this.configs?.col?.componentOptions || {}),
+					itemType: "xItemSelect"
+				};
+			},
 			params() {
 				return {
-					xCellSelect: this,
+					xCell: this,
 					configs: this.configs,
 					col: this.configs.col,
 					index: this.configs.index,
@@ -58,9 +65,9 @@ export default async function () {
 					return this.row[this.configs.prop] || "";
 				},
 				set(val) {
-					if (this.configs?.col?.xCellSelect?.onEmitValue) {
+					if (this.configs?.col?.componentOptions?.onEmitValue) {
 						if (this.row[this.configs.prop] !== val) {
-							this.configs.col.xCellSelect.onEmitValue({
+							this.configs.col.componentOptions.onEmitValue({
 								...this.params,
 								val
 							});
@@ -74,15 +81,14 @@ export default async function () {
 			const vm = this;
 			return h("xItem", {
 				configs: {
-					...(vm.configs?.col?.xCellSelect || {}),
-					itemType: "xItemSelect",
-					payload: vm.params
+					...vm.configsMerged,
+					itemType: "xItemSelect"
 				},
 				size: "mini",
 				value: vm.privateModel,
 				onChange: val => (vm.privateModel = val)
 			});
 		}
-	};
+	});
 }
 </script>

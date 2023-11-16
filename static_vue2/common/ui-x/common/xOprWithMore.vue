@@ -1,32 +1,15 @@
 <template>
 	<div class="xOprWithMore" ref="xOprWithMore">
-		<xBtn
-			type="text"
-			v-for="(btn, index) in btnArray"
-			:key="index"
-			:data-title="btn | btnLabel(configs)"
-			:disabled="btn | isDisabled(configs)"
-			@click="handleClick(btn)">
+		<xBtn type="text" v-for="(btn, index) in btnArray" :key="index" :data-title="btn | btnLabel(configs)" :disabled="btn | isDisabled(configs)" @click="handleClick(btn)">
 			<xRender :render="btn.label" :payload="configs" />
 		</xBtn>
-		<el-dropdown
-			v-if="isShowMoreBtn"
-			trigger="click"
-			@visible-change="handleVisibleChange">
+		<el-dropdown v-if="isShowMoreBtn" trigger="click" @visible-change="handleVisibleChange">
 			<xBtn type="text">
 				{{ i18n("更多") }}
 			</xBtn>
 			<el-dropdown-menu slot="dropdown" ref="ElDropdownMenu">
-				<div
-					class="xOprWithMore-dropdown flex vertical center middle"
-					ref="xOprWithMoreDropdown">
-					<xBtn
-						type="text"
-						v-for="(btn, index) in btnArrayMore"
-						:key="index"
-						:data-title="btn | btnLabel(configs)"
-						:disabled="btn | isDisabled(configs)"
-						@click="handleClick(btn)">
+				<div class="xOprWithMore-dropdown flex vertical center middle" ref="xOprWithMoreDropdown">
+					<xBtn type="text" v-for="(btn, index) in btnArrayMore" :key="index" :data-title="btn | btnLabel(configs)" :disabled="btn | isDisabled(configs)" @click="handleClick(btn)">
 						<xRender :render="btn.label" />
 					</xBtn>
 				</div>
@@ -59,10 +42,7 @@ export default async function () {
 		},
 		computed: {
 			colspan() {
-				if (
-					_.isNumber(this.configs?.col?.colspan) &&
-					this.configs?.col?.colspan > 2
-				) {
+				if (_.isNumber(this.configs?.col?.colspan) && this.configs?.col?.colspan > 2) {
 					return this.configs?.col?.colspan;
 				} else {
 					return DID_NOT_SET_COL;

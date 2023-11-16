@@ -2,10 +2,7 @@
 export default async function (options) {
 	if (!window.ELEMENT) {
 		await _.$globalVar("ELEMENT", "/common/ui-element/index.min.js");
-		await _.$globalVar(
-			"ELEMENT.lang",
-			`/common/ui-element/i18n/${options.I18N_LANGUAGE}.js`
-		);
+		await _.$globalVar("ELEMENT.lang", `/common/ui-element/i18n/${options.I18N_LANGUAGE}.js`);
 		const LOCALE_MAP = {
 			"zh-CN": ELEMENT.lang.zhCN,
 			"en-US": ELEMENT.lang.en

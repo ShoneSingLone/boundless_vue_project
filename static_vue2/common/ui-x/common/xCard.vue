@@ -8,15 +8,6 @@ export default async function () {
 			};
 		},
 		computed: {
-			vDomHeader() {
-				if (this.$scopedSlots.header) {
-					return this.$scopedSlots.header("heheheh");
-				}
-				if (this.header) {
-					return h("span", { class: "card__header" }, [i18n(this.header)]);
-				}
-				return "";
-			},
 			cpt_footer() {
 				if (this.header) {
 					return i18n(this.header);
@@ -34,14 +25,22 @@ export default async function () {
 					classObject["bg-is-gray"] = true;
 				}
 				return { class: classObject };
+			},
+			vDomHeader() {
+				if (this.$scopedSlots.header) {
+					return this.$scopedSlots.header();
+				}
+				if (this.header) {
+					const vNode = h("span", { class: "card__header" }, [i18n(this.header)]);
+					return vNode;
+				}
+				return "";
 			}
 		},
 		render() {
 			return h("div", this.getClass({ xCard: true, "el-card": true }), [
-				h("div", this.getClass({ "el-card__header": true }), [this.vDomHeader]),
-				h("div", this.getClass({ "el-card__body": true }), [
-					this.$slots.default
-				])
+				h("div", this.getClass({ "el-card__header": true }), [this.vDomHeader()]),
+				h("div", this.getClass({ "el-card__body": true }), [this.$slots.default])
 			]);
 		}
 	};

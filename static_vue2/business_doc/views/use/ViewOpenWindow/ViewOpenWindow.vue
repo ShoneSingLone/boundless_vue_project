@@ -14,10 +14,7 @@ export default async function () {
 		inject: ["APP"],
 		methods: {
 			async openDialog() {
-				const WindowImageModify = await _.$importVue(
-					"@/views/use/ViewOpenWindow/WindowModify.vue",
-					{ $parent: this }
-				);
+				const WindowImageModify = await _.$importVue("@/views/use/ViewOpenWindow/WindowModify.vue", { parent: this });
 				_.$openWindow(i18n("modifyImageInfo"), WindowImageModify);
 			}
 		}

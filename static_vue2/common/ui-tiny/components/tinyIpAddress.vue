@@ -1,10 +1,7 @@
 <template>
 	<div class="tiny-ip-address">
 		<ul :class="cptClassName" :style="state.heightStyle">
-			<li
-				v-for="(item, index) of state.address"
-				:key="index"
-				:style="state.lineHeightStyle">
+			<li v-for="(item, index) of state.address" :key="index" :style="state.lineHeightStyle">
 				<input
 					:style="state.allHeightStyle"
 					ref="inputs"
@@ -20,19 +17,14 @@
 					@keyup="keyup({ item, index, event: $event })"
 					@keydown="keydown({ item, index, event: $event })"
 					tabindex="1" />
-				<xRender
-					:render="delimiterRender"
-					:payload="{ index, item }"
-					v-if="index < cpt_address.length - 1" />
+				<xRender :render="delimiterRender" :payload="{ index, item }" v-if="index < cpt_address.length - 1" />
 			</li>
 		</ul>
 	</div>
 </template>
 <script>
 export default async function () {
-	const { renderless, tools, resolveMode } = await _.$importVue(
-		"/common/ui-tiny/components/tinyIpAddress.helper.vue"
-	);
+	const { renderless, tools, resolveMode } = await _.$importVue("/common/ui-tiny/components/tinyIpAddress.helper.vue");
 
 	return defineComponent({
 		props: {
@@ -128,8 +120,7 @@ export default async function () {
 						const [a, b, c, d] = String(this.value).split(".") || [];
 						return [newItem(a), newItem(b), newItem(c), newItem(d)];
 					} else {
-						const [, a, b, c, d, e] =
-							String(this.value).match(/(.*)::(.*):(.*):(.*):(.*)/) || [];
+						const [, a, b, c, d, e] = String(this.value).match(/(.*)::(.*):(.*):(.*):(.*)/) || [];
 						return [newItem(a), newItem(b), newItem(c), newItem(d), newItem(e)];
 					}
 				}
@@ -144,8 +135,7 @@ export default async function () {
 						ipAddress[index] = item.value;
 						return ipAddress.join(".");
 					} else {
-						ipAddress =
-							String(this.value).match(/(.*)::(.*):(.*):(.*):(.*)/) || [];
+						ipAddress = String(this.value).match(/(.*)::(.*):(.*):(.*):(.*)/) || [];
 						ipAddress[index] = item.value;
 						const [a, b, c, d, e] = ipAddress;
 						return `${a}::${b}:${c}:${d}:${e}`;
@@ -183,9 +173,7 @@ export default async function () {
 	// IP地址输入框图标尺寸
 	--ti-ip-address-icon-size: calc(var(--ti-common-size-base) * 2.5);
 	// IP地址输入框禁用文本色
-	--ti-ip-address-normal-disabled-text-color: var(
-		--ti-common-color-text-disabled
-	);
+	--ti-ip-address-normal-disabled-text-color: var(--ti-common-color-text-disabled);
 	// IP地址输入框默认边框色
 	--ti-ip-address-normal-border-color: var(--ti-common-color-border);
 	// IP地址输入框默认背景色

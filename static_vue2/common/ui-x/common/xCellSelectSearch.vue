@@ -29,28 +29,36 @@ export default async function () {
 					return this.row[this.configs.prop] || "";
 				},
 				set(val) {
-					if (this.configs?.col?.xCellSelectSearch?.onEmitValue) {
+					if (this.configs?.col?.componentOptions?.onEmitValue) {
 						if (this.row[this.configs.prop] !== val) {
-							this.configs.col.xCellSelectSearch.onEmitValue({
+							this.configs.col.componentOptions.onEmitValue({
 								...this.params,
 								val
 							});
 						}
 					}
 				}
+			},
+			searchDisabled() {
+				let dis = this.configs?.col?.componentOptions?.search?.disabled;
+				if (_.isFunction(dis)) {
+					return dis();
+				}
+				return dis ?? false;
 			}
 		},
 		render() {
 			const vm = this;
-			let opts = vm.configs?.col?.xCellSelectSearch?.search?.options ?? [];
+			let opts = vm.configs?.col?.componentOptions?.search?.options ?? [];
 			return h("div", { class: "select-search" }, [
 				h(
 					"el-select",
 					{
-						value: vm.configs?.col?.xCellSelectSearch?.search?.value,
+						value: vm.configs?.col?.componentOptions?.search?.value,
+						disabled: vm.searchDisabled,
 						onChange: val => {
-							if (vm.configs?.col?.xCellSelectSearch?.search?.value) {
-								vm.configs.col.xCellSelectSearch.search.value = val;
+							if (vm.configs?.col?.componentOptions?.search?.value) {
+								vm.configs.col.componentOptions.search.value = val;
 							}
 						}
 					},
@@ -66,7 +74,7 @@ export default async function () {
 				),
 				h("xItem", {
 					configs: {
-						...(vm.configs?.col?.xCellSelectSearch || {}),
+						...(vm.configs?.col?.componentOptions || {}),
 						itemType: "xItemSelect",
 						payload: vm.params
 					},
@@ -87,6 +95,7 @@ export default async function () {
 		&:first-child {
 			flex: 1;
 		}
+
 		&:last-child {
 			flex: 2;
 		}

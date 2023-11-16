@@ -18,7 +18,7 @@ export default async function () {
 				return this.row(this.cpt_prop);
 			},
 			cpt_item() {
-				const item = _.find(this.configs.col?.xCellOptions?.options);
+				const item = _.find(this.configs.col?.componentOptions?.options);
 				return item || {};
 			},
 			cpt_label() {

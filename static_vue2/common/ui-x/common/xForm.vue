@@ -28,9 +28,7 @@ export default async function () {
 								return Number(slotVNode.data?.attrs?.span || 1);
 							})();
 
-							return h("div", { class: "xFormItem grid-column" + span }, [
-								slotVNode
-							]);
+							return h("div", { class: "xFormItem grid-column" + span }, [slotVNode]);
 						}
 						return slotVNode;
 					})

@@ -17,26 +17,13 @@
 			<tbody>
 				<tr v-for="(row, index) in mixin_value" :key="index">
 					<td>
-						<xItem
-							:configs="c_name"
-							:value="row.name"
-							@change="
-								handleRowValuechange({ row, $index: index }, 'name', $event)
-							" />
+						<xItem :configs="c_name" :value="row.name" @change="handleRowValuechange({ row, $index: index }, 'name', $event)" />
 					</td>
 					<td>
-						<xItem
-							:configs="c_url"
-							:value="row.url"
-							@change="
-								handleRowValuechange({ row, $index: index }, 'url', $event)
-							" />
+						<xItem :configs="c_url" :value="row.url" @change="handleRowValuechange({ row, $index: index }, 'url', $event)" />
 					</td>
 					<td class="flex middle center">
-						<xIcon
-							class="pointer"
-							icon="icon_delete"
-							@click="delIpPart({ row, $index: index })" />
+						<xIcon class="pointer" icon="icon_delete" @click="delIpPart({ row, $index: index })" />
 					</td>
 				</tr>
 			</tbody>

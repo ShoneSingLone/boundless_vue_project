@@ -4,10 +4,7 @@
 		<ebook-setting-theme />
 		<ebook-setting-progress />
 		<transition name="slide-up">
-			<div
-				class="menu-wrapper"
-				:class="{ 'hide-box-shadow': !menuVisible || settingVisible >= 0 }"
-				v-show="menuVisible">
+			<div class="menu-wrapper" :class="{ 'hide-box-shadow': !menuVisible || settingVisible >= 0 }" v-show="menuVisible">
 				<div class="icon-wrapper">
 					<span class="icon-menu icon" @click="showSetting(3)"></span>
 				</div>
@@ -30,9 +27,7 @@
 <script>
 export default async function () {
 	const EbookSettingFont = await _.$importVue("./EbookSettingFont.vue");
-	const EbookSettingFontPopup = await _.$importVue(
-		"./EbookSettingFontPopup.vue"
-	);
+	const EbookSettingFontPopup = await _.$importVue("./EbookSettingFontPopup.vue");
 	const EbookSettingTheme = await _.$importVue("./EbookSettingTheme.vue");
 	const EbookSettingProgress = await _.$importVue("./EbookSettingProgress.vue");
 	const EbookSlide = await _.$importVue("./EbookSlide.vue");

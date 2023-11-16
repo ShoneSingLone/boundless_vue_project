@@ -1,10 +1,6 @@
 <template>
 	<img v-if="cpt_imgURL" :src="cpt_imgURL" />
-	<svg
-		v-else
-		:class="['xIcon', cpt_iconName]"
-		v-bind="$attrs"
-		@click="handleClick">
+	<svg v-else :class="['xIcon', cpt_iconName]" v-bind="$attrs" @click="handleClick">
 		<use :xlink:href="cpt_href"></use>
 	</svg>
 </template>

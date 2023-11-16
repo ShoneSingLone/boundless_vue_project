@@ -50,14 +50,11 @@ export default async function () {
 				this.updateProgressBg();
 			},
 			displayProgress() {
-				const cfi = this.currentBook.locations.cfiFromPercentage(
-					this.progress / 100
-				);
+				const cfi = this.currentBook.locations.cfiFromPercentage(this.progress / 100);
 				this.display(cfi);
 			},
 			updateProgressBg() {
-				this.$refs.progress.style.backgroundSize =
-					this.progress + "% " + "100% ";
+				this.$refs.progress.style.backgroundSize = this.progress + "% " + "100% ";
 			},
 			displaySection() {
 				const sectionInfo = this.currentBook.section(this.section);
@@ -73,10 +70,7 @@ export default async function () {
 				}
 			},
 			nextSection() {
-				if (
-					this.section < this.currentBook.spine.length - 1 &&
-					this.bookAvailable
-				) {
+				if (this.section < this.currentBook.spine.length - 1 && this.bookAvailable) {
 					this.setSection(this.section + 1).then(() => {
 						this.displaySection();
 					});

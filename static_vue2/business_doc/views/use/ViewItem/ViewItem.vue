@@ -8,9 +8,7 @@
 
 <script>
 export default async function () {
-	return {
-		NEED_HMR: localStorage.isDev
-	};
+	return {};
 }
 </script>
 

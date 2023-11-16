@@ -1,11 +1,5 @@
 <template>
-	<button
-		class="el-button"
-		@click="handleClick"
-		:disabled="buttonDisabled || loading"
-		:autofocus="autofocus"
-		:type="nativeType"
-		:class="cptClassName">
+	<button class="el-button" @click="handleClick" :disabled="buttonDisabled || loading" :autofocus="autofocus" :type="nativeType" :class="cptClassName">
 		<i class="el-icon-loading" v-if="loading"></i>
 		<i :class="icon" v-if="icon && !loading"></i>
 		<span v-if="$slots.default">
@@ -67,9 +61,7 @@ export default async function () {
 				return this.size || this._elFormItemSize || (this.$ELEMENT || {}).size;
 			},
 			buttonDisabled() {
-				return this.$options.propsData.hasOwnProperty("disabled")
-					? this.disabled
-					: (this.elForm || {}).disabled;
+				return this.$options.propsData.hasOwnProperty("disabled") ? this.disabled : (this.elForm || {}).disabled;
 			}
 		},
 		methods: {

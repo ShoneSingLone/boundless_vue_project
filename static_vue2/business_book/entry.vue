@@ -2,11 +2,7 @@
 
 <script>
 export default async function () {
-	const [App, router, store] = await Promise.all([
-		_.$importVue("@/layout/LayoutAppBook.vue"),
-		_.$importVue("@/router.vue"),
-		_.$importVue("@/store/store.vue")
-	]);
+	const [App, router, store] = await Promise.all([_.$importVue("@/layout/LayoutAppBook.vue"), _.$importVue("@/router.vue"), _.$importVue("@/store/store.vue")]);
 
 	Vue.prototype.$t = Vue.prototype.$i18n;
 	/* app entry  */

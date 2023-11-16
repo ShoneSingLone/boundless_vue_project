@@ -59,10 +59,7 @@ var VueRouter = (function (exports, vue) {
 		}
 		if (searchPos > -1) {
 			path = location.slice(0, searchPos);
-			searchString = location.slice(
-				searchPos + 1,
-				hashPos > -1 ? hashPos : location.length
-			);
+			searchString = location.slice(searchPos + 1, hashPos > -1 ? hashPos : location.length);
 			query = parseQuery(searchString);
 		}
 		if (hashPos > -1) {
@@ -98,8 +95,7 @@ var VueRouter = (function (exports, vue) {
 	 */
 	function stripBase(pathname, base) {
 		// no base or base is not found at the beginning
-		if (!base || !pathname.toLowerCase().startsWith(base.toLowerCase()))
-			return pathname;
+		if (!base || !pathname.toLowerCase().startsWith(base.toLowerCase())) return pathname;
 		return pathname.slice(base.length) || "/";
 	}
 	/**
@@ -144,11 +140,7 @@ var VueRouter = (function (exports, vue) {
 		return true;
 	}
 	function isSameRouteLocationParamsValue(a, b) {
-		return isArray(a)
-			? isEquivalentArray(a, b)
-			: isArray(b)
-			? isEquivalentArray(b, a)
-			: a === b;
+		return isArray(a) ? isEquivalentArray(a, b) : isArray(b) ? isEquivalentArray(b, a) : a === b;
 	}
 	/**
 	 * Check if two arrays are the same or if an array with one single entry is the
@@ -158,9 +150,7 @@ var VueRouter = (function (exports, vue) {
 	 * @param b - array of values or a single value
 	 */
 	function isEquivalentArray(a, b) {
-		return isArray(b)
-			? a.length === b.length && a.every((value, i) => value === b[i])
-			: a.length === 1 && a[0] === b;
+		return isArray(b) ? a.length === b.length && a.every((value, i) => value === b[i]) : a.length === 1 && a[0] === b;
 	}
 	/**
 	 * Resolves a relative path that starts with `.`.
@@ -171,9 +161,7 @@ var VueRouter = (function (exports, vue) {
 	function resolveRelativePath(to, from) {
 		if (to.startsWith("/")) return to;
 		if (!from.startsWith("/")) {
-			warn(
-				`Cannot resolve a relative location without an absolute path. Trying to resolve "${to}" from "${from}". It should look like "/${from}".`
-			);
+			warn(`Cannot resolve a relative location without an absolute path. Trying to resolve "${to}" from "${from}". It should look like "/${from}".`);
 			return to;
 		}
 		if (!to) return from;
@@ -276,8 +264,7 @@ var VueRouter = (function (exports, vue) {
 		let scrollToOptions;
 		if ("el" in position) {
 			const positionEl = position.el;
-			const isIdSelector =
-				typeof positionEl === "string" && positionEl.startsWith("#");
+			const isIdSelector = typeof positionEl === "string" && positionEl.startsWith("#");
 			/**
 			 * `id`s can accept pretty much any characters, including CSS combinators
 			 * like `>` or `~`. It's still possible to retrieve elements using
@@ -304,9 +291,7 @@ var VueRouter = (function (exports, vue) {
 					try {
 						const foundEl = document.querySelector(position.el);
 						if (isIdSelector && foundEl) {
-							warn(
-								`The selector "${position.el}" should be passed as "el: document.querySelector('${position.el}')" because it starts with "#".`
-							);
+							warn(`The selector "${position.el}" should be passed as "el: document.querySelector('${position.el}')" because it starts with "#".`);
 							// return to avoid other warnings
 							return;
 						}
@@ -319,31 +304,18 @@ var VueRouter = (function (exports, vue) {
 					}
 				}
 			}
-			const el =
-				typeof positionEl === "string"
-					? isIdSelector
-						? document.getElementById(positionEl.slice(1))
-						: document.querySelector(positionEl)
-					: positionEl;
+			const el = typeof positionEl === "string" ? (isIdSelector ? document.getElementById(positionEl.slice(1)) : document.querySelector(positionEl)) : positionEl;
 			if (!el) {
-				warn(
-					`Couldn't find element using selector "${position.el}" returned by scrollBehavior.`
-				);
+				warn(`Couldn't find element using selector "${position.el}" returned by scrollBehavior.`);
 				return;
 			}
 			scrollToOptions = getElementPosition(el, position);
 		} else {
 			scrollToOptions = position;
 		}
-		if ("scrollBehavior" in document.documentElement.style)
-			window.scrollTo(scrollToOptions);
+		if ("scrollBehavior" in document.documentElement.style) window.scrollTo(scrollToOptions);
 		else {
-			window.scrollTo(
-				scrollToOptions.left != null
-					? scrollToOptions.left
-					: window.pageXOffset,
-				scrollToOptions.top != null ? scrollToOptions.top : window.pageYOffset
-			);
+			window.scrollTo(scrollToOptions.left != null ? scrollToOptions.left : window.pageXOffset, scrollToOptions.top != null ? scrollToOptions.top : window.pageYOffset);
 		}
 	}
 	function getScrollKey(path, delta) {
@@ -387,9 +359,7 @@ var VueRouter = (function (exports, vue) {
 		// allows hash bases like #, /#, #/, #!, #!/, /#!/, or even /folder#end
 		const hashPos = base.indexOf("#");
 		if (hashPos > -1) {
-			let slicePos = hash.includes(base.slice(hashPos))
-				? base.slice(hashPos).length
-				: 1;
+			let slicePos = hash.includes(base.slice(hashPos)) ? base.slice(hashPos).length : 1;
 			let pathFromHash = hash.slice(slicePos);
 			// prepend the starting slash to hash so the url starts with /#
 			if (pathFromHash[0] !== "/") pathFromHash = "/" + pathFromHash;
@@ -430,11 +400,7 @@ var VueRouter = (function (exports, vue) {
 				listener(currentLocation.value, from, {
 					delta,
 					type: NavigationType.pop,
-					direction: delta
-						? delta > 0
-							? NavigationDirection.forward
-							: NavigationDirection.back
-						: NavigationDirection.unknown
+					direction: delta ? (delta > 0 ? NavigationDirection.forward : NavigationDirection.back) : NavigationDirection.unknown
 				});
 			});
 		};
@@ -454,10 +420,7 @@ var VueRouter = (function (exports, vue) {
 		function beforeUnloadListener() {
 			const { history } = window;
 			if (!history.state) return;
-			history.replaceState(
-				assign({}, history.state, { scroll: computeScrollPosition() }),
-				""
-			);
+			history.replaceState(assign({}, history.state, { scroll: computeScrollPosition() }), "");
 		}
 		function destroy() {
 			for (const teardown of teardowns) teardown();
@@ -481,13 +444,7 @@ var VueRouter = (function (exports, vue) {
 	/**
 	 * Creates a state object
 	 */
-	function buildState(
-		back,
-		current,
-		forward,
-		replaced = false,
-		computeScroll = false
-	) {
+	function buildState(back, current, forward, replaced = false, computeScroll = false) {
 		return {
 			back,
 			current,
@@ -533,12 +490,7 @@ var VueRouter = (function (exports, vue) {
 			 * base tag we can just use everything after the `#`.
 			 */
 			const hashIndex = base.indexOf("#");
-			const url =
-				hashIndex > -1
-					? (location.host && document.querySelector("base")
-							? base
-							: base.slice(hashIndex)) + to
-					: createBaseLocation() + base + to;
+			const url = hashIndex > -1 ? (location.host && document.querySelector("base") ? base : base.slice(hashIndex)) + to : createBaseLocation() + base + to;
 			try {
 				// BROWSER QUIRK
 				// NOTE: Safari throws a SecurityError when calling this function 100 times in 30 seconds
@@ -592,12 +544,7 @@ var VueRouter = (function (exports, vue) {
 				);
 			}
 			changeLocation(currentState.current, currentState, true);
-			const state = assign(
-				{},
-				buildState(currentLocation.value, to, null),
-				{ position: currentState.position + 1 },
-				data
-			);
+			const state = assign({}, buildState(currentLocation.value, to, null), { position: currentState.position + 1 }, data);
 			changeLocation(to, state, false);
 			currentLocation.value = to;
 		}
@@ -616,12 +563,7 @@ var VueRouter = (function (exports, vue) {
 	function createWebHistory(base) {
 		base = normalizeBase(base);
 		const historyNavigation = useHistoryStateNavigation(base);
-		const historyListeners = useHistoryListeners(
-			base,
-			historyNavigation.state,
-			historyNavigation.location,
-			historyNavigation.replace
-		);
+		const historyListeners = useHistoryListeners(base, historyNavigation.state, historyNavigation.location, historyNavigation.replace);
 		function go(delta, triggerListeners = true) {
 			if (!triggerListeners) historyListeners.pauseListeners();
 			history.go(delta);
@@ -760,12 +702,7 @@ var VueRouter = (function (exports, vue) {
 		// allow the user to provide a `#` in the middle: `/base/#/app`
 		if (!base.includes("#")) base += "#";
 		if (!base.endsWith("#/") && !base.endsWith("#")) {
-			warn(
-				`A hash base must end with a "#":\n"${base}" should be "${base.replace(
-					/#.*$/,
-					"#"
-				)}".`
-			);
+			warn(`A hash base must end with a "#":\n"${base}" should be "${base.replace(/#.*$/, "#")}".`);
 		}
 		return createWebHistory(base);
 	}
@@ -820,28 +757,20 @@ var VueRouter = (function (exports, vue) {
 		 * A cancelled navigation is a navigation that failed because a more recent
 		 * navigation finished started (not necessarily finished).
 		 */
-		NavigationFailureType[(NavigationFailureType["cancelled"] = 8)] =
-			"cancelled";
+		NavigationFailureType[(NavigationFailureType["cancelled"] = 8)] = "cancelled";
 		/**
 		 * A duplicated navigation is a navigation that failed because it was
 		 * initiated while already being at the exact same location.
 		 */
-		NavigationFailureType[(NavigationFailureType["duplicated"] = 16)] =
-			"duplicated";
+		NavigationFailureType[(NavigationFailureType["duplicated"] = 16)] = "duplicated";
 	})(exports.NavigationFailureType || (exports.NavigationFailureType = {}));
 	// DEV only debug messages
 	const ErrorTypeMessages = {
 		[1 /* ErrorTypes.MATCHER_NOT_FOUND */]({ location, currentLocation }) {
-			return `No match for\n ${JSON.stringify(location)}${
-				currentLocation
-					? "\nwhile being at\n" + JSON.stringify(currentLocation)
-					: ""
-			}`;
+			return `No match for\n ${JSON.stringify(location)}${currentLocation ? "\nwhile being at\n" + JSON.stringify(currentLocation) : ""}`;
 		},
 		[2 /* ErrorTypes.NAVIGATION_GUARD_REDIRECT */]({ from, to }) {
-			return `Redirected from "${from.fullPath}" to "${stringifyRoute(
-				to
-			)}" via a navigation guard.`;
+			return `Redirected from "${from.fullPath}" to "${stringifyRoute(to)}" via a navigation guard.`;
 		},
 		[4 /* ErrorTypes.NAVIGATION_ABORTED */]({ from, to }) {
 			return `Navigation aborted from "${from.fullPath}" to "${to.fullPath}" via a navigation guard.`;
@@ -867,11 +796,7 @@ var VueRouter = (function (exports, vue) {
 		}
 	}
 	function isNavigationFailure(error, type) {
-		return (
-			error instanceof Error &&
-			NavigationFailureSymbol in error &&
-			(type == null || !!(error.type & type))
-		);
+		return error instanceof Error && NavigationFailureSymbol in error && (type == null || !!(error.type & type));
 	}
 	const propertiesToLog = ["params", "query", "hash"];
 	function stringifyRoute(to) {
@@ -917,9 +842,7 @@ var VueRouter = (function (exports, vue) {
 			for (let tokenIndex = 0; tokenIndex < segment.length; tokenIndex++) {
 				const token = segment[tokenIndex];
 				// resets the score if we are inside a sub-segment /:a-other-:b
-				let subSegmentScore =
-					40 /* PathScore.Segment */ +
-					(options.sensitive ? 0.25 /* PathScore.BonusCaseSensitive */ : 0);
+				let subSegmentScore = 40 /* PathScore.Segment */ + (options.sensitive ? 0.25 /* PathScore.BonusCaseSensitive */ : 0);
 				if (token.type === 0 /* TokenType.Static */) {
 					// prepend the slash if we are starting a new segment
 					if (!tokenIndex) pattern += "/";
@@ -940,30 +863,22 @@ var VueRouter = (function (exports, vue) {
 						try {
 							new RegExp(`(${re})`);
 						} catch (err) {
-							throw new Error(
-								`Invalid custom RegExp for param "${value}" (${re}): ` +
-									err.message
-							);
+							throw new Error(`Invalid custom RegExp for param "${value}" (${re}): ` + err.message);
 						}
 					}
 					// when we repeat we must take care of the repeating leading slash
-					let subPattern = repeatable
-						? `((?:${re})(?:/(?:${re}))*)`
-						: `(${re})`;
+					let subPattern = repeatable ? `((?:${re})(?:/(?:${re}))*)` : `(${re})`;
 					// prepend the slash if we are starting a new segment
 					if (!tokenIndex)
 						subPattern =
 							// avoid an optional / if there are more segments e.g. /:p?-static
 							// or /:p?-:p2
-							optional && segment.length < 2
-								? `(?:/${subPattern})`
-								: "/" + subPattern;
+							optional && segment.length < 2 ? `(?:/${subPattern})` : "/" + subPattern;
 					if (optional) subPattern += "?";
 					pattern += subPattern;
 					subSegmentScore += 20 /* PathScore.Dynamic */;
 					if (optional) subSegmentScore += -8 /* PathScore.BonusOptional */;
-					if (repeatable)
-						subSegmentScore += -20 /* PathScore.BonusRepeatable */;
+					if (repeatable) subSegmentScore += -20 /* PathScore.BonusRepeatable */;
 					if (re === ".*") subSegmentScore += -50 /* PathScore.BonusWildcard */;
 				}
 				segmentScores.push(subSegmentScore);
@@ -975,9 +890,7 @@ var VueRouter = (function (exports, vue) {
 		// only apply the strict bonus to the last score
 		if (options.strict && options.end) {
 			const i = score.length - 1;
-			score[i][
-				score[i].length - 1
-			] += 0.7000000000000001 /* PathScore.BonusStrict */;
+			score[i][score[i].length - 1] += 0.7000000000000001 /* PathScore.BonusStrict */;
 		}
 		// TODO: dev only warn double trailing slash
 		if (!options.strict) pattern += "/?";
@@ -1010,9 +923,7 @@ var VueRouter = (function (exports, vue) {
 						const { value, repeatable, optional } = token;
 						const param = value in params ? params[value] : "";
 						if (isArray(param) && !repeatable) {
-							throw new Error(
-								`Provided param "${value}" is an array but it is not repeatable (* or + modifiers)`
-							);
+							throw new Error(`Provided param "${value}" is an array but it is not repeatable (* or + modifiers)`);
 						}
 						const text = isArray(param) ? param.join("/") : param;
 						if (!text) {
@@ -1061,15 +972,9 @@ var VueRouter = (function (exports, vue) {
 		// if the last subsegment was Static, the shorter segments should be sorted first
 		// otherwise sort the longest segment first
 		if (a.length < b.length) {
-			return a.length === 1 &&
-				a[0] === 40 /* PathScore.Static */ + 40 /* PathScore.Segment */
-				? -1
-				: 1;
+			return a.length === 1 && a[0] === 40 /* PathScore.Static */ + 40 /* PathScore.Segment */ ? -1 : 1;
 		} else if (a.length > b.length) {
-			return b.length === 1 &&
-				b[0] === 40 /* PathScore.Static */ + 40 /* PathScore.Segment */
-				? 1
-				: -1;
+			return b.length === 1 && b[0] === 40 /* PathScore.Static */ + 40 /* PathScore.Segment */ ? 1 : -1;
 		}
 		return 0;
 	}
@@ -1126,9 +1031,7 @@ var VueRouter = (function (exports, vue) {
 		if (!path) return [[]];
 		if (path === "/") return [[ROOT_TOKEN]];
 		if (!path.startsWith("/")) {
-			throw new Error(
-				`Route paths should start with a "/": "${path}" should be "/${path}".`
-			);
+			throw new Error(`Route paths should start with a "/": "${path}" should be "/${path}".`);
 		}
 		// if (tokenCache.has(path)) return tokenCache.get(path)!
 		function crash(message) {
@@ -1159,15 +1062,8 @@ var VueRouter = (function (exports, vue) {
 					type: 0 /* TokenType.Static */,
 					value: buffer
 				});
-			} else if (
-				state === 1 /* TokenizerState.Param */ ||
-				state === 2 /* TokenizerState.ParamRegExp */ ||
-				state === 3 /* TokenizerState.ParamRegExpEnd */
-			) {
-				if (segment.length > 1 && (char === "*" || char === "+"))
-					crash(
-						`A repeatable param (${buffer}) must be alone in its segment. eg: '/:ids+.`
-					);
+			} else if (state === 1 /* TokenizerState.Param */ || state === 2 /* TokenizerState.ParamRegExp */ || state === 3 /* TokenizerState.ParamRegExpEnd */) {
+				if (segment.length > 1 && (char === "*" || char === "+")) crash(`A repeatable param (${buffer}) must be alone in its segment. eg: '/:ids+.`);
 				segment.push({
 					type: 1 /* TokenType.Param */,
 					value: buffer,
@@ -1228,8 +1124,7 @@ var VueRouter = (function (exports, vue) {
 					// /prefix_:p()_suffix
 					if (char === ")") {
 						// handle the escaped )
-						if (customRe[customRe.length - 1] == "\\")
-							customRe = customRe.slice(0, -1) + char;
+						if (customRe[customRe.length - 1] == "\\") customRe = customRe.slice(0, -1) + char;
 						else state = 3 /* TokenizerState.ParamRegExpEnd */;
 					} else {
 						customRe += char;
@@ -1248,8 +1143,7 @@ var VueRouter = (function (exports, vue) {
 					break;
 			}
 		}
-		if (state === 2 /* TokenizerState.ParamRegExp */)
-			crash(`Unfinished custom RegExp for param "${buffer}"`);
+		if (state === 2 /* TokenizerState.ParamRegExp */) crash(`Unfinished custom RegExp for param "${buffer}"`);
 		consumeBuffer();
 		finalizeSegment();
 		// tokenCache.set(path, tokens)
@@ -1262,10 +1156,7 @@ var VueRouter = (function (exports, vue) {
 		{
 			const existingKeys = new Set();
 			for (const key of parser.keys) {
-				if (existingKeys.has(key.name))
-					warn(
-						`Found duplicated params with name "${key.name}" for path "${record.path}". Only the last one will be available on "$route.params".`
-					);
+				if (existingKeys.has(key.name)) warn(`Found duplicated params with name "${key.name}" for path "${record.path}". Only the last one will be available on "$route.params".`);
 				existingKeys.add(key.name);
 			}
 		}
@@ -1280,8 +1171,7 @@ var VueRouter = (function (exports, vue) {
 			// both are aliases or both are not aliases
 			// we don't want to mix them because the order is used when
 			// passing originalRecord in Matcher.addRoute
-			if (!matcher.record.aliasOf === !parent.record.aliasOf)
-				parent.children.push(matcher);
+			if (!matcher.record.aliasOf === !parent.record.aliasOf) parent.children.push(matcher);
 		}
 		return matcher;
 	}
@@ -1297,10 +1187,7 @@ var VueRouter = (function (exports, vue) {
 		// normalized ordered array of matchers
 		const matchers = [];
 		const matcherMap = new Map();
-		globalOptions = mergeOptions(
-			{ strict: false, end: true, sensitive: false },
-			globalOptions
-		);
+		globalOptions = mergeOptions({ strict: false, end: true, sensitive: false }, globalOptions);
 		function getRecordMatcher(name) {
 			return matcherMap.get(name);
 		}
@@ -1317,21 +1204,16 @@ var VueRouter = (function (exports, vue) {
 			// generate an array of records to correctly handle aliases
 			const normalizedRecords = [mainNormalizedRecord];
 			if ("alias" in record) {
-				const aliases =
-					typeof record.alias === "string" ? [record.alias] : record.alias;
+				const aliases = typeof record.alias === "string" ? [record.alias] : record.alias;
 				for (const alias of aliases) {
 					normalizedRecords.push(
 						assign({}, mainNormalizedRecord, {
 							// this allows us to hold a copy of the `components` option
 							// so that async components cache is hold on the original record
-							components: originalRecord
-								? originalRecord.record.components
-								: mainNormalizedRecord.components,
+							components: originalRecord ? originalRecord.record.components : mainNormalizedRecord.components,
 							path: alias,
 							// we might be the child of an alias
-							aliasOf: originalRecord
-								? originalRecord.record
-								: mainNormalizedRecord
+							aliasOf: originalRecord ? originalRecord.record : mainNormalizedRecord
 							// the aliases are always of the same kind as the original since they
 							// are defined on the same record
 						})
@@ -1347,10 +1229,8 @@ var VueRouter = (function (exports, vue) {
 				// parent path doesn't have a trailing slash
 				if (parent && path[0] !== "/") {
 					const parentPath = parent.record.path;
-					const connectingSlash =
-						parentPath[parentPath.length - 1] === "/" ? "" : "/";
-					normalizedRecord.path =
-						parent.record.path + (path && connectingSlash + path);
+					const connectingSlash = parentPath[parentPath.length - 1] === "/" ? "" : "/";
+					normalizedRecord.path = parent.record.path + (path && connectingSlash + path);
 				}
 				if (normalizedRecord.path === "*") {
 					throw new Error(
@@ -1360,8 +1240,7 @@ var VueRouter = (function (exports, vue) {
 				}
 				// create the object beforehand, so it can be passed to children
 				matcher = createRouteRecordMatcher(normalizedRecord, parent, options);
-				if (parent && path[0] === "/")
-					checkMissingParamsInAbsolutePath(matcher, parent);
+				if (parent && path[0] === "/") checkMissingParamsInAbsolutePath(matcher, parent);
 				// if we are an alias we must tell the original record that we exist,
 				// so we can be removed
 				if (originalRecord) {
@@ -1375,17 +1254,12 @@ var VueRouter = (function (exports, vue) {
 					if (originalMatcher !== matcher) originalMatcher.alias.push(matcher);
 					// remove the route if named and only for the top record (avoid in nested calls)
 					// this works because the original record is the first one
-					if (isRootAdd && record.name && !isAliasRecord(matcher))
-						removeRoute(record.name);
+					if (isRootAdd && record.name && !isAliasRecord(matcher)) removeRoute(record.name);
 				}
 				if (mainNormalizedRecord.children) {
 					const children = mainNormalizedRecord.children;
 					for (let i = 0; i < children.length; i++) {
-						addRoute(
-							children[i],
-							matcher,
-							originalRecord && originalRecord.children[i]
-						);
+						addRoute(children[i], matcher, originalRecord && originalRecord.children[i]);
 					}
 				}
 				// if there was no original record, then the first one was not an alias and all
@@ -1397,12 +1271,7 @@ var VueRouter = (function (exports, vue) {
 				// }
 				// Avoid adding a record that doesn't display anything. This allows passing through records without a component to
 				// not be reached and pass through the catch all route
-				if (
-					(matcher.record.components &&
-						Object.keys(matcher.record.components).length) ||
-					matcher.record.name ||
-					matcher.record.redirect
-				) {
+				if ((matcher.record.components && Object.keys(matcher.record.components).length) || matcher.record.name || matcher.record.redirect) {
 					insertMatcher(matcher);
 				}
 			}
@@ -1442,14 +1311,12 @@ var VueRouter = (function (exports, vue) {
 				comparePathParserScore(matcher, matchers[i]) >= 0 &&
 				// Adding children with empty path should still appear before the parent
 				// https://github.com/vuejs/router/issues/1124
-				(matcher.record.path !== matchers[i].record.path ||
-					!isRecordChildOf(matcher, matchers[i]))
+				(matcher.record.path !== matchers[i].record.path || !isRecordChildOf(matcher, matchers[i]))
 			)
 				i++;
 			matchers.splice(i, 0, matcher);
 			// only add the original record to the name map
-			if (matcher.record.name && !isAliasRecord(matcher))
-				matcherMap.set(matcher.record.name, matcher);
+			if (matcher.record.name && !isAliasRecord(matcher)) matcherMap.set(matcher.record.name, matcher);
 		}
 		function resolve(location, currentLocation) {
 			let matcher;
@@ -1464,9 +1331,7 @@ var VueRouter = (function (exports, vue) {
 					});
 				// warn if the user is passing invalid params so they can debug it better when they get removed
 				{
-					const invalidParams = Object.keys(location.params || {}).filter(
-						paramName => !matcher.keys.find(k => k.name === paramName)
-					);
+					const invalidParams = Object.keys(location.params || {}).filter(paramName => !matcher.keys.find(k => k.name === paramName));
 					if (invalidParams.length) {
 						warn(
 							`Discarded invalid param(s) "${invalidParams.join(
@@ -1513,9 +1378,7 @@ var VueRouter = (function (exports, vue) {
 				// location is a relative path
 			} else {
 				// match by name or path of current route
-				matcher = currentLocation.name
-					? matcherMap.get(currentLocation.name)
-					: matchers.find(m => m.re.test(currentLocation.path));
+				matcher = currentLocation.name ? matcherMap.get(currentLocation.name) : matchers.find(m => m.re.test(currentLocation.path));
 				if (!matcher)
 					throw createRouterError(1 /* ErrorTypes.MATCHER_NOT_FOUND */, {
 						location,
@@ -1573,10 +1436,7 @@ var VueRouter = (function (exports, vue) {
 			leaveGuards: new Set(),
 			updateGuards: new Set(),
 			enterCallbacks: {},
-			components:
-				"components" in record
-					? record.components || null
-					: record.component && { default: record.component }
+			components: "components" in record ? record.components || null : record.component && { default: record.component }
 		};
 	}
 	/**
@@ -1593,8 +1453,7 @@ var VueRouter = (function (exports, vue) {
 		} else {
 			// NOTE: we could also allow a function to be applied to every component.
 			// Would need user feedback for use cases
-			for (const name in record.components)
-				propsObject[name] = typeof props === "object" ? props[name] : props;
+			for (const name in record.components) propsObject[name] = typeof props === "object" ? props[name] : props;
 		}
 		return propsObject;
 	}
@@ -1620,17 +1479,12 @@ var VueRouter = (function (exports, vue) {
 	function mergeOptions(defaults, partialOptions) {
 		const options = {};
 		for (const key in defaults) {
-			options[key] =
-				key in partialOptions ? partialOptions[key] : defaults[key];
+			options[key] = key in partialOptions ? partialOptions[key] : defaults[key];
 		}
 		return options;
 	}
 	function isSameParam(a, b) {
-		return (
-			a.name === b.name &&
-			a.optional === b.optional &&
-			a.repeatable === b.repeatable
-		);
+		return a.name === b.name && a.optional === b.optional && a.repeatable === b.repeatable;
 	}
 	/**
 	 * Check if a path and its alias have the same required params
@@ -1641,15 +1495,11 @@ var VueRouter = (function (exports, vue) {
 	function checkSameParams(a, b) {
 		for (const key of a.keys) {
 			if (!key.optional && !b.keys.find(isSameParam.bind(null, key)))
-				return warn(
-					`Alias "${b.record.path}" and the original record: "${a.record.path}" must have the exact same param named "${key.name}"`
-				);
+				return warn(`Alias "${b.record.path}" and the original record: "${a.record.path}" must have the exact same param named "${key.name}"`);
 		}
 		for (const key of b.keys) {
 			if (!key.optional && !a.keys.find(isSameParam.bind(null, key)))
-				return warn(
-					`Alias "${b.record.path}" and the original record: "${a.record.path}" must have the exact same param named "${key.name}"`
-				);
+				return warn(`Alias "${b.record.path}" and the original record: "${a.record.path}" must have the exact same param named "${key.name}"`);
 		}
 	}
 	/**
@@ -1659,12 +1509,7 @@ var VueRouter = (function (exports, vue) {
 	 * @param parent - RouteRecordMatcher
 	 */
 	function checkChildMissingNameWithEmptyPath(mainNormalizedRecord, parent) {
-		if (
-			parent &&
-			parent.record.name &&
-			!mainNormalizedRecord.name &&
-			!mainNormalizedRecord.path
-		) {
+		if (parent && parent.record.name && !mainNormalizedRecord.name && !mainNormalizedRecord.path) {
 			warn(
 				`The route named "${String(
 					parent.record.name
@@ -1675,15 +1520,11 @@ var VueRouter = (function (exports, vue) {
 	function checkMissingParamsInAbsolutePath(record, parent) {
 		for (const key of parent.keys) {
 			if (!record.keys.find(isSameParam.bind(null, key)))
-				return warn(
-					`Absolute path "${record.record.path}" must have the exact same param named "${key.name}" as its parent "${parent.record.path}".`
-				);
+				return warn(`Absolute path "${record.record.path}" must have the exact same param named "${key.name}" as its parent "${parent.record.path}".`);
 		}
 	}
 	function isRecordChildOf(record, parent) {
-		return parent.children.some(
-			child => child === record || isRecordChildOf(record, child)
-		);
+		return parent.children.some(child => child === record || isRecordChildOf(record, child));
 	}
 
 	/**
@@ -1752,10 +1593,7 @@ var VueRouter = (function (exports, vue) {
 	 * @returns encoded string
 	 */
 	function encodeHash(text) {
-		return commonEncode(text)
-			.replace(ENC_CURLY_OPEN_RE, "{")
-			.replace(ENC_CURLY_CLOSE_RE, "}")
-			.replace(ENC_CARET_RE, "^");
+		return commonEncode(text).replace(ENC_CURLY_OPEN_RE, "{").replace(ENC_CURLY_CLOSE_RE, "}").replace(ENC_CARET_RE, "^");
 	}
 	/**
 	 * Encode characters that need to be encoded query values on the query
@@ -1881,9 +1719,7 @@ var VueRouter = (function (exports, vue) {
 				continue;
 			}
 			// keep null values
-			const values = isArray(value)
-				? value.map(v => v && encodeQueryValue(v))
-				: [value && encodeQueryValue(value)];
+			const values = isArray(value) ? value.map(v => v && encodeQueryValue(v)) : [value && encodeQueryValue(value)];
 			values.forEach(value => {
 				// skip undefined values in arrays as if they were not present
 				// smaller code than using filter
@@ -1909,11 +1745,7 @@ var VueRouter = (function (exports, vue) {
 		for (const key in query) {
 			const value = query[key];
 			if (value !== undefined) {
-				normalizedQuery[key] = isArray(value)
-					? value.map(v => (v == null ? null : "" + v))
-					: value == null
-					? value
-					: "" + value;
+				normalizedQuery[key] = isArray(value) ? value.map(v => (v == null ? null : "" + v)) : value == null ? value : "" + value;
 			}
 		}
 		return normalizedQuery;
@@ -1998,9 +1830,7 @@ var VueRouter = (function (exports, vue) {
 	 */
 	function onBeforeRouteLeave(leaveGuard) {
 		if (!vue.getCurrentInstance()) {
-			warn(
-				"getCurrentInstance() returned null. onBeforeRouteLeave() must be called at the top of a setup function"
-			);
+			warn("getCurrentInstance() returned null. onBeforeRouteLeave() must be called at the top of a setup function");
 			return;
 		}
 		const activeRecord = vue.inject(
@@ -2025,9 +1855,7 @@ var VueRouter = (function (exports, vue) {
 	 */
 	function onBeforeRouteUpdate(updateGuard) {
 		if (!vue.getCurrentInstance()) {
-			warn(
-				"getCurrentInstance() returned null. onBeforeRouteUpdate() must be called at the top of a setup function"
-			);
+			warn("getCurrentInstance() returned null. onBeforeRouteUpdate() must be called at the top of a setup function");
 			return;
 		}
 		const activeRecord = vue.inject(
@@ -2081,12 +1909,7 @@ var VueRouter = (function (exports, vue) {
 					}
 				};
 				// wrapping with Promise.resolve allows it to work with both async and sync guards
-				const guardReturn = guard.call(
-					record && record.instances[name],
-					to,
-					from,
-					canOnlyBeCalledOnce(next, to, from)
-				);
+				const guardReturn = guard.call(record && record.instances[name], to, from, canOnlyBeCalledOnce(next, to, from));
 				let guardCall = Promise.resolve(guardReturn);
 				if (guard.length < 3) guardCall = guardCall.then(next);
 				if (guard.length > 2) {
@@ -2130,23 +1953,13 @@ var VueRouter = (function (exports, vue) {
 		const guards = [];
 		for (const record of matched) {
 			if (!record.components && !record.children.length) {
-				warn(
-					`Record with path "${record.path}" is either missing a "component(s)"` +
-						` or "children" property.`
-				);
+				warn(`Record with path "${record.path}" is either missing a "component(s)"` + ` or "children" property.`);
 			}
 			for (const name in record.components) {
 				let rawComponent = record.components[name];
 				{
-					if (
-						!rawComponent ||
-						(typeof rawComponent !== "object" &&
-							typeof rawComponent !== "function")
-					) {
-						warn(
-							`Component "${name}" in record with path "${record.path}" is not` +
-								` a valid component. Received "${String(rawComponent)}".`
-						);
+					if (!rawComponent || (typeof rawComponent !== "object" && typeof rawComponent !== "function")) {
+						warn(`Component "${name}" in record with path "${record.path}" is not` + ` a valid component. Received "${String(rawComponent)}".`);
 						// throw to ensure we stop here but warn to ensure the message isn't
 						// missed by the user
 						throw new Error("Invalid route component");
@@ -2177,8 +1990,7 @@ var VueRouter = (function (exports, vue) {
 					}
 				}
 				// skip update and leave guards if the route component is not mounted
-				if (guardType !== "beforeRouteEnter" && !record.instances[name])
-					continue;
+				if (guardType !== "beforeRouteEnter" && !record.instances[name]) continue;
 				if (isRouteComponent(rawComponent)) {
 					// __vccOpts is added by vue-class-component and contain the regular options
 					const options = rawComponent.__vccOpts || rawComponent;
@@ -2195,15 +2007,8 @@ var VueRouter = (function (exports, vue) {
 					}
 					guards.push(() =>
 						componentPromise.then(resolved => {
-							if (!resolved)
-								return Promise.reject(
-									new Error(
-										`Couldn't resolve component "${name}" at "${record.path}"`
-									)
-								);
-							const resolvedComponent = isESModule(resolved)
-								? resolved.default
-								: resolved;
+							if (!resolved) return Promise.reject(new Error(`Couldn't resolve component "${name}" at "${record.path}"`));
+							const resolvedComponent = isESModule(resolved) ? resolved.default : resolved;
 							// replace the function with the resolved component
 							// cannot be null or undefined because we went into the for loop
 							record.components[name] = resolvedComponent;
@@ -2225,12 +2030,7 @@ var VueRouter = (function (exports, vue) {
 	 * @param component
 	 */
 	function isRouteComponent(component) {
-		return (
-			typeof component === "object" ||
-			"displayName" in component ||
-			"props" in component ||
-			"__vccOpts" in component
-		);
+		return typeof component === "object" || "displayName" in component || "props" in component || "__vccOpts" in component;
 	}
 	/**
 	 * Ensures a route is loaded, so it can be passed as o prop to `<RouterView>`.
@@ -2247,21 +2047,12 @@ var VueRouter = (function (exports, vue) {
 							Promise.all(
 								Object.keys(record.components).reduce((promises, name) => {
 									const rawComponent = record.components[name];
-									if (
-										typeof rawComponent === "function" &&
-										!("displayName" in rawComponent)
-									) {
+									if (typeof rawComponent === "function" && !("displayName" in rawComponent)) {
 										promises.push(
 											rawComponent().then(resolved => {
 												if (!resolved)
-													return Promise.reject(
-														new Error(
-															`Couldn't resolve component "${name}" at "${record.path}". Ensure you passed a function that returns a promise.`
-														)
-													);
-												const resolvedComponent = isESModule(resolved)
-													? resolved.default
-													: resolved;
+													return Promise.reject(new Error(`Couldn't resolve component "${name}" at "${record.path}". Ensure you passed a function that returns a promise.`));
+												const resolvedComponent = isESModule(resolved) ? resolved.default : resolved;
 												// replace the function with the resolved component
 												// cannot be null or undefined because we went into the for loop
 												record.components[name] = resolvedComponent;
@@ -2288,9 +2079,7 @@ var VueRouter = (function (exports, vue) {
 			const routeMatched = matched[length - 1];
 			const currentMatched = currentRoute.matched;
 			if (!routeMatched || !currentMatched.length) return -1;
-			const index = currentMatched.findIndex(
-				isSameRouteRecord.bind(null, routeMatched)
-			);
+			const index = currentMatched.findIndex(isSameRouteRecord.bind(null, routeMatched));
 			if (index > -1) return index;
 			// possible parent record
 			const parentRecordPath = getOriginalPath(matched[length - 2]);
@@ -2303,22 +2092,13 @@ var VueRouter = (function (exports, vue) {
 					getOriginalPath(routeMatched) === parentRecordPath &&
 					// avoid comparing the child with its parent
 					currentMatched[currentMatched.length - 1].path !== parentRecordPath
-					? currentMatched.findIndex(
-							isSameRouteRecord.bind(null, matched[length - 2])
-					  )
+					? currentMatched.findIndex(isSameRouteRecord.bind(null, matched[length - 2]))
 					: index
 			);
 		});
-		const isActive = vue.computed(
-			() =>
-				activeRecordIndex.value > -1 &&
-				includesParams(currentRoute.params, route.value.params)
-		);
+		const isActive = vue.computed(() => activeRecordIndex.value > -1 && includesParams(currentRoute.params, route.value.params));
 		const isExactActive = vue.computed(
-			() =>
-				activeRecordIndex.value > -1 &&
-				activeRecordIndex.value === currentRoute.matched.length - 1 &&
-				isSameRouteLocationParams(currentRoute.params, route.value.params)
+			() => activeRecordIndex.value > -1 && activeRecordIndex.value === currentRoute.matched.length - 1 && isSameRouteLocationParams(currentRoute.params, route.value.params)
 		);
 		function navigate(e = {}) {
 			if (guardEvent(e)) {
@@ -2386,21 +2166,13 @@ var VueRouter = (function (exports, vue) {
 			const link = vue.reactive(useLink(props));
 			const { options } = vue.inject(routerKey);
 			const elClass = vue.computed(() => ({
-				[getLinkClass(
-					props.activeClass,
-					options.linkActiveClass,
-					"router-link-active"
-				)]: link.isActive,
+				[getLinkClass(props.activeClass, options.linkActiveClass, "router-link-active")]: link.isActive,
 				// [getLinkClass(
 				//   props.inactiveClass,
 				//   options.linkInactiveClass,
 				//   'router-link-inactive'
 				// )]: !link.isExactActive,
-				[getLinkClass(
-					props.exactActiveClass,
-					options.linkExactActiveClass,
-					"router-link-exact-active"
-				)]: link.isExactActive
+				[getLinkClass(props.exactActiveClass, options.linkExactActiveClass, "router-link-exact-active")]: link.isExactActive
 			}));
 			return () => {
 				const children = slots.default && slots.default(link);
@@ -2409,9 +2181,7 @@ var VueRouter = (function (exports, vue) {
 					: vue.h(
 							"a",
 							{
-								"aria-current": link.isExactActive
-									? props.ariaCurrentValue
-									: null,
+								"aria-current": link.isExactActive ? props.ariaCurrentValue : null,
 								href: link.href,
 								// this would override user added attrs but Vue will still add
 								// the listener, so we end up triggering both
@@ -2454,12 +2224,7 @@ var VueRouter = (function (exports, vue) {
 			if (typeof innerValue === "string") {
 				if (innerValue !== outerValue) return false;
 			} else {
-				if (
-					!isArray(outerValue) ||
-					outerValue.length !== innerValue.length ||
-					innerValue.some((value, i) => value !== outerValue[i])
-				)
-					return false;
+				if (!isArray(outerValue) || outerValue.length !== innerValue.length || innerValue.some((value, i) => value !== outerValue[i])) return false;
 			}
 		}
 		return true;
@@ -2477,12 +2242,7 @@ var VueRouter = (function (exports, vue) {
 	 * @param globalClass
 	 * @param defaultClass
 	 */
-	const getLinkClass = (propClass, globalClass, defaultClass) =>
-		propClass != null
-			? propClass
-			: globalClass != null
-			? globalClass
-			: defaultClass;
+	const getLinkClass = (propClass, globalClass, defaultClass) => (propClass != null ? propClass : globalClass != null ? globalClass : defaultClass);
 
 	const RouterViewImpl = /*#__PURE__*/ vue.defineComponent({
 		name: "RouterView",
@@ -2501,9 +2261,7 @@ var VueRouter = (function (exports, vue) {
 		setup(props, { attrs, slots }) {
 			warnDeprecatedUsage();
 			const injectedRoute = vue.inject(routerViewLocationKey);
-			const routeToDisplay = vue.computed(
-				() => props.route || injectedRoute.value
-			);
+			const routeToDisplay = vue.computed(() => props.route || injectedRoute.value);
 			const injectedDepth = vue.inject(viewDepthKey, 0);
 			// The depth changes based on empty components option, which allows passthrough routes e.g. routes with children
 			// that are used to reuse the `path` property
@@ -2511,17 +2269,12 @@ var VueRouter = (function (exports, vue) {
 				let initialDepth = vue.unref(injectedDepth);
 				const { matched } = routeToDisplay.value;
 				let matchedRoute;
-				while (
-					(matchedRoute = matched[initialDepth]) &&
-					!matchedRoute.components
-				) {
+				while ((matchedRoute = matched[initialDepth]) && !matchedRoute.components) {
 					initialDepth++;
 				}
 				return initialDepth;
 			});
-			const matchedRouteRef = vue.computed(
-				() => routeToDisplay.value.matched[depth.value]
-			);
+			const matchedRouteRef = vue.computed(() => routeToDisplay.value.matched[depth.value]);
 			vue.provide(
 				viewDepthKey,
 				vue.computed(() => depth.value + 1)
@@ -2562,9 +2315,7 @@ var VueRouter = (function (exports, vue) {
 						// the first visit
 						(!from || !isSameRouteRecord(to, from) || !oldInstance)
 					) {
-						(to.enterCallbacks[name] || []).forEach(callback =>
-							callback(instance)
-						);
+						(to.enterCallbacks[name] || []).forEach(callback => callback(instance));
 					}
 				},
 				{ flush: "post" }
@@ -2575,8 +2326,7 @@ var VueRouter = (function (exports, vue) {
 				// navigated to a different location so the value is different
 				const currentName = props.name;
 				const matchedRoute = matchedRouteRef.value;
-				const ViewComponent =
-					matchedRoute && matchedRoute.components[currentName];
+				const ViewComponent = matchedRoute && matchedRoute.components[currentName];
 				if (!ViewComponent) {
 					return normalizeSlot(slots.default, {
 						Component: ViewComponent,
@@ -2585,13 +2335,7 @@ var VueRouter = (function (exports, vue) {
 				}
 				// props from route configuration
 				const routePropsOption = matchedRoute.props[currentName];
-				const routeProps = routePropsOption
-					? routePropsOption === true
-						? route.params
-						: typeof routePropsOption === "function"
-						? routePropsOption(route)
-						: routePropsOption
-					: null;
+				const routeProps = routePropsOption ? (routePropsOption === true ? route.params : typeof routePropsOption === "function" ? routePropsOption(route) : routePropsOption) : null;
 				const onVnodeUnmounted = vnode => {
 					// remove the instance reference to prevent leak
 					if (vnode.component.isUnmounted) {
@@ -2613,9 +2357,7 @@ var VueRouter = (function (exports, vue) {
 						path: matchedRoute.path,
 						meta: matchedRoute.meta
 					};
-					const internalInstances = isArray(component.ref)
-						? component.ref.map(r => r.i)
-						: [component.ref.i];
+					const internalInstances = isArray(component.ref) ? component.ref.map(r => r.i) : [component.ref.i];
 					internalInstances.forEach(instance => {
 						// @ts-expect-error
 						instance.__vrv_devtools = info;
@@ -2624,8 +2366,10 @@ var VueRouter = (function (exports, vue) {
 				return (
 					// pass the vnode to the slot as a prop.
 					// h and <component :is="..."> both accept vnodes
-					normalizeSlot(slots.default, { Component: component, route }) ||
-					component
+					normalizeSlot(slots.default, {
+						Component: component,
+						route
+					}) || component
 				);
 			};
 		}
@@ -2646,16 +2390,8 @@ var VueRouter = (function (exports, vue) {
 	function warnDeprecatedUsage() {
 		const instance = vue.getCurrentInstance();
 		const parentName = instance.parent && instance.parent.type.name;
-		const parentSubTreeType =
-			instance.parent &&
-			instance.parent.subTree &&
-			instance.parent.subTree.type;
-		if (
-			parentName &&
-			(parentName === "KeepAlive" || parentName.includes("Transition")) &&
-			typeof parentSubTreeType === "object" &&
-			parentSubTreeType.name === "RouterView"
-		) {
+		const parentSubTreeType = instance.parent && instance.parent.subTree && instance.parent.subTree.type;
+		if (parentName && (parentName === "KeepAlive" || parentName.includes("Transition")) && typeof parentSubTreeType === "object" && parentSubTreeType.name === "RouterView") {
 			const comp = parentName === "KeepAlive" ? "keep-alive" : "transition";
 			warn(
 				`<router-view> can no longer be used directly inside <transition> or <keep-alive>.\n` +
@@ -2674,11 +2410,7 @@ var VueRouter = (function (exports, vue) {
 	}
 	function getTarget() {
 		// @ts-ignore
-		return typeof navigator !== "undefined" && typeof window !== "undefined"
-			? window
-			: typeof global !== "undefined"
-			? global
-			: {};
+		return typeof navigator !== "undefined" && typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {};
 	}
 	const isProxyAvailable = typeof Proxy === "function";
 
@@ -2695,12 +2427,7 @@ var VueRouter = (function (exports, vue) {
 		if (typeof window !== "undefined" && window.performance) {
 			supported = true;
 			perf = window.performance;
-		} else if (
-			typeof global !== "undefined" &&
-			((_a = global.perf_hooks) === null || _a === void 0
-				? void 0
-				: _a.performance)
-		) {
+		} else if (typeof global !== "undefined" && ((_a = global.perf_hooks) === null || _a === void 0 ? void 0 : _a.performance)) {
 			supported = true;
 			perf = global.perf_hooks.performance;
 		} else {
@@ -2823,15 +2550,11 @@ var VueRouter = (function (exports, vue) {
 		const target = getTarget();
 		const hook = getDevtoolsGlobalHook();
 		const enableProxy = isProxyAvailable && descriptor.enableEarlyProxy;
-		if (
-			hook &&
-			(target.__VUE_DEVTOOLS_PLUGIN_API_AVAILABLE__ || !enableProxy)
-		) {
+		if (hook && (target.__VUE_DEVTOOLS_PLUGIN_API_AVAILABLE__ || !enableProxy)) {
 			hook.emit(HOOK_SETUP, pluginDescriptor, setupFn);
 		} else {
 			const proxy = enableProxy ? new ApiProxy(descriptor, hook) : null;
-			const list = (target.__VUE_DEVTOOLS_PLUGINS__ =
-				target.__VUE_DEVTOOLS_PLUGINS__ || []);
+			const list = (target.__VUE_DEVTOOLS_PLUGINS__ = target.__VUE_DEVTOOLS_PLUGINS__ || []);
 			list.push({
 				pluginDescriptor: descriptor,
 				setupFn,
@@ -2851,9 +2574,7 @@ var VueRouter = (function (exports, vue) {
 	function formatRouteLocation(routeLocation, tooltip) {
 		const copy = assign({}, routeLocation, {
 			// remove variables that can contain vue instances
-			matched: routeLocation.matched.map(matched =>
-				omit(matched, ["instances", "children", "aliasOf"])
-			)
+			matched: routeLocation.matched.map(matched => omit(matched, ["instances", "children", "aliasOf"]))
 		});
 		return {
 			_custom: {
@@ -2904,10 +2625,7 @@ var VueRouter = (function (exports, vue) {
 							type: "Routing",
 							key: "$route",
 							editable: false,
-							value: formatRouteLocation(
-								router.currentRoute.value,
-								"Current Route"
-							)
+							value: formatRouteLocation(router.currentRoute.value, "Current Route")
 						});
 					}
 				});
@@ -2981,10 +2699,7 @@ var VueRouter = (function (exports, vue) {
 				router.beforeEach((to, from) => {
 					const data = {
 						guard: formatDisplay("beforeEach"),
-						from: formatRouteLocation(
-							from,
-							"Current Location during this navigation"
-						),
+						from: formatRouteLocation(from, "Current Location during this navigation"),
 						to: formatRouteLocation(to, "Target location")
 					};
 					// Used to group navigations together, hide from devtools
@@ -3021,10 +2736,7 @@ var VueRouter = (function (exports, vue) {
 						data.status = formatDisplay("✅");
 					}
 					// we set here to have the right order
-					data.from = formatRouteLocation(
-						from,
-						"Current Location during this navigation"
-					);
+					data.from = formatRouteLocation(from, "Current Location during this navigation");
 					data.to = formatRouteLocation(to, "Target location");
 					api.addTimelineEvent({
 						layerId: navigationsLayerId,
@@ -3070,18 +2782,13 @@ var VueRouter = (function (exports, vue) {
 						);
 					}
 					// mark active routes
-					routes.forEach(route =>
-						markRouteRecordActive(route, router.currentRoute.value)
-					);
+					routes.forEach(route => markRouteRecordActive(route, router.currentRoute.value));
 					payload.rootNodes = routes.map(formatRouteRecordForInspector);
 				}
 				let activeRoutesPayload;
 				api.on.getInspectorTree(payload => {
 					activeRoutesPayload = payload;
-					if (
-						payload.app === app &&
-						payload.inspectorId === routerInspectorId
-					) {
+					if (payload.app === app && payload.inspectorId === routerInspectorId) {
 						refreshRoutesView();
 					}
 				});
@@ -3089,14 +2796,9 @@ var VueRouter = (function (exports, vue) {
 				 * Display information about the currently selected route record
 				 */
 				api.on.getInspectorState(payload => {
-					if (
-						payload.app === app &&
-						payload.inspectorId === routerInspectorId
-					) {
+					if (payload.app === app && payload.inspectorId === routerInspectorId) {
 						const routes = matcher.getRoutes();
-						const route = routes.find(
-							route => route.record.__vd_id === payload.nodeId
-						);
+						const route = routes.find(route => route.record.__vd_id === payload.nodeId);
 						if (route) {
 							payload.state = {
 								options: formatRouteRecordMatcherForStateInspector(route)
@@ -3135,9 +2837,7 @@ var VueRouter = (function (exports, vue) {
 					_custom: {
 						type: null,
 						readOnly: true,
-						display: route.keys
-							.map(key => `${key.name}${modifierForKey(key)}`)
-							.join(" "),
+						display: route.keys.map(key => `${key.name}${modifierForKey(key)}`).join(" "),
 						tooltip: "Param keys",
 						value: route.keys
 					}
@@ -3230,10 +2930,7 @@ var VueRouter = (function (exports, vue) {
 		}
 		if (record.redirect) {
 			tags.push({
-				label:
-					typeof record.redirect === "string"
-						? `redirect: ${record.redirect}`
-						: "redirects",
+				label: typeof record.redirect === "string" ? `redirect: ${record.redirect}` : "redirects",
 				textColor: 0xffffff,
 				backgroundColor: DARK
 			});
@@ -3258,21 +2955,12 @@ var VueRouter = (function (exports, vue) {
 	function markRouteRecordActive(route, currentRoute) {
 		// no route will be active if matched is empty
 		// reset the matching state
-		const isExactActive =
-			currentRoute.matched.length &&
-			isSameRouteRecord(
-				currentRoute.matched[currentRoute.matched.length - 1],
-				route.record
-			);
+		const isExactActive = currentRoute.matched.length && isSameRouteRecord(currentRoute.matched[currentRoute.matched.length - 1], route.record);
 		route.__vd_exactActive = route.__vd_active = isExactActive;
 		if (!isExactActive) {
-			route.__vd_active = currentRoute.matched.some(match =>
-				isSameRouteRecord(match, route.record)
-			);
+			route.__vd_active = currentRoute.matched.some(match => isSameRouteRecord(match, route.record));
 		}
-		route.children.forEach(childRoute =>
-			markRouteRecordActive(childRoute, currentRoute)
-		);
+		route.children.forEach(childRoute => markRouteRecordActive(childRoute, currentRoute));
 	}
 	function resetMatchStateOnRouteRecord(route) {
 		route.__vd_match = false;
@@ -3300,14 +2988,9 @@ var VueRouter = (function (exports, vue) {
 		const path = route.record.path.toLowerCase();
 		const decodedPath = decode(path);
 		// also allow partial matching on the path
-		if (
-			!filter.startsWith("/") &&
-			(decodedPath.includes(filter) || path.includes(filter))
-		)
-			return true;
+		if (!filter.startsWith("/") && (decodedPath.includes(filter) || path.includes(filter))) return true;
 		if (decodedPath.startsWith(filter) || path.startsWith(filter)) return true;
-		if (route.record.name && String(route.record.name).includes(filter))
-			return true;
+		if (route.record.name && String(route.record.name).includes(filter)) return true;
 		return route.children.some(child => isRouteMatching(child, filter));
 	}
 	function omit(obj, keys) {
@@ -3331,11 +3014,7 @@ var VueRouter = (function (exports, vue) {
 		const parseQuery$1 = options.parseQuery || parseQuery;
 		const stringifyQuery$1 = options.stringifyQuery || stringifyQuery;
 		const routerHistory = options.history;
-		if (!routerHistory)
-			throw new Error(
-				'Provide the "history" option when calling "createRouter()":' +
-					" https://next.router.vuejs.org/api/#history."
-			);
+		if (!routerHistory) throw new Error('Provide the "history" option when calling "createRouter()":' + " https://next.router.vuejs.org/api/#history.");
 		const beforeGuards = useCallbacks();
 		const beforeResolveGuards = useCallbacks();
 		const afterGuards = useCallbacks();
@@ -3345,10 +3024,7 @@ var VueRouter = (function (exports, vue) {
 		if (isBrowser && options.scrollBehavior && "scrollRestoration" in history) {
 			history.scrollRestoration = "manual";
 		}
-		const normalizeParams = applyToParams.bind(
-			null,
-			paramValue => "" + paramValue
-		);
+		const normalizeParams = applyToParams.bind(null, paramValue => "" + paramValue);
 		const encodeParams = applyToParams.bind(null, encodeParam);
 		const decodeParams =
 			// @ts-expect-error: intentionally avoid the type check
@@ -3383,21 +3059,11 @@ var VueRouter = (function (exports, vue) {
 			// we create a copy to modify it later
 			currentLocation = assign({}, currentLocation || currentRoute.value);
 			if (typeof rawLocation === "string") {
-				const locationNormalized = parseURL(
-					parseQuery$1,
-					rawLocation,
-					currentLocation.path
-				);
-				const matchedRoute = matcher.resolve(
-					{ path: locationNormalized.path },
-					currentLocation
-				);
+				const locationNormalized = parseURL(parseQuery$1, rawLocation, currentLocation.path);
+				const matchedRoute = matcher.resolve({ path: locationNormalized.path }, currentLocation);
 				const href = routerHistory.createHref(locationNormalized.fullPath);
 				{
-					if (href.startsWith("//"))
-						warn(
-							`Location "${rawLocation}" resolved to "${href}". A resolved location cannot start with multiple slashes.`
-						);
+					if (href.startsWith("//")) warn(`Location "${rawLocation}" resolved to "${href}". A resolved location cannot start with multiple slashes.`);
 					else if (!matchedRoute.matched.length) {
 						warn(`No match found for location with path "${rawLocation}"`);
 					}
@@ -3419,13 +3085,10 @@ var VueRouter = (function (exports, vue) {
 					// @ts-expect-error: the type is never
 					Object.keys(rawLocation.params).length
 				) {
-					warn(
-						`Path "${rawLocation.path}" was passed with params but they will be ignored. Use a named route alongside params instead.`
-					);
+					warn(`Path "${rawLocation.path}" was passed with params but they will be ignored. Use a named route alongside params instead.`);
 				}
 				matcherLocation = assign({}, rawLocation, {
-					path: parseURL(parseQuery$1, rawLocation.path, currentLocation.path)
-						.path
+					path: parseURL(parseQuery$1, rawLocation.path, currentLocation.path).path
 				});
 			} else {
 				// remove any nullish param
@@ -3446,9 +3109,7 @@ var VueRouter = (function (exports, vue) {
 			const matchedRoute = matcher.resolve(matcherLocation, currentLocation);
 			const hash = rawLocation.hash || "";
 			if (hash && !hash.startsWith("#")) {
-				warn(
-					`A \`hash\` should always start with the character "#". Replace "${hash}" with "#${hash}".`
-				);
+				warn(`A \`hash\` should always start with the character "#". Replace "${hash}" with "#${hash}".`);
 			}
 			// the matcher might have merged current location params, so
 			// we need to run the decoding again
@@ -3463,15 +3124,9 @@ var VueRouter = (function (exports, vue) {
 			const href = routerHistory.createHref(fullPath);
 			{
 				if (href.startsWith("//")) {
-					warn(
-						`Location "${rawLocation}" resolved to "${href}". A resolved location cannot start with multiple slashes.`
-					);
+					warn(`Location "${rawLocation}" resolved to "${href}". A resolved location cannot start with multiple slashes.`);
 				} else if (!matchedRoute.matched.length) {
-					warn(
-						`No match found for location with path "${
-							"path" in rawLocation ? rawLocation.path : rawLocation
-						}"`
-					);
+					warn(`No match found for location with path "${"path" in rawLocation ? rawLocation.path : rawLocation}"`);
 				}
 			}
 			return assign(
@@ -3486,9 +3141,7 @@ var VueRouter = (function (exports, vue) {
 						// numbers at `$route.query`, but at the point, the user will have to
 						// use their own type anyway.
 						// https://github.com/vuejs/router/issues/328#issuecomment-649481567
-						stringifyQuery$1 === stringifyQuery
-							? normalizeQuery(rawLocation.query)
-							: rawLocation.query || {}
+						stringifyQuery$1 === stringifyQuery ? normalizeQuery(rawLocation.query) : rawLocation.query || {}
 				},
 				matchedRoute,
 				{
@@ -3498,9 +3151,7 @@ var VueRouter = (function (exports, vue) {
 			);
 		}
 		function locationAsObject(to) {
-			return typeof to === "string"
-				? parseURL(parseQuery$1, to, currentRoute.value.path)
-				: assign({}, to);
+			return typeof to === "string" ? parseURL(parseQuery$1, to, currentRoute.value.path) : assign({}, to);
 		}
 		function checkCanceledNavigation(to, from) {
 			if (pendingLocation !== to) {
@@ -3520,8 +3171,7 @@ var VueRouter = (function (exports, vue) {
 			const lastMatched = to.matched[to.matched.length - 1];
 			if (lastMatched && lastMatched.redirect) {
 				const { redirect } = lastMatched;
-				let newTargetLocation =
-					typeof redirect === "function" ? redirect(to) : redirect;
+				let newTargetLocation = typeof redirect === "function" ? redirect(to) : redirect;
 				if (typeof newTargetLocation === "string") {
 					newTargetLocation =
 						newTargetLocation.includes("?") || newTargetLocation.includes("#")
@@ -3534,11 +3184,7 @@ var VueRouter = (function (exports, vue) {
 				}
 				if (!("path" in newTargetLocation) && !("name" in newTargetLocation)) {
 					warn(
-						`Invalid redirect found:\n${JSON.stringify(
-							newTargetLocation,
-							null,
-							2
-						)}\n when navigating to "${
+						`Invalid redirect found:\n${JSON.stringify(newTargetLocation, null, 2)}\n when navigating to "${
 							to.fullPath
 						}". A redirect must contain a name or path. This will break in production.`
 					);
@@ -3566,10 +3212,7 @@ var VueRouter = (function (exports, vue) {
 			if (shouldRedirect)
 				return pushWithRedirect(
 					assign(locationAsObject(shouldRedirect), {
-						state:
-							typeof shouldRedirect === "object"
-								? assign({}, data, shouldRedirect.state)
-								: data,
+						state: typeof shouldRedirect === "object" ? assign({}, data, shouldRedirect.state) : data,
 						force,
 						replace
 					}),
@@ -3580,10 +3223,7 @@ var VueRouter = (function (exports, vue) {
 			const toLocation = targetLocation;
 			toLocation.redirectedFrom = redirectedFrom;
 			let failure;
-			if (
-				!force &&
-				isSameRouteLocation(stringifyQuery$1, from, targetLocation)
-			) {
+			if (!force && isSameRouteLocation(stringifyQuery$1, from, targetLocation)) {
 				failure = createRouterError(16 /* ErrorTypes.NAVIGATION_DUPLICATED */, {
 					to: toLocation,
 					from
@@ -3604,10 +3244,7 @@ var VueRouter = (function (exports, vue) {
 				.catch(error =>
 					isNavigationFailure(error)
 						? // navigation redirects still mark the router as ready
-						  isNavigationFailure(
-								error,
-								2 /* ErrorTypes.NAVIGATION_GUARD_REDIRECT */
-						  )
+						  isNavigationFailure(error, 2 /* ErrorTypes.NAVIGATION_GUARD_REDIRECT */)
 							? error
 							: markAsReady(error) // also returns the error
 						: // reject any unknown error
@@ -3615,19 +3252,10 @@ var VueRouter = (function (exports, vue) {
 				)
 				.then(failure => {
 					if (failure) {
-						if (
-							isNavigationFailure(
-								failure,
-								2 /* ErrorTypes.NAVIGATION_GUARD_REDIRECT */
-							)
-						) {
+						if (isNavigationFailure(failure, 2 /* ErrorTypes.NAVIGATION_GUARD_REDIRECT */)) {
 							if (
 								// we are redirecting to the same location we were already at
-								isSameRouteLocation(
-									stringifyQuery$1,
-									resolve(failure.to),
-									toLocation
-								) &&
+								isSameRouteLocation(stringifyQuery$1, resolve(failure.to), toLocation) &&
 								// and we have done it a couple of times
 								redirectedFrom &&
 								// @ts-expect-error: added only in dev
@@ -3639,9 +3267,7 @@ var VueRouter = (function (exports, vue) {
 								warn(
 									`Detected a possibly infinite redirection in a navigation guard when going from "${from.fullPath}" to "${toLocation.fullPath}". Aborting to avoid a Stack Overflow.\n Are you always returning a new location within a navigation guard? That would lead to this error. Only return when redirecting or aborting, that should fix this. This might break in production if not fixed.`
 								);
-								return Promise.reject(
-									new Error("Infinite redirect in navigation guard")
-								);
+								return Promise.reject(new Error("Infinite redirect in navigation guard"));
 							}
 							return pushWithRedirect(
 								// keep options
@@ -3652,10 +3278,7 @@ var VueRouter = (function (exports, vue) {
 									},
 									locationAsObject(failure.to),
 									{
-										state:
-											typeof failure.to === "object"
-												? assign({}, data, failure.to.state)
-												: data,
+										state: typeof failure.to === "object" ? assign({}, data, failure.to.state) : data,
 										force
 									}
 								),
@@ -3683,33 +3306,21 @@ var VueRouter = (function (exports, vue) {
 		function runWithContext(fn) {
 			const app = installedApps.values().next().value;
 			// support Vue < 3.3
-			return app && typeof app.runWithContext === "function"
-				? app.runWithContext(fn)
-				: fn();
+			return app && typeof app.runWithContext === "function" ? app.runWithContext(fn) : fn();
 		}
 		// TODO: refactor the whole before guards by internally using router.beforeEach
 		function navigate(to, from) {
 			let guards;
-			const [leavingRecords, updatingRecords, enteringRecords] =
-				extractChangingRecords(to, from);
+			const [leavingRecords, updatingRecords, enteringRecords] = extractChangingRecords(to, from);
 			// all components here have been resolved once because we are leaving
-			guards = extractComponentsGuards(
-				leavingRecords.reverse(),
-				"beforeRouteLeave",
-				to,
-				from
-			);
+			guards = extractComponentsGuards(leavingRecords.reverse(), "beforeRouteLeave", to, from);
 			// leavingRecords is already reversed
 			for (const record of leavingRecords) {
 				record.leaveGuards.forEach(guard => {
 					guards.push(guardToPromiseFn(guard, to, from));
 				});
 			}
-			const canceledNavigationCheck = checkCanceledNavigationAndReject.bind(
-				null,
-				to,
-				from
-			);
+			const canceledNavigationCheck = checkCanceledNavigationAndReject.bind(null, to, from);
 			guards.push(canceledNavigationCheck);
 			// run the queue of per route beforeRouteLeave guards
 			return (
@@ -3725,12 +3336,7 @@ var VueRouter = (function (exports, vue) {
 					})
 					.then(() => {
 						// check in components beforeRouteUpdate
-						guards = extractComponentsGuards(
-							updatingRecords,
-							"beforeRouteUpdate",
-							to,
-							from
-						);
+						guards = extractComponentsGuards(updatingRecords, "beforeRouteUpdate", to, from);
 						for (const record of updatingRecords) {
 							record.updateGuards.forEach(guard => {
 								guards.push(guardToPromiseFn(guard, to, from));
@@ -3747,8 +3353,7 @@ var VueRouter = (function (exports, vue) {
 							// do not trigger beforeEnter on reused views
 							if (record.beforeEnter) {
 								if (isArray(record.beforeEnter)) {
-									for (const beforeEnter of record.beforeEnter)
-										guards.push(guardToPromiseFn(beforeEnter, to, from));
+									for (const beforeEnter of record.beforeEnter) guards.push(guardToPromiseFn(beforeEnter, to, from));
 								} else {
 									guards.push(guardToPromiseFn(record.beforeEnter, to, from));
 								}
@@ -3763,12 +3368,7 @@ var VueRouter = (function (exports, vue) {
 						// clear existing enterCallbacks, these are added by extractComponentsGuards
 						to.matched.forEach(record => (record.enterCallbacks = {}));
 						// check in-component beforeRouteEnter
-						guards = extractComponentsGuards(
-							enteringRecords,
-							"beforeRouteEnter",
-							to,
-							from
-						);
+						guards = extractComponentsGuards(enteringRecords, "beforeRouteEnter", to, from);
 						guards.push(canceledNavigationCheck);
 						// run the queue of per route beforeEnter guards
 						return runGuardQueue(guards);
@@ -3783,19 +3383,13 @@ var VueRouter = (function (exports, vue) {
 						return runGuardQueue(guards);
 					})
 					// catch any navigation canceled
-					.catch(err =>
-						isNavigationFailure(err, 8 /* ErrorTypes.NAVIGATION_CANCELLED */)
-							? err
-							: Promise.reject(err)
-					)
+					.catch(err => (isNavigationFailure(err, 8 /* ErrorTypes.NAVIGATION_CANCELLED */) ? err : Promise.reject(err)))
 			);
 		}
 		function triggerAfterEach(to, from, failure) {
 			// navigation is confirmed, call afterGuards
 			// TODO: wrap with error handlers
-			afterGuards
-				.list()
-				.forEach(guard => runWithContext(() => guard(to, from, failure)));
+			afterGuards.list().forEach(guard => runWithContext(() => guard(to, from, failure)));
 		}
 		/**
 		 * - Cleans up any navigation guards
@@ -3845,38 +3439,21 @@ var VueRouter = (function (exports, vue) {
 				// there could be a redirect record in history
 				const shouldRedirect = handleRedirectRecord(toLocation);
 				if (shouldRedirect) {
-					pushWithRedirect(
-						assign(shouldRedirect, { replace: true }),
-						toLocation
-					).catch(noop);
+					pushWithRedirect(assign(shouldRedirect, { replace: true }), toLocation).catch(noop);
 					return;
 				}
 				pendingLocation = toLocation;
 				const from = currentRoute.value;
 				// TODO: should be moved to web history?
 				if (isBrowser) {
-					saveScrollPosition(
-						getScrollKey(from.fullPath, info.delta),
-						computeScrollPosition()
-					);
+					saveScrollPosition(getScrollKey(from.fullPath, info.delta), computeScrollPosition());
 				}
 				navigate(toLocation, from)
 					.catch(error => {
-						if (
-							isNavigationFailure(
-								error,
-								4 /* ErrorTypes.NAVIGATION_ABORTED */ |
-									8 /* ErrorTypes.NAVIGATION_CANCELLED */
-							)
-						) {
+						if (isNavigationFailure(error, 4 /* ErrorTypes.NAVIGATION_ABORTED */ | 8 /* ErrorTypes.NAVIGATION_CANCELLED */)) {
 							return error;
 						}
-						if (
-							isNavigationFailure(
-								error,
-								2 /* ErrorTypes.NAVIGATION_GUARD_REDIRECT */
-							)
-						) {
+						if (isNavigationFailure(error, 2 /* ErrorTypes.NAVIGATION_GUARD_REDIRECT */)) {
 							// Here we could call if (info.delta) routerHistory.go(-info.delta,
 							// false) but this is bug prone as we have no way to wait the
 							// navigation to be finished before calling pushWithRedirect. Using
@@ -3896,11 +3473,7 @@ var VueRouter = (function (exports, vue) {
 									// changing, but it was changed by the manual url change, so we
 									// need to manually change it ourselves
 									if (
-										isNavigationFailure(
-											failure,
-											4 /* ErrorTypes.NAVIGATION_ABORTED */ |
-												16 /* ErrorTypes.NAVIGATION_DUPLICATED */
-										) &&
+										isNavigationFailure(failure, 4 /* ErrorTypes.NAVIGATION_ABORTED */ | 16 /* ErrorTypes.NAVIGATION_DUPLICATED */) &&
 										!info.delta &&
 										info.type === NavigationType.pop
 									) {
@@ -3933,20 +3506,10 @@ var VueRouter = (function (exports, vue) {
 								info.delta &&
 								// a new navigation has been triggered, so we do not want to revert, that will change the current history
 								// entry while a different route is displayed
-								!isNavigationFailure(
-									failure,
-									8 /* ErrorTypes.NAVIGATION_CANCELLED */
-								)
+								!isNavigationFailure(failure, 8 /* ErrorTypes.NAVIGATION_CANCELLED */)
 							) {
 								routerHistory.go(-info.delta, false);
-							} else if (
-								info.type === NavigationType.pop &&
-								isNavigationFailure(
-									failure,
-									4 /* ErrorTypes.NAVIGATION_ABORTED */ |
-										16 /* ErrorTypes.NAVIGATION_DUPLICATED */
-								)
-							) {
+							} else if (info.type === NavigationType.pop && isNavigationFailure(failure, 4 /* ErrorTypes.NAVIGATION_ABORTED */ | 16 /* ErrorTypes.NAVIGATION_DUPLICATED */)) {
 								// manual change in hash history #916
 								// it's like a push but lacks the information of the direction
 								routerHistory.go(-1, false);
@@ -3985,8 +3548,7 @@ var VueRouter = (function (exports, vue) {
 			return Promise.reject(error);
 		}
 		function isReady() {
-			if (ready && currentRoute.value !== START_LOCATION_NORMALIZED)
-				return Promise.resolve();
+			if (ready && currentRoute.value !== START_LOCATION_NORMALIZED) return Promise.resolve();
 			return new Promise((resolve, reject) => {
 				readyHandlers.add([resolve, reject]);
 			});
@@ -3996,9 +3558,7 @@ var VueRouter = (function (exports, vue) {
 				// still not ready if an error happened
 				ready = !err;
 				setupListeners();
-				readyHandlers
-					.list()
-					.forEach(([resolve, reject]) => (err ? reject(err) : resolve()));
+				readyHandlers.list().forEach(([resolve, reject]) => (err ? reject(err) : resolve()));
 				readyHandlers.reset();
 			}
 			return err;
@@ -4007,12 +3567,7 @@ var VueRouter = (function (exports, vue) {
 		function handleScroll(to, from, isPush, isFirstNavigation) {
 			const { scrollBehavior } = options;
 			if (!isBrowser || !scrollBehavior) return Promise.resolve();
-			const scrollPosition =
-				(!isPush && getSavedScrollPosition(getScrollKey(to.fullPath, 0))) ||
-				((isFirstNavigation || !isPush) &&
-					history.state &&
-					history.state.scroll) ||
-				null;
+			const scrollPosition = (!isPush && getSavedScrollPosition(getScrollKey(to.fullPath, 0))) || ((isFirstNavigation || !isPush) && history.state && history.state.scroll) || null;
 			return vue
 				.nextTick()
 				.then(() => scrollBehavior(to, from, scrollPosition))
@@ -4100,10 +3655,7 @@ var VueRouter = (function (exports, vue) {
 		};
 		// TODO: type this as NavigationGuardReturn or similar instead of any
 		function runGuardQueue(guards) {
-			return guards.reduce(
-				(promise, guard) => promise.then(() => runWithContext(guard)),
-				Promise.resolve()
-			);
+			return guards.reduce((promise, guard) => promise.then(() => runWithContext(guard)), Promise.resolve());
 		}
 		return router;
 	}
@@ -4115,8 +3667,7 @@ var VueRouter = (function (exports, vue) {
 		for (let i = 0; i < len; i++) {
 			const recordFrom = from.matched[i];
 			if (recordFrom) {
-				if (to.matched.find(record => isSameRouteRecord(record, recordFrom)))
-					updatingRecords.push(recordFrom);
+				if (to.matched.find(record => isSameRouteRecord(record, recordFrom))) updatingRecords.push(recordFrom);
 				else leavingRecords.push(recordFrom);
 			}
 			const recordTo = to.matched[i];

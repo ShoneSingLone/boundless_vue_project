@@ -14,16 +14,10 @@ export default async function () {
 	const EbookReader = await _.$importVue("../../components/ebook/EbookReader");
 	const EbookTitle = await _.$importVue("../../components/ebook/EbookTitle");
 	const EbookMenu = await _.$importVue("../../components/ebook/EbookMenu");
-	const EbookBookmark = await _.$importVue(
-		"../../components/ebook/EbookBookmark"
-	);
+	const EbookBookmark = await _.$importVue("../../components/ebook/EbookBookmark");
 	const EbookHeader = await _.$importVue("../../components/ebook/EbookHeader");
-	const EbookFooter = await _.$importVue(
-		"../../components/ebook/EbookFooter.vue"
-	);
-	const { getReadTime, saveReadTime } = await _.$importVue(
-		"@/utils/localStorage.vue"
-	);
+	const EbookFooter = await _.$importVue("../../components/ebook/EbookFooter.vue");
+	const { getReadTime, saveReadTime } = await _.$importVue("@/utils/localStorage.vue");
 	const { ebookMixin } = await _.$importVue("@/utils/mixin.vue");
 	return {
 		components: {

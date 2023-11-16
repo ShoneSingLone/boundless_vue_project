@@ -17,9 +17,7 @@ export default async function () {
 	const { realPx } = await _.$importVue("@/utils/utils.vue");
 	const BookMark = await _.$importVue("@/common/BookMark.vue");
 	const { ebookMixin } = await _.$importVue("@/utils/mixin.vue");
-	const { getBookmark, saveBookmark } = await _.$importVue(
-		"@/utils/localStorage.vue"
-	);
+	const { getBookmark, saveBookmark } = await _.$importVue("@/utils/localStorage.vue");
 	const BLUE = "#346cbc";
 	const WHITE = "#fff";
 	return {
@@ -50,11 +48,7 @@ export default async function () {
 		},
 		watch: {
 			offsetY(v) {
-				if (
-					!this.bookAvailable ||
-					this.menuVisible ||
-					this.settingVisible >= 0
-				) {
+				if (!this.bookAvailable || this.menuVisible || this.settingVisible >= 0) {
 					return;
 				}
 				if (v >= this.height && v < this.threshold) {
@@ -84,12 +78,8 @@ export default async function () {
 				}
 				const currentLocation = this.currentBook.rendition.currentLocation();
 				const cfibase = currentLocation.start.cfi.replace(/!.*/, "");
-				const cfistart = currentLocation.start.cfi
-					.replace(/.*!/, "")
-					.replace(/\)$/, "");
-				const cfiend = currentLocation.end.cfi
-					.replace(/.*!/, "")
-					.replace(/\)$/, "");
+				const cfistart = currentLocation.start.cfi.replace(/.*!/, "").replace(/\)$/, "");
+				const cfiend = currentLocation.end.cfi.replace(/.*!/, "").replace(/\)$/, "");
 				const cfirange = `${cfibase}!,${cfistart},${cfiend})`;
 				this.currentBook.getRange(cfirange).then(range => {
 					const text = range.toString().replace(/\s\s/g, "");

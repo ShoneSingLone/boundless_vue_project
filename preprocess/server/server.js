@@ -1,7 +1,10 @@
 const Koa = require('koa');
 const path = require('path');
 const IO = require('koa-socket');
-var { appUseHMR, appUseProxy, appUseKoaAssets, appUseSocketMiddleware, appRun } = require("./preprocess/server/middleware");
+
+/* const NODE_PATH = path.resolve(__dirname, "."); process.env.NODE_PATH = NODE_PATH; Module._initPaths(); */
+
+var { appUseHMR, appUseProxy, appUseKoaAssets, appUseSocketMiddleware, appRun } = require("./middleware");
 
 const app = new Koa();
 const ioWs = new IO("ws");

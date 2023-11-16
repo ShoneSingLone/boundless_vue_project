@@ -1,5 +1,6 @@
 <script only-use-in-dev-model>
 window.ONLY_USE_IN_DEV_MODEL = function () {
+	var h = Vue.h;
 	const $win = $(window);
 
 	/* 运行时会replace */
@@ -32,9 +33,10 @@ window.ONLY_USE_IN_DEV_MODEL = function () {
 			return module;
 		}
 
-		let newModule = {
+		let newModule_component = {
 			_hmr_socket_io_script_block: true,
 			inheritAttrs: false,
+
 			data() {
 				return {
 					CurrentComponennt: module
@@ -86,26 +88,17 @@ window.ONLY_USE_IN_DEV_MODEL = function () {
 					if (refProp && this.$refs[refProp]) {
 						bindRef(this.$parent, refProp);
 					}
-
-					return Vue.h(
-						this.CurrentComponennt,
-						Vue.merge_hFnProps([
-							{ on: this.$listeners },
-							this?.$options?.propsData || {},
-							this?.$vnode?.data || {},
-							this?.$vnode?.data?.attrs || {}
-						]),
-						[this.$vSlots]
-					);
+					const props = this?.$vnode?.data;
+					return h(this.CurrentComponennt, props, [this.$vSlots]);
 				};
 			}
 		};
 
-		if (module.$parent) {
-			newModule.parent = module.$parent;
+		if (module.parent) {
+			newModule_component.parent = module.parent;
 		}
 
-		return newModule;
+		return newModule_component;
 	}
 
 	_.$importVue = $importVue_hmr;
