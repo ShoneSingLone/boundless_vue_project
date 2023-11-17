@@ -1,0 +1,1 @@
+npm run lint:static_vue2

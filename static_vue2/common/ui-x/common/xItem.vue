@@ -2,7 +2,6 @@
 export default async function () {
 	const RULES = await _.$importVue("/common/utils/rules.vue");
 	const { EVENT_ARRAY } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
-
 	/* configs {
   label:string
   disabled:boolean||function
@@ -26,6 +25,7 @@ export default async function () {
 		},
 		setup(props) {
 			const vm = this;
+
 			/**
 			 * 配合modifyItemsAttrs的私有变量
 			 */
@@ -131,7 +131,6 @@ export default async function () {
 						if (!isModelValueUndefined) {
 							return this.configs.value;
 						}
-						console.log(this);
 						console.error("eigther v-model or configs has value property");
 					})();
 				},
@@ -226,7 +225,8 @@ export default async function () {
 				p_style: {},
 				p_props: {},
 				p_attrs: {},
-				p_listeners: {}
+				p_listeners: {},
+				curUid: 0
 			};
 		},
 		methods: {
@@ -344,7 +344,6 @@ export default async function () {
 		},
 		render() {
 			const vm = this;
-
 			const xItem_controllerProps = {
 				...vm.configs,
 				readonly: vm.configs.readonly,

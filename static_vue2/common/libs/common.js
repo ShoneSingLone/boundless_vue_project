@@ -601,6 +601,13 @@
 	};
 	_.$ensure.collection = new Set();
 
+	/**
+	 * @deprecated _.$appendScript可以缓存，不用每次都重新加载
+	 * @description 动态方式添加js，在pendding阶段的调用都会等待
+	 * @param {any} globalName
+	 * @param {any} url
+	 * @returns
+	 */
 	async function $globalVar(globalName, url) {
 		url = _.$resolvePath(url);
 		return new Promise(async resolve => {
@@ -1066,7 +1073,7 @@
 		};
 		/* 国际化 */
 		window.i18n = i18n;
-		await _.$globalVar("i18n.options", `@/i18n/${I18N_LANGUAGE}.js`);
+		await _.$appendScript(`@/i18n/${I18N_LANGUAGE}.js`);
 		Vue.prototype.$i18n = i18n;
 		Vue.prototype.i18n = i18n;
 	})();

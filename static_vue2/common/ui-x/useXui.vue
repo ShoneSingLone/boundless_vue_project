@@ -2965,6 +2965,7 @@ export default async function () {
 			"xCellRate",
 			"xCellSelect",
 			"xCellSelectSearch",
+			"xCellSelectOrInput",
 			"xCellText",
 			"xColActions",
 			"xDialog",
@@ -2996,6 +2997,7 @@ export default async function () {
 			"xTableColumn",
 			"xTableFilter",
 			"xTableVir",
+			"xTableDiv",
 			"xTransfer"
 		];
 

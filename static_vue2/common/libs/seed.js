@@ -89,15 +89,15 @@
 
 	function ajax(url) {
 		return new Promise((resolve, reject) => {
-			var oReq = new XMLHttpRequest();
+			var xhr = new XMLHttpRequest();
 
-			oReq.addEventListener("progress", updateProgress);
-			oReq.addEventListener("load", transferComplete);
-			oReq.addEventListener("error", transferFailed);
-			oReq.addEventListener("abort", transferCanceled);
+			xhr.addEventListener("progress", updateProgress);
+			xhr.addEventListener("load", transferComplete);
+			xhr.addEventListener("error", transferFailed);
+			xhr.addEventListener("abort", transferCanceled);
 
-			oReq.open("GET", `${url}?_t=${Date.now()}`);
-			oReq.send();
+			xhr.open("GET", `${url}?_t=${Date.now()}`);
+			xhr.send();
 
 			// 服务端到客户端的传输进程（下载）
 			function updateProgress(oEvent) {
@@ -228,7 +228,11 @@
 	}
 	$resolvePath.cache = {};
 
-	/*  */
+	/**
+	 * @description 加载纯文本,包括vue js css html,
+	 * @param {any} url
+	 * @returns
+	 */
 	async function $loadText(url) {
 		return new Promise(async (resolve, reject) => {
 			const key = camelCase(url);
@@ -268,7 +272,7 @@
 		return $loadText;
 	})();
 
-	async function $appendScript(url) {
+	async function $appendScript(url, globalName = "") {
 		const id = camelCase(url);
 		let $script = $$id(id);
 		if (!$script) {
@@ -278,6 +282,9 @@
 			const body = $$tags("body")[0];
 			body.appendChild($script);
 			$script.innerHTML = innerHtml;
+		}
+		if (globalName) {
+			return $val(window, globalName);
 		}
 	}
 
