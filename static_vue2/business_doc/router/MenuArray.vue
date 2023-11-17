@@ -49,6 +49,11 @@ export default async function () {
 				},
 				{
 					icon: "_icon_report",
+					label: i18n("xTableDiv"),
+					href: "/xTableDiv"
+				},
+				{
+					icon: "_icon_report",
 					label: i18n("xItem"),
 					icon: "_icon_rerun",
 					children: [
