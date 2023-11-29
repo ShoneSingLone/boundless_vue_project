@@ -28,15 +28,13 @@ window.ONLY_USE_IN_DEV_MODEL = function () {
 		if (!module) {
 			console.log(args);
 		}
-		/* 主要是有些不是VueSFC组件，就是纯模块代码 */
+		/* 有些不是VueSFC组件，（没有使用defineComponent定义）就是纯模块代码，_reuse _opts _rules 配合style有样式加载之类的 */
 		if (!module?.NEED_HMR) {
 			return module;
 		}
 
 		let newModule_component = {
-			_hmr_socket_io_script_block: true,
 			inheritAttrs: false,
-
 			data() {
 				return {
 					CurrentComponennt: module
@@ -70,6 +68,7 @@ window.ONLY_USE_IN_DEV_MODEL = function () {
 				}
 
 				async function reloadComponent(event, { filename }) {
+					console.log("🚀:reloadComponent", "filename", JSON.stringify(filename, null, 2));
 					const path = _.toLower(_.camelCase(filename));
 					const file = _.toLower(_.camelCase(args[0]));
 					if (path.indexOf(file) > -1) {

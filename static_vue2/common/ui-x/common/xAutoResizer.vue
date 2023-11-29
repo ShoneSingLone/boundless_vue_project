@@ -1,6 +1,6 @@
 <script>
 export default async function () {
-	const { useNamespace, useAutoResize, autoResizerProps } = useXui;
+	const { useNamespace, useAutoResize, autoResizerProps } = Vue._useXui;
 
 	return defineComponent({
 		name: "xAutoResizer",

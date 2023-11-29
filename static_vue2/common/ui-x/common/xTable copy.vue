@@ -7,7 +7,7 @@ export default async function () {
 	return defineComponent({
 		props: ["configs"],
 		setup(props) {
-			const { useAutoResize } = useXui;
+			const { useAutoResize } = Vue._useXui;
 			const { height, width, sizer: refxTable } = useAutoResize(props);
 
 			const setColActionWidthImmediate = () => {

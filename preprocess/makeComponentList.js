@@ -13,17 +13,10 @@ const target_dir = process.argv[2];
 		.map(name => String(name).match(/(.*).vue/)[1]);
 	const _SPE = "/*由makeComponentList生成，不要修改*/";
 	const targetFilePath = path.resolve(rootPath, "useXui.vue");
-	console.log(
-		"🚀:",
-		"components",
-		JSON.stringify(components, null, 2),
-		targetFilePath
-	);
+	console.log("🚀:", "components", JSON.stringify(components, null, 2), targetFilePath);
 	let targetContent_Old = await fs.promises.readFile(targetFilePath, "utf-8");
 	targetContent_Old = targetContent_Old.split(_SPE);
-	targetContent_Old[1] = `const ALL_COMPONENTS = ${JSON.stringify(
-		components
-	)}; `;
+	targetContent_Old[1] = `const ALL_COMPONENTS = ${JSON.stringify(components)}; `;
 	const targetContent_New = targetContent_Old.join(_SPE);
 
 	await fs.promises.writeFile(targetFilePath, targetContent_New, "utf-8");

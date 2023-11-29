@@ -5,9 +5,12 @@
 	const last = arr => (arr.length ? arr[arr.length - 1] : false);
 
 	function camelCase(str) {
-		return str.replace(camelizeRE, function (_, c) {
-			return c ? c.toUpperCase() : "";
-		});
+		return (
+			str &&
+			str.replace(camelizeRE, function (_, c) {
+				return c ? c.toUpperCase() : "";
+			})
+		);
 	}
 
 	const $idb = (function idb_keyval() {
@@ -127,6 +130,9 @@
 		item = item || {};
 		const isVue2 = item._isVue;
 		const fnVue$set = item.$set;
+		if (!_.isString(prop)) {
+			throw new Error("prop must be a string");
+		}
 		const propArray = prop.split(".");
 		let key = "";
 		let nextItem = item;

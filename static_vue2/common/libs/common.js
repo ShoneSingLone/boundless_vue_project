@@ -8,6 +8,59 @@
 		}
 		return Vue.reactive(options);
 	};
+
+	/* 数字 非 NaN */
+	_.$isNumber = value => {
+		return _.isNumber(value) && !_.isNaN(value);
+	};
+
+	/* 返回元素不为空的数组 */
+	_.$filterSomeInput = arr => {
+		return _.filter(arr, item => {
+			return _.some(item, val => {
+				return _.$isInput(val);
+			});
+		});
+	};
+	_.$filterAllInput = arr => {
+		return _.filter(arr, item => {
+			return _.every(item, val => {
+				return _.$isInput(val);
+			});
+		});
+	};
+
+	_.$trylog = asyncFn => {
+		try {
+			return asyncFn();
+		} catch (error) {
+			console.error(asyncFn.toString());
+			console.error(error);
+		}
+	};
+
+	_.$lStorage = new Proxy(localStorage, {
+		set(_localStorage, prop, value) {
+			if (_.isPlainObject(value)) {
+				_localStorage[prop] = JSON.stringify(value);
+			} else {
+				_localStorage[prop] = value;
+			}
+			return true;
+		},
+		get(_localStorage, prop) {
+			const objString = _localStorage[prop];
+			try {
+				return JSON.parse(objString);
+			} catch (error) {
+				if (objString === "undefined") {
+					return false;
+				}
+				return objString || false;
+			}
+		}
+	});
+
 	/**
 	 * @name _.$ajax
 	 * 请求API的工具函数
@@ -210,12 +263,23 @@
 	_.$is200 = function is200(val) {
 		return String(val) === "200";
 	};
-
-	_.$isEveryInput = function (obj) {
+	/**
+	 * 默认检测obj上每一个属性都能通过isInput，如果给定keys，	则只检测keys中的属性
+	 * @param {*} obj
+	 * @param {*} keys
+	 * @returns
+	 */
+	_.$isEveryInput = function (obj, keys = []) {
 		if (Object.keys(obj).length > 0) {
-			return _.every(Object.entries(obj), ([val]) => {
-				return _.$isInput(val);
-			});
+			if (_.$isArrayFill(keys)) {
+				return _.every(keys, key => {
+					return _.$isInput(obj[key]);
+				});
+			} else {
+				return _.every(Object.entries(obj), ([key, value]) => {
+					return _.$isInput(value);
+				});
+			}
 		}
 		return false;
 	};
@@ -911,7 +975,7 @@
 		let $wrapper = getWrapperBy(selector);
 
 		const $target = (function () {
-			let $target = $wrapper.find(`[data-form-item-id^=gh_form_id_]`);
+			let $target = $wrapper.find(`[data-form-item-id^=x_form_id_]`);
 
 			if ($target.length === 0) {
 				return $wrapper;
@@ -944,7 +1008,7 @@
 		const errorArray = [];
 		for (const dom of $target) {
 			const { formItemId } = dom.dataset;
-			const vm = Vue.GH_FORM_ITEM_MAP[formItemId];
+			const vm = Vue._X_ITEM_VM_S[formItemId];
 			const msg = await vm.validate();
 			if (msg) {
 				errorArray.push([msg, vm]);
@@ -957,6 +1021,9 @@
 		}
 	};
 
+	_.$hideRow = async (refTable, filterFn) => {
+		_.$setTableData(refTable.configs, { list: _.filter(refTable.configs.data.list, (row, index) => filterFn({ row, index })) });
+	};
 	/**
 	 * 修改xItem的属性
 	 * @param {*} selector
@@ -966,9 +1033,9 @@
 		const $target = getTargetBy(selector);
 		for (const dom of $target) {
 			const { formItemId } = dom.dataset || {};
-			const vm = Vue.GH_FORM_ITEM_MAP?.[formItemId || "________No"];
+			const vm = Vue._X_ITEM_VM_S?.[formItemId || "________No"];
 			_.each(attrs, (val, key) => {
-				if (vm && key === "disabled") {
+				if (vm && key === "disabled" && Vue.hasOwn(vm.privateState, "isDisabled")) {
 					vm.privateState.isDisabled = val ? "disabled" : "";
 				} else {
 					if (vm?.configs) {
@@ -979,6 +1046,18 @@
 		}
 	};
 
+	_.$getVmById = id => {
+		let vm = {};
+		try {
+			const targetDom = document.querySelector(`#${id}`);
+			debugger;
+			const { formItemId } = targetDom.dataset || {};
+			vm = Vue._X_ITEM_VM_S?.[formItemId || "________No"] || {};
+		} catch (error) {
+		} finally {
+			return vm;
+		}
+	};
 	/* 从Table 中获取xItem的vm */
 	_.$getCellItemVm = (rowIndex, colProp, selector) => {
 		let vm = {};
@@ -987,7 +1066,7 @@
 			const itemSelector = `.el-table__body-wrapper [data-row-index=${rowIndex}][data-col-prop=${colProp}]`;
 			const targetDom = $wrapper.find(itemSelector);
 			const { formItemId } = targetDom?.[0].dataset || {};
-			vm = Vue.GH_FORM_ITEM_MAP?.[formItemId || "________No"] || {};
+			vm = Vue._X_ITEM_VM_S?.[formItemId || "________No"] || {};
 		} catch (error) {
 		} finally {
 			return vm;
@@ -1084,7 +1163,7 @@
 		_.$importVue.Nprogress = await _.$importVue("/common/libs/Nprogress.vue");
 	})();
 
-	document.title = window.i18n("adminConsole");
+	// document.title = window.i18n("adminConsole");
 	const APP = await _.$importVue(`${SRC_ROOT_PATH}/business_${APP_NAME}/${APP_ENTRY_NAME}.vue`);
 	if (localStorage.isDev) {
 		window.APP = APP;

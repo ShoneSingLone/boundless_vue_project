@@ -24,7 +24,7 @@ export default async function () {
 				if (hasOwn(this.$attrs, "bg-is-gray")) {
 					classObject["bg-is-gray"] = true;
 				}
-				return { class: classObject };
+				return classObject;
 			},
 			vDomHeader() {
 				if (this.$scopedSlots.header) {
@@ -38,9 +38,10 @@ export default async function () {
 			}
 		},
 		render() {
-			return h("div", this.getClass({ xCard: true, "el-card": true }), [
-				h("div", this.getClass({ "el-card__header": true }), [this.vDomHeader()]),
-				h("div", this.getClass({ "el-card__body": true }), [this.$slots.default])
+			const header = this.vDomHeader();
+			return h("div", { class: this.getClass({ xCard: true, "el-card": true }) }, [
+				h("div", { vIf: header, class: this.getClass({ "el-card__header": true }) }, [header]),
+				h("div", { class: this.getClass({ "el-card__body": true }) }, [this.$scopedSlots.default()])
 			]);
 		}
 	};
@@ -51,6 +52,12 @@ export default async function () {
 .xCard {
 	&.bg-is-gray {
 		background: var(--el-fill-color-light);
+	}
+
+	.el-card__body {
+		.el-card {
+			margin: var(--app-padding);
+		}
 	}
 
 	.el-card__header {

@@ -5,10 +5,10 @@ export default async function () {
 		computed: {
 			styleContainer() {
 				return {
-					position: "relative",
-					overflow: this.isFold ? "hidden" : "unset",
-					height: this.isFold ? "48px" : "unset",
-					"padding-top": this.isFold ? "24px" : 0
+					position: "relative"
+					// overflow: this.isFold ? "hidden" : "unset",
+					// height: this.isFold ? "48px" : "unset",
+					// "padding-top": this.isFold ? "24px" : 0
 				};
 			}
 		},
@@ -71,39 +71,48 @@ export default async function () {
 				height: "16px",
 				zIndex: 1
 			};
-			return h("div", { staticClass: "padding10", style: this.styleContainer }, [
-				h(
-					"div",
-					{
-						class: "pointer",
-						style: `color: rgba(0, 0, 0, 0.85); font-weight: 600; font-size:18px;`,
-						"data-path": this.path
+			const vm = this;
+			return h("xCard", {
+				staticClass: "padding16 margin16",
+				style: vm.styleContainer,
+				$vSlots: {
+					default() {
+						return h(vm.BussinessComponent, { vIf: vm.BussinessComponent && !vm.isFold });
 					},
-					[
-						this.title,
-						h("xIcon", {
-							icon: this.isFold ? "_icon_fold" : "_icon_unfold",
-							staticClass: "ml10",
-							onClick: this.toggleFold
-						}),
-						h("xIcon", {
-							vIf: this.BussinessComponent,
-							icon: "_icon_rerun",
-							staticClass: "pointer ml10",
-							onClick: this.getBussinessComponent,
-							style
-						}),
-						h("xIcon", {
-							vIf: this.BussinessComponent,
-							icon: "_icon_sourcecode",
-							staticClass: "pointer ml10",
-							onClick: this.showSourceCodeDialog,
-							style
-						}),
-						h(this.BussinessComponent, { vIf: this.BussinessComponent })
-					]
-				)
-			]);
+					header() {
+						return h(
+							"div",
+							{
+								class: "pointer",
+								style: `color: rgba(0, 0, 0, 0.85); font-weight: 600; font-size:18px;`,
+								"data-path": vm.path
+							},
+							[
+								vm.title,
+								h("xIcon", {
+									icon: vm.isFold ? "_icon_fold" : "_icon_unfold",
+									staticClass: "ml10",
+									onClick: vm.toggleFold
+								}),
+								h("xIcon", {
+									vIf: vm.BussinessComponent,
+									icon: "_icon_rerun",
+									staticClass: "pointer ml10",
+									onClick: vm.getBussinessComponent,
+									style
+								}),
+								h("xIcon", {
+									vIf: vm.BussinessComponent,
+									icon: "_icon_sourcecode",
+									staticClass: "pointer ml10",
+									onClick: vm.showSourceCodeDialog,
+									style
+								})
+							]
+						);
+					}
+				}
+			});
 		}
 	});
 }

@@ -3,17 +3,15 @@ const path = require("path");
 const asyncFs = require("fs").promises;
 
 async function main(params) {
-	const [dir, files] = await _n.asyncAllDirAndFile([
-		path.resolve(__dirname, "../static_vue2/common")
-	]);
+	const [dir, files] = await _n.asyncAllDirAndFile([path.resolve(__dirname, "../static_vue2/common")]);
 
 	_n.each(files, async i => {
 		if (path.extname(i) === ".vue") {
 			const name = path.basename(i);
 			// console.log(name);
-			if (/^Gh/.test(name) && /(.*).vue$/.test(name)) {
-				console.log(i,i.replace("Gh", "x"));
-				await asyncFs.rename(i, i.replace("Gh", "x"));
+			if (/^x/.test(name) && /(.*).vue$/.test(name)) {
+				console.log(i, i.replace("x", "x"));
+				await asyncFs.rename(i, i.replace("x", "x"));
 			}
 		}
 	});

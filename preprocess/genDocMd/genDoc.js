@@ -3,9 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const NEW_LINE = "\r\n";
 
-const TARGET_FILE_ARRAY = [
-	path.resolve(__dirname, "../../static_assets/libs/common.js")
-];
+const TARGET_FILE_ARRAY = [path.resolve(__dirname, "../../static_assets/libs/common.js")];
 
 function getFnName(content) {
 	const res = content.match(/@name (.*)/);
@@ -17,9 +15,7 @@ function getFnName(content) {
 
 function getStyle(content) {
 	const isDeprecated = content.indexOf("@Deprecated") > -1;
-	const style = isDeprecated
-		? ` style="color:gray;text-decoration-line: line-through;"`
-		: "";
+	const style = isDeprecated ? ` style="color:gray;text-decoration-line: line-through;"` : "";
 	return style;
 }
 

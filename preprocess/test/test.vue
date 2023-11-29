@@ -1,8 +1,1 @@
-debugge
-debugger;
-debugger;
-debugger
-debugger;
-debugger;
-debugger;
-debugger;
+debugge debugger; debugger; debugger debugger; debugger; debugger; debugger;

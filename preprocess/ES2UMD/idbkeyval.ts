@@ -8,6 +8,6 @@ export {
 	keys,
 	// entries,
 	clear,
-	del,
+	del
 	// delMany
 } from "idb-keyval";

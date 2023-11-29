@@ -1,10 +1,9 @@
 <script>
 export default async function () {
-	const { dispatch } = await _.$importVue("/common/utils/handler.vue");
-	const GH_MENU_TREE_ITEM = "xMenuTreeItem";
+	const X_MENU_TREE_ITEM = "xMenuTreeItem";
 
 	return {
-		name: GH_MENU_TREE_ITEM,
+		name: X_MENU_TREE_ITEM,
 		props: ["item", "clickItem", "renders", "active"],
 		setup(props, { slots }) {
 			const vm = this;
@@ -18,7 +17,6 @@ export default async function () {
 			return {
 				state,
 				slots,
-				dispatch,
 				handler() {
 					vm.clickItem && vm.clickItem(vm.item);
 				},
@@ -38,7 +36,7 @@ export default async function () {
 						state.isOpen = !state.isOpen;
 					} else {
 						vm.clickItem && vm.clickItem(vm.item);
-						vm.dispatch(GH_MENU_TREE_ITEM, "open", true);
+						vm.dispatch(X_MENU_TREE_ITEM, "open", true);
 					}
 				}
 			};
@@ -47,7 +45,7 @@ export default async function () {
 			isActive() {
 				const isActive = this.active(this.item);
 				if (isActive) {
-					this.dispatch(GH_MENU_TREE_ITEM, "open", true);
+					this.dispatch(X_MENU_TREE_ITEM, "open", true);
 				}
 				return isActive;
 			},

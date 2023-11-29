@@ -3,10 +3,7 @@
 		<!-- '--xItem-label-width': "144px" -->
 		<ElCard class="mt10" :header="i18n('xxxxxxxx')">
 			<form ref="form">
-				<xItem
-					:configs="configs"
-					v-for="(configs, prop) in form"
-					:key="prop" />
+				<xItem :configs="configs" v-for="(configs, prop) in form" :key="prop" />
 			</form>
 		</ElCard>
 		<template #footer>
@@ -18,9 +15,9 @@
 
 <script>
 export default async function ({ row, getTableData }) {
-	/**  
-	 * 使用规则  
-	 * @type {import("../static_vue2/common/utils/rules.vue")()}  - 从 RULES() 获取的规则对象  
+	/**
+	 * 使用规则
+	 * @type {import("../static_vue2/common/utils/rules.vue")()}  - 从 RULES() 获取的规则对象
 	 */
 	const RULES = await _.$importVue("/common/utils/rules.vue");
 	const { useDialogProps } = await _.$importVue("/common/utils/compositionAPI.vue");
@@ -68,13 +65,9 @@ export default async function ({ row, getTableData }) {
 			async upsertOne() {
 				try {
 					_.$loading(true);
-					const upsertURL = isUpdate
-						? "/rest/fc/admin/v1.0/network/qos/modify"
-						: "/rest/fc/admin/v1.0/network/qos/create";
+					const upsertURL = isUpdate ? "/rest/fc/admin/v1.0/network/qos/modify" : "/rest/fc/admin/v1.0/network/qos/create";
 
-					const successMsg = isUpdate
-						? i18n("msgSuccessModified")
-						: i18n("msgAddedSuccess");
+					const successMsg = isUpdate ? i18n("msgSuccessModified") : i18n("msgAddedSuccess");
 
 					const data = {
 						...(row || {}),

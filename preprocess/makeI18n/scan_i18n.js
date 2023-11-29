@@ -42,14 +42,14 @@ async function scanFile(fileurl) {
 		`./needToTrans_${Date.now()}_.json`,
 		`{
   ${_n
-			.map(needToTrans, (fileurl, prop) => {
-				if (fileurl.length > 1) {
-					return `/*\n${fileurl.join("\n")}\n*/\n"${prop}":["aaaaa","aaaaa"],`;
-				} else {
-					return `"${prop}":["aaaaa","aaaaa"],`;
-				}
-			})
-			.join("\n")}
+		.map(needToTrans, (fileurl, prop) => {
+			if (fileurl.length > 1) {
+				return `/*\n${fileurl.join("\n")}\n*/\n"${prop}":["aaaaa","aaaaa"],`;
+			} else {
+				return `"${prop}":["aaaaa","aaaaa"],`;
+			}
+		})
+		.join("\n")}
   }`
 	);
 })();

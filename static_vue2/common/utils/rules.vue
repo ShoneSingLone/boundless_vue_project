@@ -2,204 +2,326 @@
 /**
  * @type RULES
  */
-export default async function RULES() {
+export default async function () {
+	await _.$importVue("/common/utils/regexp.vue");
 	/**
 	 * @typedef RULES
 	 */
-	return {
-		urlStart: () => {
-			return {
-				name: "urlStart",
-				async validator({ val }) {
-					if (!_.$isInput(val)) {
-						return;
-					}
-					if (!/^\//.test(val)) {
-						return "以/开头,输入正确的路径地址";
-					}
-					return "";
-				},
-				trigger: ["change"]
-			};
-		},
-		required: defaultMsg => {
-			defaultMsg = defaultMsg === undefined ? i18n("requiredFields") : defaultMsg;
-			return {
-				name: "required",
-				async validator({ val }) {
-					let msg = "";
-					if (!_.$isInput(val)) {
-						msg = defaultMsg || i18n("requiredFields");
-					}
-					/* 返回提示信息即error */
-					/* 返回""为success */
-					return msg;
-				},
-				trigger: ["change", "blur"]
-			};
-		},
-		lessThan: size => {
-			return {
-				name: "lessThan",
-				async validator({ val }) {
-					let msg = "";
-					if (String(val).length > size) {
-						msg = i18n("ruleWordLessThan", { size });
-					}
-					/* 返回提示信息即error */
-					/* 返回""为success */
-					return msg;
-				},
-				trigger: ["change", "blur"]
-			};
-		},
-		portRange: (min, max) => {
-			return {
-				async validator({ val }) {
-					if (!_.$isInput(val)) return;
-					if (!/\d+/.test(val) || val > max || val < min) {
-						return `${min}~${max}`;
-					}
-					return "";
-				},
-				trigger: ["change", "blur"]
-			};
-		},
-		port165535: () => {
-			return {
-				async validator({ val }) {
-					if (!_.$isInput(val)) return;
-					if (!/\d+/.test(val) || val > 65535 || val < 1) {
-						return "1~65535";
-					}
-					return "";
-				},
-				trigger: ["change", "blur"]
-			};
-		},
-		ipV4: size => {
-			return {
-				name: "ipV4",
-				async validator({ val }) {
-					let msg = "";
-					const reg = /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\b/;
-					if (!reg.test(val)) {
-						msg = i18n("msgEnterTheCorrectIPv4Address");
-					}
-					/* 返回提示信息即error */
-					/* 返回""为success */
-					return msg;
-				},
-				trigger: ["blur"]
-			};
-		},
-		inetUrl(msg = i18n("ruleEnterCorrectAddress")) {
-			return {
-				name: "inetUrl",
-				async validator({ val }) {
-					let ipAddress = new RegExp("[a-zA-z]+://[^\\s]*");
-					if (ipAddress.test(val)) {
+	if (!Vue._rules) {
+		Vue._rules = {
+			domainWithAnyStart: () => {
+				return {
+					name: "domain",
+					async validator({ val }) {
+						if (!_.$isInput(val)) {
+							return;
+						}
+						var urlRegex = Vue._reg.domainReg;
+						if (urlRegex.test(val)) {
+							return "";
+						} else if (urlRegex.test(val.replace(/^\*\./, ""))) {
+							return "";
+						} else {
+							return "只能由字母、数字、中划线、星号组成。星号只能在开头，中划线不能在开头或未尾，至少包含两个字符串，单个字符串不超过63个字符，字符串间以点分制，且总长度不超过100个字符。例如 :example.com 或*.example.com。";
+						}
+					},
+					trigger: ["change", "blur"]
+				};
+			},
+			keyVal: () => {
+				return {
+					name: "keyVal",
+					async validator({ val }) {
+						if (!_.$isInput(val)) {
+							return;
+						}
+						var urlRegex = Vue._reg.keyVal;
+						if (!urlRegex.test(val)) {
+							return "以字母或者数字开头和结尾，由字母、数字连接符(-)、下划线(_)、点号(.)组成";
+						}
 						return "";
-					}
-					return msg;
-				},
-				trigger: ["change", "input", "blur"]
-			};
-		},
-		integer(msg = i18n("msgEnterPositiveInteger")) {
-			return {
-				name: "integer",
-				async validator({ val }) {
-					if (/^[1-9]\d*$/.test(val)) {
+					},
+					trigger: ["change", "blur"]
+				};
+			},
+			url1: () => {
+				return {
+					name: "urlStart",
+					async validator({ val }) {
+						if (!_.$isInput(val)) {
+							return;
+						}
+						var urlRegex = Vue._reg.url1;
+						if (!urlRegex.test(val)) {
+							return "以/开头，由英文字母、数字或特殊字符-/.%?#&=组成";
+						}
 						return "";
+					},
+					trigger: ["change", "blur"]
+				};
+			},
+			url2: () => {
+				return {
+					name: "url",
+					async validator({ val }) {
+						if (!_.$isInput(val)) {
+							return;
+						}
+						var urlRegex = Vue._reg.url2;
+						if (urlRegex.test(val)) {
+							return "";
+						} else {
+							return "URL只能以/开头，由英文字母、数字或特殊字符_~`;@^-%#&$.*+?,=!:|V()[]{}组成";
+						}
+					},
+					trigger: ["change", "blur"]
+				};
+			},
+			requiredLine(recordFn) {
+				/*  */
+				return {
+					name: "requiredLine",
+					async validator(args) {
+						const record = recordFn.call(this, args);
+
+						if (_.every(record, i => !i)) {
+							/* 都没填 */
+							return "";
+						}
+						if (_.every(record, i => !!i)) {
+							/* 都填了 */
+							return "";
+						}
+						if (args.val) {
+							/* 自己填了 */
+							return "";
+						}
+						return "需保证行数据完整";
+					},
+					trigger: ["change", "blur"]
+				};
+			},
+			required: defaultMsg => {
+				defaultMsg = defaultMsg === undefined ? i18n("requiredFields") : defaultMsg;
+				return {
+					name: "required",
+					async validator({ val }) {
+						let msg = "";
+						if (!_.$isInput(val)) {
+							msg = defaultMsg || i18n("requiredFields");
+						}
+						/* 返回提示信息即error */
+						/* 返回""为success */
+						return msg;
+					},
+					trigger: ["change", "blur"]
+				};
+			},
+			email: () => {
+				return {
+					name: "email",
+					async validator(value) {
+						if (RegexFn.email().test(value)) {
+							return "";
+						}
+						return i18n("请输入Email");
 					}
-					return msg;
-				},
-				trigger: ["change", "input", "blur"]
-			};
-		},
-		name(msg = i18n("msgEnter220DigitsLettersNumbers")) {
-			return {
-				name: "name",
-				async validator({ val }) {
-					if (/^[0-9a-zA-Z]{2,20}$/.test(val)) {
-						return "";
-					}
-					return msg;
-				},
-				trigger: ["change", "input", "blur"]
-			};
-		},
-		/* 匹配一个字符串，该字符串以小写英文字母或数字开头，并且只包含字母或数字 */
-		lettersOrNumbers(msg = i18n("以小写英文字母或数字开头，并且只包含字母、数字或者-")) {
-			return {
-				name: "name",
-				async validator({ val }) {
-					if (!val) return;
-					if (/^[a-z0-9][a-z0-9-]*$/.test(val)) {
-						return "";
-					}
-					return msg;
-				},
-				trigger: ["change", "input", "blur"]
-			};
-		},
-		ipAddress(msg = i18n("ruleEnterValidIPAddress")) {
-			return {
-				name: "ipAddress",
-				async validator(value) {
-					let ipAddress = new RegExp(
-						"^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]" +
-							"\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:){6}((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[" +
-							"0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^::([\\da-fA-F]{1,4}:){0,4}((25[0-5]|2[0-4]\\d|[01]?\\d\\d" +
-							"?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:):([\\da-fA-F]{1,4}:){0,3}" +
-							"((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1," +
-							"4}:){2}:([\\da-fA-F]{1,4}:){0,2}((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[" +
-							"01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:){3}:([\\da-fA-F]{1,4}:){0,1}((25[0-5]|2[0-4]\\d|[01]?\\d\\d?" +
-							")\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:){4}:((25[0-5]|2[0-4]\\d|[01]?\\d\\d" +
-							"?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:){7}[\\da-fA-F]{1,4}$|^:((:[\\da-" +
-							"fA-F]{1,4}){1,6}|:)$|^[\\da-fA-F]{1,4}:((:[\\da-fA-F]{1,4}){1,5}|:)$|^([\\da-fA-F]{1,4}:){2}((:[\\da" +
-							"-fA-F]{1,4}){1,4}|:)$|^([\\da-fA-F]{1,4}:){3}((:[\\da-fA-F]{1,4}){1,3}|:)$|^([\\da-fA-F]{1,4}:){4}((" +
-							":[\\da-fA-F]{1,4}){1,2}|:)$|^([\\da-fA-F]{1,4}:){5}:([\\da-fA-F]{1,4})?$|^([\\da-fA-F]{1,4}:){6}:$"
-					);
-					if (ipAddress.test(value)) {
-						return "";
-					}
-					return msg;
-				},
-				trigger: ["change", "input", "blur"]
-			};
-		},
-		// 行数据必填项
-		rowDataRequired: rowArray => {
-			return {
-				name: "required",
-				async validator({ val, xItem }) {
-					const record = [];
-					let rows = xItem.configs?.payload?.row || {};
-					for (let key in rows) {
-						if (rowArray.includes(key)) {
+				};
+			},
+			lessThan: size => {
+				return {
+					name: "lessThan",
+					async validator({ val }) {
+						let msg = "";
+						if (String(val).length > size) {
+							msg = i18n("ruleWordLessThan", { size });
+						}
+						/* 返回提示信息即error */
+						/* 返回""为success */
+						return msg;
+					},
+					trigger: ["change", "blur"]
+				};
+			},
+			portRange: (min, max) => {
+				return {
+					async validator({ val }) {
+						try {
+							if (!_.$isInput(val)) return;
+							val = _.toNumber(val);
+							if (!_.$isNumber(val)) {
+								return `请输入${min}~${max}范围内的整数`;
+							}
+							if (!/^\d+$/.test(val) || val > max || val < min) {
+								return `请输入${min}~${max}范围内的整数`;
+							}
+							return "";
+						} catch (error) {
+							return `请输入${min}~${max}范围内的整数`;
+						}
+					},
+					trigger: ["change", "blur"]
+				};
+			},
+			port165535: () => {
+				return Vue._rules.portRange(1, 65535);
+			},
+			ipV4: size => {
+				return {
+					name: "ipV4",
+					async validator({ val }) {
+						let msg = "";
+						const reg = /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\b/;
+						if (!reg.test(val)) {
+							msg = i18n("msgEnterTheCorrectIPv4Address");
+						}
+						/* 返回提示信息即error */
+						/* 返回""为success */
+						return msg;
+					},
+					trigger: ["blur"]
+				};
+			},
+			inetUrl(msg = i18n("ruleEnterCorrectAddress")) {
+				return {
+					name: "inetUrl",
+					async validator({ val }) {
+						let ipAddress = new RegExp("[a-zA-z]+://[^\\s]*");
+						if (ipAddress.test(val)) {
+							return "";
+						}
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
+			},
+			integer(msg = i18n("msgEnterPositiveInteger")) {
+				return {
+					name: "integer",
+					async validator({ val }) {
+						if (/^[1-9]\d*$/.test(val)) {
+							return "";
+						}
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
+			},
+			name(msg = i18n("msgEnter220DigitsLettersNumbers")) {
+				return {
+					name: "name",
+					async validator({ val }) {
+						if (/^[0-9a-zA-Z]{2,20}$/.test(val)) {
+							return "";
+						}
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
+			},
+			/* 匹配一个字符串，该字符串以小写英文字母或数字开头，并且只包含字母或数字 */
+			lettersOrNumbers(msg = i18n("以小写英文字母或数字开头，并且只包含字母、数字或者-")) {
+				return {
+					name: "name",
+					async validator({ val }) {
+						if (!val) return;
+						if (/^[a-z0-9][a-z0-9-]*$/.test(val)) {
+							return "";
+						}
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
+			},
+			ipAddress(msg = i18n("ruleEnterValidIPAddress")) {
+				return {
+					name: "ipAddress",
+					async validator(value) {
+						let ipAddress = new RegExp(
+							"^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]" +
+								"\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:){6}((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[" +
+								"0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^::([\\da-fA-F]{1,4}:){0,4}((25[0-5]|2[0-4]\\d|[01]?\\d\\d" +
+								"?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:):([\\da-fA-F]{1,4}:){0,3}" +
+								"((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1," +
+								"4}:){2}:([\\da-fA-F]{1,4}:){0,2}((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[" +
+								"01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:){3}:([\\da-fA-F]{1,4}:){0,1}((25[0-5]|2[0-4]\\d|[01]?\\d\\d?" +
+								")\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:){4}:((25[0-5]|2[0-4]\\d|[01]?\\d\\d" +
+								"?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:){7}[\\da-fA-F]{1,4}$|^:((:[\\da-" +
+								"fA-F]{1,4}){1,6}|:)$|^[\\da-fA-F]{1,4}:((:[\\da-fA-F]{1,4}){1,5}|:)$|^([\\da-fA-F]{1,4}:){2}((:[\\da" +
+								"-fA-F]{1,4}){1,4}|:)$|^([\\da-fA-F]{1,4}:){3}((:[\\da-fA-F]{1,4}){1,3}|:)$|^([\\da-fA-F]{1,4}:){4}((" +
+								":[\\da-fA-F]{1,4}){1,2}|:)$|^([\\da-fA-F]{1,4}:){5}:([\\da-fA-F]{1,4})?$|^([\\da-fA-F]{1,4}:){6}:$"
+						);
+						if (ipAddress.test(value)) {
+							return "";
+						}
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
+			},
+			// 行数据必填项
+			rowDataRequired: rowArray => {
+				return {
+					name: "required",
+					async validator({ val, xItem }) {
+						const record = [];
+						// debugger;
+						let rows = xItem.configs?.payload?.row || {};
+						// for (let key in rows) {
+						// 	if (rowArray.includes(key)) {
+						// 		record.push(rows[key]);
+						// 	}
+						// }
+						for (let key of rowArray) {
 							record.push(rows[key]);
 						}
-					}
 
-					if (_.every(record, i => !_.$isInput(i))) {
-						/* 都没填 */
-						return "";
-					}
-					if (_.every(record, i => _.$isInput(i))) {
-						/* 都填了 */
-						return "";
-					}
-					if (val) {
-						/* 自己填了 */
-						return "";
-					}
-					return "需保证行数据完整";
-				},
-				trigger: ["change", "blur"]
-			};
-		}
-	};
+						if (_.every(record, i => !i)) {
+							/* 都没填 */
+							return "";
+						}
+						if (_.every(record, i => !!i)) {
+							/* 都填了 */
+							return "";
+						}
+						if (val) {
+							/* 自己填了 */
+							return "";
+						}
+						return "需保证行数据完整";
+					},
+					trigger: ["change", "blur"]
+				};
+			},
+			rowDataRequiredAll: rowArray => {
+				return {
+					name: "required",
+					async validator({ val, xItem }) {
+						const record = [];
+						let rows = xItem.configs?.payload?.row || {};
+						for (let key of rowArray) {
+							record.push(rows[key]);
+						}
+
+						if (_.every(record, i => !i)) {
+							/* 都没填 */
+							return "需保证行数据完整";
+						}
+						if (_.every(record, i => !!i)) {
+							/* 都填了 */
+							return "";
+						}
+						if (val) {
+							/* 自己填了 */
+							return "";
+						}
+						return "需保证行数据完整";
+					},
+					trigger: ["change", "blur"]
+				};
+			}
+		};
+	}
+	return Vue._rules;
 }
 </script>

@@ -1,0 +1,5 @@
+CreateApplicationSpace 创建应用空间
+PrivateCloudVdcQuota 私有云VDC配额
+CreateContainerApplicationSpace 创建容器应用空间
+ContainerCceQuota 容器CCE配额
+CloudManagementUserPermissions 云管用户权限

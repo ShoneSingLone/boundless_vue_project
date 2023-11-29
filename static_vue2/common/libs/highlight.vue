@@ -5840,10 +5840,52 @@ export default async function () {
 		}
 	}
 
-	p > code {
-		padding: 4px;
-		border-radius: var(--border-radius);
-		box-shadow: var(--el-box-shadow);
+	p {
+		font-weight: 500;
+		font-size: 14px;
+		color: #5e6d82;
+
+		> code {
+			padding: 4px;
+			background-color: #fdf6ec;
+			border-color: #faecd8;
+			color: #e6a23c;
+			border-radius: var(--border-radius);
+			box-shadow: var(--el-box-shadow);
+		}
+	}
+
+	blockquote {
+		padding: 8px 16px;
+		background-color: var(--el-color-primary-light-8);
+		border-radius: 4px;
+		border-left: 5px solid var(--el-color-primary);
+		margin: 20px 0;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin-left: var(--ui-one);
+	}
+
+	table {
+		display: table;
+		border-collapse: collapse;
+		margin: var(--ui-one);
+		overflow-x: auto;
+		tr {
+			border-top: 1px solid var(--ui-dividing-line, #f2f2f3);
+		}
+
+		th,
+		td {
+			border: 1px solid var(--ui-dividing-line, #f2f2f3);
+			padding: 8px var(--ui-one);
+		}
 	}
 }
 

@@ -18,14 +18,12 @@
 
 <script>
 export default async function () {
-	const { getOptions_az, modifyTenant } = await _.$importVue(
-		"/common/handler.vue"
-	);
+	const { getOptions_az, modifyTenant } = await _.$importVue();
 	const 可用 = "1";
 
 	return {
 		inject: ["APP"],
-		beforeDestroy() { },
+		beforeDestroy() {},
 		components: {},
 		async mounted() {
 			this.getTableData();
@@ -34,13 +32,8 @@ export default async function () {
 			async getTableData(pagination = {}) {
 				try {
 					_.$loading(true);
-					await _.$ensure(
-						() => this.c_search.siteId.value && this.c_search.azId.value
-					);
-					const { current, pagesize } = _.$setPagination(
-						this.configsTable,
-						pagination
-					);
+					await _.$ensure(() => this.c_search.siteId.value && this.c_search.azId.value);
+					const { current, pagesize } = _.$setPagination(this.configsTable, pagination);
 
 					const queryData = {
 						limit: pagesize,
@@ -68,13 +61,10 @@ export default async function () {
 				}
 			},
 			async upsertOne(row) {
-				const DialogTypeVueSFC = await _.$importVue(
-					"@/DialogTypeVueSFC.vue",
-					{
-						parent: this,
-						row
-					}
-				);
+				const DialogTypeVueSFC = await _.$importVue("@/DialogTypeVueSFC.vue", {
+					parent: this,
+					row
+				});
 				_.$openWindow(i18n("modifyImageInfo"), DialogTypeVueSFC);
 			}
 		},
@@ -98,9 +88,7 @@ export default async function () {
 						options: [],
 						async once() {
 							try {
-								const { vmConfigInfos } = await _.$ajax.get(
-									"/rest/fc/admin/v1.0/vmconfig/list"
-								);
+								const { vmConfigInfos } = await _.$ajax.get("/rest/fc/admin/v1.0/vmconfig/list");
 								this.configs.options = _.map(vmConfigInfos, i => {
 									return {
 										item: i,
@@ -108,10 +96,7 @@ export default async function () {
 										value: i.id
 									};
 								});
-								this.configs.value = _.$valFirstOrDefault(
-									this.configs.options,
-									""
-								);
+								this.configs.value = _.$valFirstOrDefault(this.configs.options, "");
 							} catch (error) {
 								console.error(error);
 							}
@@ -123,10 +108,7 @@ export default async function () {
 								return;
 							}
 							vm.c_search.azId.options = await getOptions_az(siteId);
-							vm.c_search.azId.value = _.$valFirstOrDefault(
-								vm.c_search.azId.options,
-								""
-							);
+							vm.c_search.azId.value = _.$valFirstOrDefault(vm.c_search.azId.options, "");
 						}
 					},
 					azId: {
@@ -204,8 +186,7 @@ export default async function () {
 									label: i18n("delete"),
 									onClick({ row }) {
 										_.$delConfirm({
-											content: `${i18n("msgSureDelete")}${i18n("QOS规格")}${row.name
-												}?`
+											content: `${i18n("msgSureDelete")}${i18n("QOS规格")}${row.name}?`
 										}).then(async () => {
 											try {
 												_.$loading(true);

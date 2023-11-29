@@ -53,9 +53,13 @@ export default async function () {
 			searchDisabled() {
 				let dis = this.configs?.col?.componentOptions?.search?.disabled;
 				if (_.isFunction(dis)) {
-					return dis();
+					return Boolean(dis.call(this));
 				}
 				return dis ?? false;
+			},
+			searchValue() {
+				// debugger;
+				return this.configs?.row?.searchValue || "";
 			}
 		},
 		mounted() {},
@@ -67,17 +71,18 @@ export default async function () {
 				h(
 					"el-select",
 					{
-						value: vm.configs?.col?.componentOptions?.search?.value,
+						value: vm.searchValue,
 						disabled: vm.searchDisabled,
+						style: "display:none",
 						onChange: val => {
 							if (vm.configs?.col?.componentOptions?.search?.value) {
 								vm.configs.col.componentOptions.search.value = val;
 								vm.configs.row.searchValue = val;
 								vm.configs.row[vm.configs.prop] = "";
 							}
-							// if (_.isFunction(vm.configs?.col?.componentOptions?.search?.change)) {
-							// 	vm.configs.col.componentOptions.search.change(val);
-							// }
+							if (_.isFunction(vm.configs?.col?.componentOptions?.search?.change)) {
+								vm.configs.col.componentOptions.search.change(vm, val);
+							}
 						}
 					},
 					[
@@ -90,7 +95,7 @@ export default async function () {
 						})
 					]
 				),
-				vm.configs?.col?.componentOptions?.search?.value == "true"
+				vm.searchValue == "true"
 					? h("xItem", {
 							configs: {
 								...(vm.configs?.col?.componentOptions || {}),

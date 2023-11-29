@@ -1,0 +1,11 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="pui-components-global-nav-index-nav-item-icon">
+    <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M7.00781 10C7.5601 10 8 10 8 10V11H16.5C17.3284 11 18 11.6716 18 12.5V14C18 14 17.5523 14 17 14C16.4477 14 16 14 16 14V13H7.5C6.67157 13 6 12.3284 6 11.5V10C6 10 6.45553 10 7.00781 10Z"
+          fill="var(--app-nav-secondary, #61D3BA)"></path>
+    <rect x="2" y="2" width="20" height="8" rx="3" fill="var(--app-nav-primary, #436FF6)"></rect>
+    <rect x="4" y="5" width="2" height="2" rx="1" fill="var(--app-nav-bg, var(--app-bg-300)"></rect>
+    <rect x="7" y="5" width="13" height="2" rx="1" fill="var(--app-nav-bg, var(--app-bg-300)"></rect>
+    <rect x="2" y="14" width="20" height="8" rx="3" fill="var(--app-nav-primary, #436FF6)"></rect>
+    <rect x="4" y="17" width="2" height="2" rx="1" fill="var(--app-nav-bg, var(--app-bg-300)"></rect>
+    <rect x="7" y="17" width="13" height="2" rx="1" fill="var(--app-nav-bg, var(--app-bg-300)"></rect>
+</svg>

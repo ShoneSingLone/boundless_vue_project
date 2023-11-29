@@ -15,7 +15,7 @@ export default async function () {
 		render(h) {
 			const vm = this;
 
-			let tag = "el-input";
+			let tag = "xInput";
 			if (this.isNumber) {
 				tag = "el-input-number";
 			}
@@ -27,12 +27,13 @@ export default async function () {
 				type: vm.$attrs.type || vm.configs?.type || "text"
 			};
 			if (_.isFunction(Vue?.useXui?.globalConfigs?.xItemInput?.defaultProps)) {
-				attrs = Vue.useXui.globalConfigs.xItemInput.defaultProps(this, attrs);
+				attrs = Vue._useXui.globalConfigs.xItemInput.defaultProps(this, attrs);
 			}
 
 			if (vm.configs?.type === "textarea") {
 				attrs.rows = 4;
 			}
+
 			return h(
 				tag,
 				merge_hFnProps([
@@ -45,8 +46,7 @@ export default async function () {
 						}
 					},
 					this?.$vnode?.data
-				]),
-				[]
+				])
 			);
 		}
 	});

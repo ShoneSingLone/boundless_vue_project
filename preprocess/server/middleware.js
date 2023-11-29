@@ -1,22 +1,28 @@
 const os = require("os");
 const useProxy = require("koa2-proxy-middleware"); //引入代理模块
 const { appUseKoaAssets } = require("./middleware.appUseKoaAssets");
-const {
-	appUseSocketMiddleware
-} = require("./middleware.appUseSocketMiddleware");
+const { appUseSocketMiddleware } = require("./middleware.appUseSocketMiddleware");
 const { appUseHMR } = require("./middleware.appUseHMR");
 const { PROXY_OPTIONS } = require("./server.configs");
+const { serverContorller } = require("./server.controller");
 
 function appUseProxy(app) {
 	app.use(useProxy(PROXY_OPTIONS));
+
+	app.use(async (ctx, next) => {
+		if (ctx.url.match(/\/boundless-api\//)) {
+			return serverContorller(ctx);
+		} else {
+			await next();
+		}
+	});
 }
 
 function appRun(app, port = 3000) {
-	app.listen(port)
-		.on("error", () => {
-			console.log('🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀', `端口${port}被占用`);
-			appRun(app, ++port);
-		});
+	app.listen(port).on("error", () => {
+		console.log("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀", `端口${port}被占用`);
+		appRun(app, ++port);
+	});
 
 	app.LOCALHOST_PORT = `http://localhost:${port}`;
 	const line = "🚀=====================================";

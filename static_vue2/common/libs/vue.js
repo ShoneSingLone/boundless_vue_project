@@ -140,7 +140,7 @@
 	/**
 	 * Remove an item from an array.
 	 */
-	function remove$2(arr, item) {
+	function removeAnItemFromAnArray(arr, item) {
 		var len = arr.length;
 		if (len) {
 			// fast path for the only / last item
@@ -1660,7 +1660,7 @@
 			hook.apply(this, arguments);
 			// important: remove merged hook to ensure it's called only once
 			// and prevent memory leak
-			remove$2(invoker.fns, wrappedHook);
+			removeAnItemFromAnArray(invoker.fns, wrappedHook);
 		}
 
 		if (isUndef(oldHook)) {
@@ -1855,49 +1855,48 @@
 		return __createElement(context, tag, props, children, normalizationType);
 	}
 
+	function processProps({ props }) {
+		if (_.isObject(props)) {
+			const newOn = {};
+			props.attrs = props.attrs || {};
+			const toDelete = [];
+			_.each(props, (fn, prop) => {
+				const hyphenateKey = hyphenate(prop);
+				const isDomProp = prop => {
+					if (["role", "key", "rows", "id"].includes(prop)) {
+						return true;
+					}
+					const dataAttrs = /^data-(.+)/;
+					return dataAttrs.test(prop);
+				};
+
+				if (isDomProp(hyphenateKey)) {
+					props.attrs = merge_hFnProps([{}, props.attrs, { [hyphenateKey]: fn }]);
+					return;
+				}
+
+				const onRE = /^on([^a-z].+)$/;
+				const isHandler = key => onRE.test(key);
+				if (isHandler(prop)) {
+					let _prop = String(prop).match(onRE)[1];
+					const hanndlerName = hyphenate(_prop);
+					if (hanndlerName) {
+						newOn[hanndlerName] = fn;
+						toDelete.push(prop);
+					}
+				}
+			});
+			props.on = merge_hFnProps([{}, props.on || {}, newOn]);
+		}
+		return props || {};
+	}
+
 	function __createElement(context, tag, props = {}, children = [], normalizationType) {
 		if (hasOwn(props, "vIf") && !props.vIf) {
 			return null;
 		}
-
-		(function () {
-			/* Vue3 on直接写在porps里面 */
-			props = (function () {
-				if (_.isObject(props)) {
-					const newOn = {};
-					props.attrs = props.attrs || {};
-					const toDelete = [];
-					_.each(props, (fn, prop) => {
-						const hyphenateKey = hyphenate(prop);
-						const isDomProp = prop => {
-							if (["role", "key", "rows"].includes(prop)) {
-								return true;
-							}
-							const dataAttrs = /^data-(.+)/;
-							return dataAttrs.test(prop);
-						};
-
-						if (isDomProp(hyphenateKey)) {
-							props.attrs = merge_hFnProps([{}, props.attrs, { [hyphenateKey]: fn }]);
-							return;
-						}
-
-						const onRE = /^on([^a-z].+)$/;
-						const isHandler = key => onRE.test(key);
-						if (isHandler(prop)) {
-							let _prop = String(prop).match(onRE)[1];
-							const hanndlerName = hyphenate(_prop);
-							if (hanndlerName) {
-								newOn[hanndlerName] = fn;
-								toDelete.push(prop);
-							}
-						}
-					});
-					props.on = merge_hFnProps([{}, props.on || {}, newOn]);
-				}
-				return props || {};
-			})();
-		})();
+		/* Vue3 on直接写在porps里面 */
+		props = processProps({ props });
 
 		if (isDef(props) && isDef(props.__ob__)) {
 			warnMsgVm("Avoid using observed data object as vnode data: ".concat(JSON.stringify(props), "\n") + "Always create fresh vnode data objects in each render!", context);
@@ -1931,19 +1930,20 @@
 		} else if (normalizationType === SIMPLE_NORMALIZE) {
 			children = simpleNormalizeChildren(children);
 		}
-		var vnode, ns;
+
+		var vnode, namespace;
 		vnode = (() => {
 			if (typeof tag === "string") {
 				var Ctor = void 0;
-				ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
+				namespace = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
+				/* platform built-in elements平台内置元素 */
 				if (config.isReservedTag(tag)) {
-					// platform built-in elements
 					if (isDef(props) && isDef(props.nativeOn) && props.tag !== "component") {
 						warnMsgVm("The .native modifier for v-on is only valid on components but it was used on <".concat(tag, ">."), context);
 					}
 					vnode = new VNode(config.parsePlatformTagName(tag), props, children, undefined, undefined, context);
 				} else if ((!props || !props.pre) && isDef((Ctor = resolveAsset(context.$options, "components", tag)))) {
-					// component
+					// Vue component
 					vnode = createComponent(Ctor, props, context, children, tag);
 				} else {
 					if (tag.props) {
@@ -1962,7 +1962,7 @@
 			if (isArray(vnode)) {
 				return vnode;
 			} else if (isDef(vnode)) {
-				if (isDef(ns)) applyNS(vnode, ns);
+				if (isDef(namespace)) applyNS(vnode, namespace);
 				if (isDef(props)) registerDeepBindings(props);
 				return vnode;
 			} else {
@@ -1970,7 +1970,6 @@
 			}
 		})();
 
-		vnode.elm && console.log(vnode.elm);
 		return vnode;
 	}
 
@@ -2737,6 +2736,21 @@
 		return node;
 	}
 
+	function _HandleAsyncComponentResolved({ res, factory, baseCtor, isSync, owners, owner, resForceRender, ensureCtor }) {
+		// cache resolved
+		factory.resolved = ensureCtor(res, baseCtor);
+		// invoke callbacks only if this is not a synchronous resolve
+		// (async resolves are shimmed as synchronous during SSR)
+		if (!isSync) {
+			resForceRender(true);
+		} else {
+			owners.length = 0;
+		}
+	}
+
+	/**
+	 * 用于解析异步组件。在组件定义中，通过调用该函数可以异步加载组件，并在加载完成之后触发回调函数。如果加载失败，会调用错误处理函数。函数还实现了组件加载中的状态更新和组件缓存功能
+	 */
 	function resolveAsyncComponent(factory, baseCtor) {
 		if (isTrue(factory.error) && isDef(factory.errorComp)) {
 			return factory.errorComp;
@@ -2745,6 +2759,7 @@
 			return factory.resolved;
 		}
 		var owner = currentRenderingInstance;
+
 		if (owner && isDef(factory.owners) && factory.owners.indexOf(owner) === -1) {
 			// already pending
 			factory.owners.push(owner);
@@ -2752,46 +2767,40 @@
 		if (isTrue(factory.loading) && isDef(factory.loadingComp)) {
 			return factory.loadingComp;
 		}
+
 		if (owner && !isDef(factory.owners)) {
-			var owners_1 = (factory.owners = [owner]);
-			var sync_1 = true;
-			var timerLoading_1 = null;
-			var timerTimeout_1 = null;
+			let owners = (factory.owners = [owner]);
+			let isSync = true;
+			let timerLoading = null;
+			let timerTimeout = null;
 			owner.$on("hook:destroyed", function () {
-				return remove$2(owners_1, owner);
+				return removeAnItemFromAnArray(owners, owner);
 			});
-			var forceRender_1 = function (renderCompleted) {
-				for (var i = 0, l = owners_1.length; i < l; i++) {
-					owners_1[i].$forceUpdate();
+			var resForceRender = function (renderCompleted) {
+				for (var i = 0, l = owners.length; i < l; i++) {
+					owners[i].$forceUpdate();
 				}
 				if (renderCompleted) {
-					owners_1.length = 0;
-					if (timerLoading_1 !== null) {
-						clearTimeout(timerLoading_1);
-						timerLoading_1 = null;
+					owners.length = 0;
+					if (timerLoading !== null) {
+						clearTimeout(timerLoading);
+						timerLoading = null;
 					}
-					if (timerTimeout_1 !== null) {
-						clearTimeout(timerTimeout_1);
-						timerTimeout_1 = null;
+					if (timerTimeout !== null) {
+						clearTimeout(timerTimeout);
+						timerTimeout = null;
 					}
 				}
 			};
 			var resolve = once(function (res) {
-				// cache resolved
-				factory.resolved = ensureCtor(res, baseCtor);
-				// invoke callbacks only if this is not a synchronous resolve
-				// (async resolves are shimmed as synchronous during SSR)
-				if (!sync_1) {
-					forceRender_1(true);
-				} else {
-					owners_1.length = 0;
-				}
+				Vue._HandleAsyncComponentResolved.call(this, { res, factory, baseCtor, isSync, owners, owner, resForceRender, ensureCtor });
 			});
+
 			var reject_1 = once(function (reason) {
 				warnMsgVm("Failed to resolve async component: ".concat(String(factory)) + (reason ? "\nReason: ".concat(reason) : ""));
 				if (isDef(factory.errorComp)) {
 					factory.error = true;
-					forceRender_1(true);
+					resForceRender(true);
 				}
 			});
 			var res_1 = factory(resolve, reject_1);
@@ -2812,19 +2821,19 @@
 							factory.loading = true;
 						} else {
 							// @ts-expect-error NodeJS timeout type
-							timerLoading_1 = setTimeout(function () {
-								timerLoading_1 = null;
+							timerLoading = setTimeout(function () {
+								timerLoading = null;
 								if (isUndef(factory.resolved) && isUndef(factory.error)) {
 									factory.loading = true;
-									forceRender_1(false);
+									resForceRender(false);
 								}
 							}, res_1.delay || 200);
 						}
 					}
 					if (isDef(res_1.timeout)) {
 						// @ts-expect-error NodeJS timeout type
-						timerTimeout_1 = setTimeout(function () {
-							timerTimeout_1 = null;
+						timerTimeout = setTimeout(function () {
+							timerTimeout = null;
 							if (isUndef(factory.resolved)) {
 								reject_1("timeout (".concat(res_1.timeout, "ms)"));
 							}
@@ -2832,7 +2841,7 @@
 					}
 				}
 			}
-			sync_1 = false;
+			isSync = false;
 			// return in case resolved synchronously
 			return factory.loading ? factory.loadingComp : factory.resolved;
 		}
@@ -2994,11 +3003,21 @@
 		var options = vm.$options;
 		// locate first non-abstract parent
 		var parent = options.parent;
-		if (parent && !options.abstract) {
-			while (parent.$options.abstract && parent.$parent) {
-				parent = parent.$parent;
+		if (parent) {
+			if (!options.abstract) {
+				/* 如果上层组件是抽象组件，则跳过，用上上层的$parent */
+				while (parent.$options.abstract && parent.$parent) {
+					parent = parent.$parent;
+				}
+				parent.$children.push(vm);
 			}
-			parent.$children.push(vm);
+			if (!vm.isHmrWrapperComponent) {
+				/* 如果上层组件是抽象组件，则跳过，用上上层的$parent */
+				while (parent.isHmrWrapperComponent && parent.$parent) {
+					parent = parent.$parent;
+				}
+				parent.$children.push(vm);
+			}
 		}
 		vm.$parent = parent;
 		vm.$root = parent ? parent.$root : vm;
@@ -3062,7 +3081,7 @@
 			// remove self from parent
 			var parent = vm.$parent;
 			if (parent && !parent._isBeingDestroyed && !vm.$options.abstract) {
-				remove$2(parent.$children, vm);
+				removeAnItemFromAnArray(parent.$children, vm);
 			}
 			// teardown scope. this includes both the render watcher and other
 			// watchers created
@@ -4219,8 +4238,6 @@
 	 * @internal type is manually declared in <root>/types/v3-define-component.d.ts
 	 */
 	function defineComponent(options) {
-		// options.NEED_HMR = localStorage.isDev;
-		/* NEED_HMR : localStorage.isDev */
 		return options;
 	}
 
@@ -4498,7 +4515,7 @@
 		 */
 		Watcher.prototype.teardown = function () {
 			if (this.vm && !this.vm._isBeingDestroyed) {
-				remove$2(this.vm._scope.effects, this);
+				removeAnItemFromAnArray(this.vm._scope.effects, this);
 			}
 			if (this.active) {
 				var i = this.deps.length;
@@ -6102,10 +6119,13 @@
 		 * Create asset registration methods.
 		 */
 		ASSET_TYPES.forEach(function (type) {
-			/* Vue.component */
+			/* Vue.component  */
+			/* Vue.directive  */
+			/* Vue.filter  */
 			// @ts-expect-error function is not exact same type
 			Vue[type] = function (id, definition) {
 				if (!definition) {
+					/* 没有定义 definition就是获取  */
 					return this.options[type + "s"][id];
 				} else {
 					/* istanbul ignore if */
@@ -6165,7 +6185,7 @@
 			entry.componentInstance.$destroy();
 		}
 		cache[key] = null;
-		remove$2(keys, key);
+		removeAnItemFromAnArray(keys, key);
 	}
 
 	var patternTypes = [String, RegExp, Array];
@@ -6259,7 +6279,7 @@
 				if (cache[key]) {
 					vnode.componentInstance = cache[key].componentInstance;
 					// make current key freshest
-					remove$2(keys, key);
+					removeAnItemFromAnArray(keys, key);
 					keys.push(key);
 				} else {
 					// delay setting the cache until update
@@ -6638,7 +6658,7 @@
 			if (isFor) {
 				var existing = _isString ? refs[ref] : ref.value;
 				if (isRemoval) {
-					isArray(existing) && remove$2(existing, refValue);
+					isArray(existing) && removeAnItemFromAnArray(existing, refValue);
 				} else {
 					if (!isArray(existing)) {
 						if (_isString) {
@@ -8658,7 +8678,7 @@
 
 	function removeTransitionClass(el, cls) {
 		if (el._transitionClasses) {
-			remove$2(el._transitionClasses, cls);
+			removeAnItemFromAnArray(el._transitionClasses, cls);
 		}
 		removeClass(el, cls);
 	}
@@ -12360,8 +12380,50 @@
 		};
 	}
 
-	/* ffffffffffffffffffffffffffffffffffffffffffffffffffffffff */
+	function handleTagIsStringH({ namespace, context, config, tag, isDef, props, warnMsgVm, vnode, VNode, children, resolveAsset, createComponent }) {
+		var Ctor = void 0;
+		namespace = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
+		/* platform built-in elements平台内置元素 */
+		if (config.isReservedTag(tag)) {
+			if (isDef(props) && isDef(props.nativeOn) && props.tag !== "component") {
+				warnMsgVm("The .native modifier for v-on is only valid on components but it was used on <".concat(tag, ">."), context);
+			}
+			vnode = new VNode(config.parsePlatformTagName(tag), props, children, undefined, undefined, context);
+		} else if ((!props || !props.pre) && isDef((Ctor = resolveAsset(context.$options, "components", tag)))) {
+			// Vue component
+			vnode = createComponent(Ctor, props, context, children, tag);
+		} else {
+			if (tag.props) {
+			}
+			// unknown or unlisted namespaced elements
+			// check at runtime because it may get assigned a namespace when its
+			// parent normalizes children
+			vnode = new VNode(tag, props, children, undefined, undefined, context);
+		}
+		return { namespace, vnode };
+	}
 
+	function dispatch(componentName, eventName, eventPayload) {
+		var current = this;
+		var $parent = current.$parent;
+		while ($parent) {
+			if (componentName === $parent.$options.name) {
+				current.$emit.apply($parent, [eventName].concat(eventPayload));
+			}
+			var current = $parent;
+			$parent = current?.$parent;
+		}
+	}
+
+	function broadcast(e, t, i) {
+		(function e(t, i, n) {
+			this.$children.forEach(function (r) {
+				r.$options.componentName === t ? r.$emit.apply(r, [i].concat(n)) : e.apply(r, [t, i].concat([n]));
+			});
+		}).call(this, e, t, i);
+	}
+
+	/* ffffffffffffffffffffffffffffffffffffffffffffffffffffffff */
 	Vue.normalizeComponent = normalizeComponent;
 	Vue.effect = effect;
 	Vue.compile = compileToFunctions;
@@ -12373,5 +12435,26 @@
 	Vue._toString = _toString;
 	Vue._immediate = { immediate: true };
 	Vue.stringifyClass = stringifyClass;
+	Vue._HandleAsyncComponentResolved = _HandleAsyncComponentResolved;
+	Vue.getFirstComponentChild = getFirstComponentChild;
+	Vue.resolveScopedSlots = resolveScopedSlots;
+	/* ffffffffffffffffffffffffffffffffffffffffffffffffffffffff */
+	Vue.prototype.$dev = (...args) => console.log.apply(console, args);
+	Vue.prototype.$attr = function name(prop) {
+		let current = this;
+		let attrs = current.$attrs;
+		while (attrs) {
+			if (hasOwn(attrs, prop)) {
+				return attrs[prop];
+			} else {
+				current = current.$parent;
+				attrs = current.$attrs;
+			}
+		}
+	};
+	Vue.prototype.dispatch = dispatch;
+	Vue.prototype.broadcast = broadcast;
+	Vue.prototype.isDef = isDef;
+	/* ffffffffffffffffffffffffffffffffffffffffffffffffffffffff */
 	return Vue;
 });

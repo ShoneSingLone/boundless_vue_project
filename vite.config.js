@@ -11,6 +11,9 @@ export default defineConfig({
     }
   },
   build: {
+    output: {
+      format: "umd",
+    },
     target: "es2022",
     minify: false,
     lib: {

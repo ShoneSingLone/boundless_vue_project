@@ -7,7 +7,7 @@
 <script>
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
-	return {
+	return defineComponent({
 		mixins: [mixins],
 		props: ["value", "options", "configs"],
 		computed: {
@@ -16,7 +16,7 @@ export default async function () {
 			}
 		},
 		mounted() {}
-	};
+	});
 }
 </script>
 

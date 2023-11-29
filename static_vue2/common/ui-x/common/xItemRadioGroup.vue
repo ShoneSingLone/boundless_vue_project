@@ -4,7 +4,17 @@ export default async function () {
 	return {
 		mixins: [mixins],
 		props: ["value", "configs"],
+		data() {
+			return {
+				col: 4
+			};
+		},
 		computed: {
+			cptFormStyle() {
+				return {
+					width: `${this.col * this.minWidth}px`
+				};
+			},
 			cptDisabled() {
 				if (hasOwn(this.$attrs, "disabled")) {
 					return this.$attrs.disabled;
@@ -73,11 +83,16 @@ export default async function () {
 				{
 					default: ({ width, height }) => {
 						if (width) {
+							const col = this.getCol(width, Math.ceil(width / this.minWidth));
+							if (this.col != col) {
+								this.col = col;
+							}
 							return h(
 								"xForm",
 								{
 									...this.cptGroupProps,
-									col: this.getCol(width, Math.ceil(width / this.minWidth))
+									style: this.cptFormStyle,
+									col: this.col
 								},
 								this.vDomItems
 							);

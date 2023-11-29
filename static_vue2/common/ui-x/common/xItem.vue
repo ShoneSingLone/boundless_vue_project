@@ -2,6 +2,12 @@
 export default async function () {
 	const RULES = await _.$importVue("/common/utils/rules.vue");
 	const { EVENT_ARRAY } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
+	/* TODO: 
+	xForm disabled
+	xTable disabled
+	xTableRow disabled
+	xTableCol disabled
+	*/
 	/* configs {
   label:string
   disabled:boolean||function
@@ -42,7 +48,7 @@ export default async function () {
 			}
 			vm.configs = reactive(vm.configs);
 			// this.configs = reactive(this.configs);
-			Vue.GH_FORM_ITEM_MAP = Vue.GH_FORM_ITEM_MAP || {};
+			Vue._X_ITEM_VM_S = Vue._X_ITEM_VM_S || {};
 
 			/* options\disabled\readOnly\做统一处理，其他的使用透传 */
 
@@ -81,7 +87,7 @@ export default async function () {
 			});
 
 			onMounted(() => {
-				Vue.GH_FORM_ITEM_MAP[this.cpt_id] = this;
+				Vue._X_ITEM_VM_S[this.cpt_id] = this;
 				if (this.configs?.once) {
 					this.configs.once.call(this.configs, { xItem: this });
 				}
@@ -110,7 +116,7 @@ export default async function () {
 			});
 
 			onBeforeUnmount(() => {
-				delete Vue.GH_FORM_ITEM_MAP[this.cpt_id];
+				delete Vue._X_ITEM_VM_S[this.cpt_id];
 			});
 
 			return {
@@ -161,7 +167,7 @@ export default async function () {
 				};
 			},
 			cpt_id() {
-				return `gh_form_id_${this._uid}`;
+				return `x_form_id_${this._uid}`;
 			},
 			cpt_label() {
 				return this.configs?.label;
@@ -251,7 +257,8 @@ export default async function () {
 					return;
 				} else {
 					this.emitValueChange.val = val;
-					if (this.configs?.value !== undefined) {
+					/* 设置了configs.value，未设置model ；二者只能取其一*/
+					if (this.configs?.value !== undefined && this.value === undefined) {
 						this.configs.value = val;
 					}
 					this.$emit("change", val);
@@ -367,7 +374,6 @@ export default async function () {
 					vm.p_value = val;
 				}
 			};
-
 			return h(
 				"div",
 				{
@@ -458,6 +464,7 @@ export default async function () {
 	flex: 1;
 	display: flex;
 	flex-flow: column nowrap;
+	overflow: hiden;
 
 	.show-error {
 		[class$="__inner"],
@@ -474,6 +481,7 @@ export default async function () {
 }
 
 .xItem_error-msg {
+	display: inline-table;
 	height: 20px;
 	line-height: 20px;
 	margin-top: 4px;

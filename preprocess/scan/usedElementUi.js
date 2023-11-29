@@ -10,11 +10,11 @@ const usedFile = new Set();
 
 async function scanFile(fileurl) {
 	const content = await fs.promises.readFile(fileurl, "utf-8");
-	let reg = /[<|"]el[-]?(.*)\s*[^>]>?/ig;
+	let reg = /[<|"]el[-]?(.*)\s*[^>]>?/gi;
 	let execResult;
 	while ((execResult = reg.exec(content))) {
 		let [full] = execResult;
-		record.add((full).split(/\s/)[0])
+		record.add(full.split(/\s/)[0]);
 	}
 }
 
@@ -28,14 +28,6 @@ const main = async () => {
 		}
 	}
 
-
-	await fs.promises.writeFile(
-		`./usedElementUI.json`,
-		JSON.stringify(
-			Array.from(record),
-			null,
-			2
-		)
-	);
-}
+	await fs.promises.writeFile(`./usedElementUI.json`, JSON.stringify(Array.from(record), null, 2));
+};
 main();

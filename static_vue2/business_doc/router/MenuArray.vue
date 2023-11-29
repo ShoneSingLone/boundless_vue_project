@@ -3,17 +3,17 @@ export default async function () {
 	return [
 		{
 			icon: "_icon_report",
-			label: i18n("DevModel"),
+			label: i18n("所有项目"),
+			href: "/all-project"
+		},
+		{
+			icon: "_icon_report",
+			label: i18n("CopyThis模板"),
 			children: [
 				{
 					icon: "_icon_report",
-					label: i18n("DEV"),
-					href: "/dev"
-				},
-				{
-					icon: "_icon_report",
-					label: i18n("socket.io"),
-					href: "/io"
+					label: i18n("列表"),
+					href: "/template/list"
 				}
 			]
 		},
@@ -24,7 +24,7 @@ export default async function () {
 				{
 					icon: "_icon_report",
 					label: i18n("水波纹"),
-					href: "/directive_ripple"
+					href: "/directive/ripple"
 				}
 			]
 		},
@@ -34,41 +34,109 @@ export default async function () {
 			children: [
 				{
 					icon: "_icon_report",
-					label: i18n("xCard"),
-					href: "/xCard"
+					label: i18n("Basic"),
+					children: []
 				},
 				{
 					icon: "_icon_report",
-					label: i18n("xTableVir"),
-					href: "/xTableVir"
-				},
-				{
-					icon: "_icon_report",
-					label: i18n("xTable"),
-					href: "/xTable"
-				},
-				{
-					icon: "_icon_report",
-					label: i18n("xTableDiv"),
-					href: "/xTableDiv"
-				},
-				{
-					icon: "_icon_report",
-					label: i18n("xItem"),
-					icon: "_icon_rerun",
+					label: i18n("数据录入"),
 					children: [
 						{
-							href: "/xItem/xItemInput",
+							href: "/component/form/select",
 							icon: "_icon_report",
-							label: i18n("xItemInput")
+							label: i18n("select")
+						},
+						{
+							href: "/component/form/input",
+							icon: "_icon_report",
+							label: i18n("input")
+						},
+						{
+							href: "/component/form/ip-address",
+							icon: "_icon_report",
+							label: i18n("ip-address")
 						}
 					]
 				},
-				{ icon: "_icon_report", label: i18n("xIcon"), href: "/xIcon" },
+				{
+					icon: "_icon_report",
+					label: i18n("数据展示"),
+					children: [
+						{
+							icon: "_icon_report",
+							label: i18n("icon"),
+							href: "/component/data/icon"
+						},
+						{
+							icon: "_icon_report",
+							label: i18n("card"),
+							href: "/component/data/card"
+						},
+						{
+							icon: "_icon_report",
+							label: i18n("Tag") + i18n("标签"),
+							href: "/component/data/tag"
+						},
+						{
+							icon: "_icon_report",
+							label: i18n("virtualized-table"),
+							href: "/component/data/virtualized-table"
+						}
+					]
+				},
+
+				{
+					icon: "_icon_report",
+					label: i18n("Navigation"),
+					children: [
+						{
+							icon: "_icon_report",
+							label: i18n("tabs"),
+							href: "/component/navigation/tabs"
+						}
+					]
+				}
+			]
+		},
+		{
+			icon: "_icon_report",
+			label: i18n("Other"),
+			children: [
 				{
 					icon: "_icon_report",
 					label: i18n("openWindow"),
-					href: "/dialog_with_layer"
+					href: "/other/open_window"
+				},
+				{
+					icon: "_icon_report",
+					label: i18n("xFormItemWrapper"),
+					href: "/other/x-form-item-wrapper"
+				}
+			]
+		},
+		{
+			icon: "_icon_report",
+			label: i18n("开发调试用"),
+			children: [
+				{
+					icon: "_icon_report",
+					label: i18n("template"),
+					href: "/dev/template"
+				},
+				{
+					icon: "_icon_report",
+					label: i18n("render"),
+					href: "/dev/render"
+				},
+				{
+					icon: "_icon_report",
+					label: i18n("socket.io"),
+					href: "/dev/io"
+				},
+				{
+					icon: "_icon_report",
+					label: i18n("测试正则校验"),
+					href: "/dev/rule"
 				}
 			]
 		}

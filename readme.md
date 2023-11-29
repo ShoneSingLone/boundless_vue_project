@@ -17,6 +17,7 @@
 
 > UI层面的，只要它是开源的，看上了就可以山寨过来。
 
+- [element V2](https://element.eleme.cn/#/zh-CN/component/tabs)
 - [arco.design](https://arco.design/vue/component/resize-box)
 - [devui](https://vue-devui.github.io/components/code-editor/)
 - [tiny-vue](https://opentiny.design/tiny-vue/zh-CN/os-theme/components/form)
@@ -34,8 +35,7 @@ window._CURENT_IS_MOBILE
 window.APP_VERSION,
 window.APP_ENTRY_NAME 默认entry 其他的也可以
 
-## ~~HMR~~
-- 方案有重大bug，暂时不用。
+## HMR
 -  使用defineComponent定义Vue组件，默认添加NEED_HMR: localStorage.isDev；用于热替换。 
 - （目前有多级属性传递问题，尚不稳定。）
 - 函数式组件的render是否支持async 异步？
@@ -50,3 +50,10 @@ window.APP_ENTRY_NAME 默认entry 其他的也可以
 ## utils
 
 - git rm -r --cached
+- [visualRegex](https://wangwl.net/static/projects/visualRegex#)
+
+## TODO
+
+
+## 参考
+[](https://template-explorer.vuejs.org/#eyJzcmMiOiIgIDxlbC1pbnB1dFxyXG4gICAgcGxhY2Vob2xkZXI9XCLor7fpgInmi6nml6XmnJ9cIlxyXG4gICAgdi1tb2RlbD1cImlucHV0M1wiPlxyXG4gICAgPGkgc2xvdD1cInN1ZmZpeFwiIGNsYXNzPVwiZWwtaW5wdXRfX2ljb24gZWwtaWNvbi1kYXRlXCI+PC9pPlxyXG4gIDwvZWwtaW5wdXQ+XHJcbiAgPGVsLWlucHV0XHJcbiAgICBwbGFjZWhvbGRlcj1cIuivt+i+k+WFpeWGheWuuVwiXHJcbiAgICB2LW1vZGVsPVwiaW5wdXQ0XCI+XHJcbiAgICA8aSBzbG90PVwicHJlZml4XCIgY2xhc3M9XCJlbC1pbnB1dF9faWNvbiBlbC1pY29uLXNlYXJjaFwiPjwvaT5cclxuICA8L2VsLWlucHV0PiIsIm9wdGlvbnMiOnt9fQ==)

@@ -19,7 +19,7 @@ export default async function () {
 `
 	};
 
-	return {
+	return defineComponent({
 		props: ["configs"],
 		data() {
 			return {
@@ -111,6 +111,7 @@ export default async function () {
 			return h(
 				"el-button",
 				{
+					...this.configs,
 					directives: [
 						{
 							name: "ripple",
@@ -138,7 +139,7 @@ export default async function () {
 				[this.cpt_labe]
 			);
 		}
-	};
+	});
 }
 </script>
 

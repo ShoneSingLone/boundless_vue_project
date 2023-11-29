@@ -5,14 +5,17 @@
   "main": ".prettierrc.js",
   "scripts": {
     "dev": "node ./preprocess/server/server.js",
+    "pull": "git pull && git pull gh master",
+    "push": "git push && git push gh master",
     "lint": "npm run lint:static && npm run lint:preprocess",
     "i18n": "node ./preprocess/makei18n/makeLanguageFile.js",
     "doc": "node ./preprocess/genDocMd/genDoc.js",
-    "push": "npm run i18n && npm run doc && npm run lint",
+    "beforepush": "npm run i18n && npm run doc && npm run lint",
     "start": "vite --open --host --port 3010",
     "build:lib": "vite build",
     "serve": "vite preview",
     "lint:static": "prettier --write ./static_vue2",
+    "removeDebugger": "node ./preprocess/removeDebugger.js",
     "lint:preprocess": "prettier --write ./preprocess"
   },
   "author": "",

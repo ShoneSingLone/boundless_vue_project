@@ -13,7 +13,7 @@ export default async function () {
 	_.each(
 		{
 			DemoAndCode: "@/components/DemoAndCode.vue",
-			MarkdownIt: "@/components/MarkdownIt.vue"
+			Md: "@/components/Md.vue"
 		},
 		(url, name) => {
 			Vue.component(name, () => _.$importVue(url));
@@ -21,7 +21,16 @@ export default async function () {
 	);
 
 	/* app entry  */
-	const [VueRouter, routes, App] = await Promise.all([_.$importVue("/common/libs/VueRouter.vue"), _.$importVue("@/router/routes.vue"), _.$importVue("@/layout/AppLayout.vue")]);
+	const [VueRouter, routes, App] = await Promise.all([
+		_.$importVue("/common/libs/VueRouter.vue"),
+		_.$importVue("@/router/routes.vue"),
+		_.$importVue("@/layout/AppLayout.vue"),
+		/*枚举选项*/
+		_.$importVue("@/utils/opts.vue"),
+		/* api */
+		_.$importVue("@/utils/api.vue"),
+		_.$importVue("/common/utils/rules.vue")
+	]);
 
 	const router = new VueRouter({ routes });
 	return new Vue({
@@ -35,6 +44,7 @@ export default async function () {
 		},
 		mounted() {
 			window.APP = this;
+			document.title = i18n("xUI doc");
 			$("body").removeClass("x-loading");
 		},
 		data() {

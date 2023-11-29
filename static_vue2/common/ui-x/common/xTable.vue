@@ -5,14 +5,14 @@ export default async function () {
 	 */
 
 	return defineComponent({
-		props: ["configs"],
+		props: ["configs", "data"],
 		setup(props) {
-			const { useAutoResize } = useXui;
+			const { useAutoResize } = Vue._useXui;
 			const { height, width, sizer: refxTable } = useAutoResize(props);
 
 			const setColActionWidthImmediate = () => {
 				try {
-					if (this?.configs?.data?.list?.length > 0) {
+					if (this?.cpt_data?.list?.length > 0) {
 						const $xColActions = $(refxTable.value.$el).find(".xColActions")[0];
 						/* TODO: 列表中最长的操作 */
 						if ($xColActions && $xColActions.children && $xColActions.children.length > 0) {
@@ -197,7 +197,6 @@ export default async function () {
 
 								return h("el-table-column", tableColumnProps, [child]);
 							};
-
 							return _.map(vm.displayProps, genChildByProp);
 						}
 					}
@@ -310,7 +309,7 @@ export default async function () {
 			log(prop, col) {}
 		},
 		watch: {
-			"configs.data.list": {
+			"cpt_data.list": {
 				immediate: true,
 				handler(list) {
 					if (list.length > 0) {
@@ -320,6 +319,9 @@ export default async function () {
 			}
 		},
 		computed: {
+			cpt_data() {
+				return this.configs?.data || this.data;
+			},
 			cptxAutoResizerProps() {
 				return merge_hFnProps([
 					{
@@ -343,21 +345,32 @@ export default async function () {
 					this.$attrs,
 					this.$props
 				]);
-				props.data = this.configs.data.list;
+				props.data = this.cpt_data.list;
 				return props;
 			},
 			allColInfo() {
 				return this.configs.colInfo;
 			},
 			displayProps() {
+				const special = ["COL_SINGLE", "COL_MULTIPLE", "COL_ACTIONS"];
 				return _.reduce(
-					this.allColInfo,
+					this.configs.colInfo,
 					(target, item, prop) => {
 						if (!item) {
 							console.error(prop + "不存在");
-						}
-						if (["COL_SINGLE", "COL_MULTIPLE", "COL_ACTIONS"].includes(prop) || item.isShow) {
+							return target;
+						} else if (item.isShow) {
 							target.push(prop);
+						} else if (special.includes(prop)) {
+							if (Vue.hasOwn(item, "isShow")) {
+								/* 如果有isShow属性，根据isShow显示 */
+								if (item.isShow) {
+									target.push(prop);
+								}
+							} else {
+								/* 如果没有isShow属性，默认显示 */
+								target.push(prop);
+							}
 						}
 						return target;
 					},

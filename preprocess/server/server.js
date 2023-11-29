@@ -1,6 +1,6 @@
-const Koa = require('koa');
-const path = require('path');
-const IO = require('koa-socket');
+const Koa = require("koa");
+const path = require("path");
+const IO = require("koa-socket");
 
 /* const NODE_PATH = path.resolve(__dirname, "."); process.env.NODE_PATH = NODE_PATH; Module._initPaths(); */
 

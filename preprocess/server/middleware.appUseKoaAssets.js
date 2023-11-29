@@ -14,17 +14,13 @@ exports.appUseKoaAssets = function (app) {
 
 	/* 处理静态资源 */
 	app.use(async (ctx, next) => {
-
-
 		const pathArray = ctx.path.split("/");
 
 		if (pathArray.join("") === "") {
 			ctx.path = "/doc.html";
 		}
 		try {
-			let targetPath = app.pathResolve(
-				ctx.path.replace(/^\/(static)?/, "../../static_vue2/")
-			);
+			let targetPath = app.pathResolve(ctx.path.replace(/^\/(static)?/, "../../static_vue2/"));
 			let extname = path.extname(targetPath);
 			/* 如果没有明确的文件后缀，添加html尝试返回页面 */
 			if (!extname) {
@@ -40,17 +36,10 @@ exports.appUseKoaAssets = function (app) {
 				const indexHtmlString = await fs.promises.readFile(targetPath, "utf-8");
 				const $ = cheerio.load(indexHtmlString);
 				/* 首页注入 hmr 代码 */
-				let scriptBlockString = await fs.promises.readFile(
-					app.pathResolve("./hmr.socket.io.script_block.vue"),
-					"utf-8"
-				);
+				let scriptBlockString = await fs.promises.readFile(app.pathResolve("./hmr.socket.io.script_block.vue"), "utf-8");
 				scriptBlockString = scriptBlockString.replace("LOCALHOST_PORT", app.LOCALHOST_PORT);
 
-
-				socketIoString = await fs.promises.readFile(
-					app.pathResolve("./hmr.socket.io.script_block.socket.io.js"),
-					"utf-8"
-				);
+				socketIoString = await fs.promises.readFile(app.pathResolve("./hmr.socket.io.script_block.socket.io.js"), "utf-8");
 
 				scriptBlockString = scriptBlockString.replace(`/* window.io */`, socketIoString);
 
@@ -62,9 +51,7 @@ exports.appUseKoaAssets = function (app) {
 
 				/* 配置 yapi mock 地址 */
 				if (MOCK_URL_PREFIX) {
-					$("#app").after(
-						`<script only-use-in-dev-model>window.MOCK_URL_PREFIX="${MOCK_URL_PREFIX}";</script>`
-					);
+					$("#app").after(`<script only-use-in-dev-model>window.MOCK_URL_PREFIX="${MOCK_URL_PREFIX}";</script>`);
 				}
 				console.log("🚀 middleware.appUseKoaAssets.js handleIndexHtml:", APP_NAME, MOCK_URL_PREFIX);
 
