@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<md :md="md" />
+		<Md :md="md" />
 		<xTabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit">
 			<xTabPane :key="item.name" v-for="(item, index) in editableTabs" :label="item.title" :name="item.name">
 				{{ item.content }}

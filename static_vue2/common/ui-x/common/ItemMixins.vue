@@ -81,6 +81,47 @@ export default async function () {
 		Vue._itemMixins = {
 			calcTextareaHeight,
 			EVENT_ARRAY,
+			useProps(vm) {
+				const cptPlaceholder = computed(() => {
+					if (_.isFunction(vm.configs?.placeholder)) {
+						return vm.configs.placeholder.call(vm.configs, { vm });
+					}
+					if (_.isString(vm.configs?.placeholder)) {
+						return vm.configs?.placeholder;
+					}
+				});
+
+				const cptIsHide = computed(() => {
+					if (_.isFunction(vm.configs?.isHide)) {
+						return vm.configs.isHide.call(vm.configs, { vm });
+					} else {
+						return !!vm.configs?.isHide;
+					}
+				});
+
+				const cptIsLoading = computed(() => {
+					if (_.isFunction(vm.configs?.isLoading)) {
+						return vm.configs.isLoading.call(vm.configs, { vm });
+					} else {
+						return !!vm.configs?.isLoading;
+					}
+				});
+
+				const cptDisabled = computed(() => {
+					if (_.isFunction(vm.configs?.disabled)) {
+						return vm.configs.disabled.call(vm.configs, { vm });
+					} else {
+						return !!vm.configs?.disabled;
+					}
+				});
+
+				return {
+					cptIsHide,
+					cptIsLoading,
+					cptPlaceholder,
+					cptDisabled
+				};
+			},
 			useCellArgs({ vm, itemType, cellConfigs }) {
 				const innerComponentConfigs = reactive({
 					...cellConfigs,

@@ -11,13 +11,12 @@ export default async function () {
 					let basic = "x-gap";
 					const { f } = this.$attrs;
 
-					if (f) {
-						if (_.isBoolean(f)) {
-							basic += ` flex1`;
-						} else {
-							basic += ` flex${f}`;
-						}
+					if (_.isString(f) && !f) {
+						basic += ` flex1`;
+					} else if (f) {
+						basic += ` flex${f}`;
 					}
+
 					return basic;
 				}
 			},

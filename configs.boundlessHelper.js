@@ -11,5 +11,9 @@ module.exports = {
     "globalVaribles": {
         _: 'static_vue2/common/libs/common.js',
     },
-    vueVaribles
+    vueVaribles: {
+        ...vueVaribles,
+        _reg: "static_vue2/common/utils/regexp.vue",
+        _rules: "static_vue2/common/utils/rules.vue",
+    }
 };

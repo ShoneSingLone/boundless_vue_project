@@ -1,11 +1,11 @@
 <script>
 export default async function () {
 	await Promise.all([
-		_.$importVue("/common/ui-x/useXui.vue"),
 		_.$importVue("/common/ui-element/useElementUI.vue", {
 			size: "small",
 			I18N_LANGUAGE: window.I18N_LANGUAGE
-		})
+		}),
+		_.$importVue("/common/ui-x/useXui.vue")
 	]);
 
 	/* app entry  */
@@ -14,9 +14,11 @@ export default async function () {
 		"@/router/routes.vue",
 		"@/layout/AppLayoutLevel.vue",
 		/*常量*/
-		"@/utils/var.vue"
+		"@/utils/var.vue",
 		/*接口*/
-		// "@/utils/api.vue",
+		"@/utils/api.vue",
+		/*校验规则*/
+		"/common/utils/rules.vue"
 		/*枚举选项*/
 		// "@/utils/opts.vue",
 		/*工具函数*/
@@ -41,8 +43,8 @@ export default async function () {
 			};
 		},
 		mounted() {
-			window.APP = this;
-			$("body").removeClass("x-loading");
+			this.checkMobile();
+			this.checkUserIsLogin();
 		},
 		data() {
 			return {
@@ -71,7 +73,6 @@ export default async function () {
 					userName: null,
 					uid: null,
 					loginState: LOADING_STATUS,
-					loginWrapActiveKey: "1",
 					breadcrumb: [],
 					studyTip: 0,
 					imageUrl: ""
@@ -84,16 +85,6 @@ export default async function () {
 					curpage: 1
 				},
 				groupList: [],
-				currGroup: {
-					_id: "",
-					role: "",
-					group_name: "",
-					group_desc: "",
-					custom_field1: {
-						name: "",
-						enable: false
-					}
-				},
 				projectList: [],
 				currProject: {
 					currPage: "",
@@ -107,34 +98,54 @@ export default async function () {
 			return h(App);
 		},
 		methods: {
+			async checkUserIsLogin() {
+				try {
+					const { data: user } = await Vue._api.getUserStatus();
+					this._setUser(user);
+					/* TODO: 跳转到首页 或者note应用*/
+					this.$router.push({ path: "/api/group" });
+				} catch (error) {
+					/* 未登录，跳转登录界面 */
+					this.$router.push("/login");
+				} finally {
+					setTimeout(() => {
+						$("body").removeClass("x-loading");
+					}, 1000);
+				}
+			},
+			checkMobile() {
+				if (this.isMobile) {
+					$("body").addClass("app-mobile");
+				}
+			},
 			/* ************************methods************************ */
 			_toggleFooterFold() {
-				stateApp.isFooterFold = !stateApp.isFooterFold;
+				this.isFooterFold = !this.isFooterFold;
 			},
 			_setMenu(menu) {
 				/* notice！！_.merge 空数组不会替换*/
-				stateApp.menu = Object.assign({}, stateApp.menu, menu);
+				this.menu = Object.assign({}, this.menu, menu);
 			},
 			_setUser(user) {
-				stateApp.user = xU.merge({}, stateApp.user, user);
+				this.user = _.merge({}, this.user, user);
 			},
 			_setNews(news) {
-				stateApp.news = Object.assign({}, stateApp.news, news);
+				this.news = Object.assign({}, this.news, news);
 			},
 			_setBreadcrumb(breadcrumb) {
-				stateApp._setUser({ breadcrumb });
+				this._setUser({ breadcrumb });
 			},
 			async _refreshUserInfo(userInfo = false) {
 				try {
 					if (!userInfo) {
-						const res = await API.user.getUserStatus();
+						const res = await Vue._api.UserGetUserStatus();
 						const { data } = res;
 						userInfo = data;
 					} else {
 						throw new Error("refreshUserInfo error");
 					}
 
-					stateApp._setUser({
+					this._setUser({
 						...userInfo,
 						isLogin: !!userInfo._id,
 						isLDAP: userInfo.ladp,
@@ -147,21 +158,23 @@ export default async function () {
 						study: userInfo ? userInfo.study : false
 					});
 				} catch (error) {
-					xU(error);
+					_.$msgError(error);
 				}
 			},
 			async _checkLoginState() {
-				if (stateApp.user.role && stateApp.user.isLogin) {
+				if (this.user.role && this.user.isLogin) {
 					return true;
 				}
-				await stateApp._refreshUserInfo();
-				return stateApp.user.isLogin;
+				await this._refreshUserInfo();
+				return this.user.isLogin;
 			},
-			async _fetchGroupList() {
+			async getUserAllGroup() {
 				try {
-					const { data: groupList } = await API.group.mine();
-					stateApp.groupList = groupList;
-				} catch (error) {}
+					const { data: groupList } = await Vue._api.groupMine();
+					this.groupList = groupList;
+				} catch (error) {
+					_.$msgError(error);
+				}
 			},
 			/**
 			 * 如果group是对象，直接赋值，
@@ -169,52 +182,51 @@ export default async function () {
 			 * @param group_id
 			 * @returns {Promise<void>}
 			 */
-			async _setCurrGroup(group_id) {
+			async _setcptCurrentGroup(group_id) {
 				try {
-					if (!xU.isInput(group_id)) {
-						stateApp.currGroup = {};
+					if (!_.$isInput(group_id)) {
+						this.cptCurrentGroup = {};
 					}
-
-					if (stateApp.currGroup._id === group_id) {
+					if (this.cptCurrentGroup._id === group_id) {
 						return;
 					}
-					const { data: currGroup } = await API.group.getMyGroupBy(group_id);
-					stateApp.currGroup = currGroup;
-					await stateApp._fetchProjectList(currGroup._id);
+					const { data: cptCurrentGroup } = await Vue._api.groupGetMyGroupBy(group_id);
+					this.cptCurrentGroup = cptCurrentGroup;
+					await this._fetchProjectList(cptCurrentGroup._id);
 				} catch (error) {
-					xU(error);
+					_.$msgError(error);
 				}
 			},
 			async _setCurrProject(project_id, options = {}) {
 				try {
 					let isEnforce = options.isEnforce || false;
 
-					if (!xU.isInput(project_id)) {
-						stateApp.currProject = {};
+					if (!_.$isInput(project_id)) {
+						this.currProject = {};
 					}
-					if (!isEnforce && stateApp.currProject._id === project_id) {
+					if (!isEnforce && this.currProject._id === project_id) {
 						return;
 					}
-					let { data } = await API.project.getProjectById(Number(project_id));
-					stateApp.currProject = data;
+					let { data } = await Vue._api.ProjectGetProjectById(Number(project_id));
+					this.currProject = data;
 				} catch (error) {
-					xU(error);
+					_.$msgError(error);
 				}
 			},
 			async _fetchNewsData({ id, type, page = 1, size = 10, selectValue = "" }) {
 				try {
-					const { data } = await API.news.getLogList({
+					const { data } = await Vue._api.NewsGetLogList({
 						typeid: id,
 						type,
 						page,
 						limit: size,
 						selectValue
 					});
-					stateApp._setNews({
+					this._setNews({
 						curpage: 1,
 						newsData: {
 							total: data.total,
-							list: xU.sortBy(data.list, (a, b) => {
+							list: _.sortBy(data.list, (a, b) => {
 								if (a && b) {
 									return b.add_time - a.add_time;
 								}
@@ -223,24 +235,24 @@ export default async function () {
 						}
 					});
 				} catch (error) {
-					xU(error);
+					_.$msgError(error);
 				}
 			},
 			async _changeStudyTip() {
-				stateApp.user.studyTip++;
+				this.user.studyTip++;
 			},
 			async _finishStudy() {
-				stateApp._setUser({
+				this._setUser({
 					study: true,
 					studyTip: 0
 				});
 			},
 			async _logoutActions() {
 				try {
-					const { data } = await API.user.logoutActions();
+					const { data } = await Vue._api.UserLogoutActions();
 					if (data === "ok") {
 						lStorage["x_token"] = "";
-						stateApp._setUser({
+						this._setUser({
 							isLogin: false,
 							loginState: GUEST_STATUS,
 							userName: null,
@@ -249,10 +261,10 @@ export default async function () {
 							type: ""
 						});
 						cptRouter.value.go("/login");
-						xU.notification.success(i18n("退出成功! "));
+						_.notification.success(i18n("退出成功! "));
 					}
 				} catch (error) {
-					xU(error);
+					_.$msgError(error);
 				}
 			},
 			async _fetchInterfaceListMenu() {},
@@ -260,12 +272,12 @@ export default async function () {
 				try {
 					if (!groupId) return;
 					groupId = Number(groupId);
-					const res = await API.project.list(groupId);
+					const res = await Vue._api.ProjectList(groupId);
 					const { data } = res || {};
-					stateApp.projectList = data.list;
-					// xU("stateApp.projectList", stateApp.projectList);
+					this.projectList = data.list;
+					// xU("this.projectList", this.projectList);
 				} catch (error) {
-					xU(error);
+					_.$msgError(error);
 				}
 			},
 			_getProject() {},
@@ -273,8 +285,8 @@ export default async function () {
 			async _loginActions() {},
 			async _loginLdapActions() {},
 			async _fetchGroupMemberList(groupId) {
-				const { data: member } = await API.group.getMemberListBy(groupId);
-				stateApp.currGroup.member = member;
+				const { data: member } = await Vue._api.GroupGetMemberListBy(groupId);
+				this.cptCurrentGroup.member = member;
 				return member;
 			},
 			async _addMember(data) {
@@ -295,12 +307,46 @@ export default async function () {
 			_loginTypeAction() {},
 			_returnRequestCode() {
 				try {
-					if (!stateApp.currProject.requestCode) {
+					if (!this.currProject.requestCode) {
 						return () => "请在【项目设置-请求代码模板】设置模板";
 					}
-					return new Function("params", `return (${stateApp.currProject.requestCode})(params)`);
+					return new Function("params", `return (${this.currProject.requestCode})(params)`);
 				} catch (error) {
 					return () => null;
+				}
+			}
+		},
+		computed: {
+			cptCurrentGroup() {
+				/* {
+					_id: "",
+					role: "",
+					group_name: "",
+					group_desc: "",
+					custom_field1: {
+						name: "",
+						enable: false
+					}
+				} */
+				if (this.$route.query.groupId && this.groupList.length) {
+					return _.find(this.groupList, { _id: Number(this.$route.query.groupId) });
+				}
+				return false;
+			}
+		},
+		watch: {
+			groupList: {
+				immediate: true,
+				handler(groupList) {
+					if (groupList.length) {
+						this.$router.push({
+							path: this.$route.path,
+							query: {
+								...this.$route.query,
+								groupId: _.first(groupList)._id
+							}
+						});
+					}
 				}
 			}
 		}

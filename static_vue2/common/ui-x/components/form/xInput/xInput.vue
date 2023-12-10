@@ -302,7 +302,7 @@ export default async function () {
 				this.$emit("compositionupdate", event);
 				const text = event.target.value;
 				const lastCharacter = text[text.length - 1] || "";
-				this.isComposing = !this.isKorean(lastCharacter);
+				this.isComposing = !_.$isKorean(lastCharacter);
 			},
 			handleCompositionEnd(event) {
 				this.$emit("compositionend", event);

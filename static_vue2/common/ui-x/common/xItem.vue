@@ -1,5 +1,6 @@
 <script>
 export default async function () {
+	const { useProps } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	const RULES = await _.$importVue("/common/utils/rules.vue");
 	const { EVENT_ARRAY } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	/* TODO: 
@@ -31,6 +32,7 @@ export default async function () {
 		},
 		setup(props) {
 			const vm = this;
+			const { cptPlaceholder } = useProps(vm);
 
 			/**
 			 * 配合modifyItemsAttrs的私有变量
@@ -75,7 +77,7 @@ export default async function () {
 				return optionsProperty || vm._calOptionsArray;
 			});
 
-			let cpt_disabled = computed(() => {
+			let cptDisabled = computed(() => {
 				if (privateState.isDisabled === "disabled") {
 					return true;
 				}
@@ -118,11 +120,11 @@ export default async function () {
 			onBeforeUnmount(() => {
 				delete Vue._X_ITEM_VM_S[this.cpt_id];
 			});
-
 			return {
 				privateState,
-				cpt_disabled,
-				cpt_options
+				cptDisabled,
+				cpt_options,
+				cptPlaceholder
 			};
 		},
 		computed: {
@@ -319,7 +321,7 @@ export default async function () {
 					...(vm.configs.attrs || {}),
 					clearable,
 					multiple: !!vm.configs?.multiple,
-					placeholder: vm.configs.placeholder || ""
+					placeholder: vm.cptPlaceholder
 				};
 				this.setProps();
 			},
@@ -354,22 +356,22 @@ export default async function () {
 			const xItem_controllerProps = {
 				...vm.configs,
 				readonly: vm.configs.readonly,
-				disabled: vm.cpt_disabled,
+				disabled: vm.cptDisabled,
 				attrs: {
 					...vm.cpt_bindProps.attrs,
-					disabled: vm.cpt_disabled
+					disabled: vm.cptDisabled
 				},
 				props: {
 					...vm.cpt_bindProps.props,
-					disabled: vm.cpt_disabled
+					disabled: vm.cptDisabled
 				},
-				on: vm.p_listeners,
 				configs: {
 					...vm.configs,
-					disabled: vm.cpt_disabled,
+					disabled: vm.cptDisabled,
 					options: vm.cpt_options
 				},
 				value: vm.p_value,
+				on: vm.p_listeners,
 				onChange: val => {
 					vm.p_value = val;
 				}

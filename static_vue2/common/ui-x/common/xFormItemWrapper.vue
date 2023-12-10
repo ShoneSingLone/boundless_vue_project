@@ -1,7 +1,10 @@
 <script>
 export default async function () {
+	const [Clickoutside] = await Promise.all([_.$importVue("/common/ui-x/directive/clickoutside.vue")]);
+
 	return defineComponent({
 		props: ["label", "rules"],
+		directives: { Clickoutside },
 		setup(props) {
 			const vm = this;
 			Vue._X_ITEM_VM_S = Vue._X_ITEM_VM_S || {};
@@ -36,6 +39,11 @@ export default async function () {
 			}
 		},
 		methods: {
+			hideTips() {
+				if (this.errorTips) {
+					this.validate();
+				}
+			},
 			async validate() {
 				if (this.rules && this.rules.length > 0) {
 					for await (const rule of this.rules) {
@@ -114,7 +122,7 @@ export default async function () {
 <style lang="less">
 .xItem-wrapper.flex.middle {
 	.xItem_controller {
-		> .xCard {
+		> .xBlock {
 			margin-left: 0;
 			margin-right: 0;
 		}

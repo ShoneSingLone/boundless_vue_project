@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<md :md="md" />
+		<Md :md="md" />
 		<xTabs type="border-card">
 			<xTabPane>
 				<template #label>

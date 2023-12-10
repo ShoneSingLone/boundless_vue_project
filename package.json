@@ -2,7 +2,7 @@
   "name": "static",
   "version": "1.0.0",
   "description": "",
-  "main": ".prettierrc.js",
+  "main": "./preprocess/server/server.js",
   "scripts": {
     "dev": "node ./preprocess/server/server.js",
     "pull": "git pull && git pull gh master",

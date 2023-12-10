@@ -1,15 +1,15 @@
 <template>
 	<div class="login-register-form">
 		<h2 class="login-title">YAPI</h2>
-		<ElTabs v-model="stateApp.user.loginWrapActiveKey">
-			<ElTabPane label="登录" name="1">
+		<xTabs v-model="loginWrapActiveKey">
+			<xTabPane label="登录" name="1">
 				<LoginForm />
-			</ElTabPane>
-			<ElTabPane label="注册" name="2">
+			</xTabPane>
+			<xTabPane label="注册" name="2">
 				<RegForm v-if="stateApp.user.canRegister" />
 				<div style="min-height: 200px" v-else>管理员已禁止注册，请联系管理员</div>
-			</ElTabPane>
-		</ElTabs>
+			</xTabPane>
+		</xTabs>
 	</div>
 </template>
 <script>
@@ -27,12 +27,30 @@ export default async function () {
 			canRegister: {
 				type: Boolean
 			}
+		},
+		computed: {
+			loginWrapActiveKey: {
+				get() {
+					return this.$route.query.tab || "1";
+				},
+				set(tab) {
+					this.$router.push({
+						path: this.$route.path,
+						query: {
+							tab: tab
+						}
+					});
+				}
+			}
 		}
 	});
 }
 </script>
 <style lang="less">
-.MUST_MODIFY {
-	color: red;
+.item-wrapper {
+	display: flex;
+	button {
+		flex: 1;
+	}
 }
 </style>

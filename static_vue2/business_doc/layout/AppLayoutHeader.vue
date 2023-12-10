@@ -1,12 +1,15 @@
 <template>
 	<div class="AppLayoutHeader">
 		<xIcon img="@/assets/svg/icon_report.svg" style="width: 48px; height: 48px" />
+		<xGap f />
+		<xInput v-model="APP.searchKey" style="width: 200px" placeholder="Search"></xInput>
 	</div>
 </template>
 
 <script>
 export default async function () {
-	return {
+	return defineComponent({
+		inject: ["APP"],
 		methods: {
 			handleCommand(value) {
 				if (localStorage["X-Language"] !== value) {
@@ -17,7 +20,6 @@ export default async function () {
 		},
 		data() {
 			return {
-				value1: "",
 				languageOptions: [
 					{
 						label: "中文",
@@ -41,7 +43,7 @@ export default async function () {
 		mounted() {
 			localStorage["X-Language"] = this.language;
 		}
-	};
+	});
 }
 </script>
 
@@ -51,6 +53,7 @@ export default async function () {
 	align-items: center;
 	height: 64px;
 	padding-left: 20px;
+	padding-right: 20px;
 	line-height: 44px;
 	background-color: var(--el-color-white);
 	box-shadow: var(--el-box-shadow-lighter);

@@ -20,6 +20,7 @@ export default async function () {
 	return {
 		inject: ["APP"],
 		methods: {
+			search: _.debounce(function (value) {}, 1000),
 			checkMenuActive(item) {
 				const routeNameArray = String(this.$route.name).split("/");
 				const hrefName = String(item.href).split("/");
@@ -95,6 +96,11 @@ export default async function () {
 					}
 				}
 			};
+		},
+		watch: {
+			"APP.searchKey"(value) {
+				this.search(value);
+			}
 		}
 	};
 }

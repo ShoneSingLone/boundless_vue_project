@@ -1,5 +1,5 @@
 <template>
-	<ElCard class="xSearchList">
+	<xCard class="xSearchList">
 		<template #header>
 			<div class="flex middle">
 				<label class="form-check-label">
@@ -27,7 +27,7 @@
 				</label>
 			</div>
 		</div>
-	</ElCard>
+	</xCard>
 </template>
 <script>
 export default async function () {

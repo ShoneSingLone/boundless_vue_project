@@ -1,11 +1,11 @@
 <template>
 	<xDialog>
 		<!-- '--xItem-label-width': "144px" -->
-		<ElCard class="mt10" :header="i18n('xxxxxxxx')">
+		<xCard class="mt10" :header="i18n('xxxxxxxx')">
 			<form ref="form">
 				<xItem :configs="configs" v-for="(configs, prop) in form" :key="prop" />
 			</form>
-		</ElCard>
+		</xCard>
 		<template #footer>
 			<xBtn :configs="btnOk" />
 			<xBtn @click="$closeWindow">{{ i18n("取消") }}</xBtn>

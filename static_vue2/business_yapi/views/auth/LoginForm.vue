@@ -69,10 +69,7 @@ export default async function () {
 					preset: "blue",
 					size: "large",
 					class: "login-button flex center login-form-button",
-					async onClick() {
-						const [atLestOne] = await _.$validateForm(vm.$el);
-						if (atLestOne) return;
-					}
+					onClick: vm.login
 				}
 			};
 		},
@@ -80,15 +77,17 @@ export default async function () {
 			async login() {
 				const vm = this;
 				try {
-					if (!(await itemsInvalid(vm.$el))) {
-						const formData = pickValueFrom(vm.configsForm);
-						const res = await API.user.loginActions(formData);
+					const [error] = await _.$validateForm(vm.$el);
+					if (error) {
+						console.error("未通过验证");
+					} else {
+						const formData = _.$pickValueFromConfigs(vm.configsForm);
+						const { data } = await Vue._api.postUserLogin(formData);
+						debugger;
 						await stateApp._refreshUserInfo(res.data);
 						_.$lStorage["x_token"] = res.data.x_token;
 						xU.notification.success("登录成功! ");
-						vm.$router.push("/group");
-					} else {
-						console.error("未通过验证");
+						vm.$router.push({ path: "/group" });
 					}
 				} catch (e) {
 					console.error(e);

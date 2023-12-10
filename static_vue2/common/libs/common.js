@@ -1,3 +1,4 @@
+const isDev = !!localStorage.isDev;
 (function () {
 	/* lodash 主要是纯函数 $前缀的是自定义函数*/
 	window.defItem = (...args) => {
@@ -9,9 +10,71 @@
 		return Vue.reactive(options);
 	};
 
+	_.$isIE = function () {
+		return !Vue.prototype.$isServer && !isNaN(Number(document.documentMode));
+	};
+
+	_.$isEdge = function () {
+		return !Vue.prototype.$isServer && navigator.userAgent.indexOf("Edge") > -1;
+	};
+
+	_.$isFirefox = function () {
+		return !Vue.prototype.$isServer && !!window.navigator.userAgent.match(/firefox/i);
+	};
+
+	_.$valueEquals = (a, b) => {
+		// see: https://stackoverflow.com/questions/3115982/how-to-check-if-two-arrays-are-equal-with-javascript
+		if (a === b) return true;
+		if (!(a instanceof Array)) return false;
+		if (!(b instanceof Array)) return false;
+		if (a.length !== b.length) return false;
+		for (let i = 0; i !== a.length; ++i) {
+			if (a[i] !== b[i]) return false;
+		}
+		return true;
+	};
+
+	_.$scrollIntoView = function (container, selected) {
+		/* scrollIntoView api */
+		if (!selected) {
+			container.scrollTop = 0;
+			return;
+		}
+		const offsetParents = [];
+		let pointer = selected.offsetParent;
+		while (pointer && container !== pointer && container.contains(pointer)) {
+			offsetParents.push(pointer);
+			pointer = pointer.offsetParent;
+		}
+		const top = selected.offsetTop + offsetParents.reduce((prev, curr) => prev + curr.offsetTop, 0);
+		const bottom = top + selected.offsetHeight;
+		const viewRectTop = container.scrollTop;
+		const viewRectBottom = viewRectTop + container.clientHeight;
+
+		if (top < viewRectTop) {
+			container.scrollTop = top;
+		} else if (bottom > viewRectBottom) {
+			container.scrollTop = bottom - container.clientHeight;
+		}
+	};
+
+	_.$firstUpperCase = function (str) {
+		return str.toLowerCase().replace(/( |^)[a-z]/g, L => L.toUpperCase());
+	};
+
+	/* 判断是否是Mac */
+	_.$isMac = function () {
+		return /macintosh|mac os x/i.test(navigator.userAgent);
+	};
+
 	/* 数字 非 NaN */
 	_.$isNumber = value => {
 		return _.isNumber(value) && !_.isNaN(value);
+	};
+
+	_.$isKorean = function (text) {
+		const reg = /([(\uAC00-\uD7AF)|(\u3130-\u318F)])+/gi;
+		return reg.test(text);
 	};
 
 	/* 返回元素不为空的数组 */
@@ -22,6 +85,7 @@
 			});
 		});
 	};
+
 	_.$filterAllInput = arr => {
 		return _.filter(arr, item => {
 			return _.every(item, val => {
@@ -103,8 +167,7 @@
 			})(["POST", "PUT"].includes(_.toUpper(type)));
 
 			const headers = _.merge({ "X-Language": localStorage["X-Language"] }, options.headers);
-
-			const errorCodeArray = [400, 404, 500, 555];
+			const errorCodeArray = [400, 401, 402, 403, 404, 405, 500, 555];
 			return {
 				headers,
 				dataType: "json",
@@ -115,9 +178,12 @@
 				dataType: "JSON",
 				success(response) {
 					if (_.isPlainObject(response)) {
-						if (response?.code) {
-							if (errorCodeArray.includes(response.code)) {
-								reject(response.body);
+						/* 兼容 */
+						const errcode = response?.errcode || response?.code;
+
+						if (errcode) {
+							if (errorCodeArray.includes(errcode)) {
+								reject(response.body || response);
 								return;
 							}
 						}
@@ -358,7 +424,6 @@
 	 * 开发模式下才会在console打印日志
 	 */
 	const genConsole = type => {
-		const isDev = !!localStorage.isDev;
 		const mustShowLog = localStorage.mustShowLog;
 		if (isDev || mustShowLog) {
 			return console[type].bind(console);
@@ -651,7 +716,7 @@
 					if (timer) {
 						clearTimeout(timer);
 					}
-					resolve();
+					resolve(value);
 					_.$ensure.collection.delete(fnString);
 					logEnsure();
 					return;
@@ -762,19 +827,20 @@
 
 		/**
 		 *
-		 * @param {any} url
+		 * @param {any} resolvedURL
 		 * @param {any} param1
 		 * @returns
 		 */
-		async function GenComponentOptions(url, { scritpSourceCode, templateSourceCode, payload }) {
+
+		_.$GenComponentOptions = async function ({ resolvedURL, scritpSourceCode, templateSourceCode, payload }) {
 			payload = payload || {};
 			try {
 				scritpSourceCode = scritpSourceCode.replace("export default", "");
-				const isShowTemplate = templateSourceCode && localStorage.isDev;
+				const isShowTemplate = templateSourceCode && isDev;
 				const innerCode = [
-					`console.info("${url}");`,
+					`console.info("${resolvedURL}");`,
 					isShowTemplate ? `(()=>\`${templateSourceCode}\`)();` : ``,
-					`try{const ${_.camelCase(url)} = ${scritpSourceCode};return ${_.camelCase(url)}.call({THIS_FILE_URL:"${url}"},payload);}catch(e){console.error(e)}`
+					`try{const ${_.camelCase(resolvedURL)} = ${scritpSourceCode};return ${_.camelCase(resolvedURL)}.call({THIS_FILE_URL:"${resolvedURL}"},payload);}catch(e){console.error(e)}`
 				].join("\n");
 				let scfObjAsyncFn;
 				let component = {};
@@ -794,7 +860,7 @@
 					}
 				});
 				try {
-					_.THIS_FILE_URL.push(url);
+					_.THIS_FILE_URL.push(resolvedURL);
 					component = await scfObjAsyncFn(fnPayload);
 				} catch (e) {
 					console.warn(scfObjAsyncFn.toString());
@@ -811,28 +877,60 @@
 			} catch (error) {
 				console.error(error);
 			}
-		}
+		};
 
-		_.$GenComponentOptions = GenComponentOptions;
+		/**
+		 * 全局单例：同步
+		 * @param {*} prop win doc
+		 * @returns
+		 */
+		_.$single = new Proxy(
+			{},
+			{
+				get(target, prop) {
+					if (!target[prop]) {
+						if (prop === "doc") {
+							target[prop] = $(window.document);
+						}
+						if (prop === "body") {
+							target[prop] = $(window.document.body);
+						}
+						if (prop === "win") {
+							target[prop] = $(window);
+						}
+						if (prop === "shadowTemplate") {
+							const $shadowTemplate = $("<div/>", {
+								style: "opacity: 0;position: fixed;z-index: -1;",
+								// style: "opacity: 1;position: fixed;z-index: 1;",
+								class: "shadow-template-wrapper"
+							}).appendTo(_.$single.body);
+							target[prop] = $shadowTemplate;
+						}
+					}
+					return target[prop];
+				}
+			}
+		);
 
 		/**
 		 *
 		 * @returns { scritpSourceCode, templateSourceCode, styleSourceCode }
 		 */
-		async function SourceCode_SFC(url) {
-			/* 非开发模式下，如果已经加载，直接返回，否则每次都获取最新的代码 */
-			if (!localStorage.isDev && VUE_COMPONENTS_CACHE[url]) {
-				return VUE_COMPONENTS_CACHE[url];
-			} else {
-				/* 缓存 */
-				const scfSourceCode = await _.$loadText(url);
-				VUE_COMPONENTS_CACHE[url] = VueLoader(scfSourceCode);
-				$appendSfcStyle(VUE_COMPONENTS_CACHE[url].styleSourceCode, url);
-				return VUE_COMPONENTS_CACHE[url];
-			}
-		}
 
-		_.$SourceCode_SFC = SourceCode_SFC;
+		_.$sourceCodeSFC = async function ({ resolvedURL, sourceCode }) {
+			/* 非开发模式下，如果已经加载，直接返回，否则每次都获取最新的代码 */
+			if (!isDev && VUE_COMPONENTS_CACHE[resolvedURL]) {
+				return VUE_COMPONENTS_CACHE[resolvedURL];
+			}
+
+			if (!sourceCode) {
+				sourceCode = await _.$loadText(resolvedURL);
+			}
+			/* 缓存 */
+			VUE_COMPONENTS_CACHE[resolvedURL] = VueLoader(sourceCode);
+			$appendSfcStyle(VUE_COMPONENTS_CACHE[resolvedURL].styleSourceCode, resolvedURL);
+			return VUE_COMPONENTS_CACHE[resolvedURL];
+		};
 
 		/**
 		 * 利用less添加样式,独立处理资源路径
@@ -842,8 +940,7 @@
 		async function $appendSfcStyle(styleSourceCode, url) {
 			/* style */
 			if (styleSourceCode) {
-				await _.$appendScript("/common/libs/less.js");
-				const { render } = window.less;
+				const { render } = await _.$appendScript("/common/libs/less.min.js", "less");
 				let cssContent = await new Promise(resolve => {
 					render(_.$resolveCssAssetsPath(styleSourceCode), {}, (error, cssContent) => {
 						if (error) {
@@ -875,27 +972,37 @@
 		 * @returns
 		 */
 		_.$importVue = async function (url, payload = {}) {
+			if (_.isPlainObject(url)) {
+				/* 直接传入对象 */
+				return url;
+			}
 			if (_.isArray(url)) {
 				return Promise.all(_.map(url, _url => _.$importVue(_url)));
 			}
 			const resolvedURL = _.$resolvePath(url);
-			// localStorage.isDev && console.time(url);
-			if (url === "ANY") {
-				url = "/common/any.vue";
-			}
+			return _.$sfcVueObject({ resolvedURL, payload });
+		};
+
+		_.$sfcVueObject = async function ({ resolvedURL, payload, sourceCode }) {
+			/* hmr使用sourceCode不用发请求获取源码， */
+			payload = payload || {};
 			/* 切换页面时的动效 */
 			if (_.$importVue?.Nprogress) {
 				_.$importVue?.Nprogress.start();
 			}
 			try {
-				const { scritpSourceCode, templateSourceCode } = await _.$SourceCode_SFC(resolvedURL);
+				/* 源文件加载之后会有缓存，但是payload会有变化 */
+				/* 所以只用异步组件不加payload，是可以用hmr，window需要自己重新加载 */
+				const { scritpSourceCode, templateSourceCode } = await _.$sourceCodeSFC({ resolvedURL, sourceCode });
 				/* script and template*/
-				const ComponentOptions =
-					(await _.$GenComponentOptions(url, {
-						scritpSourceCode,
-						templateSourceCode,
-						payload
-					})) || {};
+				const params = {
+					resolvedURL,
+					scritpSourceCode,
+					templateSourceCode,
+					payload
+				};
+				const ComponentOptions = (await _.$GenComponentOptions(params)) || {};
+
 				if (payload?.parent) {
 					ComponentOptions.parent = payload?.parent;
 				}
@@ -907,7 +1014,6 @@
 				if (_.$importVue?.Nprogress) {
 					_.$importVue?.Nprogress.done();
 				}
-				// localStorage.isDev && console.timeEnd(url);
 			}
 		};
 
@@ -1008,10 +1114,12 @@
 		const errorArray = [];
 		for (const dom of $target) {
 			const { formItemId } = dom.dataset;
-			const vm = Vue._X_ITEM_VM_S[formItemId];
-			const msg = await vm.validate();
-			if (msg) {
-				errorArray.push([msg, vm]);
+			if (formItemId) {
+				const vm = Vue._X_ITEM_VM_S[formItemId];
+				const msg = await vm.validate();
+				if (msg) {
+					errorArray.push([msg, vm]);
+				}
 			}
 		}
 		if (errorArray.length > 0) {
@@ -1050,7 +1158,6 @@
 		let vm = {};
 		try {
 			const targetDom = document.querySelector(`#${id}`);
-			debugger;
 			const { formItemId } = targetDom.dataset || {};
 			vm = Vue._X_ITEM_VM_S?.[formItemId || "________No"] || {};
 		} catch (error) {
@@ -1114,7 +1221,7 @@
 	 * @param {any} configs
 	 * @returns
 	 */
-	_.$pickValueFromConfigs = function pickValueFromConfigs(configs) {
+	_.$pickValueFromConfigs = function (configs) {
 		return _.reduce(
 			configs,
 			(_params, configs, prop) => {
@@ -1135,6 +1242,25 @@
 			return options[0].value;
 		}
 		return defaultValue;
+	};
+	_.$intToIp4 = int => [(int >>> 24) & 0xff, (int >>> 16) & 0xff, (int >>> 8) & 0xff, int & 0xff].join(".");
+	_.$ip4ToInt = ip => ip.split(".").reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0) >>> 0;
+	_.$isIp4InCidr = ip => cidr => {
+		const [range, bits = 32] = cidr.split("/");
+		const mask = ~(2 ** (32 - bits) - 1);
+		return (_.$ip4ToInt(ip) & mask) === (_.$ip4ToInt(range) & mask);
+	};
+	_.$intToBin = int =>
+		(int >>> 0)
+			.toString(2)
+			.padStart(32, 0)
+			.match(/.{1,8}/g)
+			.join(".");
+
+	_.$calculateCidrRange = cidr => {
+		const [range, bits = 32] = cidr.split("/");
+		const mask = ~(2 ** (32 - bits) - 1);
+		return [_.$intToIp4(_.$ip4ToInt(range) & mask), _.$intToIp4(_.$ip4ToInt(range) | ~mask)];
 	};
 })();
 
@@ -1165,7 +1291,7 @@
 
 	// document.title = window.i18n("adminConsole");
 	const APP = await _.$importVue(`${SRC_ROOT_PATH}/business_${APP_NAME}/${APP_ENTRY_NAME}.vue`);
-	if (localStorage.isDev) {
-		window.APP = APP;
+	if (isDev) {
+		window.HMR_APP = APP;
 	}
 })();

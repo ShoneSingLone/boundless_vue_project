@@ -753,7 +753,7 @@
 				return true;
 			}
 			function dt(n, t, r) {
-				if (typeof n != "function") throw new ti("Expected a function");
+				if (typeof n != "function") throw new TypeError("Expected a function");
 				return bo(function () {
 					n.apply(T, r);
 				}, t);
@@ -1514,7 +1514,7 @@
 						u = On.prototype.thru;
 					for (n && t.reverse(); e--; ) {
 						var i = t[e];
-						if (typeof i != "function") throw new ti("Expected a function");
+						if (typeof i != "function") throw new TypeError("Expected a function");
 						if (u && !o && "wrapper" == ge(i)) var o = new On([], true);
 					}
 					for (e = o ? e : r; ++e < r; )
@@ -1652,7 +1652,7 @@
 			}
 			function fe(n, t, r, e, u, i, o, f) {
 				var c = 2 & t;
-				if (!c && typeof n != "function") throw new ti("Expected a function");
+				if (!c && typeof n != "function") throw new TypeError("Expected a function");
 				var a = e ? e.length : 0;
 				if ((a || ((t &= -97), (e = u = T)), (o = o === T ? o : Ui(Eu(o), 0)), (f = f === T ? f : Eu(f)), (a -= u ? u.length : 0), 64 & t)) {
 					var l = e,
@@ -2025,7 +2025,7 @@
 			}
 			function uu(n, t) {
 				var r;
-				if (typeof t != "function") throw new ti("Expected a function");
+				if (typeof t != "function") throw new TypeError("Expected a function");
 				return (
 					(n = Eu(n)),
 					function () {
@@ -2078,7 +2078,7 @@
 					v = false,
 					g = false,
 					d = true;
-				if (typeof n != "function") throw new ti("Expected a function");
+				if (typeof n != "function") throw new TypeError("Expected a function");
 				return (
 					(t = Su(t) || 0),
 					du(r) && ((v = !!r.leading), (l = (g = "maxWait" in r) ? Ui(Su(r.maxWait) || 0, t) : l), (d = "trailing" in r ? !!r.trailing : d)),
@@ -2098,11 +2098,11 @@
 						i = r.cache;
 					return i.has(u) ? i.get(u) : ((e = n.apply(this, e)), (r.cache = i.set(u, e) || i), e);
 				}
-				if (typeof n != "function" || (null != t && typeof t != "function")) throw new ti("Expected a function");
+				if (typeof n != "function" || (null != t && typeof t != "function")) throw new TypeError("Expected a function");
 				return (r.cache = new (cu.Cache || Fn)()), r;
 			}
 			function au(n) {
-				if (typeof n != "function") throw new ti("Expected a function");
+				if (typeof n != "function") throw new TypeError("Expected a function");
 				return function () {
 					var t = arguments;
 					switch (t.length) {
@@ -2306,7 +2306,7 @@
 				Qu = mn.Object,
 				Xu = mn.RegExp,
 				ni = mn.String,
-				ti = mn.TypeError,
+				TypeError = mn.TypeError,
 				ri = Ku.prototype,
 				ei = Qu.prototype,
 				ui = mn["__core-js_shared__"],
@@ -2906,7 +2906,7 @@
 				}, 0);
 			return (
 				(An.after = function (n, t) {
-					if (typeof t != "function") throw new ti("Expected a function");
+					if (typeof t != "function") throw new TypeError("Expected a function");
 					return (
 						(n = Eu(n)),
 						function () {
@@ -2954,7 +2954,7 @@
 					return (
 						(t = r
 							? c(t, function (n) {
-									if ("function" != typeof n[1]) throw new ti("Expected a function");
+									if ("function" != typeof n[1]) throw new TypeError("Expected a function");
 									return [e(n[0]), n[1]];
 							  })
 							: []),
@@ -3162,7 +3162,7 @@
 					return ur(n, u), r;
 				}),
 				(An.rest = function (n, t) {
-					if (typeof n != "function") throw new ti("Expected a function");
+					if (typeof n != "function") throw new TypeError("Expected a function");
 					return (t = t === T ? t : Eu(t)), fr(n, t);
 				}),
 				(An.reverse = Ge),
@@ -3197,7 +3197,7 @@
 					);
 				}),
 				(An.spread = function (t, r) {
-					if (typeof t != "function") throw new ti("Expected a function");
+					if (typeof t != "function") throw new TypeError("Expected a function");
 					return (
 						(r = null == r ? 0 : Ui(Eu(r), 0)),
 						fr(function (e) {
@@ -3229,7 +3229,7 @@
 				(An.throttle = function (n, t, r) {
 					var e = true,
 						u = true;
-					if (typeof n != "function") throw new ti("Expected a function");
+					if (typeof n != "function") throw new TypeError("Expected a function");
 					return du(r) && ((e = "leading" in r ? !!r.leading : e), (u = "trailing" in r ? !!r.trailing : u)), fu(n, t, { leading: e, maxWait: t, trailing: u });
 				}),
 				(An.thru = Qe),

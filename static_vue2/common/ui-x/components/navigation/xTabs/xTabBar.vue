@@ -3,7 +3,6 @@
 </template>
 <script>
 export default async function () {
-	const { firstUpperCase } = await _.$importVue("/common/utils/utils.vue");
 	return defineComponent({
 		name: "xTabBar",
 		props: {
@@ -33,10 +32,10 @@ export default async function () {
 						}
 
 						if (!tab.active) {
-							offset += $el[`client${firstUpperCase(sizeName)}`];
+							offset += $el[`client${_.$firstUpperCase(sizeName)}`];
 							return true;
 						} else {
-							tabSize = $el[`client${firstUpperCase(sizeName)}`];
+							tabSize = $el[`client${_.$firstUpperCase(sizeName)}`];
 							const tabStyles = window.getComputedStyle($el);
 							if (sizeName === "width" && this.tabs.length > 1) {
 								tabSize -= parseFloat(tabStyles.paddingLeft) + parseFloat(tabStyles.paddingRight);
@@ -48,7 +47,7 @@ export default async function () {
 						}
 					});
 
-					const transform = `translate${firstUpperCase(sizeDir)}(${offset}px)`;
+					const transform = `translate${_.$firstUpperCase(sizeDir)}(${offset}px)`;
 					style[sizeName] = tabSize + "px";
 					style.transform = transform;
 					style.msTransform = transform;

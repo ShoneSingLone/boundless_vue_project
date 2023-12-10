@@ -23,8 +23,8 @@ export default async function () {
 			children: [
 				{
 					icon: "_icon_report",
-					label: i18n("xCard"),
-					href: "/xCard"
+					label: i18n("xBlock"),
+					href: "/xBlock"
 				},
 				{
 					icon: "_icon_report",

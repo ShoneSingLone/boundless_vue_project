@@ -12,7 +12,6 @@
 <script>
 export default async function () {
 	return defineComponent({
-		NEED_HMR: localStorage.isDev,
 		inject: ["APP"],
 		setup() {
 			let state = { content: 0 };

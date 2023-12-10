@@ -1,10 +1,10 @@
 <template>
 	<div class="page-view">
-		<ElCard class="mt10" :header="i18n('xxxxxxxx')">
+		<xCard class="mt10" :header="i18n('xxxxxxxx')">
 			<form ref="form">
 				<xItem :configs="configs" v-for="(configs, prop) in form" :key="prop" />
 			</form>
-		</ElCard>
+		</xCard>
 	</div>
 </template>
 
@@ -23,7 +23,7 @@ export default async function () {
 					url2: {
 						value: "",
 						label: i18n("url2"),
-						rules: [Vue._rules.portRange(1, 111111)]
+						rules: [Vue._rules.keyVal()]
 					}
 				}
 			};

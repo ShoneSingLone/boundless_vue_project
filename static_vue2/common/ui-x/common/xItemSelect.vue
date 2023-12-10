@@ -1,7 +1,7 @@
 <template>
-	<el-select v-model="mixin_value" v-bind="$attrs" v-on="mixin_listeners">
-		<el-option v-for="item in selectOptions" :key="item.value || item.label" :value="item.value" :label="item.label" :disabled="item.disabled || false"> </el-option>
-	</el-select>
+	<xSelect v-model="mixin_value" v-bind="$attrs" v-on="mixin_listeners">
+		<xOption v-for="item in selectOptions" :key="item.value || item.label" :value="item.value" :label="item.label" :disabled="item.disabled || false"> </xOption>
+	</xSelect>
 </template>
 
 <script>

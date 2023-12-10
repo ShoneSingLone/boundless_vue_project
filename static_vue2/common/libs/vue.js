@@ -8,6 +8,7 @@
 	window.Vue = genVue();
 })(function () {
 	"use strict";
+	const X_COMP = {};
 
 	function elSetAttribute(el, key, value) {
 		if (!["function", "object"].includes(typeof value)) {
@@ -97,7 +98,13 @@
 	 * Convert a value to a string that is actually rendered.
 	 */
 	function toString(val) {
-		return val == null ? "" : Array.isArray(val) || (isPlainObject(val) && val.toString === _toString) ? JSON.stringify(val, null, 2) : String(val);
+		try {
+			return val == null ? "" : Array.isArray(val) || (isPlainObject(val) && val.toString === _toString) ? JSON.stringify(val, null, 2) : String(val);
+		} catch (error) {
+			console.error(val);
+			console.error(error);
+			return "[Convert a value to a string that is actually rendered Error]";
+		}
 	}
 
 	/**
@@ -1133,7 +1140,8 @@
 			return val;
 		}
 		if (target._isVue || (ob && ob.vmCount)) {
-			warnMsgVm("Avoid adding reactive properties to a Vue instance or its root $data " + "at runtime - declare it upfront in the data option.");
+			/* Avoid adding reactive properties to a Vue instance or its root $data " + "at runtime - declare it upfront in the data option. */
+			warnMsgVm(`v-model绑定 ${target?.FILE_URL} 的${key} 未定义`);
 			return val;
 		}
 		if (!ob) {
@@ -1934,25 +1942,32 @@
 		var vnode, namespace;
 		vnode = (() => {
 			if (typeof tag === "string") {
-				var Ctor = void 0;
+				let Ctor;
 				namespace = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
 				/* platform built-in elements平台内置元素 */
-				if (config.isReservedTag(tag)) {
-					if (isDef(props) && isDef(props.nativeOn) && props.tag !== "component") {
-						warnMsgVm("The .native modifier for v-on is only valid on components but it was used on <".concat(tag, ">."), context);
+				vnode = (function () {
+					if (config.isReservedTag(tag)) {
+						if (isDef(props) && isDef(props.nativeOn) && props.tag !== "component") {
+							warnMsgVm("The .native modifier for v-on is only valid on components but it was used on <".concat(tag, ">."), context);
+						}
+						vnode = new VNode(config.parsePlatformTagName(tag), props, children, undefined, undefined, context);
+						return vnode;
 					}
-					vnode = new VNode(config.parsePlatformTagName(tag), props, children, undefined, undefined, context);
-				} else if ((!props || !props.pre) && isDef((Ctor = resolveAsset(context.$options, "components", tag)))) {
-					// Vue component
-					vnode = createComponent(Ctor, props, context, children, tag);
-				} else {
-					if (tag.props) {
+
+					if (!props || !props.pre) {
+						Ctor = resolveAsset(context.$options, "components", tag);
+						/* 如果有component定义，就解析定义*/
+						if (isDef(Ctor)) {
+							vnode = createComponent(Ctor, props, context, children, tag);
+							return vnode;
+						}
 					}
 					// unknown or unlisted namespaced elements
 					// check at runtime because it may get assigned a namespace when its
 					// parent normalizes children
 					vnode = new VNode(tag, props, children, undefined, undefined, context);
-				}
+					return vnode;
+				})();
 			} else {
 				if (tag.props) {
 				}
@@ -2412,6 +2427,7 @@
 				vm,
 				"setup"
 			);
+
 			popTarget();
 			setCurrentInstance();
 			if (isFunction(setupResult)) {
@@ -2721,7 +2737,7 @@
 
 	function createAsyncPlaceholder(factory, data, context, children, tag) {
 		/* 占位 */
-		var node = h("div", { staticClass: "el-skeleton is-animated" }, [
+		var node = h("div", { staticClass: "el-skeleton is-animated " + tag }, [
 			h("div", {
 				staticClass: "el-skeleton__item el-skeleton__p el-skeleton__paragraph"
 			})
@@ -2736,13 +2752,13 @@
 		return node;
 	}
 
-	function _HandleAsyncComponentResolved({ res, factory, baseCtor, isSync, owners, owner, resForceRender, ensureCtor }) {
+	function _HandleAsyncComponentResolved({ res, factory, baseCtor, isSync, owners, owner, ownerForceUpdate, ensureCtor }) {
 		// cache resolved
 		factory.resolved = ensureCtor(res, baseCtor);
 		// invoke callbacks only if this is not a synchronous resolve
 		// (async resolves are shimmed as synchronous during SSR)
 		if (!isSync) {
-			resForceRender(true);
+			ownerForceUpdate(true);
 		} else {
 			owners.length = 0;
 		}
@@ -2750,6 +2766,9 @@
 
 	/**
 	 * 用于解析异步组件。在组件定义中，通过调用该函数可以异步加载组件，并在加载完成之后触发回调函数。如果加载失败，会调用错误处理函数。函数还实现了组件加载中的状态更新和组件缓存功能
+	 * @param {*} factory 异步组件的工厂函数 AppHeader: 【() => _.$importVue("@/layout/AppLayoutHeader.vue")】,
+	 * @param {*} baseCtor
+	 *
 	 */
 	function resolveAsyncComponent(factory, baseCtor) {
 		if (isTrue(factory.error) && isDef(factory.errorComp)) {
@@ -2758,6 +2777,7 @@
 		if (isDef(factory.resolved)) {
 			return factory.resolved;
 		}
+		/* 就是它调用了这个组件 */
 		var owner = currentRenderingInstance;
 
 		if (owner && isDef(factory.owners) && factory.owners.indexOf(owner) === -1) {
@@ -2768,19 +2788,24 @@
 			return factory.loadingComp;
 		}
 
+		/* 初次加载 */
 		if (owner && !isDef(factory.owners)) {
-			let owners = (factory.owners = [owner]);
+			let owners = [owner];
+			factory.owners = owners;
+
 			let isSync = true;
 			let timerLoading = null;
 			let timerTimeout = null;
+
 			owner.$on("hook:destroyed", function () {
 				return removeAnItemFromAnArray(owners, owner);
 			});
-			var resForceRender = function (renderCompleted) {
+
+			const ownerForceUpdate = isRenderCompleted => {
 				for (var i = 0, l = owners.length; i < l; i++) {
 					owners[i].$forceUpdate();
 				}
-				if (renderCompleted) {
+				if (isRenderCompleted) {
 					owners.length = 0;
 					if (timerLoading !== null) {
 						clearTimeout(timerLoading);
@@ -2792,54 +2817,68 @@
 					}
 				}
 			};
-			var resolve = once(function (res) {
-				Vue._HandleAsyncComponentResolved.call(this, { res, factory, baseCtor, isSync, owners, owner, resForceRender, ensureCtor });
+			var onSuccess = once(function (res) {
+				Vue._HandleAsyncComponentResolved.call(this, { res, factory, baseCtor, isSync, owners, owner, ownerForceUpdate, ensureCtor });
 			});
 
-			var reject_1 = once(function (reason) {
+			var onError = once(function (reason) {
 				warnMsgVm("Failed to resolve async component: ".concat(String(factory)) + (reason ? "\nReason: ".concat(reason) : ""));
 				if (isDef(factory.errorComp)) {
 					factory.error = true;
-					resForceRender(true);
+					ownerForceUpdate(true);
 				}
 			});
-			var res_1 = factory(resolve, reject_1);
-			if (isObject(res_1)) {
-				if (isPromise(res_1)) {
-					// () => Promise
-					if (isUndef(factory.resolved)) {
-						res_1.then(resolve, reject_1);
-					}
-				} else if (isPromise(res_1.component)) {
-					res_1.component.then(resolve, reject_1);
-					if (isDef(res_1.error)) {
-						factory.errorComp = ensureCtor(res_1.error, baseCtor);
-					}
-					if (isDef(res_1.loading)) {
-						factory.loadingComp = ensureCtor(res_1.loading, baseCtor);
-						if (res_1.delay === 0) {
-							factory.loading = true;
-						} else {
-							// @ts-expect-error NodeJS timeout type
-							timerLoading = setTimeout(function () {
-								timerLoading = null;
-								if (isUndef(factory.resolved) && isUndef(factory.error)) {
-									factory.loading = true;
-									resForceRender(false);
-								}
-							}, res_1.delay || 200);
+
+			/* 调用 (onSuccess, onError) => _.$importVue("@/layout/AppLayoutHeader.vue") */
+			var res_LoadComp = factory(onSuccess, onError);
+
+			if (isObject(res_LoadComp)) {
+				(function () {
+					/* factory可以同步返回一个promise，常用的方式：  () => _.$importVue("@/layout/AppLayoutHeader.vue")*/
+					if (isPromise(res_LoadComp)) {
+						if (isUndef(factory.resolved)) {
+							res_LoadComp.then(onSuccess, onError);
+							return;
 						}
 					}
-					if (isDef(res_1.timeout)) {
-						// @ts-expect-error NodeJS timeout type
-						timerTimeout = setTimeout(function () {
-							timerTimeout = null;
-							if (isUndef(factory.resolved)) {
-								reject_1("timeout (".concat(res_1.timeout, "ms)"));
+					/*
+					 *factory可以同步返回一个普通对象，
+					 *component 是promsie对象，用以加载组件
+					 *error 是加载错误返回次组件
+					 *loading
+					 *timeout
+					 */
+					if (isPromise(res_LoadComp.component)) {
+						res_LoadComp.component.then(onSuccess, onError);
+						if (isDef(res_LoadComp.error)) {
+							factory.errorComp = ensureCtor(res_LoadComp.error, baseCtor);
+						}
+						if (isDef(res_LoadComp.loading)) {
+							factory.loadingComp = ensureCtor(res_LoadComp.loading, baseCtor);
+							if (res_LoadComp.delay === 0) {
+								factory.loading = true;
+							} else {
+								// @ts-expect-error NodeJS timeout type
+								timerLoading = setTimeout(function () {
+									timerLoading = null;
+									if (isUndef(factory.resolved) && isUndef(factory.error)) {
+										factory.loading = true;
+										ownerForceUpdate(false);
+									}
+								}, res_LoadComp.delay || 200);
 							}
-						}, res_1.timeout);
+						}
+						if (isDef(res_LoadComp.timeout)) {
+							// @ts-expect-error NodeJS timeout type
+							timerTimeout = setTimeout(function () {
+								timerTimeout = null;
+								if (isUndef(factory.resolved)) {
+									onError("timeout (".concat(res_LoadComp.timeout, "ms)"));
+								}
+							}, res_LoadComp.timeout);
+						}
 					}
-				}
+				})();
 			}
 			isSync = false;
 			// return in case resolved synchronously
@@ -3006,14 +3045,7 @@
 		if (parent) {
 			if (!options.abstract) {
 				/* 如果上层组件是抽象组件，则跳过，用上上层的$parent */
-				while (parent.$options.abstract && parent.$parent) {
-					parent = parent.$parent;
-				}
-				parent.$children.push(vm);
-			}
-			if (!vm.isHmrWrapperComponent) {
-				/* 如果上层组件是抽象组件，则跳过，用上上层的$parent */
-				while (parent.isHmrWrapperComponent && parent.$parent) {
+				while (parent.$options?.abstract && parent.$parent) {
 					parent = parent.$parent;
 				}
 				parent.$children.push(vm);
@@ -5189,11 +5221,18 @@
 		}
 		// async component
 		var asyncFactory;
+		/* 如果组件不可直接使用，尝试加载 */
 		// @ts-expect-error
 		if (isUndef(Ctor.cid)) {
 			asyncFactory = Ctor;
+			/* component是一个异步组件，由一个异步函数加载 */
 			Ctor = resolveAsyncComponent(asyncFactory, baseCtor);
 			if (Ctor === undefined) {
+				/*
+				 * 这个JavaScript函数是一个辅助函数， 用于在异步组件渲染时返回一个占位节点。
+				 * 这个节点在渲染时被呈现为注释节点，但保留了原始节点的所有信息。
+				 * 这些信息用于异步服务器渲染和hydration（重新 hydration）
+				 * */
 				// return a placeholder node for async component, which is rendered
 				// as a comment node but preserves all the raw information for the node.
 				// the information will be used for async server-rendering and hydration.
@@ -5342,7 +5381,7 @@
 			if (error) {
 				throw error;
 			} else {
-				console.error(`[Vue warn]: ${vm?.$vnode?.FILE_URL || "未知"}\n${msg}`);
+				console.error(`[Vue warn]: ${vm?.$vnode?.FILE_URL || ""}\n${msg}`);
 			}
 		}
 	};
@@ -12448,13 +12487,15 @@
 				return attrs[prop];
 			} else {
 				current = current.$parent;
-				attrs = current.$attrs;
+				attrs = current?.$attrs;
 			}
 		}
+		return false;
 	};
 	Vue.prototype.dispatch = dispatch;
 	Vue.prototype.broadcast = broadcast;
 	Vue.prototype.isDef = isDef;
+	Vue.X_COMP = X_COMP;
 	/* ffffffffffffffffffffffffffffffffffffffffffffffffffffffff */
 	return Vue;
 });

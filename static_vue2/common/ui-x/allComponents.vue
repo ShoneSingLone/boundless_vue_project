@@ -1,23 +1,35 @@
 <script>
 export default async function () {
-	Vue.prototype.isKorean = function (text) {
-		const reg = /([(\uAC00-\uD7AF)|(\u3130-\u318F)])+/gi;
-		return reg.test(text);
-	};
-
 	return [
 		/* *************** */
+		"components/base/xBtn/xBtn",
+		"components/base/xBtn/xBtnArray",
+		"components/base/xBtn/xBtnGroup",
+		/*  */
 		"components/navigation/xTabs/xTabs",
 		"components/navigation/xTabs/xTabPane",
 		"components/data/xTag/xTag",
 		"components/data/xTableVir/xTableVir",
 		"components/form/xInput/xInput",
+		"components/form/xSelect/xSelect",
+		"components/form/xInputNumber/xInputNumber",
+		"components/form/xCheckbox/xCheckbox",
+		"components/other/xCard/xCard",
+		"components/other/xBlock/xBlock",
+		/*  */
+		"components/form/xSelect/xSelect",
+		"components/form/xSelect/xOption",
+		"components/form/xSelect/xOptionGroup",
+		"components/form/xSelect/xSelectDropdown",
+		/*  */
+		"components/navigation/xDropdown/xDropdown",
+		"components/navigation/xDropdown/xDropdownItem",
+		"components/navigation/xDropdown/xDropdownMenu",
+		/*  */
+		"components/other/xScrollbar/xScrollbar",
 		/* *************** */
 		"common/xFormItemWrapper",
 		"common/xAutoResizer",
-		"common/xBtn",
-		"common/xBtnGroup",
-		"common/xCard",
 		"common/xCellBtnGroup",
 		"common/xCellDate",
 		"common/xCellEllipsis",

@@ -21,6 +21,7 @@ function appUseProxy(app) {
 function appRun(app, port = 3000) {
 	app.listen(port).on("error", () => {
 		console.log("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀", `端口${port}被占用`);
+		app.server.close();
 		appRun(app, ++port);
 	});
 

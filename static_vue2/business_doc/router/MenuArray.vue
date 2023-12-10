@@ -3,11 +3,6 @@ export default async function () {
 	return [
 		{
 			icon: "_icon_report",
-			label: i18n("所有项目"),
-			href: "/all-project"
-		},
-		{
-			icon: "_icon_report",
 			label: i18n("CopyThis模板"),
 			children: [
 				{
@@ -25,6 +20,24 @@ export default async function () {
 					icon: "_icon_report",
 					label: i18n("水波纹"),
 					href: "/directive/ripple"
+				},
+				{
+					icon: "_icon_report",
+					label: i18n("openWindow"),
+					href: "/other/open_window"
+				},
+				{ icon: "_icon_report", label: i18n("Popover"), href: "/other/popover" }
+			]
+		},
+		{
+			icon: "_icon_report",
+			label: i18n("聚合类组件"),
+			children: [
+				{ href: "/x-component/x-item", icon: "_icon_report", label: i18n("xItem") },
+				{
+					icon: "_icon_report",
+					label: i18n("xFormItemWrapper"),
+					href: "/other/x-form-item-wrapper"
 				}
 			]
 		},
@@ -33,85 +46,47 @@ export default async function () {
 			label: i18n("组件"),
 			children: [
 				{
+					href: "/base/button",
 					icon: "_icon_report",
-					label: i18n("Basic"),
-					children: []
+					label: i18n("button")
+				},
+
+				{ href: "/component/form/input", icon: "_icon_report", label: i18n("input") },
+				{ href: "/component/form/input-number", icon: "_icon_report", label: i18n("inputNumber") },
+				{ href: "/component/form/checkbox", icon: "_icon_report", label: i18n("checkbox") },
+				{
+					href: "/component/form/select",
+					icon: "_icon_report",
+					label: i18n("select")
 				},
 				{
+					href: "/component/form/ip-address",
 					icon: "_icon_report",
-					label: i18n("数据录入"),
-					children: [
-						{
-							href: "/component/form/select",
-							icon: "_icon_report",
-							label: i18n("select")
-						},
-						{
-							href: "/component/form/input",
-							icon: "_icon_report",
-							label: i18n("input")
-						},
-						{
-							href: "/component/form/ip-address",
-							icon: "_icon_report",
-							label: i18n("ip-address")
-						}
-					]
-				},
-				{
-					icon: "_icon_report",
-					label: i18n("数据展示"),
-					children: [
-						{
-							icon: "_icon_report",
-							label: i18n("icon"),
-							href: "/component/data/icon"
-						},
-						{
-							icon: "_icon_report",
-							label: i18n("card"),
-							href: "/component/data/card"
-						},
-						{
-							icon: "_icon_report",
-							label: i18n("Tag") + i18n("标签"),
-							href: "/component/data/tag"
-						},
-						{
-							icon: "_icon_report",
-							label: i18n("virtualized-table"),
-							href: "/component/data/virtualized-table"
-						}
-					]
+					label: i18n("ip-address")
 				},
 
 				{
 					icon: "_icon_report",
-					label: i18n("Navigation"),
-					children: [
-						{
-							icon: "_icon_report",
-							label: i18n("tabs"),
-							href: "/component/navigation/tabs"
-						}
-					]
-				}
-			]
-		},
-		{
-			icon: "_icon_report",
-			label: i18n("Other"),
-			children: [
-				{
-					icon: "_icon_report",
-					label: i18n("openWindow"),
-					href: "/other/open_window"
+					label: i18n("icon"),
+					href: "/component/data/icon"
 				},
 				{
 					icon: "_icon_report",
-					label: i18n("xFormItemWrapper"),
-					href: "/other/x-form-item-wrapper"
-				}
+					label: i18n("card"),
+					href: "/component/data/card"
+				},
+				{
+					icon: "_icon_report",
+					label: i18n("Tag") + i18n("标签"),
+					href: "/component/data/tag"
+				},
+				{
+					icon: "_icon_report",
+					label: i18n("virtualized-table"),
+					href: "/component/data/virtualized-table"
+				},
+				{ icon: "_icon_report", label: i18n("tabs"), href: "/component/navigation/tabs" },
+				{ icon: "_icon_report", label: i18n("dropdown"), href: "/component/navigation/dropdown" }
 			]
 		},
 		{

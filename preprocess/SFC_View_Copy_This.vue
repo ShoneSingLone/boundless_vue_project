@@ -4,7 +4,7 @@
 		<xPageContent>
 			<xTablebar :configs="configsTable">
 				<template #left>
-					<xBtnGroup :configs="oprBtnArray" />
+					<xBtnArray :configs="oprBtnArray" />
 				</template>
 				<xItem :configs="c_search.siteId" />
 				<xItem :configs="c_search.azId" />

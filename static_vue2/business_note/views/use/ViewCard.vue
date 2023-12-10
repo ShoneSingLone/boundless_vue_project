@@ -1,7 +1,7 @@
 <template>
 	<div class="page-view view-ripple">
 		<xPageContent>
-			<xCard>
+			<xBlock>
 				<template #header>
 					<div class="flex">
 						<h1>heaer</h1>
@@ -9,7 +9,7 @@
 					</div>
 				</template>
 				content
-			</xCard>
+			</xBlock>
 		</xPageContent>
 	</div>
 </template>

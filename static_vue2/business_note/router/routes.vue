@@ -4,7 +4,7 @@ export default async function () {
 		_.$newRoute("/dev", "@/views/dev/ViewDev.vue"),
 		_.$newRoute("/io", "@/views/dev/ViewIo.vue"),
 		_.$newRoute("/xTableVir", "@/views/use/ViewTableVir.vue"),
-		_.$newRoute("/xCard", "@/views/use/ViewCard.vue"),
+		_.$newRoute("/xBlock", "@/views/use/ViewCard.vue"),
 		_.$newRoute("/xTable", "@/views/use/ViewTable.vue"),
 		_.$newRoute("/xTableDiv", "@/views/use/ViewTableDiv.vue"),
 		_.$newRoute("/xItem", "@/views/use/ViewItem/ViewItem.vue", {

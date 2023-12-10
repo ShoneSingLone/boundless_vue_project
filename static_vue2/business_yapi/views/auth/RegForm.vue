@@ -1,24 +1,24 @@
 <template>
-	<form ref="form">
+	<xForm ref="form">
 		<!-- 用户名 -->
-		<xItem :configs="configsForm.userName" autocomplete="userName" />
-		<xGap t="20" />
 		<xItem :configs="configsForm.email" autocomplete="email" />
-		<xGap t="20" />
+		<div class="ml16">
+			<xBtn :configs="configsGetCode" />
+		</div>
+
+		<xItem span="full" :configs="configsForm.code" autocomplete="email" />
+		<xItem span="full" :configs="configsForm.userName" autocomplete="userName" />
 		<!-- 密码 -->
-		<xItem :configs="configsForm.password" autocomplete="current-password" />
-		<xGap t="20" />
+		<xItem span="full" :configs="configsForm.password" autocomplete="current-password" />
 		<!-- 确认密码 -->
-		<xItem :configs="configsForm.confirm" autocomplete="current-password" />
-		<xGap t="20" />
-		<div class="item-wrapper">
+		<xItem span="full" :configs="configsForm.confirm" autocomplete="current-password" />
+		<div class="item-wrapper" span="full">
 			<xBtn :configs="configsSubmit" />
 		</div>
-	</form>
+	</xForm>
 </template>
 <script>
 export default async function () {
-	const { THIS_FILE_URL } = this;
 	return defineComponent({
 		props: {
 			form: {
@@ -32,95 +32,159 @@ export default async function () {
 			}
 		},
 		setup() {
-			return {
-				cptRouter,
-				Methods_App: stateApp
-			};
+			return {};
 		},
 		data() {
 			const vm = this;
 			return {
 				configsForm: {
 					userName: defItem({
-						value: "",
+						value: _.$lStorage.reg_userName || "",
 						size: "large",
 						/* render的时候重新获取 */
-						placeholder: () => xI("用户名"),
-						rules: [FormRules.required(xI("请输入用户名!")[EVENT_TYPE.blur])],
+						placeholder: i18n("用户名，显示给其他人看"),
+						rules: [Vue._rules.required(i18n("请输入用户名!")["blur"])],
 						$vSlots: {
-							prefix: () => <xIcon icon="UserOutlined" style={stylesLoginFormIcon.icon} />
+							prefix() {
+								return h("xIcon", {
+									icon: "_UserOutlined",
+									style: Vue._var.stylesLoginFormIcon
+								});
+							}
 						}
 					}),
 					email: defItem({
-						value: "",
+						value: _.$lStorage.reg_email || "",
 						size: "large",
 						/* render的时候重新获取 */
-						placeholder: () => xI("Email"),
-						rules: [FormRules.required(xI("请输入Email!")[EVENT_TYPE.blur]), FormRules.email()],
+						placeholder: i18n("E-mail，登录和收邮件用"),
+						rules: [Vue._rules.required(i18n("请输入Email!")), Vue._rules.email()],
 						$vSlots: {
-							prefix: () => <xIcon icon="MailOutlined" style={stylesLoginFormIcon.icon} />
+							prefix() {
+								return h("xIcon", {
+									icon: "_MailOutlined",
+									style: Vue._var.stylesLoginFormIcon
+								});
+							}
 						}
 					}),
 					password: defItem({
-						value: "",
-						isPassword: true,
+						value: _.$lStorage.reg_password || "",
+						isPwd: true,
 						size: "large",
 						/* render的时候重新获取 */
-						placeholder: () => xI("密码"),
-						rules: [FormRules.required(xI("请输入密码"), [EVENT_TYPE.update])],
+						placeholder: i18n("密码"),
+						rules: [Vue._rules.required(i18n("请输入密码"), ["update"])],
 						onValidateFail: thisConfigs => {
 							console.log(thisConfigs.itemTips);
 						},
 						$vSlots: {
-							prefix: () => <xIcon icon="LockOutlined" style={stylesLoginFormIcon.icon} />
+							prefix() {
+								return h("xIcon", {
+									icon: "_LockOutlined",
+									style: Vue._var.stylesLoginFormIcon
+								});
+							}
 						}
 					}),
 					confirm: defItem({
-						value: "",
-						isPassword: true,
+						value: _.$lStorage.reg_confirm || "",
+						isPwd: true,
 						size: "large",
 						/* render的时候重新获取 */
-						placeholder: () => xI("请再次输入密码!"),
+						placeholder: i18n("请再次输入密码!"),
 						rules: [
-							FormRules.required(xI("请再次输入密码!"), [EVENT_TYPE.blur]),
-							newRule({
-								validator: async confirm => {
-									if (vm.configsForm.password.value !== confirm) {
-										return xI("两次输入的密码不一致!");
+							Vue._rules.required(i18n("请再次输入密码!")),
+							{
+								validator: async ({ val }) => {
+									if (vm.configsForm.password.value !== val) {
+										return i18n("两次输入的密码不一致!");
 									}
 									return "";
 								},
-								trigger: [EVENT_TYPE.update]
-							})
+								trigger: ["update"]
+							}
 						],
 						$vSlots: {
-							prefix: () => <xIcon icon="LockOutlined" style={stylesLoginFormIcon.icon} />
+							prefix() {
+								return h("xIcon", {
+									icon: "_LockOutlined",
+									style: Vue._var.stylesLoginFormIcon
+								});
+							}
+						}
+					}),
+					code: defItem({
+						value: _.$lStorage.reg_code || "",
+						size: "large",
+						/* render的时候重新获取 */
+						placeholder: i18n("邮箱验证码"),
+						rules: [Vue._rules.required(i18n("请输入邮箱收到的验证码"))],
+						$vSlots: {
+							prefix() {
+								return h("xIcon", {
+									icon: "_verifyCode",
+									style: Vue._var.stylesLoginFormIcon
+								});
+							}
 						}
 					})
-				},
-				configsSubmit: {
-					size: "large",
-					type: "primary",
-					class: "login-button flex center login-form-button",
-					text: () => xI("注册"),
-					async onClick() {
-						try {
-							if (!(await itemsInvalid(vm.$refs.form))) {
-								const res = await API.user.regActions(pickValueFrom(vm.configsForm));
-								xU.notification.success(xI('"注册成功"'));
-
-								cptRouter.value.go("/group");
-							} else {
-								console.error("未通过验证");
-							}
-						} catch (e) {
-							xU.notification.error(e.message);
-						}
-					}
 				}
 			};
 		},
-		methods: {}
+		computed: {
+			configsGetCode() {
+				const vm = this;
+				return {
+					size: "large",
+					// preset: "blue",
+					label: i18n("获取验证码"),
+					disabled() {
+						return !Vue._reg.email().test(vm.configsForm.email.value);
+					},
+					async onClick() {
+						try {
+							const { data } = await Vue._api.postNewVarifyCode(vm.configsForm.email.value);
+							if (data) {
+								_.$msgSuccess(data.msg);
+								vm.$router.push({ path: "/group" });
+							}
+						} catch (e) {
+							_.$msgError(e.message);
+						}
+					}
+				};
+			},
+			/* 提交 */
+			configsSubmit() {
+				const vm = this;
+				return {
+					size: "large",
+					preset: "blue",
+					class: "login-button flex center login-form-button",
+					label: i18n("注册"),
+					async onClick() {
+						const formData = _.$pickValueFromConfigs(vm.configsForm);
+						_.each(formData, (val, key) => {
+							_.$lStorage[`reg_${key}`] = val;
+						});
+
+						try {
+							const [error] = await _.$validateForm(vm.$refs.form);
+							if (error) {
+								console.error("未通过验证");
+							} else {
+								const res = await Vue._api.postUserReg(formData);
+								_.$msgSuccess(i18n("注册成功"));
+								vm.$router.push({ path: "/group" });
+							}
+						} catch (e) {
+							_.$msgError(e.message);
+						}
+					}
+				};
+			}
+		}
 	});
 }
 </script>

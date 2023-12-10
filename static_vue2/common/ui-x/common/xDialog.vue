@@ -55,7 +55,7 @@ export default async function () {
 	display: flex;
 	flex-flow: column nowrap;
 
-	.el-card {
+	.xCard {
 		// overflow: auto;
 	}
 }

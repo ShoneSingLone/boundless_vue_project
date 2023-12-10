@@ -5834,6 +5834,7 @@ export default async function () {
 	pre {
 		margin: var(--ui-one);
 		> code {
+			max-width: 800px;
 			padding: var(--ui-one);
 			border-radius: var(--border-radius);
 			box-shadow: var(--el-box-shadow);
@@ -5841,18 +5842,18 @@ export default async function () {
 	}
 
 	p {
+		line-height: 32px;
 		font-weight: 500;
 		font-size: 14px;
 		color: #5e6d82;
-
-		> code {
-			padding: 4px;
-			background-color: #fdf6ec;
-			border-color: #faecd8;
-			color: #e6a23c;
-			border-radius: var(--border-radius);
-			box-shadow: var(--el-box-shadow);
-		}
+	}
+	code {
+		padding: 4px;
+		background-color: #fdf6ec;
+		border-color: #faecd8;
+		color: #e6a23c;
+		border-radius: var(--border-radius);
+		box-shadow: var(--el-box-shadow);
 	}
 
 	blockquote {
@@ -5872,6 +5873,10 @@ export default async function () {
 		margin-left: var(--ui-one);
 	}
 
+	ul > li {
+		line-height: 24px;
+		list-style: initial;
+	}
 	table {
 		display: table;
 		border-collapse: collapse;

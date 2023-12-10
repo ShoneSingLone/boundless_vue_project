@@ -5,7 +5,7 @@
 			{{ tag }}
 		</xTag>
 		<xInput class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm"> </xInput>
-		<el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+		<xBtn v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</xBtn>
 	</div>
 </template>
 <script>

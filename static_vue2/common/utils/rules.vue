@@ -9,6 +9,25 @@ export default async function () {
 	 */
 	if (!Vue._rules) {
 		Vue._rules = {
+			serviceName() {
+				return {
+					name: "serviceName",
+					async validator({ val }) {
+						if (!_.$isInput(val)) {
+							return;
+						}
+						const errorTips = "以小写字母开头,由小写字母，数字，中划线(-)组成，63个字符之内,且不能以中划线(-)结尾。";
+
+						var urlRegex = Vue._reg.serviceName();
+						if (urlRegex.test(val)) {
+							return "";
+						} else {
+							return errorTips;
+						}
+					},
+					trigger: ["change", "blur"]
+				};
+			},
 			domainWithAnyStart: () => {
 				return {
 					name: "domain",
@@ -16,7 +35,7 @@ export default async function () {
 						if (!_.$isInput(val)) {
 							return;
 						}
-						var urlRegex = Vue._reg.domainReg;
+						var urlRegex = Vue._reg.domainReg();
 						if (urlRegex.test(val)) {
 							return "";
 						} else if (urlRegex.test(val.replace(/^\*\./, ""))) {
@@ -35,11 +54,20 @@ export default async function () {
 						if (!_.$isInput(val)) {
 							return;
 						}
-						var urlRegex = Vue._reg.keyVal;
-						if (!urlRegex.test(val)) {
-							return "以字母或者数字开头和结尾，由字母、数字连接符(-)、下划线(_)、点号(.)组成";
+						var urlRegex = Vue._reg.keyVal();
+						var urlRegex2 = Vue._reg.keyValOnlyOne();
+
+						if (String(val).length > 1) {
+							if (!urlRegex.test(val)) {
+								return "以字母或者数字开头和结尾，由字母、数字连接符(-)、下划线(_)、点号(.)组成";
+							}
+							return "";
+						} else {
+							if (!urlRegex2.test(val)) {
+								return "以字母或者数字开头和结尾，由字母、数字连接符(-)、下划线(_)、点号(.)组成";
+							}
+							return "";
 						}
-						return "";
 					},
 					trigger: ["change", "blur"]
 				};
@@ -51,7 +79,7 @@ export default async function () {
 						if (!_.$isInput(val)) {
 							return;
 						}
-						var urlRegex = Vue._reg.url1;
+						var urlRegex = Vue._reg.url1();
 						if (!urlRegex.test(val)) {
 							return "以/开头，由英文字母、数字或特殊字符-/.%?#&=组成";
 						}
@@ -67,7 +95,7 @@ export default async function () {
 						if (!_.$isInput(val)) {
 							return;
 						}
-						var urlRegex = Vue._reg.url2;
+						var urlRegex = Vue._reg.url2();
 						if (urlRegex.test(val)) {
 							return "";
 						} else {
@@ -102,13 +130,13 @@ export default async function () {
 				};
 			},
 			required: defaultMsg => {
-				defaultMsg = defaultMsg === undefined ? i18n("requiredFields") : defaultMsg;
+				defaultMsg = defaultMsg === undefined ? i18n("必填项") : defaultMsg;
 				return {
 					name: "required",
 					async validator({ val }) {
 						let msg = "";
 						if (!_.$isInput(val)) {
-							msg = defaultMsg || i18n("requiredFields");
+							msg = defaultMsg || i18n("必填项");
 						}
 						/* 返回提示信息即error */
 						/* 返回""为success */
@@ -120,11 +148,12 @@ export default async function () {
 			email: () => {
 				return {
 					name: "email",
-					async validator(value) {
-						if (RegexFn.email().test(value)) {
-							return "";
+					async validator({ val }) {
+						var urlRegex = Vue._reg.email();
+						if (!urlRegex.test(val)) {
+							return i18n("请输入Email");
 						}
-						return i18n("请输入Email");
+						return "";
 					}
 				};
 			},

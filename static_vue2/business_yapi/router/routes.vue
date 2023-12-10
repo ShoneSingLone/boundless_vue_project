@@ -1,7 +1,10 @@
 <script>
 export default async function () {
 	return [
-		_.$newRoute("/login", "@/views/ViewLogin.vue"),
+		_.$newRoute("/login", "@/views/Login.vue"),
+		_.$newRoute("/api", "@/views/Api/Api.vue", {
+			children: [_.$newRoute("/api/group", "@/views/Api/Group.vue")]
+		}),
 		{
 			/* 本来应该是NotFound，但是没有必要 */
 			path: "*",

@@ -17,7 +17,7 @@ export default async function () {
 
 			let tag = "xInput";
 			if (this.isNumber) {
-				tag = "el-input-number";
+				tag = "xInputNumber";
 			}
 			let attrs = {
 				...vm.$attrs,

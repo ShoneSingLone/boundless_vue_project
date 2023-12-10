@@ -1414,34 +1414,42 @@ ul::-webkit-scrollbar-thumb {
 
 <script>
 export default async function () {
-	(function addDirective() {
-		[
-			{ name: "ripple", url: "/common/ui-x/directive/ripple.vue" },
-			{ name: "xloading", url: "/common/ui-x/directive/xloading.vue" }
-		].forEach(async ({ url, name }) => {
-			const directive = await _.$importVue(url);
-			Vue.directive(name, directive);
-		});
-	})();
-
-	await _.$importVue("/common/ui-x/common/xUIcomponetUtils.vue");
+	await Promise.all([
+		Promise.all(
+			[
+				{ name: "xtips", url: "/common/ui-x/directive/xtips/xtips.vue" },
+				{ name: "ripple", url: "/common/ui-x/directive/ripple.vue" },
+				{ name: "xloading", url: "/common/ui-x/directive/xloading.vue" }
+			].map(async ({ url, name }) => {
+				const directive = await _.$importVue(url);
+				Vue.directive(name, directive);
+			})
+		),
+		_.$importVue("/common/ui-x/common/xUIcomponetUtils.vue")
+	]);
 	await (async function lazyLoadAllComponents() {
 		const ALL_COMPONENTS = await _.$importVue("/common/ui-x/allComponents.vue");
 		Vue.ALL_COMPONENTS = ALL_COMPONENTS;
 		const loadComponentByImportVue = async componentpath => {
 			const componentName = _.last(componentpath.split("/"));
-			/* 懒加载组件 */
-			Vue.component(componentName, async () => {
+			if (["xDropdownMenu", "xDropdown", "xBtn"].includes(componentName)) {
+				/* xBtn 多个地方用到，但是异步加载会有bug:骨架屏不刷新 */
 				const component = await _.$importVue(`/common/ui-x/${componentpath}.vue`);
-				if (/^xCell/.test(componentName)) {
-					/**
-					 * props: ["row", "configs"], row,index,configs,prop 包含当前行、列、下标、配置信息
-					 * xCell****的组件 用于列表的cell，每一个默认有带有row configs props
-					 */
-					component.props = ["row", "configs"];
-				}
-				return component;
-			});
+				Vue.component(componentName, component);
+			} else {
+				/* 懒加载组件 */
+				Vue.component(componentName, async () => {
+					const component = await _.$importVue(`/common/ui-x/${componentpath}.vue`);
+					if (/^xCell/.test(componentName)) {
+						/**
+						 * props: ["row", "configs"], row,index,configs,prop 包含当前行、列、下标、配置信息
+						 * xCell****的组件 用于列表的cell，每一个默认有带有row configs props
+						 */
+						component.props = ["row", "configs"];
+					}
+					return component;
+				});
+			}
 		};
 
 		_.each(ALL_COMPONENTS, loadComponentByImportVue);

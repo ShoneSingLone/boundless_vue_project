@@ -1,7 +1,6 @@
 <script>
 export default async function () {
-	const { addResizeListener, removeResizeListener } = await _.$importVue("/common/utils/compositionAPI.vue");
-	const { firstUpperCase } = await _.$importVue("/common/utils/utils.vue");
+	const { addResizeListener, removeResizeListener } = await _.$importVue("/common/utils/utils.vue");
 
 	return defineComponent({
 		name: "TabNav",
@@ -46,7 +45,7 @@ export default async function () {
 
 		methods: {
 			scrollPrev() {
-				const containerSize = this.$refs.navScroll[`offset${firstUpperCase(this.sizeName)}`];
+				const containerSize = this.$refs.navScroll[`offset${_.$firstUpperCase(this.sizeName)}`];
 				const currentOffset = this.navOffset;
 
 				if (!currentOffset) return;
@@ -56,8 +55,8 @@ export default async function () {
 				this.navOffset = newOffset;
 			},
 			scrollNext() {
-				const navSize = this.$refs.nav[`offset${firstUpperCase(this.sizeName)}`];
-				const containerSize = this.$refs.navScroll[`offset${firstUpperCase(this.sizeName)}`];
+				const navSize = this.$refs.nav[`offset${_.$firstUpperCase(this.sizeName)}`];
+				const containerSize = this.$refs.navScroll[`offset${_.$firstUpperCase(this.sizeName)}`];
 				const currentOffset = this.navOffset;
 
 				if (navSize - currentOffset <= containerSize) return;
@@ -100,8 +99,8 @@ export default async function () {
 			update() {
 				if (!this.$refs.nav) return;
 				const sizeName = this.sizeName;
-				const navSize = this.$refs.nav[`offset${firstUpperCase(sizeName)}`];
-				const containerSize = this.$refs.navScroll[`offset${firstUpperCase(sizeName)}`];
+				const navSize = this.$refs.nav[`offset${_.$firstUpperCase(sizeName)}`];
+				const containerSize = this.$refs.navScroll[`offset${_.$firstUpperCase(sizeName)}`];
 				const currentOffset = this.navOffset;
 
 				if (containerSize < navSize) {

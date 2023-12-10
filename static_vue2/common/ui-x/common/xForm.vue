@@ -9,7 +9,7 @@ export default async function () {
 			return function () {
 				const slotsVNode = this.renderSlot("default");
 				return h(
-					"form",
+					"div",
 					{
 						ref: "xForm",
 						class: "xForm",

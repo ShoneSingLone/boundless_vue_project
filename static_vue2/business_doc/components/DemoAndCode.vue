@@ -6,9 +6,6 @@ export default async function () {
 			styleContainer() {
 				return {
 					position: "relative"
-					// overflow: this.isFold ? "hidden" : "unset",
-					// height: this.isFold ? "48px" : "unset",
-					// "padding-top": this.isFold ? "24px" : 0
 				};
 			}
 		},
@@ -38,7 +35,8 @@ export default async function () {
 				/* 重新运行 */
 				const { scritpSourceCode, templateSourceCode } = this.BussinessComponentSourceCode;
 				/* script and template*/
-				const BussinessComponent = await _.$GenComponentOptions(this.path, {
+				const BussinessComponent = await _.$GenComponentOptions({
+					resolvedURL: _.$resolvePath(this.path),
 					scritpSourceCode,
 					templateSourceCode,
 					payload: this.payload
@@ -47,7 +45,7 @@ export default async function () {
 				this.isLoading = false;
 			},
 			async getBussinessComponent() {
-				this.BussinessComponentSourceCode = await _.$SourceCode_SFC(_.$resolvePath(this.path));
+				this.BussinessComponentSourceCode = await _.$sourceCodeSFC({ resolvedURL: _.$resolvePath(this.path) });
 				this.rerun();
 			},
 			async showSourceCodeDialog() {
@@ -72,7 +70,7 @@ export default async function () {
 				zIndex: 1
 			};
 			const vm = this;
-			return h("xCard", {
+			return h("xBlock", {
 				staticClass: "padding16 margin16",
 				style: vm.styleContainer,
 				$vSlots: {

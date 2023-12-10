@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<md :md="md" />
+		<Md :md="md" />
 		<el-radio-group v-model="tabPosition" style="margin-bottom: 30px">
 			<el-radio-button label="top">top</el-radio-button>
 			<el-radio-button label="right">right</el-radio-button>

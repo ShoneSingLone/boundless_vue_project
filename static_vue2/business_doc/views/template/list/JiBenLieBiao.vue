@@ -4,7 +4,7 @@
 		<xPageContent>
 			<xTablebar :configs="configsTable">
 				<template #left>
-					<xBtnGroup :configs="oprBtnArray" />
+					<xBtnArray :configs="oprBtnArray" />
 				</template>
 				<xItem :configs="c_search.siteId" />
 				<xItem :configs="c_search.azId" />
@@ -69,7 +69,17 @@ export default async function () {
 			return {
 				oprBtnArray: [
 					{
-						label: i18n("open"),
+						label: i18n("新增"),
+						onClick() {
+							vm.open();
+						}
+					},
+					{
+						label: i18n("删除"),
+						preset: "danger",
+						disabled() {
+							return true;
+						},
 						onClick() {
 							vm.open();
 						}

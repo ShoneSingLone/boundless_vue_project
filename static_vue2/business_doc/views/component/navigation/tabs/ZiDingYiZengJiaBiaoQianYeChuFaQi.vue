@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div style="margin-bottom: 20px">
-			<el-button size="small" @click="addTab(editableTabsValue)"> add tab </el-button>
+			<xBtn size="small" @click="addTab(editableTabsValue)"> add tab </xBtn>
 		</div>
 		<xTabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
 			<xTabPane v-for="(item, index) in editableTabs" :key="item.name" :label="item.title" :name="item.name">

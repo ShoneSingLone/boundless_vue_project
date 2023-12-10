@@ -49,6 +49,7 @@ export default async function () {
 		},
 		data() {
 			return {
+				searchKey: "",
 				currMenu: {},
 				isLoading: false
 			};
