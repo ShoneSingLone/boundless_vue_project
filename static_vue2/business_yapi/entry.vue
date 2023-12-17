@@ -203,7 +203,7 @@ export default async function () {
 		},
 		computed: {
 			cptAvatarUrl() {
-				return `/api/user/avatar?uid=${this.user._id}`;
+				return `${window.MOCK_URL_PREFIX}/api/user/avatar?uid=${this.user._id}`;
 			},
 			cptGroupId() {
 				return this.$route.query.groupId;
