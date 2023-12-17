@@ -5,8 +5,6 @@
   "main": "./preprocess/server/server.js",
   "scripts": {
     "dev": "node ./preprocess/server/server.js",
-    "pull": "git pull && git pull gh master",
-    "push": "git push && git push gh master",
     "lint": "npm run lint:static && npm run lint:preprocess",
     "i18n": "node ./preprocess/makei18n/makeLanguageFile.js",
     "doc": "node ./preprocess/genDocMd/genDoc.js",
@@ -16,6 +14,7 @@
     "serve": "vite preview",
     "lint:static": "prettier --write ./static_vue2",
     "removeDebugger": "node ./preprocess/removeDebugger.js",
+    "push": "node ./preprocess/updateVersion.js && git push",
     "lint:preprocess": "prettier --write ./preprocess"
   },
   "author": "",
