@@ -1,9 +1,9 @@
 exports.SERVER_CONFIGS = {
 	doc: {
-		MOCK_URL_PREFIX: ""
+		_URL_PREFIX: ""
 	},
 	yapi: {
-		MOCK_URL_PREFIX: "/mock"
+		_URL_PREFIX: "/mock"
 	}
 };
 
