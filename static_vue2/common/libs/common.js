@@ -202,6 +202,13 @@ const isDev = !!localStorage.isDev;
 		 * @returns
 		 * */
 		function configs(API_OPTIONS) {
+			let { requestInjector, responseInjector } = this;
+
+			const normal = options => options;
+
+			requestInjector = requestInjector || normal;
+			responseInjector = responseInjector || normal;
+
 			let { type, url, options, success: resolve, error: reject } = API_OPTIONS;
 
 			const data = (isUseBodyParams => {
@@ -231,7 +238,7 @@ const isDev = !!localStorage.isDev;
 
 			const headers = _.merge({ "X-Language": localStorage["X-Language"] }, options.headers);
 			const errorCodeArray = [400, 401, 402, 403, 404, 405, 500, 555];
-			return {
+			return requestInjector({
 				headers,
 				dataType: "json",
 				url,
@@ -240,6 +247,7 @@ const isDev = !!localStorage.isDev;
 				contentType: "application/json",
 				dataType: "JSON",
 				success(response) {
+					response = responseInjector(response);
 					if (_.isPlainObject(response)) {
 						/* 兼容 */
 						const errcode = response?.errcode || response?.code;
@@ -259,6 +267,7 @@ const isDev = !!localStorage.isDev;
 						}
 					}
 					return resolve(response);
+
 				},
 				error(response) {
 					if (401 === response.status) {
@@ -273,16 +282,16 @@ const isDev = !!localStorage.isDev;
 						}
 					}
 				}
-			};
+			});
 		}
 
-		const urlWrapper = url => `${window.MOCK_URL_PREFIX || ""}${url}`;
+		const urlWrapper = url => `${window._URL_PREFIX || ""}${url}`;
 
 		const $ajax = {
 			post: (url, options = {}) => {
 				return new Promise((resolve, reject) => {
 					$.ajax(
-						configs({
+						configs.call($ajax, {
 							type: "POST",
 							url: urlWrapper(url),
 							options,
@@ -295,7 +304,7 @@ const isDev = !!localStorage.isDev;
 			get: (url, options = {}) => {
 				return new Promise((resolve, reject) => {
 					$.ajax(
-						configs({
+						configs.call($ajax, {
 							type: "GET",
 							url: urlWrapper(url),
 							options,
@@ -309,7 +318,7 @@ const isDev = !!localStorage.isDev;
 			put: (url, options = {}) => {
 				return new Promise((resolve, reject) => {
 					$.ajax(
-						configs({
+						configs.call($ajax, {
 							type: "put",
 							url: urlWrapper(url),
 							options,
@@ -434,7 +443,7 @@ const isDev = !!localStorage.isDev;
 	 * @name _.$doNoting
 	 * 啥都不干的函数
 	 */
-	_.$doNoting = () => {};
+	_.$doNoting = () => { };
 
 	/**
 	 * @name _.$sleep

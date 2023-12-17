@@ -2,6 +2,16 @@
 export default async function () {
 	if (!Vue._yapi_api) {
 		(function () {
+			_.$ajax.requestInjector = function (options) {
+				const _url = new URL(String(options.url).replace("#", ""), location.origin);
+				_.each(_.$lStorage.x_token, (v, k) => {
+					_url.searchParams.set(k, v);
+				});
+				const { href } = _url;
+				options.url = href;
+				return options;
+			};
+
 			Vue._yapi_api = {
 				/* project */
 				getProjectByGroupId(group_id) {
@@ -130,7 +140,7 @@ export default async function () {
 					response = await request();
 					if (response.errcode == 40011) {
 						/* 登录过期 */
-						// _.$msgError("登录过期，请重新登录");
+						_.$msgError("登录过期，请重新登录");
 						_.$yapiRouter.push("/login");
 					}
 				} catch (error) {

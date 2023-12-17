@@ -79,10 +79,15 @@ export default async function () {
 						console.error("未通过验证");
 					} else {
 						const formData = _.$pickValueFromConfigs(vm.configsForm);
-						const { error } = await Vue._yapi_api.postUserLogin(formData);
-						if (!error) {
+						const {
+							data: { x_token }
+						} = await Vue._yapi_api.postUserLogin(formData);
+
+						if (x_token) {
+							_.$lStorage.x_token = x_token;
 							_.$msgSuccess("登录成功! ");
 							await this.APP.refreshUserInfo();
+							
 						}
 					}
 				} catch (e) {

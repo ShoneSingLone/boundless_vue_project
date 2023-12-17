@@ -136,6 +136,9 @@ export default async function () {
 			}
 		},
 		watch: {
+			"APP.groupList"() {
+				this.searchGroup();
+			},
 			"APP.cptCurrentGroup": {
 				immediate: true,
 				handler(group) {

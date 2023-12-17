@@ -47,13 +47,13 @@ exports.appUseKoaAssets = function (app) {
 
 				const APP_NAME = basename.replace(extname, "");
 
-				const { MOCK_URL_PREFIX } = SERVER_CONFIGS[APP_NAME] || {};
+				const { _URL_PREFIX } = SERVER_CONFIGS[APP_NAME] || {};
 
 				/* 配置 yapi mock 地址 */
-				if (MOCK_URL_PREFIX) {
-					$("#app").after(`<script only-use-in-dev-model>window.MOCK_URL_PREFIX="${MOCK_URL_PREFIX}";</script>`);
+				if (_URL_PREFIX) {
+					$("#app").after(`<script only-use-in-dev-model>window._URL_PREFIX="${_URL_PREFIX}";</script>`);
 				}
-				console.log("🚀 middleware.appUseKoaAssets.js handleIndexHtml:", APP_NAME, MOCK_URL_PREFIX);
+				console.log("🚀 middleware.appUseKoaAssets.js handleIndexHtml:", APP_NAME, _URL_PREFIX);
 
 				ctx.body = $.html();
 			}
