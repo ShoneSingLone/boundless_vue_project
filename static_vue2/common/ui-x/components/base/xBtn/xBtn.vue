@@ -88,6 +88,14 @@ export default async function () {
 
 				return false;
 			},
+			cptDisabledTips() {
+				if (this.cptDisabled) {
+					if (_.isString(this.cptDisabled) || this.cptDisabled.TYPE_IS_VNODE) {
+						return this.cptDisabled;
+					}
+				}
+				return "";
+			},
 			cptLabel() {
 				if (_.isFunction(this.configs?.label)) {
 					return this.configs.label();
@@ -128,13 +136,19 @@ export default async function () {
 						"is-loading": vm.cptLoading,
 						"is-plain": vm.plain,
 						"is-round": vm.round,
-						"is-circle": vm.circle
+						"is-circle": vm.cptCircle
 					}
 				];
 			},
+			cptCircle() {
+				return this.circle || this.configs.circle;
+			},
 			cptChildren() {
-				if (this.$vSlots.default) {
+				if (_.isFunction(this.$vSlots?.default)) {
 					return h("span", this.$vSlots.default());
+				}
+				if (this.$vSlots?.TYPE_IS_VNODE) {
+					return this.$vSlots;
 				}
 				return this.cptLabel;
 			}
@@ -171,7 +185,16 @@ export default async function () {
 			return h(
 				"button",
 				{
-					directives: [vm.cptUseRipple],
+					directives: [
+						vm.cptUseRipple,
+						{
+							name: "xtips",
+							value: {
+								placement: "top",
+								content: vm.cptDisabledTips
+							}
+						}
+					],
 					onClick() {
 						vm.handleClick();
 					},

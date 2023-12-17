@@ -135,7 +135,8 @@ export default async function () {
 	};
 	const optionMap = /* @__PURE__ */ new WeakMap();
 	const globalOptions = { ...DEFAULT_PLUGIN_OPTIONS };
-	var rippleDirective = {
+
+	return Vue.directive("ripple", {
 		inserted(el, binding) {
 			optionMap.set(el, binding.value ?? {});
 			el.addEventListener("pointerdown", event => {
@@ -155,8 +156,7 @@ export default async function () {
 		update(el, binding) {
 			optionMap.set(el, binding.value ?? {});
 		}
-	};
-	return rippleDirective;
+	});
 }
 </script>
 

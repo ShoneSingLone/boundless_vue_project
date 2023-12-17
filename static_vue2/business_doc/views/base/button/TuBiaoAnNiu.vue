@@ -1,6 +1,6 @@
 <template>
 	<div class="card-JiChuYongFa">
-		<Md :md="mdTitle" />
+		<xMd :md="mdTitle" />
 		<xBtn preset="primary" icon="el-icon-edit"></xBtn>
 		<xBtn preset="primary" icon="el-icon-share"></xBtn>
 		<xBtn preset="primary" icon="el-icon-delete"></xBtn>

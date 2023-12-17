@@ -1,14 +1,21 @@
 <template>
-	<div class="AppLayoutHeader">
+	<header class="AppLayoutHeader flex middle">
 		<span :click="goToGroup" class="flex middle pointer">
 			<xIcon :icon="icon" :style="logoStyle" />
 		</span>
-	</div>
+		<BreadcrumbNavigation />
+		<xGap f />
+		<ToolUserBar />
+	</header>
 </template>
 
 <script>
 export default async function () {
 	return {
+		components: {
+			ToolUserBar: () => _.$importVue("@/components/ToolUserBar.vue"),
+			BreadcrumbNavigation: () => _.$importVue("@/components/BreadcrumbNavigation.vue")
+		},
 		methods: {
 			handleCommand(value) {
 				if (localStorage["X-Language"] !== value) {

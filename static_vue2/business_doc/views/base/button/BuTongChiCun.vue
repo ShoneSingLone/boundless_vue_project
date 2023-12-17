@@ -1,6 +1,6 @@
 <template>
 	<div class="card-JiChuYongFa">
-		<Md :md="mdTitle" />
+		<xMd :md="mdTitle" />
 		<el-row>
 			<xBtn>默认按钮</xBtn>
 			<xBtn size="medium">中等按钮</xBtn>

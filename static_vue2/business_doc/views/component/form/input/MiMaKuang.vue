@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<xInput placeholder="请输入密码" v-model="input" show-password></xInput>
 	</div>
 </template>

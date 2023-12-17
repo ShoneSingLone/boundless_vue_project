@@ -1,6 +1,6 @@
 <template>
 	<div class="icon-demo">
-		<Md :md="'仅允许输入标准的数字值，可定义范围'" />
+		<xMd :md="'仅允许输入标准的数字值，可定义范围'" />
 		<DemoAndCode title="基础用法" path="@/views/component/form/inputNumber/JiChuYongFa.vue" unfold />
 		<DemoAndCode title="禁用状态" path="@/views/component/form/inputNumber/JinYongZhuangTai.vue" />
 		<DemoAndCode title="步数" path="@/views/component/form/inputNumber/BuShu.vue" />
@@ -8,7 +8,7 @@
 		<DemoAndCode title="精度" path="@/views/component/form/inputNumber/JingDu.vue" />
 		<DemoAndCode title="尺寸" path="@/views/component/form/inputNumber/ChiCun.vue" />
 		<DemoAndCode title="按钮位置" path="@/views/component/form/inputNumber/AnNiuWeiZhi.vue" />
-		<Md :md="mdDoc" />
+		<xMd :md="mdDoc" />
 	</div>
 </template>
 

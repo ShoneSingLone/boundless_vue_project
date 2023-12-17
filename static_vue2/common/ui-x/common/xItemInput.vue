@@ -26,7 +26,7 @@ export default async function () {
 				autocomplete: "on",
 				type: vm.$attrs.type || vm.configs?.type || "text"
 			};
-			if (_.isFunction(Vue?.useXui?.globalConfigs?.xItemInput?.defaultProps)) {
+			if (_.isFunction(Vue._useXui?.globalConfigs?.xItemInput?.defaultProps)) {
 				attrs = Vue._useXui.globalConfigs.xItemInput.defaultProps(this, attrs);
 			}
 

@@ -1,6 +1,3 @@
-<template>
-	<h1 class="MUST_MODIFY">{{ title }}</h1>
-</template>
 <script>
 export default async function () {
 	const nodeList = [];
@@ -42,10 +39,11 @@ export default async function () {
 	 * @desc 点击元素外面才会触发的事件
 	 * @example
 	 * ```vue
-	 * <div v-element-clickoutside="handleClose">
+	 * <div v-clickoutside="handleClose">
 	 * ```
 	 */
-	return {
+
+	return Vue.directive("clickoutside", {
 		bind(el, binding, vnode) {
 			nodeList.push(el);
 			const id = seed++;
@@ -74,11 +72,7 @@ export default async function () {
 			}
 			delete el[ctx];
 		}
-	};
+	});
 }
 </script>
-<style lang="less">
-.MUST_MODIFY {
-	color: red;
-}
-</style>
+<style lang="less"></style>

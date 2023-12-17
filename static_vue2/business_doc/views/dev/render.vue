@@ -45,7 +45,7 @@ export default async function () {
 								}
 							}
 						}),
-						h("xDevTest", {
+						h("xDev", {
 							$vSlots: {
 								default() {
 									return "default";

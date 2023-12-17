@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<xSelect v-model="value" placeholder="请选择">
 			<xOption v-for="item in cities" :key="item.value" :label="item.label" :value="item.value">
 				<span style="float: left">{{ item.label }}</span>

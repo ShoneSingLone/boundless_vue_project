@@ -28,7 +28,8 @@ export default async function () {
 		/*  */
 		"components/other/xScrollbar/xScrollbar",
 		/* *************** */
-		"common/xFormItemWrapper",
+		"common/xMd",
+		"common/xItemWrapper",
 		"common/xAutoResizer",
 		"common/xCellBtnGroup",
 		"common/xCellDate",
@@ -72,7 +73,7 @@ export default async function () {
 		"common/xTableDiv",
 		"common/xTransfer",
 		"common/xGap",
-		"common/xDevTest"
+		"common/xDev"
 	];
 }
 </script>

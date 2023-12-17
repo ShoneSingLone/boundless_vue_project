@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<xSelect v-model="value" multiple filterable remote reserve-keyword placeholder="请输入关键词" :remote-method="remoteMethod" :loading="loading">
 			<xOption v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </xOption>
 		</xSelect>

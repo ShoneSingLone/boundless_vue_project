@@ -4,7 +4,7 @@
 		<DemoAndCode title="简单卡片" path="@/views/component/data/card/JianDanKaPian.vue" />
 		<DemoAndCode title="带图片" path="@/views/component/data/card/DaiTuPian.vue" />
 		<DemoAndCode title="卡片阴影" path="@/views/component/data/card/KaPianYinYing.vue" />
-		<Md :md="mdDoc" />
+		<xMd :md="mdDoc" />
 	</div>
 </template>
 

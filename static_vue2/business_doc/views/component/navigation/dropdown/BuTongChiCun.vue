@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<xDropdown split-button preset="primary">
 			默认尺寸
 			<xDropdownMenu slot="dropdown">

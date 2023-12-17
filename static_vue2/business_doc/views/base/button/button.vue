@@ -1,6 +1,6 @@
 <template>
 	<div class="dropdown-demo">
-		<Md :md="md" />
+		<xMd :md="md" />
 		<DemoAndCode title="configs用法" path="@/views/base/button/ConfigsYongFa.vue" unfold />
 		<DemoAndCode title="按钮数组" path="@/views/base/button/AnNiuShuZu.vue" unfold />
 		<DemoAndCode title="按钮组" path="@/views/base/button/AnNiuZu.vue" unfold />
@@ -9,7 +9,7 @@
 		<DemoAndCode title="图标按钮" path="@/views/base/button/TuBiaoAnNiu.vue" unfold />
 		<DemoAndCode title="加载中" path="@/views/base/button/JiaZaiZhong.vue" unfold />
 		<DemoAndCode title="不同尺寸" path="@/views/base/button/BuTongChiCun.vue" unfold />
-		<Md :md="apiString" />
+		<xMd :md="apiString" />
 	</div>
 </template>
 

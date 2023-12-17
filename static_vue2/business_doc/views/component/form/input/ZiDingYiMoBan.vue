@@ -1,6 +1,6 @@
 <template>
 	<div class="input-ZiDingYiMoBan">
-		<Md :md="md" />
+		<xMd :md="md" />
 		<el-autocomplete popper-class="my-autocomplete" v-model="state" :fetch-suggestions="querySearch" placeholder="请输入内容" @select="handleSelect">
 			<i class="el-icon-edit el-input__icon" slot="suffix" @click="handleIconClick"> </i>
 			<template slot-scope="{ item }">

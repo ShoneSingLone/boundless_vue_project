@@ -1,6 +1,6 @@
 <template>
 	<div class="margin16">
-		<Md :md="'让我们演示虚拟化表的性能，用10列和1 000行渲染一个基本示例。'" />
+		<xMd :md="'让我们演示虚拟化表的性能，用10列和1 000行渲染一个基本示例。'" />
 		<xTableVir :columns="columns" :data="data" :width="700" :height="400" fixed />
 	</div>
 </template>

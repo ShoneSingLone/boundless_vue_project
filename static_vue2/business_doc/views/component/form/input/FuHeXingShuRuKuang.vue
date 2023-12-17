@@ -1,6 +1,6 @@
 <template>
 	<div class="FuHeXingShuRuKuang">
-		<Md :md="md" />
+		<xMd :md="md" />
 		<div>
 			<xInput placeholder="请输入内容" v-model="input1">
 				<template slot="prepend">Http://</template>

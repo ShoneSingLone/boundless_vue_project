@@ -1,6 +1,6 @@
 <template>
 	<div class="margin16 DongTaiBianJiBiaoQian">
-		<Md :md="'动态编辑标签可以通过点击标签关闭按钮后触发的 `close` 事件来实现'" />
+		<xMd :md="'动态编辑标签可以通过点击标签关闭按钮后触发的 `close` 事件来实现'" />
 		<xTag :key="tag" v-for="tag in dynamicTags" closable :disable-transitions="false" @close="handleClose(tag)">
 			{{ tag }}
 		</xTag>

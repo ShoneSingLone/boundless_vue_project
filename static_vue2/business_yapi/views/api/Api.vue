@@ -1,5 +1,5 @@
 <template>
-	<div id="app" v-loading="stateApp.isLoading">
+	<div id="app" v-loading="APP.isLoading">
 		<AppHeader />
 		<main class="AppLayoutMain">
 			<div class="AppLayoutContent">
@@ -14,9 +14,9 @@ export default async function () {
 	await _.$ensure(() => window?.i18n?.options && Object.keys(window.i18n.options).length > 0);
 	return {
 		components: {
-			AppHeader: () => _.$importVue("@/Views/api/ApiHeader.vue")
+			AppHeader: () => _.$importVue("@/views/Api/Header/ApiHeader.vue")
 		},
-		inject: ["stateApp"],
+		inject: ["APP"],
 		data() {
 			return { isMobile: true };
 		},

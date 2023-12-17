@@ -1,6 +1,6 @@
 <template>
 	<div class="card-JianDanKaPian">
-		<Md :md="mdTitle" />
+		<xMd :md="mdTitle" />
 		<el-row :gutter="12">
 			<el-col :span="8">
 				<xCard shadow="always"> 总是显示 </xCard>

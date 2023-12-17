@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<xInputNumber v-model="num" :disabled="true"></xInputNumber>
 	</div>
 </template>

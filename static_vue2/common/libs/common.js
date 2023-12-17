@@ -1,5 +1,10 @@
 const isDev = !!localStorage.isDev;
+
 (function () {
+	if (isDev) {
+		console.log("common.js");
+	}
+
 	/* lodash 主要是纯函数 $前缀的是自定义函数*/
 	window.defItem = (...args) => {
 		let options = _.merge.apply(_, args);
@@ -9,6 +14,64 @@ const isDev = !!localStorage.isDev;
 		}
 		return Vue.reactive(options);
 	};
+
+	/* 从jQuery对象中，获取leftTop的数值 */
+	_.$getLeftTopFromAbsolute = $ele => {
+		const _top = $ele.css("top");
+		const _left = $ele.css("left");
+		const getNum = x => {
+			const match = String(x).match(/^(.*)px$/);
+			if (match && match[1]) {
+				return Number(match[1]);
+			} else {
+				return 0;
+			}
+		};
+		const top = getNum(_top);
+		const left = getNum(_left);
+		return { top, left };
+	};
+	_.$getLeftTopFromTranslate = ($ele /*  JQuery */) => {
+		const transform = $ele.css("transform");
+		const match = String(transform).match(/^matrix\((.*)\)$/);
+		if (!match) {
+			return { top: 0, left: 0 };
+		}
+		if (match && match[1]) {
+			const [a, b, c, d, e, f] = String(match[1])
+				.split(",")
+				.map(i => Number(_.trim(i)));
+
+			return {
+				left: a + c + e,
+				top: b + d + f
+			};
+		}
+	};
+
+	/***
+	 *  pathname search
+	 * @param urlLike
+	 * @param query
+	 */
+	function transToUrl(urlLike, query) {
+		const _url = new URL(String(urlLike).replace("#", ""), location.origin);
+		_url.search = new URLSearchParams(query).toString();
+		const { pathname, search } = _url;
+		return {
+			href: `${pathname}${search}`,
+			url: _url
+		};
+	}
+
+	_.$aHashLink = (urlLike, query) => {
+		const { url } = transToUrl(urlLike, query);
+		const targetUrl = new URL(location.href, location.origin);
+		targetUrl.hash = url.href.replace(url.origin, "");
+		return targetUrl.href;
+	};
+
+	_.$isSame = (a, b) => String(a) === String(b);
 
 	_.$isIE = function () {
 		return !Vue.prototype.$isServer && !isNaN(Number(document.documentMode));
@@ -899,12 +962,20 @@ const isDev = !!localStorage.isDev;
 							target[prop] = $(window);
 						}
 						if (prop === "shadowTemplate") {
-							const $shadowTemplate = $("<div/>", {
+							const attrs = {
 								style: "opacity: 0;position: fixed;z-index: -1;",
 								// style: "opacity: 1;position: fixed;z-index: 1;",
 								class: "shadow-template-wrapper"
-							}).appendTo(_.$single.body);
-							target[prop] = $shadowTemplate;
+							};
+							target[prop] = $("<div/>", attrs).appendTo(_.$single.body);
+						}
+						if (prop === "mask") {
+							const $mask = $("#x-layer-move");
+							if ($mask.length) {
+								target[prop] = $mask;
+							} else {
+								target[prop] = $(`<div id="x-layer-move" class="x-layer-move" />`).appendTo(_.$single.body);
+							}
 						}
 					}
 					return target[prop];
@@ -1116,7 +1187,12 @@ const isDev = !!localStorage.isDev;
 			const { formItemId } = dom.dataset;
 			if (formItemId) {
 				const vm = Vue._X_ITEM_VM_S[formItemId];
-				const msg = await vm.validate();
+				let msg;
+				if (vm?.validate) {
+					msg = await vm.validate();
+				} else {
+					console.log("miss vm in _X_ITEM_VM_S");
+				}
 				if (msg) {
 					errorArray.push([msg, vm]);
 				}
@@ -1202,6 +1278,24 @@ const isDev = !!localStorage.isDev;
 		});
 	};
 
+	_.$fillBackData = async function ({ form, data, order }) {
+		let target;
+		while ((target = order.shift())) {
+			/* 如果current是prop字符串,等待100毫秒 */
+			if (_.isString(target)) {
+				const prop = target;
+				form[prop].value = data[prop];
+				await _.$sleep(100);
+			}
+
+			if (_.isPlainObject(target)) {
+				const { prop, until } = target;
+				await until();
+				form[prop].value = data[prop];
+			}
+		}
+	};
+
 	/**
 	 * 适用于xItem不使用v-mode，form的configs带有value form.xxx.value, {xxx:"value"}
 	 * @param {any} form xItem 配置信息，config带有value属性
@@ -1243,12 +1337,55 @@ const isDev = !!localStorage.isDev;
 		}
 		return defaultValue;
 	};
+
+	/*  */
+	_.$firstIpFrom = ip => {
+		const arr = ip.split(".");
+		arr[3] = 0;
+		return arr.join(".");
+	};
+
+	_.$getIpInRangeAndUseable = function (ipOld, cidr, used) {
+		const range = _.$calculateCidrRange(cidr);
+		const isIpOldInRange = _.$isIp4InCidr(ipOld)(cidr);
+		if (isIpOldInRange) {
+			return {
+				newValue: ipOld,
+				range
+			};
+		} else {
+			let newValue = (function () {
+				const [start, end] = range;
+				const startInt = _.$ip4ToInt(start);
+				const endInt = _.$ip4ToInt(end);
+
+				for (let ipInt = startInt + 1; ipInt <= endInt; ipInt++) {
+					const value = _.$intToIp4(ipInt);
+					if (!used.includes(value)) {
+						return value;
+					}
+				}
+				return ``;
+			})();
+
+			return {
+				newValue,
+				range
+			};
+		}
+	};
+
 	_.$intToIp4 = int => [(int >>> 24) & 0xff, (int >>> 16) & 0xff, (int >>> 8) & 0xff, int & 0xff].join(".");
 	_.$ip4ToInt = ip => ip.split(".").reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0) >>> 0;
 	_.$isIp4InCidr = ip => cidr => {
 		const [range, bits = 32] = cidr.split("/");
 		const mask = ~(2 ** (32 - bits) - 1);
-		return (_.$ip4ToInt(ip) & mask) === (_.$ip4ToInt(range) & mask);
+		const inRange = (_.$ip4ToInt(ip) & mask) === (_.$ip4ToInt(range) & mask);
+		if (inRange) {
+			const [start, end] = _.$calculateCidrRange(cidr);
+			return ip !== start && ip !== end;
+		}
+		return false;
 	};
 	_.$intToBin = int =>
 		(int >>> 0)

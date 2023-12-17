@@ -6,7 +6,7 @@
 				<xBtn class="js-btn" @click="onEmit_Self">onEmit_Self</xBtn>
 				<xBtn class="js-btn" @click="onEmit_Other">onEmit_Other</xBtn>
 			</div>
-			<Md :md="state.content" />
+			<xMd :md="state.content" />
 		</div>
 	</div>
 </template>

@@ -1,6 +1,6 @@
 <template>
 	<div class="demo-input">
-		<Md :md="mdTips" />
+		<xMd :md="mdTips" />
 		<DemoAndCode title="基础用法" path="@/views/component/form/checkbox/JiChuYongFa.vue" unfold />
 	</div>
 </template>

@@ -1,7 +1,7 @@
 a
 <template>
 	<div class="margin16">
-		<Md :md="'Tag 组件提供了三个不同的主题：`dark`、`light` 和 `plain`。通过设置`effect`属性来改变主题，默认为 `light`'" />
+		<xMd :md="'Tag 组件提供了三个不同的主题：`dark`、`light` 和 `plain`。通过设置`effect`属性来改变主题，默认为 `light`'" />
 		<div class="tag-group">
 			<span class="tag-group__title">Dark</span>
 			<xTag v-for="item in items" :key="item.label" :type="item.type" effect="dark" class="mr4">

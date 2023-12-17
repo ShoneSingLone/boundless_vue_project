@@ -109,6 +109,11 @@ export default async function () {
 .xForm.xItemRadioGroup {
 	.xFormItem {
 		min-height: var(--ui-height);
+		margin-top: unset;
+		&.grid-column1 {
+			align-items: center;
+		}
+		// &+.xFormItem{ }
 	}
 
 	.el-radio__input.is-checked + .el-radio__label {

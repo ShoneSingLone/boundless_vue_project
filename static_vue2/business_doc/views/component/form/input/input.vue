@@ -1,6 +1,6 @@
 <template>
 	<div class="demo-input">
-		<Md :md="mdTips" />
+		<xMd :md="mdTips" />
 		<DemoAndCode title="基础用法" path="@/views/component/form/input/JiChuYongFa.vue" unfold />
 		<DemoAndCode title="禁用状态" path="@/views/component/form/input/JinYongZhuangTai.vue" unfold />
 		<DemoAndCode title="可清空" path="@/views/component/form/input/KeQingKong.vue" unfold />
@@ -14,7 +14,7 @@
 		<DemoAndCode title="自定义模板" path="@/views/component/form/input/ZiDingYiMoBan.vue" unfold />
 		<DemoAndCode title="远程搜索" path="@/views/component/form/input/YuanChengSouSuo.vue" unfold />
 		<DemoAndCode title="输入长度限制" path="@/views/component/form/input/ShuRuChangDuXianZhi.vue" unfold />
-		<Md :md="apiString" />
+		<xMd :md="apiString" />
 	</div>
 </template>
 

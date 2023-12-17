@@ -20,7 +20,7 @@ export default async function ({ row, getTableData }) {
 	 * @type {import("../static_vue2/common/utils/rules.vue")()}  - 从 RULES() 获取的规则对象
 	 */
 	const RULES = await _.$importVue("/common/utils/rules.vue");
-	const { useDialogProps } = await _.$importVue("/common/utils/compositionAPI.vue");
+	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 
 	return defineComponent({
 		inject: ["APP"],

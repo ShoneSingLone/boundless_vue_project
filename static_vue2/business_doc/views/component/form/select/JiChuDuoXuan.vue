@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<xSelect v-model="value1" multiple placeholder="请选择">
 			<xOption v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </xOption>
 		</xSelect>

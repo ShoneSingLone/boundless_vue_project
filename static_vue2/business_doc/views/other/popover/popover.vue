@@ -1,10 +1,10 @@
 <template>
 	<div class="dropdown-demo">
-		<Md :md="md" />
+		<xMd :md="md" />
 		<DemoAndCode title="基础用法" path="@/views/other/popover/JiChuYongFa.vue" unfold />
 		<DemoAndCode title="嵌套信息" path="@/views/other/popover/QianTaoXinXi.vue" unfold />
 		<DemoAndCode title="嵌套操作" path="@/views/other/popover/QianTaoCaoZuo.vue" unfold />
-		<Md :md="apiString" />
+		<xMd :md="apiString" />
 	</div>
 </template>
 

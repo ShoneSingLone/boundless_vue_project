@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<el-row class="demo-autocomplete">
 			<el-col :span="12">
 				<div class="sub-title">激活即列出输入建议</div>

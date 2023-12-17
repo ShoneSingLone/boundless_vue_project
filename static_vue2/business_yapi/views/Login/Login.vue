@@ -22,7 +22,7 @@
 export default async function () {
 	return defineComponent({
 		components: {
-			LoginWrap: () => _.$importVue("@/views/auth/LoginWrap.vue")
+			LoginWrap: () => _.$importVue("@/views/Login/LoginWrap.vue")
 		},
 		computed: {
 			styleLogo() {

@@ -1,6 +1,7 @@
 <script>
 export default async function () {
 	const [Clickoutside] = await Promise.all([_.$importVue("/common/ui-x/directive/clickoutside.vue")]);
+
 	return defineComponent({
 		name: "xDropdown",
 		componentName: "xDropdown",

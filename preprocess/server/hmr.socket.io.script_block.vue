@@ -32,6 +32,10 @@ window.ONLY_USE_IN_DEV_MODEL = function () {
 		}
 	};
 
+	const forceUpdate = _.debounce(function () {
+		HMR_APP && HMR_APP.$forceUpdate();
+	}, 600);
+
 	ws.on("hmr", async ({ filename: changedPath, content }) => {
 		changedPath = _.toLower(_.camelCase(changedPath));
 		_.some(HMR_COMPONENT_COLLECTION, ({ factory }, resolvedURL) => {
@@ -41,7 +45,7 @@ window.ONLY_USE_IN_DEV_MODEL = function () {
 					try {
 						const newComponent = await _.$sfcVueObject({ resolvedURL, sourceCode: content });
 						factory.resolved = Vue.extend(newComponent);
-						HMR_APP && HMR_APP.$forceUpdate();
+						forceUpdate();
 					} catch (error) {
 						console.error(error);
 					}

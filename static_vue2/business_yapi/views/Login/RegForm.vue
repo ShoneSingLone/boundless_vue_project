@@ -144,7 +144,7 @@ export default async function () {
 					},
 					async onClick() {
 						try {
-							const { data } = await Vue._api.postNewVarifyCode(vm.configsForm.email.value);
+							const { data } = await Vue._yapi_api.postNewVarifyCode(vm.configsForm.email.value);
 							if (data) {
 								_.$msgSuccess(data.msg);
 								vm.$router.push({ path: "/group" });
@@ -174,7 +174,7 @@ export default async function () {
 							if (error) {
 								console.error("未通过验证");
 							} else {
-								const res = await Vue._api.postUserReg(formData);
+								const res = await Vue._yapi_api.postUserReg(formData);
 								_.$msgSuccess(i18n("注册成功"));
 								vm.$router.push({ path: "/group" });
 							}

@@ -1,20 +1,19 @@
 <template>
-	<form>
+	<xForm col="1">
 		<!-- 用户名 -->
 		<xItem :configs="configsForm.email" autocomplete="email" @keypress.enter="login" />
-		<xGap t="20" />
 		<!-- 密码 -->
 		<xItem :configs="configsForm.password" autocomplete="current-password" @keypress.enter="login" />
-		<xGap t="20" />
 		<div class="item-wrapper">
 			<xBtn :configs="configsSubmit" />
 		</div>
-	</form>
+	</xForm>
 </template>
 <script>
 export default async function () {
 	const RULES = await _.$importVue("/common/utils/rules.vue");
 	return defineComponent({
+		inject: ["APP"],
 		props: {
 			form: { type: Object },
 			history: { type: Object },
@@ -31,9 +30,7 @@ export default async function () {
 						onEmitValue({ val }) {
 							_.$lStorage.email = val;
 						},
-						onKeypress(e) {
-							debugger;
-						},
+						onKeypress(e) {},
 						rules: [RULES.required("", ["blur"]), RULES.email()],
 						$vSlots: {
 							prefix() {
@@ -82,16 +79,15 @@ export default async function () {
 						console.error("未通过验证");
 					} else {
 						const formData = _.$pickValueFromConfigs(vm.configsForm);
-						const { data } = await Vue._api.postUserLogin(formData);
-						debugger;
-						await stateApp._refreshUserInfo(res.data);
-						_.$lStorage["x_token"] = res.data.x_token;
-						xU.notification.success("登录成功! ");
-						vm.$router.push({ path: "/group" });
+						const { error } = await Vue._yapi_api.postUserLogin(formData);
+						if (!error) {
+							_.$msgSuccess("登录成功! ");
+							await this.APP.refreshUserInfo();
+						}
 					}
 				} catch (e) {
 					console.error(e);
-					xU.notification.error(e.message);
+					_.$msgError(e.message);
 				}
 			}
 		}

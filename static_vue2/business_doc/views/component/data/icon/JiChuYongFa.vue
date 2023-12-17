@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="mdTitle" />
+		<xMd :md="mdTitle" />
 		<xIcon icon="icon_no_data" class="empty" />
 		<xIcon icon="arrow_triangle-left" class="empty" />
 		<xIcon icon="x-loading" class="empty" />

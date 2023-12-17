@@ -36,7 +36,7 @@
 
 <script>
 export default async function () {
-	const { useFocus } = await _.$importVue("/common/utils/compositionAPI.vue");
+	const { useFocus } = await _.$importVue("/common/utils/hooks.vue");
 	const repeatClick = await _.$importVue("/common/ui-x/directive/repeatClick.vue");
 
 	return defineComponent({

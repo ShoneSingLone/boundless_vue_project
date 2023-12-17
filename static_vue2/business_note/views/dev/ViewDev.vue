@@ -1,7 +1,7 @@
 <template>
 	<div class="page-view view-icon">
 		<xPageContent>
-			<Md :md="description" />
+			<xMd :md="description" />
 			<DemoAndCode title="基本用法" path="@/views/use/ViewIcon/base.vue" />
 		</xPageContent>
 	</div>

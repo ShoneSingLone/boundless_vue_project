@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="descString" />
+		<xMd :md="descString" />
 		<DemoAndCode title="基础用法" path="@/views/component/data/virtualizedTable/JiChuYongFa.vue" />
 		<DemoAndCode title="自定义单元格渲染器" path="@/views/component/data/virtualizedTable/ZiDingYiDanYuanGeXuanRanQi.vue" />
 		<DemoAndCode title="带有选择的表格" path="@/views/component/data/virtualizedTable/DaiYouXuanZeDeBiaoGe.vue" unfold />

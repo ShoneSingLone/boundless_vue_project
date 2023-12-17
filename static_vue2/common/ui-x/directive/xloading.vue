@@ -1,9 +1,8 @@
 <script>
 export default async function () {
-	/* v-loading 已在element-ui中使用 */
-
-	/* 所以叫v-xloading */
-	var xloadingDirective = {
+	/* v-loading 已在element-ui中使用
+	 * 所以叫 v-xloading */
+	return Vue.directive("xloading", {
 		inserted(el, binding) {
 			if (binding.value) {
 				$(el).addClass("x-loading");
@@ -18,8 +17,7 @@ export default async function () {
 				$(el).removeClass("x-loading");
 			}
 		}
-	};
-	return xloadingDirective;
+	});
 }
 </script>
 

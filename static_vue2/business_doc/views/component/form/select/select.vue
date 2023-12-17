@@ -1,6 +1,6 @@
 <template>
 	<div class="demo-input">
-		<Md :md="mdTips" />
+		<xMd :md="mdTips" />
 		<DemoAndCode title="基础用法" path="@/views/component/form/select/JiChuYongFa.vue" />
 		<DemoAndCode title="有禁用选项" path="@/views/component/form/select/YouJinYongXuanXiang.vue" />
 		<DemoAndCode title="选择器不可用状态" path="@/views/component/form/select/XuanZeQiBuKeYongZhuangTai.vue" />
@@ -11,7 +11,7 @@
 		<DemoAndCode title="可搜索" path="@/views/component/form/select/KeSouSuo.vue" />
 		<DemoAndCode title="远程搜索" path="@/views/component/form/select/YuanChengSouSuo.vue" />
 		<DemoAndCode title="创建条目" path="@/views/component/form/select/ChuangJianTiaoMu.vue" />
-		<Md :md="apiString" />
+		<xMd :md="apiString" />
 	</div>
 </template>
 

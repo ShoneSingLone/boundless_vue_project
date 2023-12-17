@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<xInput type="textarea" autosize placeholder="请输入内容" v-model="textarea1"> </xInput>
 		<div style="margin: 20px 0"></div>
 		<xInput type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" placeholder="请输入内容" v-model="textarea2"> </xInput>

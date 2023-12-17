@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<xDropdown>
 			<xBtn preset="primary"> 更多菜单<i class="el-icon-arrow-down el-icon--right"></i> </xBtn>
 			<xDropdownMenu slot="dropdown">

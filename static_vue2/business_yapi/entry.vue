@@ -4,9 +4,19 @@ export default async function () {
 		_.$importVue("/common/ui-element/useElementUI.vue", {
 			size: "small",
 			I18N_LANGUAGE: window.I18N_LANGUAGE
-		}),
-		_.$importVue("/common/ui-x/useXui.vue")
+		})
 	]);
+
+	await _.$importVue("/common/ui-x/useXui.vue");
+
+	_.each(
+		{
+			YapiItemUac: "@/components/YapiItemUac.vue",
+			YapiProjectCard: "@/components/YapiProjectCard.vue",
+			YapiPlaceholderView: "@/components/YapiPlaceholderView.vue"
+		},
+		(componentURL, name) => Vue.component(name, () => _.$importVue(componentURL))
+	);
 
 	/* app entry  */
 	const [VueRouter, routes, App] = await _.$importVue([
@@ -32,19 +42,20 @@ export default async function () {
 	const LOADING_STATUS = 0;
 	const GUEST_STATUS = 1;
 	const MEMBER_STATUS = 2;
-
+	/*  */
+	_.$yapiRouter = router;
 	return new Vue({
 		el: "#app",
 		router,
 		provide() {
-			const stateApp = this;
+			const APP = this;
 			return {
-				stateApp
+				APP
 			};
 		},
 		mounted() {
-			this.checkMobile();
-			this.checkUserIsLogin();
+			this.initMobileModel();
+			this.refreshUserInfo();
 		},
 		data() {
 			return {
@@ -68,7 +79,6 @@ export default async function () {
 					username: "",
 					_id: "",
 					isLogin: false,
-					canRegister: true,
 					isLDAP: false,
 					userName: null,
 					uid: null,
@@ -84,26 +94,33 @@ export default async function () {
 					},
 					curpage: 1
 				},
+				/* group */
 				groupList: [],
-				projectList: [],
-				currProject: {
-					currPage: "",
-					userInfo: "",
-					tableLoading: "",
-					requestCode: ""
-				}
+				projectList: []
 			};
 		},
 		render(h) {
 			return h(App);
 		},
 		methods: {
-			async checkUserIsLogin() {
+			routerUpsertQuery(query) {
+				this.$router.push({
+					path: this.$route.path,
+					query: {
+						...this.$route.query,
+						...query
+					}
+				});
+			},
+
+			async refreshUserInfo() {
 				try {
-					const { data: user } = await Vue._api.getUserStatus();
-					this._setUser(user);
+					const { data: userInfo } = await Vue._yapi_api.getUserStatus();
+					this._setUser(userInfo);
 					/* TODO: 跳转到首页 或者note应用*/
-					this.$router.push({ path: "/api/group" });
+					if (!this.cptGroupId) {
+						this.$router.push({ path: "/api/group" });
+					}
 				} catch (error) {
 					/* 未登录，跳转登录界面 */
 					this.$router.push("/login");
@@ -113,7 +130,7 @@ export default async function () {
 					}, 1000);
 				}
 			},
-			checkMobile() {
+			initMobileModel() {
 				if (this.isMobile) {
 					$("body").addClass("app-mobile");
 				}
@@ -122,136 +139,52 @@ export default async function () {
 			_toggleFooterFold() {
 				this.isFooterFold = !this.isFooterFold;
 			},
-			_setMenu(menu) {
-				/* notice！！_.merge 空数组不会替换*/
-				this.menu = Object.assign({}, this.menu, menu);
-			},
-			_setUser(user) {
-				this.user = _.merge({}, this.user, user);
-			},
-			_setNews(news) {
-				this.news = Object.assign({}, this.news, news);
-			},
-			_setBreadcrumb(breadcrumb) {
-				this._setUser({ breadcrumb });
-			},
-			async _refreshUserInfo(userInfo = false) {
-				try {
-					if (!userInfo) {
-						const res = await Vue._api.UserGetUserStatus();
-						const { data } = res;
-						userInfo = data;
-					} else {
-						throw new Error("refreshUserInfo error");
-					}
-
-					this._setUser({
-						...userInfo,
-						isLogin: !!userInfo._id,
-						isLDAP: userInfo.ladp,
-						canRegister: userInfo.canRegister,
-						role: userInfo ? userInfo.role : null,
-						loginState: !!userInfo._id ? MEMBER_STATUS : GUEST_STATUS,
-						userName: userInfo ? userInfo.username : null,
-						uid: userInfo ? userInfo._id : null,
-						type: userInfo ? userInfo.type : null,
-						study: userInfo ? userInfo.study : false
-					});
-				} catch (error) {
-					_.$msgError(error);
-				}
-			},
-			async _checkLoginState() {
-				if (this.user.role && this.user.isLogin) {
-					return true;
-				}
-				await this._refreshUserInfo();
-				return this.user.isLogin;
-			},
-			async getUserAllGroup() {
-				try {
-					const { data: groupList } = await Vue._api.groupMine();
-					this.groupList = groupList;
-				} catch (error) {
-					_.$msgError(error);
-				}
+			_setUser(userInfo) {
+				const isLogin = !!userInfo._id;
+				this.user = {
+					...userInfo,
+					isLogin,
+					isLDAP: !!userInfo.ladp,
+					role: userInfo ? userInfo.role : null,
+					loginState: isLogin ? MEMBER_STATUS : GUEST_STATUS,
+					userName: userInfo ? userInfo.username : null,
+					uid: userInfo ? isLogin : null,
+					type: userInfo ? userInfo.type : null,
+					study: userInfo ? userInfo.study : false
+				};
 			},
 			/**
 			 * 如果group是对象，直接赋值，
 			 * 如果是Id(可能不是数字),则需要request
-			 * @param group_id
+			 * @param groupId
 			 * @returns {Promise<void>}
 			 */
-			async _setcptCurrentGroup(group_id) {
-				try {
-					if (!_.$isInput(group_id)) {
-						this.cptCurrentGroup = {};
-					}
-					if (this.cptCurrentGroup._id === group_id) {
-						return;
-					}
-					const { data: cptCurrentGroup } = await Vue._api.groupGetMyGroupBy(group_id);
-					this.cptCurrentGroup = cptCurrentGroup;
-					await this._fetchProjectList(cptCurrentGroup._id);
-				} catch (error) {
-					_.$msgError(error);
+			async ifUrlNoGroupIdGetAndAddIdToUrl() {
+				/* APP里面如果已经有了group_id, 就不用再去获取了 */
+				if (this.cptCurrentGroup) {
+					return;
 				}
-			},
-			async _setCurrProject(project_id, options = {}) {
-				try {
-					let isEnforce = options.isEnforce || false;
+				if (!_.$isArrayFill(this.groupList)) {
+					this.updateGroupList();
+				}
 
-					if (!_.$isInput(project_id)) {
-						this.currProject = {};
+				if (!this.cptGroupId) {
+					const firstGroup = _.first(this.groupList);
+
+					if (firstGroup) {
+						this.routerUpsertQuery({ groupId: firstGroup._id });
 					}
-					if (!isEnforce && this.currProject._id === project_id) {
-						return;
-					}
-					let { data } = await Vue._api.ProjectGetProjectById(Number(project_id));
-					this.currProject = data;
-				} catch (error) {
-					_.$msgError(error);
 				}
 			},
-			async _fetchNewsData({ id, type, page = 1, size = 10, selectValue = "" }) {
+			async updateGroupList() {
+				let { data: groupList } = await Vue._yapi_api.groupMine();
+				this.groupList = groupList;
+			},
+			async logoutActions() {
 				try {
-					const { data } = await Vue._api.NewsGetLogList({
-						typeid: id,
-						type,
-						page,
-						limit: size,
-						selectValue
-					});
-					this._setNews({
-						curpage: 1,
-						newsData: {
-							total: data.total,
-							list: _.sortBy(data.list, (a, b) => {
-								if (a && b) {
-									return b.add_time - a.add_time;
-								}
-								return false;
-							})
-						}
-					});
-				} catch (error) {
-					_.$msgError(error);
-				}
-			},
-			async _changeStudyTip() {
-				this.user.studyTip++;
-			},
-			async _finishStudy() {
-				this._setUser({
-					study: true,
-					studyTip: 0
-				});
-			},
-			async _logoutActions() {
-				try {
-					const { data } = await Vue._api.UserLogoutActions();
+					const { data } = await Vue._yapi_api.postUserLogout();
 					if (data === "ok") {
-						lStorage["x_token"] = "";
+						_.$lStorage.x_token = "";
 						this._setUser({
 							isLogin: false,
 							loginState: GUEST_STATUS,
@@ -260,76 +193,33 @@ export default async function () {
 							role: "",
 							type: ""
 						});
-						cptRouter.value.go("/login");
-						_.notification.success(i18n("退出成功! "));
+						this.$router.push("/login");
+						_.$msgSuccess(i18n("退出成功! "));
 					}
 				} catch (error) {
 					_.$msgError(error);
-				}
-			},
-			async _fetchInterfaceListMenu() {},
-			async _fetchProjectList(groupId) {
-				try {
-					if (!groupId) return;
-					groupId = Number(groupId);
-					const res = await Vue._api.ProjectList(groupId);
-					const { data } = res || {};
-					this.projectList = data.list;
-					// xU("this.projectList", this.projectList);
-				} catch (error) {
-					_.$msgError(error);
-				}
-			},
-			_getProject() {},
-			async _changeMenuItem() {},
-			async _loginActions() {},
-			async _loginLdapActions() {},
-			async _fetchGroupMemberList(groupId) {
-				const { data: member } = await Vue._api.GroupGetMemberListBy(groupId);
-				this.cptCurrentGroup.member = member;
-				return member;
-			},
-			async _addMember(data) {
-				return API.group.addMember(data);
-			},
-			async _delMember(data) {
-				return API.group.delMember(data);
-			},
-			async _changeMemberRole(data) {
-				return API.group.changeMemberRole(data);
-			},
-			async _fetchMoreNews() {},
-			async _fetchInterfaceList() {},
-			async _addProject() {},
-			async _delProject() {},
-			async _changeUpdateModal() {},
-			_checkProjectName() {},
-			_loginTypeAction() {},
-			_returnRequestCode() {
-				try {
-					if (!this.currProject.requestCode) {
-						return () => "请在【项目设置-请求代码模板】设置模板";
-					}
-					return new Function("params", `return (${this.currProject.requestCode})(params)`);
-				} catch (error) {
-					return () => null;
 				}
 			}
 		},
 		computed: {
+			cptAvatarUrl() {
+				return `/api/user/avatar?uid=${this.user._id}`;
+			},
+			cptGroupId() {
+				return this.$route.query.groupId;
+			},
 			cptCurrentGroup() {
-				/* {
-					_id: "",
-					role: "",
-					group_name: "",
-					group_desc: "",
-					custom_field1: {
-						name: "",
-						enable: false
-					}
-				} */
-				if (this.$route.query.groupId && this.groupList.length) {
-					return _.find(this.groupList, { _id: Number(this.$route.query.groupId) });
+				if (this.cptGroupId && this.groupList.length) {
+					return _.find(this.groupList, { _id: Number(this.cptGroupId) });
+				}
+				return false;
+			},
+			cptProjectId() {
+				return this.$route.query.projectId;
+			},
+			cptProject() {
+				if (this.cptProjectId && this.projectList.length) {
+					return _.find(this.projectList, { _id: Number(this.cptProjectId) });
 				}
 				return false;
 			}
@@ -339,13 +229,24 @@ export default async function () {
 				immediate: true,
 				handler(groupList) {
 					if (groupList.length) {
-						this.$router.push({
-							path: this.$route.path,
-							query: {
-								...this.$route.query,
-								groupId: _.first(groupList)._id
-							}
-						});
+						if (!this.cptGroupId) {
+							this.routerUpsertQuery({ groupId: _.first(groupList)._id });
+						}
+					}
+				}
+			},
+			cptGroupId: {
+				immediate: true,
+				async handler(groupId) {
+					if (groupId) {
+						try {
+							const {
+								data: { list: projectList }
+							} = await Vue._yapi_api.getProjectByGroupId(groupId);
+							this.projectList = projectList;
+						} catch (error) {
+							console.error(error);
+						}
 					}
 				}
 			}
@@ -356,5 +257,59 @@ export default async function () {
 <style lang="less">
 :root {
 	--color-white: white;
+}
+
+.x-sider_wrapper {
+	height: 100%;
+	width: 300px;
+	overflow: hidden;
+	flex-flow: column nowrap;
+	display: flex;
+
+	.resize_bar {
+		&:hover {
+			cursor: ew-resize;
+		}
+		position: absolute;
+		top: 40px;
+		bottom: 0;
+		right: 0;
+		width: var(--app-padding);
+	}
+}
+.x-sider_wrapper_tree {
+	height: 100px;
+	flex: 1;
+	padding: var(--app-padding);
+
+	.el-tree-node__content {
+		&:hover {
+			background-color: var(--el-color-primary-light-9);
+		}
+	}
+
+	[role="treeitem"] {
+	}
+
+	.el-tree-treenode {
+		width: 100%;
+		font-size: 14px;
+
+		span {
+			transition: 0.3s all ease-in-out;
+		}
+
+		span[title] {
+			flex: 1;
+		}
+
+		.el-tree-node-content-wrapper {
+			padding: 0;
+
+			[data-interface-all-menu] {
+				transform: translateX(-32px);
+			}
+		}
+	}
 }
 </style>

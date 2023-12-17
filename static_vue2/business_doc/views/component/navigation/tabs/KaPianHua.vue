@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<xTabs v-model="activeName" type="border-card">
 			<xTabPane label="用户管理" name="first">用户管理</xTabPane>
 			<xTabPane label="配置管理" name="second">配置管理</xTabPane>

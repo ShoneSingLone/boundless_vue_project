@@ -9,7 +9,7 @@ export default async function () {
 			const vm = this;
 			Vue._X_ITEM_VM_S = Vue._X_ITEM_VM_S || {};
 			onMounted(() => {
-				$(window).on("click.xFormItemWrapper", () => {
+				$(window).on("click.xItemWrapper", () => {
 					if (this.errorTips) {
 						vm.validate();
 					}
@@ -17,7 +17,7 @@ export default async function () {
 				Vue._X_ITEM_VM_S[this.cpt_id] = this;
 			});
 			onBeforeUnmount(() => {
-				$(window).off("click.xFormItemWrapper", vm.validate);
+				$(window).off("click.xItemWrapper", vm.validate);
 				delete Vue._X_ITEM_VM_S[this.cpt_id];
 			});
 		},
@@ -64,7 +64,7 @@ export default async function () {
 			return h(
 				"div",
 				{
-					staticClass: "xItem-wrapper flex middle xFormItemWrapper",
+					staticClass: "xItem-wrapper flex middle xItemWrapper",
 					attrs: {
 						"data-form-item-id": vm.cpt_id
 					}
@@ -91,7 +91,10 @@ export default async function () {
 					h(
 						"div",
 						{
-							staticClass: "xItem_controller"
+							class: {
+								xItem_controller: true,
+								"el-form-item is-error": !!vm.errorTips
+							}
 						},
 						[
 							vm.$scopedSlots.controller?.call(),
@@ -106,11 +109,27 @@ export default async function () {
 							h(
 								"span",
 								{
-									vIf: vm.errorTips,
-									staticClass: "xItem_error-msg"
+									vIf: vm.tips,
+									staticClass: "xItem_info-msg mt4"
 								},
-								[vm.errorTips]
+								[vm.tips]
 							)
+						]
+					),
+					h(
+						"elTooltip",
+						{
+							vIf: vm.errorTips,
+							effect: "dark",
+							content: vm.errorTips,
+							placement: "top-end"
+						},
+						[
+							h("xIcon", {
+								icon: "exclamationMark",
+								staticClass: "xItem_error-msg ml4"
+								/* directives: [ { name: "xtips", value: { content: vm.errorTips, placement: "top-end", style: "--min-width:unset;" } } ] */
+							})
 						]
 					)
 				]

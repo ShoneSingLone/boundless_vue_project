@@ -2,7 +2,7 @@
 import Focus from "element-ui/src/mixins/focus";
 Focus("reference")
 //====>
-const { useFocus } = await _.$importVue("/common/utils/compositionAPI.vue");
+const { useFocus } = await _.$importVue("/common/utils/hooks.vue");
 setup() {
     const { focus } = useFocus(this, "reference");
     return { focus };

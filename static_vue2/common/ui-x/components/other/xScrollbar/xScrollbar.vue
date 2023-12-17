@@ -61,19 +61,24 @@ export default async function () {
 			const wrap = h(
 				this.tag,
 				{
-					class: [this.wrapClass, "el-scrollbar__wrap", gutter ? "" : "el-scrollbar__wrap--hidden-default"],
-					style: style,
 					ref: "wrap",
-					on: {
-						scroll: this.handleScroll
-					}
+					class: [this.wrapClass, "el-scrollbar__wrap", gutter ? "" : "el-scrollbar__wrap--hidden-default"],
+					style,
+					onScroll: this.handleScroll
 				},
 				[view]
 			);
 
 			let nodes;
 			if (!this.native) {
-				nodes = [wrap, h("Bar", { size: this.sizeWidth, move: this.moveX }), h("Bar", { vertical: true, size: this.sizeWidth, move: this.moveX })];
+				nodes = [
+					/* body */
+					wrap,
+					/* horizon */
+					h("Bar", { size: this.sizeWidth, move: this.moveX }),
+					/* vertical */
+					h("Bar", { vertical: true, size: this.sizeHeight, move: this.moveY })
+				];
 			} else {
 				nodes = [
 					h(
@@ -114,6 +119,7 @@ export default async function () {
 		mounted() {
 			if (this.native) return;
 			this.$nextTick(this.update);
+
 			!this.noresize && addResizeListener(this.$refs.resize, this.update);
 		},
 

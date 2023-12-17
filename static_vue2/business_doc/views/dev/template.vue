@@ -1,9 +1,9 @@
 <template>
 	<div class="page-view view-icon">
-		<xDevTest>
+		<xDev>
 			<template #first>first</template>
 			<template #params="props">params:{{ props.title }}</template>
-		</xDevTest>
+		</xDev>
 	</div>
 </template>
 

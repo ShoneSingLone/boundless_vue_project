@@ -5,7 +5,7 @@
 		<DemoAndCode title="动态编辑标签" path="@/views/component/data/tag/DongTaiBianJiBiaoQian.vue" />
 		<DemoAndCode title="不同尺寸" path="@/views/component/data/tag/BuTongChiCun.vue" />
 		<DemoAndCode title="不同主题" path="@/views/component/data/tag/BuTongZhuTi.vue" />
-		<Md :md="apiString" />
+		<xMd :md="apiString" />
 	</div>
 </template>
 

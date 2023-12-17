@@ -15,7 +15,7 @@
 
 <script>
 export default async function () {
-	const { useDialogProps } = await _.$importVue("/common/utils/compositionAPI.vue");
+	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 
 	return defineComponent({
 		inject: ["APP"],

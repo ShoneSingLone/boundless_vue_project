@@ -1,13 +1,13 @@
 <template>
 	<div class="dropdown-demo">
-		<Md :md="'将动作或菜单折叠到下拉菜单中。'" />
+		<xMd :md="'将动作或菜单折叠到下拉菜单中。'" />
 		<DemoAndCode title="基础用法" path="@/views/component/navigation/dropdown/JiChuYongFa.vue" unfold />
 		<DemoAndCode title="触发对象" path="@/views/component/navigation/dropdown/ChuFaDuiXiang.vue" unfold />
 		<DemoAndCode title="触发方式" path="@/views/component/navigation/dropdown/ChuFaFangShi.vue" unfold />
 		<DemoAndCode title="菜单隐藏方式" path="@/views/component/navigation/dropdown/CaiDanYinCangFangShi.vue" unfold />
 		<DemoAndCode title="指令事件" path="@/views/component/navigation/dropdown/ZhiLingShiJian.vue" unfold />
 		<DemoAndCode title="不同尺寸" path="@/views/component/navigation/dropdown/BuTongChiCun.vue" unfold />
-		<Md :md="apiString" />
+		<xMd :md="apiString" />
 	</div>
 </template>
 

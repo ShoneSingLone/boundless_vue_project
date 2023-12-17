@@ -1,7 +1,7 @@
 <template>
 	<xDialog>
 		<p>{{ componentPath }}</p>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<template #footer>
 			<xBtn @click="$closeWindow">{{ i18n("取消") }}</xBtn>
 		</template>
@@ -10,7 +10,7 @@
 
 <script>
 export default async function ({ code, componentPath }) {
-	const { useDialogProps } = await _.$importVue("/common/utils/compositionAPI.vue");
+	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 
 	return defineComponent({
 		inject: ["APP"],

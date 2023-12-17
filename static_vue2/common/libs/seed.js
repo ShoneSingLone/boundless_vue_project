@@ -81,7 +81,11 @@
 	})();
 
 	(function loadBaseInfo() {
-		const { srcRoot, appName, appEntryName, appVersion } = $$id("src-root").dataset;
+		const srcRootDom = $$id("src-root");
+		const { src } = srcRootDom;
+		const srcRoot = src.replace("/common/libs/seed.js", "");
+
+		const { appName, appEntryName, appVersion } = srcRootDom.dataset;
 
 		window.SRC_ROOT_PATH = srcRoot || "";
 		window.APP_NAME = appName || "";
@@ -106,7 +110,7 @@
 			function updateProgress(oEvent) {
 				if (oEvent.lengthComputable && oEvent.total) {
 					var percentComplete = (oEvent.loaded / oEvent.total) * 100;
-					console.log("🚀 ~ updateProgress ~ percentComplete:", percentComplete);
+					/* TODO: progress*/
 				} else {
 					// 总大小未知时不能计算进程信息
 				}

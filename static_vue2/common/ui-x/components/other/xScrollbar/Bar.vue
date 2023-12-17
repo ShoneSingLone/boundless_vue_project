@@ -1,17 +1,5 @@
 <script>
 export default async function () {
-	function renderThumbStyle({ move, size, bar }) {
-		const style = {};
-		const translate = `translate${bar.axis}(${move}%)`;
-
-		style[bar.size] = size;
-		style.transform = translate;
-		style.msTransform = translate;
-		style.webkitTransform = translate;
-
-		return style;
-	}
-
 	const BAR_MAP = {
 		vertical: {
 			offset: "offsetHeight",
@@ -43,10 +31,16 @@ export default async function () {
 			move: Number
 		},
 		computed: {
-			bar() {
-				return BAR_MAP[this.vertical ? "vertical" : "horizontal"];
+			height() {
+				return this.$parent.sizeHeight;
 			},
-
+			width() {
+				return this.$parent.sizeWidth;
+			},
+			bar() {
+				const type = this.vertical ? "vertical" : "horizontal";
+				return BAR_MAP[type];
+			},
 			wrap() {
 				return this.$parent.wrap;
 			}
@@ -54,25 +48,44 @@ export default async function () {
 
 		render(h) {
 			const { size, move, bar } = this;
+			const style = this.renderThumbStyle({ size, move, bar });
 
 			return h(
 				"div",
 				{
 					class: ["el-scrollbar__bar", "is-" + bar.key],
-					onMousedown: this.clickTrackHandler
+					on: {
+						mousedown: this.clickTrackHandler
+					}
 				},
 				[
 					h("div", {
 						ref: "thumb",
 						class: "el-scrollbar__thumb",
-						style: renderThumbStyle({ size, move, bar }),
-						onMouseDown: this.clickThumbHandler
+						style,
+						on: {
+							mousedown: this.clickThumbHandler
+						}
 					})
 				]
 			);
 		},
 
 		methods: {
+			renderThumbStyle({ move, bar }) {
+				const style = {};
+				const translate = `translate${bar.axis}(${move}%)`;
+				if (bar.size === "height") {
+					style.height = this.height;
+				} else {
+					style.width = this.width;
+				}
+				style.transform = translate;
+				style.msTransform = translate;
+				style.webkitTransform = translate;
+
+				return style;
+			},
 			clickThumbHandler(e) {
 				// prevent click event of right button
 				if (e.ctrlKey || e.button === 2) {

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<div class="demo-input-suffix flex middle">
 			属性方式：
 			<xInput placeholder="请选择日期" suffix-icon="el-icon-date" v-model="input1"> </xInput>

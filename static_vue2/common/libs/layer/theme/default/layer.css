@@ -72,7 +72,7 @@ html #layuicss-layer {
 	vertical-align: top;
 }
 
-.layui-layer-move {
+.x-layer-move {
 	display: none;
 	position: fixed;
 	*position: absolute;
@@ -87,7 +87,7 @@ html #layuicss-layer {
 	z-index: 2147483647;
 }
 
-.layui-layer-resize {
+.x-layer-resize {
 	position: absolute;
 	width: 15px;
 	height: 15px;

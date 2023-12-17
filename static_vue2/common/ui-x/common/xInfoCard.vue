@@ -18,7 +18,7 @@
 
 <script>
 export default async function () {
-	const { useElementSize } = await _.$importVue("/common/utils/compositionAPI.vue");
+	const { useElementSize } = await _.$importVue("/common/utils/hooks.vue");
 	const { ref, watch } = Vue;
 	return {
 		props: ["configs"],

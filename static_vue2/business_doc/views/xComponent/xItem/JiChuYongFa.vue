@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<div>xItemInput.value: {{ xItemInput.value }}</div>
 		<xItem :configs="xItemInput" />
 		<div>{{ xItemInputValue }}</div>
@@ -16,6 +16,7 @@ export default async function () {
 				xItemInput: {
 					value: "",
 					label: "xItemInput",
+					tips: "asdfasdf",
 					onFocus() {
 						vm.xItemInputValue = "onFocus";
 					},

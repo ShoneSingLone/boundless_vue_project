@@ -1,6 +1,6 @@
 <template>
 	<div class="card-JiChuYongFa">
-		<Md :md="mdTitle" />
+		<xMd :md="mdTitle" />
 		<xBtn preset="text">文字按钮</xBtn>
 		<xBtn preset="text" disabled>文字按钮</xBtn>
 	</div>

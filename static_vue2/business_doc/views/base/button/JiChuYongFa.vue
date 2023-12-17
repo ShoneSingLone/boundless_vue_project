@@ -1,6 +1,6 @@
 <template>
 	<div class="card-JiChuYongFa">
-		<Md :md="mdTitle" />
+		<xMd :md="mdTitle" />
 		<el-row>
 			<xBtn @click="testLoading">Click me!</xBtn>
 			<xBtn preset="primary" @mouseenter="testLoading">主要按钮</xBtn>

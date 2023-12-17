@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<el-row class="block-col-2">
 			<el-col :span="12">
 				<span class="demonstration">hover 激活</span>

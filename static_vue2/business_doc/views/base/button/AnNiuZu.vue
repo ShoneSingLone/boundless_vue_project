@@ -1,6 +1,6 @@
 <template>
 	<div class="card-JiChuYongFa">
-		<Md :md="mdTitle" />
+		<xMd :md="mdTitle" />
 		<xBtnGroup>
 			<xBtn preset="primary" icon="el-icon-arrow-left">上一页</xBtn>
 			<xBtn preset="primary">下一页<i class="el-icon-arrow-right el-icon--right"></i></xBtn>

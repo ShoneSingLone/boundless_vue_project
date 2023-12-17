@@ -19,7 +19,7 @@ export default async function () {
 		}),
 		/* 聚合类 */
 		_.$newRoute("/x-component", ComponentPageRouterView, {
-			children: [_.$newRoute("/x-component/x-item", "@/views/xComponent/xItem.vue")]
+			children: [_.$newRoute("/x-component/x-item", "@/views/xComponent/xItem.vue"), _.$newRoute("/x-component/x-form", "@/views/xComponent/xForm.vue")]
 		}),
 		/* base */
 		_.$newRoute("/base", ComponentPageRouterView, {
@@ -57,10 +57,12 @@ export default async function () {
 		/* other */
 		_.$newRoute("/other", ComponentPageRouterView, {
 			children: [
+				_.$newRoute("/other/layer", "@/views/other/layer/layer.vue"),
+				_.$newRoute("/other/move", "@/views/other/move/move.vue"),
 				_.$newRoute("/other/popover", "@/views/other/popover/popover.vue"),
 				_.$newRoute("/other/open_window", "@/views/other/OpenWindow.vue"),
-				_.$newRoute("/other/x-form-item-wrapper", "@/views/other/xFormItemWrapper/xFormItemWrapper.vue"),
-				_.$newRoute("/other/card", "@/views/other/xFormItemWrapper/xFormItemWrapper.vue")
+				_.$newRoute("/other/x-form-item-wrapper", "@/views/other/xItemWrapper/xItemWrapper.vue"),
+				_.$newRoute("/other/card", "@/views/other/xItemWrapper/xItemWrapper.vue")
 			]
 		}),
 		_.$newRoute("/dev", ComponentPageRouterView, {
@@ -77,7 +79,7 @@ export default async function () {
 		{
 			/* 本来应该是NotFound，但是没有必要 */
 			path: "*",
-			redirect: "/base/button"
+			redirect: "/all-project"
 		}
 	];
 }

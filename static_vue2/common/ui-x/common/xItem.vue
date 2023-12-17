@@ -3,7 +3,10 @@ export default async function () {
 	const { useProps } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	const RULES = await _.$importVue("/common/utils/rules.vue");
 	const { EVENT_ARRAY } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
-	/* TODO: 
+	const { useAutoResize } = Vue._useXui;
+	const NormalRender = await _.$importVue("/common/ui-x/common/xItem.NormalRender.vue");
+
+	/* TODO:
 	xForm disabled
 	xTable disabled
 	xTableRow disabled
@@ -120,7 +123,12 @@ export default async function () {
 			onBeforeUnmount(() => {
 				delete Vue._X_ITEM_VM_S[this.cpt_id];
 			});
+			const { height, width, sizer } = useAutoResize(props);
+
 			return {
+				height,
+				width,
+				refItemLabel: sizer,
 				privateState,
 				cptDisabled,
 				cpt_options,
@@ -174,15 +182,6 @@ export default async function () {
 			cpt_label() {
 				return this.configs?.label;
 			},
-			cpt_msg() {
-				if (_.isString(this.configs?.msg) && this.configs?.msg) {
-					return this.configs?.msg;
-				}
-				if (this.configs?.msg) {
-					return this.configs.msg.call(this.configs, { xItem: this });
-				}
-				return null;
-			},
 			cpt_isRequired() {
 				try {
 					return _.some(this.configs.rules, rule => rule.name === "required");
@@ -217,8 +216,24 @@ export default async function () {
 			itemType() {
 				return this.configs.itemType || "xItemInput";
 			},
-			tips() {
-				return this.configs.tips ?? "";
+			cptMsg() {
+				if (_.isString(this.configs?.msg) && this.configs?.msg) {
+					return h("div", [this.configs.msg]);
+				}
+				if (_.isFunction(this.configs?.msg)) {
+					return this.configs.msg.call(this.configs, { xItem: this });
+				}
+
+				if (this.configs?.msg?.TYPE_IS_VNODE) {
+					return this.configs.msg;
+				}
+				return null;
+			},
+			cptTips() {
+				if (_.isString(this.configs.tips)) {
+					return this.configs.tips;
+				}
+				return this.configs.tips || "";
 			}
 		},
 		data() {
@@ -241,7 +256,7 @@ export default async function () {
 			triggerOnEmitValue(val) {
 				try {
 					if (this.configs?.onEmitValue) {
-						this.configs.onEmitValue({
+						this.configs.onEmitValue.call(this.configs, {
 							val,
 							...(this?.configs?.payload || {})
 						});
@@ -352,96 +367,25 @@ export default async function () {
 			}
 		},
 		render() {
-			const vm = this;
-			const xItem_controllerProps = {
-				...vm.configs,
-				readonly: vm.configs.readonly,
-				disabled: vm.cptDisabled,
-				attrs: {
-					...vm.cpt_bindProps.attrs,
-					disabled: vm.cptDisabled
-				},
-				props: {
-					...vm.cpt_bindProps.props,
-					disabled: vm.cptDisabled
-				},
-				configs: {
-					...vm.configs,
-					disabled: vm.cptDisabled,
-					options: vm.cpt_options
-				},
-				value: vm.p_value,
-				on: vm.p_listeners,
-				onChange: val => {
-					vm.p_value = val;
-				}
-			};
-			return h(
-				"div",
-				{
-					vIf: !vm.cpt_isHide,
-					staticClass: "xItem-wrapper flex middle",
-					attrs: {
-						"data-form-item-id": vm.cpt_id
-					}
-				},
-				[
-					h(
-						"label",
-						{
-							vIf: vm.cpt_label,
-							staticClass: "xItem_label"
-						},
-						[
-							h(
-								"span",
-								{
-									vIf: vm.cpt_isRequired,
-									staticClass: "xItem_label-required"
-								},
-								["*"]
-							),
-							h("span", { staticClass: "xItem_label-text" }, [vm.cpt_label])
-						]
-					),
-					h(
-						"div",
-						{
-							staticClass: "xItem_controller"
-						},
-						[
-							h(vm.itemType, xItem_controllerProps),
-							h(
-								"span",
-								{
-									vIf: !!vm.cpt_msg,
-									staticClass: "xItem_msg"
-								},
-								[vm.cpt_msg]
-							),
-							h(
-								"span",
-								{
-									vIf: vm.errorTips,
-									staticClass: "xItem_error-msg"
-								},
-								[vm.errorTips]
-							)
-						]
-					),
-					h("xRender", {
-						vIf: vm.configs?.itemSlots?.afterController,
-						render: vm.configs?.itemSlots?.afterController,
-						payload: { xItem: vm }
-					})
-				]
-			);
+			return NormalRender.call(this);
 		}
 	};
 }
 </script>
 
 <style lang="less">
+.xItem-wrapper {
+	width: 200px;
+	overflow: hidden;
+	.xItem_controller.el-form-item {
+		margin-bottom: unset;
+	}
+
+	.xItem_info-msg {
+		max-width: 90%;
+		overflow: auto;
+	}
+}
 .xItem-wrapper + .xItem-wrapper {
 	margin-top: 24px;
 }
@@ -463,10 +407,14 @@ export default async function () {
 }
 
 .xItem_controller {
+	width: 1px;
 	flex: 1;
 	display: flex;
 	flex-flow: column nowrap;
-	overflow: hiden;
+	overflow: hidden !important;
+	&.center {
+		align-self: center;
+	}
 
 	.show-error {
 		[class$="__inner"],
@@ -483,10 +431,9 @@ export default async function () {
 }
 
 .xItem_error-msg {
-	display: inline-table;
+	display: absolute;
 	height: 20px;
 	line-height: 20px;
-	margin-top: 4px;
 	color: var(--ui-danger);
 }
 

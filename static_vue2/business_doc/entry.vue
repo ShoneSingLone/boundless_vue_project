@@ -12,8 +12,7 @@ export default async function () {
 
 	_.each(
 		{
-			DemoAndCode: "@/components/DemoAndCode.vue",
-			Md: "@/components/Md.vue"
+			DemoAndCode: "@/components/DemoAndCode.vue"
 		},
 		(url, name) => {
 			Vue.component(name, () => _.$importVue(url));

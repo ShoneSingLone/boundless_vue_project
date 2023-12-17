@@ -6,7 +6,6 @@
 					<a :href="'/' + projectName">{{ projectName }}</a>
 				</xTag>
 			</div>
-
 			<xDropdown split-button preset="blue">
 				更多菜单
 				<xDropdownMenu slot="dropdown">
@@ -17,8 +16,7 @@
 					<xDropdownItem>蚵仔煎</xDropdownItem>
 				</xDropdownMenu>
 			</xDropdown>
-
-			<Md :md="md" />
+			<xMd :md="md" />
 		</xPageContent>
 	</div>
 </template>
@@ -29,7 +27,6 @@ export default async function () {
 		async mounted() {
 			const { data: allProject } = await Vue._api.allProject();
 			this.allProject = allProject;
-
 			const tutorial = await _.$loadText("@/doc/reuseElementUI.md");
 			this.md = tutorial;
 		},

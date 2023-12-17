@@ -49,9 +49,9 @@ export default async function () {
 					}
 
 					this.$watch(
-						"cpt_color",
+						"cptColor",
 						() => {
-							$(this.$el).css("color", this.cpt_color);
+							$(this.$el).css("color", this.cptColor);
 						},
 						{ immediate: true }
 					);
@@ -77,7 +77,7 @@ export default async function () {
 				}
 				return _.$resolvePath(url);
 			},
-			cpt_color() {
+			cptColor() {
 				let iconColor = this.$attrs.color || "inherit";
 				return iconColor;
 			},

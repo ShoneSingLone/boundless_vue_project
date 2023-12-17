@@ -1,6 +1,6 @@
 <template>
 	<div class="card-JiChuYongFa">
-		<Md :md="mdTitle" />
+		<xMd :md="mdTitle" />
 		<xBtn preset="primary" :loading="true">加载中</xBtn>
 	</div>
 </template>

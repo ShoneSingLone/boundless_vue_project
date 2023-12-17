@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<div class="demo-input-size">
 			<xInput placeholder="请输入内容" suffix-icon="el-icon-date" v-model="input1"> </xInput>
 			<xInput size="medium" placeholder="请输入内容" suffix-icon="el-icon-date" v-model="input2"> </xInput>

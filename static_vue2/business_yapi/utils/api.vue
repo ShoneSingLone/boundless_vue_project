@@ -1,8 +1,16 @@
 <script>
 export default async function () {
-	if (!Vue._api) {
+	if (!Vue._yapi_api) {
 		(function () {
-			Vue._api = {
+			Vue._yapi_api = {
+				/* project */
+				getProjectByGroupId(group_id) {
+					return handleRequest(async () => {
+						return _.$ajax.get("/api/project/list", {
+							data: { group_id }
+						});
+					});
+				},
 				groupDelMember(data) {
 					return handleRequest(async () => {
 						return _.$ajax.post("/api/group/del_member", {
@@ -75,6 +83,11 @@ export default async function () {
 					});
 				},
 				/* user */
+				async getUserSearch(data) {
+					return handleRequest(async () => {
+						return _.$ajax.get(`/api/user/search`, { data });
+					});
+				},
 				async getUserStatus() {
 					return handleRequest(async () => {
 						return _.$ajax.get(`/api/user/status`);
@@ -85,6 +98,11 @@ export default async function () {
 						return _.$ajax.post(`/api/user/login`, {
 							data
 						});
+					});
+				},
+				async postUserLogout() {
+					return handleRequest(async () => {
+						return _.$ajax.post(`/api/user/logout`);
 					});
 				},
 				async postNewVarifyCode(email) {
@@ -106,10 +124,15 @@ export default async function () {
 			};
 
 			async function handleRequest(request) {
-				let response = {};
+				let response = { error: true };
 				try {
 					_.$loading(true);
 					response = await request();
+					if (response.errcode == 40011) {
+						/* 登录过期 */
+						// _.$msgError("登录过期，请重新登录");
+						_.$yapiRouter.push("/login");
+					}
 				} catch (error) {
 					_.$msgError(error);
 				} finally {
@@ -120,6 +143,6 @@ export default async function () {
 		})();
 	}
 
-	return Vue._api;
+	return Vue._yapi_api;
 }
 </script>

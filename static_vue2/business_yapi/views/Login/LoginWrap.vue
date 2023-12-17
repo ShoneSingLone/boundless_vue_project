@@ -6,8 +6,7 @@
 				<LoginForm />
 			</xTabPane>
 			<xTabPane label="注册" name="2">
-				<RegForm v-if="stateApp.user.canRegister" />
-				<div style="min-height: 200px" v-else>管理员已禁止注册，请联系管理员</div>
+				<RegForm />
 			</xTabPane>
 		</xTabs>
 	</div>
@@ -15,17 +14,14 @@
 <script>
 export default async function () {
 	return defineComponent({
-		inject: ["stateApp"],
+		inject: ["APP"],
 		components: {
-			LoginForm: () => _.$importVue("@/views/auth/LoginForm.vue"),
-			RegForm: () => _.$importVue("@/views/auth/RegForm.vue")
+			LoginForm: () => _.$importVue("@/views/Login/LoginForm.vue"),
+			RegForm: () => _.$importVue("@/views/Login/RegForm.vue")
 		},
 		props: {
 			form: {
 				type: Object
-			},
-			canRegister: {
-				type: Boolean
 			}
 		},
 		computed: {

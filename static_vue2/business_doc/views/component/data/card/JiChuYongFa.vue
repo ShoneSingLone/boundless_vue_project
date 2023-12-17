@@ -1,6 +1,6 @@
 <template>
 	<div class="card-JiChuYongFa">
-		<Md :md="mdTitle" />
+		<xMd :md="mdTitle" />
 		<xCard class="box-card">
 			<div slot="header" class="clearfix">
 				<span>卡片名称</span>

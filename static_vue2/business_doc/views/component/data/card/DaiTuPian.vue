@@ -1,6 +1,6 @@
 <template>
 	<div class="card-DaiTuPian">
-		<Md :md="mdTitle" />
+		<xMd :md="mdTitle" />
 		<el-row>
 			<el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
 				<xCard :body-style="{ padding: '0px' }">

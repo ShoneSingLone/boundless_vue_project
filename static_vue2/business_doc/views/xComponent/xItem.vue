@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<DemoAndCode title="基础用法" path="@/views/xComponent/xItem/JiChuYongFa.vue" unfold />
-		<Md :md="apiString" />
+		<xMd :md="apiString" />
 	</div>
 </template>
 
@@ -10,7 +10,7 @@ export default async function () {
 	return {
 		data() {
 			return {
-				apiString: ""
+				apiString: "--xItem-label-width 修改"
 			};
 		}
 	};

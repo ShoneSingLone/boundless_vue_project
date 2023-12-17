@@ -1,4 +1,4 @@
-const { vueVaribles } = require("./configs.boundlessHelper.doc");
+const { vueVaribles } = require("./configs.boundlessHelper.yapi");
 module.exports = {
     "alias": {
         "^/common/": "/static_vue2/common/"
@@ -14,6 +14,7 @@ module.exports = {
     vueVaribles: {
         ...vueVaribles,
         _reg: "static_vue2/common/utils/regexp.vue",
+        _hooks: "static_vue2/common/utils/hooks.vue",
         _rules: "static_vue2/common/utils/rules.vue",
     }
 };

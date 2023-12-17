@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Md :md="md" />
+		<xMd :md="md" />
 		<xSelect v-model="value" multiple filterable allow-create default-first-option placeholder="请选择文章标签">
 			<xOption v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </xOption>
 		</xSelect>

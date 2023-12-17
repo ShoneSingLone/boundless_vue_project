@@ -1,5 +1,7 @@
 <script>
 export default async function () {
+	let PopoverComponent;
+
 	const TIPS_OPTIONS = new Map();
 	/* 可能是Vue实例，也可能是原始dom */
 	const VM_REFRENCE = new Map();
@@ -40,7 +42,9 @@ export default async function () {
 		const vmPopover = VM_POPOVER.get(refId);
 		let $popover = $(`[${SELECTOR_POPOVER}=${refId}]`);
 
+		const isShow = !!options.content;
 		return {
+			isShow,
 			trigger,
 			$ele,
 			refId,
@@ -59,10 +63,11 @@ export default async function () {
 			});
 
 			_.$single.shadowTemplate.append($popover);
-			const PopoverComponent = await _.$importVue("/common/ui-x/directive/xtips/xtipsDefaultPopover.vue");
-			PopoverComponent.parent = vmRefrence;
+			PopoverComponent = PopoverComponent || (await _.$importVue("/common/ui-x/directive/xtips/xtipsDefaultPopover.vue"));
+			let _PopoverComponent = { ...PopoverComponent };
+			_PopoverComponent.parent = vmRefrence;
 
-			vmPopover = new Vue(PopoverComponent);
+			vmPopover = new Vue(_PopoverComponent);
 			VM_POPOVER.set(refId, vmPopover);
 
 			/* popover使用onPopoverChange */
@@ -103,7 +108,8 @@ export default async function () {
 	}
 
 	function handleClick(event) {
-		const { trigger } = usePops(this);
+		const { trigger, isShow } = usePops(this);
+		if (!isShow) return;
 		if (["click", "rightClick"].includes(trigger)) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -112,14 +118,16 @@ export default async function () {
 	}
 
 	function handleEnterReference(event) {
-		const { trigger } = usePops(this);
+		const { trigger, isShow } = usePops(this);
+		if (!isShow) return;
 		if ("hover" === trigger) {
 			ensurePopover({ ele: this });
 		}
 	}
 
 	function handleFocusinReference(event) {
-		const { trigger } = usePops(this);
+		const { trigger, isShow } = usePops(this);
+		if (!isShow) return;
 		if ("focus" === trigger) {
 			ensurePopover({ ele: this });
 		}
@@ -144,7 +152,7 @@ export default async function () {
 		.on(`mousedown.${EVENT_UI_TARGET}`, `[${SELECTOR_REFERENCE}]`, handleFocusinReference);
 	//.on(`mouseup.${EVENT_UI_TARGET}`, `[${SELECTOR_REFERENCE}]`, handleFocusoutReference);
 
-	return {
+	return Vue.directive("xtips", {
 		name: "xtips",
 		/* @ts-ignore */
 		inserted(ele, binding, vnode) {
@@ -173,7 +181,7 @@ export default async function () {
 		unbind(ele) {
 			clear(ele);
 		}
-	};
+	});
 }
 </script>
 

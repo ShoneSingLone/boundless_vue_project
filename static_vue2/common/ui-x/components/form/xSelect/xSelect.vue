@@ -108,7 +108,7 @@
 <script>
 export default async function () {
 	const [{ useFocus }, { addResizeListener, removeResizeListener }, Clickoutside, NavigationMixin] = await Promise.all([
-		_.$importVue("/common/utils/compositionAPI.vue"),
+		_.$importVue("/common/utils/hooks.vue"),
 		_.$importVue("/common/utils/utils.vue"),
 		_.$importVue("/common/ui-x/directive/clickoutside.vue"),
 		_.$importVue("/common/ui-x/components/form/xSelect/navigationMixin.vue")

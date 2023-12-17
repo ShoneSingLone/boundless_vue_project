@@ -258,7 +258,7 @@
 	doms.anim = ["layer-anim-00", "layer-anim-01", "layer-anim-02", "layer-anim-03", "layer-anim-04", "layer-anim-05", "layer-anim-06"];
 
 	doms.SHADE = "layui-layer-shade";
-	doms.MOVE = "layui-layer-move";
+	doms.MOVE = "x-layer-move";
 
 	//默认配置
 	Class.pt.config = {
@@ -364,7 +364,7 @@
 								return '<div class="' + doms[6] + " layui-layer-btn-" + (config.btnAlign || "") + '">' + button + "</div>";
 						  })()
 						: "") +
-					(config.resize ? '<span class="layui-layer-resize"></span>' : "") +
+					(config.resize ? '<span class="x-layer-resize"></span>' : "") +
 					"</div>"
 			],
 			titleHTML,
@@ -718,7 +718,7 @@
 			_DOC = $(document),
 			layero = that.layero,
 			moveElem = layero.find(config.move),
-			resizeElem = layero.find(".layui-layer-resize"),
+			resizeElem = layero.find(".x-layer-resize"),
 			dict = {};
 
 		if (config.move) {
@@ -1145,7 +1145,7 @@
 			layero.addClass("layer-anim " + closeAnim);
 		}
 
-		$("#layui-layer-moves, #" + doms.SHADE + index).remove();
+		$("#x-layer-moves, #" + doms.SHADE + index).remove();
 		layer.ie == 6 && ready.reselect();
 		ready.rescollbar(index);
 		if (layero.attr("minLeft")) {

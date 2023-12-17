@@ -15,7 +15,37 @@ export default async function () {
 				return this.options || this?.configs?.options || [];
 			}
 		},
-		mounted() {}
+		mounted() {},
+		render() {
+			const vm = this;
+			let attrs = {};
+			if (_.isFunction(Vue._useXui?.globalConfigs?.xItemSelect?.defaultProps)) {
+				attrs = Vue._useXui.globalConfigs.xItemSelect.defaultProps(vm, vm.$attrs);
+			}
+
+			return h(
+				"xSelect",
+				merge_hFnProps([
+					{
+						attrs,
+						on: vm.mixin_listeners,
+						/* configs,value */
+						onChange(val) {
+							vm.mixin_value = val;
+						}
+					},
+					vm?.$vnode?.data
+				]),
+				_.map(vm.selectOptions, (item, key) => {
+					return h("xOption", {
+						key: item.value || item.label,
+						value: item.value,
+						label: item.label,
+						disabled: item.disabled || false
+					});
+				})
+			);
+		}
 	});
 }
 </script>

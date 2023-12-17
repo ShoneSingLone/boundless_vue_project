@@ -1,11 +1,11 @@
 <template>
 	<transition :name="transition" @after-enter="handleAfterEnter" @after-leave="handleAfterLeave">
 		<div
-			class="el-popover el-popper"
+			class="el-popover el-popper x-xtips"
 			:class="[popperClass, content && 'el-popover--plain']"
 			ref="popper"
 			v-show="!disabled && showPopper"
-			:style="{ width: width + 'px' }"
+			:style="cptStyle"
 			role="tooltip"
 			:id="tooltipId"
 			:aria-hidden="disabled || !showPopper ? 'true' : 'false'">
@@ -71,8 +71,8 @@ export default async function () {
 			popperClass() {
 				return this.options.popperClass || "";
 			},
-			width() {
-				return this.options.width || {};
+			cptStyle() {
+				return this.options.style || {};
 			},
 			arrowOffset() {
 				return this.options.arrowOffset || 0;
@@ -350,3 +350,9 @@ export default async function () {
 	});
 }
 </script>
+<style lang="less">
+.el-popover.x-xtips {
+	--min-width: unset;
+	min-width: var(--min-width);
+}
+</style>

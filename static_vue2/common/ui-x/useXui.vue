@@ -3,8 +3,8 @@
 
 /* CSS Document */
 :root {
-	--app-padding: 16px;
 	color-scheme: light;
+	--app-padding: 16px;
 	--ui-one: 16px;
 	--ui-one-reverse: -16px;
 	--ui-half: 8px;
@@ -289,13 +289,13 @@ each(@list, {
 
 /* flex1 flex2 */
 
-.gapFn(@pos; @right; @gap) {
-	.m@{pos}@{gap} {
-		margin-@{right}: @gap*1px;
+.gapFn(@type; @position; @gap) {
+	.m@{type}@{gap} {
+		margin-@{position}: @gap*1px;
 	}
 
-	.p@{pos}@{gap} {
-		padding-@{right}: @gap*1px;
+	.p@{type}@{gap} {
+		padding-@{position}: @gap*1px;
 	}
 }
 
@@ -310,6 +310,29 @@ each(@list, {
 .loopGapFn(8);
 .loopGapFn(16);
 .loopGapFn(32);
+
+.margin {
+	margin: var(--ui-one);
+}
+.padding {
+	padding: var(--ui-one);
+}
+
+.mpFn(@type;@position) {
+	.m@{type} {
+		margin-@{position}: var(--ui-one);
+	}
+
+	.p@{type} {
+		padding-@{position}: var(--ui-one);
+	}
+}
+
+.mpFn(t; top;);
+.mpFn(r; right;);
+.mpFn(b; bottom;);
+.mpFn(l; left;);
+
 /* gap-gap-gap-gap-gap */
 
 *,
@@ -1093,62 +1116,42 @@ img {
 	flex: 0 0 24%;
 }
 
-.flex.vertical {
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	-ms-flex-flow: column nowrap;
-	flex-flow: column nowrap;
-}
-
-.flex.like-float {
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	-ms-flex-flow: row wrap;
-	flex-flow: row wrap;
-}
-
 .flex.like-float .el-button + .el-button {
 	margin-left: 0;
 }
 
-.flex.between {
-	-webkit-box-pack: justify;
-	-ms-flex-pack: justify;
-	justify-content: space-between;
-}
+.flex {
+	display: flex !important;
+	&.like-float {
+		flex-flow: row wrap;
+	}
+	&.vertical {
+		flex-flow: column nowrap;
+	}
+	&.between {
+		justify-content: space-between;
+	}
+	&.start {
+		justify-content: flex-start;
+	}
+	&.end {
+		justify-content: flex-end;
+	}
+	&.center {
+		justify-content: center;
+	}
 
-.flex.start {
-	-webkit-box-pack: start;
-	-ms-flex-pack: start;
-	justify-content: flex-start;
-}
+	&.middle {
+		align-items: center;
+	}
 
-.flex.end {
-	-webkit-box-pack: end;
-	-ms-flex-pack: end;
-	justify-content: flex-end;
-}
+	&.top {
+		align-items: flex-start;
+	}
 
-.flex.center {
-	-webkit-box-pack: center;
-	-ms-flex-pack: center;
-	justify-content: center;
-}
-
-.flex.middle {
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-}
-
-.flex.top {
-	align-items: flex-start;
-}
-
-.flex.baseline {
-	-webkit-box-align: baseline;
-	-ms-flex-align: baseline;
-	align-items: baseline;
+	&.baseline {
+		align-items: baseline;
+	}
 }
 
 .xTransfer {
@@ -1398,7 +1401,7 @@ ul::-webkit-scrollbar-thumb {
 }
 
 .x-loading::before {
-	pointer-events: none;
+	pointer-events: auto;
 	content: " ";
 	display: block;
 	top: 0;
@@ -1410,23 +1413,25 @@ ul::-webkit-scrollbar-thumb {
 	// background-color: red;
 	z-index: 9999999999;
 }
+
+.white-border {
+	background-color: var(--color-white);
+	border-radius: var(--border-radius);
+	overflow: hidden;
+}
+
+/* ************************useXui_css_variable*********************** */
 </style>
 
 <script>
 export default async function () {
 	await Promise.all([
+		_.$importVue("/common/ui-x/common/xUIcomponetUtils.vue"),
 		Promise.all(
-			[
-				{ name: "xtips", url: "/common/ui-x/directive/xtips/xtips.vue" },
-				{ name: "ripple", url: "/common/ui-x/directive/ripple.vue" },
-				{ name: "xloading", url: "/common/ui-x/directive/xloading.vue" }
-			].map(async ({ url, name }) => {
-				const directive = await _.$importVue(url);
-				Vue.directive(name, directive);
-			})
-		),
-		_.$importVue("/common/ui-x/common/xUIcomponetUtils.vue")
+			_.map(["/common/ui-x/directive/xtips/xtips.vue", "/common/ui-x/directive/ripple.vue", "/common/ui-x/directive/xloading.vue", "/common/ui-x/directive/xmove.vue"], url => _.$importVue(url))
+		)
 	]);
+
 	await (async function lazyLoadAllComponents() {
 		const ALL_COMPONENTS = await _.$importVue("/common/ui-x/allComponents.vue");
 		Vue.ALL_COMPONENTS = ALL_COMPONENTS;
@@ -1494,7 +1499,7 @@ export default async function () {
 		let $svgWrapper = $("#__SVG_SPRITE_NODE__");
 		if ($svgWrapper.length !== 1) {
 			$svgWrapper =
-				$(`<svg id="__SVG_SPRITE_NODE__" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute; width: 0; height: 0" aria-hidden="true">
+				$(`<svg id="__SVG_SPRITE_NODE__" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:none;position: absolute; width: 0; height: 0" aria-hidden="true">
 			<svg  id="_svg_icon_loading" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"> <g> <path d="M 27.020,22.82A0.182,0.182 1080 1 0 27.384,22.82A0.182,0.182 1080 1 0 27.020,22.82zM 23.002,26.966A0.362,0.362 1080 1 0 23.726,26.966A0.362,0.362 1080 1 0 23.002,26.966zM 17.586,29.1A0.544,0.544 1080 1 0 18.674,29.1A0.544,0.544 1080 1 0 17.586,29.1zM 11.756,28.814A0.724,0.724 1080 1 0 13.204,28.814A0.724,0.724 1080 1 0 11.756,28.814zM 6.584,26.16A0.906,0.906 1080 1 0 8.396,26.16A0.906,0.906 1080 1 0 6.584,26.16zM 3.002,21.648A1.088,1.088 1080 1 0 5.178,21.648A1.088,1.088 1080 1 0 3.002,21.648zM 1.658,16.108A1.268,1.268 1080 1 0 4.194,16.108A1.268,1.268 1080 1 0 1.658,16.108zM 2.764,10.604A1.45,1.45 1080 1 0 5.664,10.604A1.45,1.45 1080 1 0 2.764,10.604zM 6.082,6.166A1.632,1.632 1080 1 0 9.346,6.166A1.632,1.632 1080 1 0 6.082,6.166zM 10.954,3.624A1.812,1.812 1080 1 0 14.578,3.624A1.812,1.812 1080 1 0 10.954,3.624zM 16.426,3.466A1.994,1.994 1080 1 0 20.414,3.466A1.994,1.994 1080 1 0 16.426,3.466zM 21.436,5.72A2.174,2.174 1080 1 0 25.784,5.72A2.174,2.174 1080 1 0 21.436,5.72zM 24.996,9.954A2.356,2.356 1080 1 0 29.708,9.954A2.356,2.356 1080 1 0 24.996,9.954zM 26.412,15.438A2.538,2.538 1080 1 0 31.488,15.438A2.538,2.538 1080 1 0 26.412,15.438z"> </path> </g> </svg>
 </svg>`).appendTo($("body"));
 		}

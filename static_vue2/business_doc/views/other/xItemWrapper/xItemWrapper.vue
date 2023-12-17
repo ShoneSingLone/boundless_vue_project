@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<DemoAndCode title="基础用法" path="@/views/other/xFormItemWrapper/JiChuYongFa.vue" unfold />
+		<DemoAndCode title="基础用法" path="@/views/other/xItemWrapper/JiChuYongFa.vue" unfold />
 	</div>
 </template>
 <script>

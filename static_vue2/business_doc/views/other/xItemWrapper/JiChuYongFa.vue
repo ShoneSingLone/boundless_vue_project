@@ -1,12 +1,12 @@
 <template>
 	<xForm col="1">
-		<xFormItemWrapper label="单独校验" :rules="rules">
+		<xItemWrapper label="单独校验" :rules="rules">
 			<template #controller>
 				<xInput v-model="form.a" />
 				<xInput v-model="form.b" />
 				<xInput v-model="form.c" />
 			</template>
-		</xFormItemWrapper>
+		</xItemWrapper>
 		<xBtn :configs="configsBtn" />
 	</xForm>
 </template>

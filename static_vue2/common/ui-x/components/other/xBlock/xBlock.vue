@@ -21,6 +21,10 @@ export default async function () {
 					classObject["el-card"] = false;
 					classObject["card-no-border"] = true;
 				}
+				if (hasOwn(this.$attrs, "card-header-border-left")) {
+					classObject["el-card"] = false;
+					classObject["card-header-border-left"] = true;
+				}
 				if (hasOwn(this.$attrs, "bg-is-gray")) {
 					classObject["bg-is-gray"] = true;
 				}
@@ -41,7 +45,7 @@ export default async function () {
 			const header = this.vDomHeader();
 			return h("div", { class: this.getClass({ xBlock: true, "el-card": true }) }, [
 				h("div", { vIf: header, class: this.getClass({ "el-card__header": true }) }, [header]),
-				h("div", { class: this.getClass({ "el-card__body": true }) }, [this.$scopedSlots.default()])
+				h("div", { class: this.getClass({ "el-card__body": true }) }, [this.$scopedSlots.default?.()])
 			]);
 		}
 	};
@@ -49,6 +53,11 @@ export default async function () {
 </script>
 
 <style lang="less">
+.el-form-item.is-error {
+	> .xBlock.el-card {
+		border-color: var(--el-color-error);
+	}
+}
 .xBlock {
 	&.bg-is-gray {
 		background: var(--el-fill-color-light);
@@ -87,6 +96,23 @@ export default async function () {
 			position: relative;
 			font-size: var(--ui-one);
 			font-weight: 700;
+		}
+
+		&.card-header-border-left {
+			&.el-card__header {
+				padding: 0;
+				padding-left: 8px;
+			}
+			// font-size: 14px;
+			font-weight: 400;
+			border-left: 4px solid var(--ui-primary);
+			border-bottom: unset;
+
+			.card__header {
+				position: relative;
+				font-size: var(--ui-one);
+				font-weight: 500;
+			}
 		}
 	}
 

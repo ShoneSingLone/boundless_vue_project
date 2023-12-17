@@ -3,6 +3,11 @@ export default async function () {
 	return [
 		{
 			icon: "_icon_report",
+			label: i18n("所有项目"),
+			href: "/all-project"
+		},
+		{
+			icon: "_icon_report",
 			label: i18n("CopyThis模板"),
 			children: [
 				{
@@ -26,6 +31,8 @@ export default async function () {
 					label: i18n("openWindow"),
 					href: "/other/open_window"
 				},
+				{ icon: "_icon_report", label: i18n("layer"), href: "/other/layer" },
+				{ icon: "_icon_report", label: i18n("move"), href: "/other/move" },
 				{ icon: "_icon_report", label: i18n("Popover"), href: "/other/popover" }
 			]
 		},
@@ -33,10 +40,11 @@ export default async function () {
 			icon: "_icon_report",
 			label: i18n("聚合类组件"),
 			children: [
+				{ href: "/x-component/x-form", icon: "_icon_report", label: i18n("xForm") },
 				{ href: "/x-component/x-item", icon: "_icon_report", label: i18n("xItem") },
 				{
 					icon: "_icon_report",
-					label: i18n("xFormItemWrapper"),
+					label: i18n("xItemWrapper"),
 					href: "/other/x-form-item-wrapper"
 				}
 			]

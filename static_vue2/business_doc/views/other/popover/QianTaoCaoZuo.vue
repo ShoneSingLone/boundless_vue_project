@@ -1,9 +1,9 @@
 <template>
 	<div class="card-JiChuYongFa">
-		<Md :md="mdTitle" />
-		<Md :md="'### 推荐使用v-xtips'" />
+		<xMd :md="mdTitle" />
+		<xMd :md="'### 推荐使用v-xtips'" />
 		<xBtn v-xtips="manual" @click="manual.visible = true">click 激活</xBtn>
-		<Md :md="'#### 普通dom\n\n'" />
+		<xMd :md="'#### 普通dom\n\n'" />
 		<elPopover placement="top" width="160" v-model="visible">
 			<p>这是一段内容这是一段内容确定删除吗？</p>
 			<div style="text-align: right; margin: 0">
