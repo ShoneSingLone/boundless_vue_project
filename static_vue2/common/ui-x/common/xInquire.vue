@@ -1,10 +1,10 @@
 <template>
 	<xBtn class="xItem-wrapper" preset="blue" @click="() => $emit('click')">
-		{{ i18n("inquire") }}
+		{{ i18n("查询") }}
 	</xBtn>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	/* 列表上面的查询按钮 */
 	return {};

@@ -87,7 +87,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { calcTextareaHeight } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 

@@ -8,7 +8,7 @@
 		<xBtn v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</xBtn>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

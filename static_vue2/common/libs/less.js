@@ -12,8 +12,8 @@
 	typeof exports === "object" && typeof module !== "undefined"
 		? (module.exports = factory())
 		: typeof define === "function" && define.amd
-		? define(factory)
-		: ((global = typeof globalThis !== "undefined" ? globalThis : global || self), (global.less = factory()));
+			? define(factory)
+			: ((global = typeof globalThis !== "undefined" ? globalThis : global || self), (global.less = factory()));
 })(this, function () {
 	"use strict";
 
@@ -2126,7 +2126,7 @@
 								}
 							}
 							return hash;
-					  }, {});
+						}, {});
 			}
 			return this._variables;
 		},
@@ -2145,7 +2145,7 @@
 								}
 							}
 							return hash;
-					  }, {});
+						}, {});
 			}
 			return this._properties;
 		},
@@ -4276,7 +4276,7 @@
 						} else {
 							return r;
 						}
-				  });
+					});
 			var result = new Definition(this.name, this.params, rules, this.condition, this.variadic, this.frames);
 			return result;
 		},
@@ -4328,7 +4328,7 @@
 						} else {
 							return count;
 						}
-				  }, 0);
+					}, 0);
 			if (!this.variadic) {
 				if (requiredArgsCnt < this.required) {
 					return false;
@@ -8776,8 +8776,8 @@
 								s.charAt(0) !== "@" && s.charAt(0) !== "$"
 									? new tree.Keyword(s)
 									: s.charAt(0) === "@"
-									? new tree.Variable("@" + s.slice(2, -1), index[k], fileInfo)
-									: new tree.Property("$" + s.slice(2, -1), index[k], fileInfo);
+										? new tree.Variable("@" + s.slice(2, -1), index[k], fileInfo)
+										: new tree.Property("$" + s.slice(2, -1), index[k], fileInfo);
 						}
 						return name;
 					}

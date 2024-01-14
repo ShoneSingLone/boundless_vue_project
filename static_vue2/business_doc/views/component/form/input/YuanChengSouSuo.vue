@@ -4,7 +4,7 @@
 		<el-autocomplete v-model="state" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

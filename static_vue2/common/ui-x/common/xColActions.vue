@@ -2,7 +2,7 @@
 	<component class="xColActions" :is="currentComponent" :configs="this.configs" />
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		props: ["configs"],

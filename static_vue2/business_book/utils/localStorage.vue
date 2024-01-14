@@ -1,6 +1,6 @@
 <template></template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const Storage = await _.$importVue("/common/libs/WebStorageCache.vue");
 

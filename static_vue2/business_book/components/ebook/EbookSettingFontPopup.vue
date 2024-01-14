@@ -21,7 +21,7 @@
 	</transition>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { ebookMixin } = await _.$importVue("@/utils/mixin.vue");
 	const { FONT_FAMILY } = await _.$importVue("@/utils/book.vue");

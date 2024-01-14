@@ -1,7 +1,7 @@
 <template>
 	<el-dropdown trigger="click" :hide-on-click="false">
 		<div class="loader-wrapper">
-			<xIcon color="var(--ui-text-weak)" icon="icon_table_filter" style="width: 24px; height: 24px" class="pointer ml4" />
+			<xIcon icon="icon_table_filter" style="width: 24px; height: 24px; color: var(--ui-base-color-5)" class="pointer ml4" />
 		</div>
 		<el-dropdown-menu slot="dropdown">
 			<el-dropdown-item v-for="item in items" :key="item.label">
@@ -11,7 +11,7 @@
 	</el-dropdown>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	/* xPagination  后台是以0开始，注意current的加减*/
 	return {

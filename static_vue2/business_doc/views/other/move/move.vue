@@ -1,12 +1,12 @@
 <template>
-	<div class="layer-demo">
+	<DocContentOfDemo class="layer-demo">
 		<xMd :md="md" />
 		<DemoAndCode title="基础用法" path="@/views/other/move/JiChuYongFa.vue" unfold />
 		<xMd :md="apiString" />
-	</div>
+	</DocContentOfDemo>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		data() {

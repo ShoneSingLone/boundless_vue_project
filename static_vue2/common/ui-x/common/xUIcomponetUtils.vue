@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const DEFAULT_DYNAMIC_LIST_ITEM_SIZE = 50;
 	const ITEM_RENDER_EVT = "itemRendered";
@@ -57,15 +57,15 @@ export default async function () {
 							if (hasOwn(prop, "default")) {
 								allowedValues.push(defaultValue);
 							}
-							valid ||= allowedValues.includes(val);
+							valid || (valid = allowedValues.includes(val));
 						}
-						if (validator) valid ||= validator(val);
+						if (validator) valid || (valid = validator(val));
 						if (!valid && allowedValues.length > 0) {
 							const allowValuesText = [...new Set(allowedValues)].map(value => JSON.stringify(value)).join(", ");
 							warn(`Invalid prop: validation failed${key ? ` for prop "${key}"` : ""}. Expected one of [${allowValuesText}], got value ${JSON.stringify(val)}.`);
 						}
 						return valid;
-				  }
+					}
 				: void 0;
 		const epProp = {
 			type,
@@ -285,6 +285,9 @@ export default async function () {
 		scrollbarAlwaysOn: {
 			type: Boolean,
 			default: false
+		},
+		defaultRender: {
+			type: Function
 		}
 	});
 	const virtualizedListProps = buildProps({
@@ -364,12 +367,12 @@ export default async function () {
 		},
 		headerHeight: {
 			type: definePropType([Number, Array]),
-			default: 50
+			default: 40
 		},
 		rowWidth: requiredNumberType,
 		rowHeight: {
 			type: Number,
-			default: 50
+			default: 40
 		},
 		height: requiredNumberType,
 		width: requiredNumberType
@@ -1211,7 +1214,7 @@ export default async function () {
 	const tryCall = (fLike, params, defaultRet = {}) => {
 		return _.isFunction(fLike) ? fLike(params) : fLike ?? defaultRet;
 	};
-	const enforceUnit = style => {
+	const enforceUnit = (style = {}) => {
 		if (_.isArray(style)) {
 			style = _.merge.apply(_, [{}, ...style]);
 		}
@@ -1321,7 +1324,7 @@ export default async function () {
 		return (_a2 = plain == null ? void 0 : plain.$el) != null ? _a2 : plain;
 	}
 
-	const defaultWindow = isClient ? window : void 0;
+	const defaultWindow = window;
 
 	function useEventListener(...args) {
 		let target;
@@ -1339,13 +1342,15 @@ export default async function () {
 		const stopWatch = watch(
 			() => unrefElement(target),
 			el => {
-				cleanup();
-				if (!el) return;
-				el.addEventListener(event, listener, options);
-				cleanup = () => {
-					el.removeEventListener(event, listener, options);
-					cleanup = noop;
-				};
+				try {
+					cleanup();
+					if (!el) return;
+					el.addEventListener(event, listener, options);
+					cleanup = () => {
+						el.removeEventListener(event, listener, options);
+						cleanup = noop;
+					};
+				} catch (error) {}
 			},
 			{ immediate: true, flush: "post" }
 		);
@@ -1460,8 +1465,20 @@ export default async function () {
 		return target;
 	};
 
+	class ElementPlusError extends Error {
+		constructor(m) {
+			super(m);
+			this.name = "ElementPlusError";
+		}
+	}
+	function throwError(scope, m) {
+		throw new ElementPlusError(`[${scope}] ${m}`);
+	}
+
 	/*****************************************/
-	Vue._useXui = {
+	window._useXui = {
+		virtualizedListProps,
+		useGetDerivedNamespace,
 		globalConfigs: {},
 		resolveUnref,
 		identity,
@@ -1529,12 +1546,120 @@ export default async function () {
 		RTL,
 		RTL_OFFSET_NAG,
 		RTL_OFFSET_POS_ASC,
-		RTL_OFFSET_POS_DESC
+		RTL_OFFSET_POS_DESC,
+		getStyle(element, styleName) {
+			var _a2;
+			if (!isClient || !element || !styleName) return "";
+			let key = Vue.camelize(styleName);
+			if (key === "float") key = "cssFloat";
+			try {
+				const style = element.style[key];
+				if (style) return style;
+				const computed = (_a2 = document.defaultView) == null ? void 0 : _a2.getComputedStyle(element, "");
+				return computed ? computed[key] : "";
+			} catch (e) {
+				return element.style[key];
+			}
+		},
+		isScroll(el, isVertical) {
+			if (!isClient) return false;
+			const key = {
+				undefined: "overflow",
+				true: "overflow-y",
+				false: "overflow-x"
+			}[String(isVertical)];
+			const overflow = _useXui.getStyle(el, key);
+			return ["scroll", "auto", "overlay"].some(s => overflow.includes(s));
+		},
+		getScrollContainer(el, isVertical) {
+			if (!isClient) return;
+			let parent = el;
+			while (parent) {
+				if ([window, document, document.documentElement].includes(parent)) return window;
+				if (_useXui.isScroll(parent, isVertical)) return parent;
+				parent = parent.parentNode;
+			}
+			return parent;
+		},
+		throwError,
+		useElementBounding(target, options = {}) {
+			const { reset = true, windowResize = true, windowScroll = true, immediate = true } = options;
+			const height = Vue.ref(0);
+			const bottom = Vue.ref(0);
+			const left = Vue.ref(0);
+			const right = Vue.ref(0);
+			const top = Vue.ref(0);
+			const width = Vue.ref(0);
+			const x = Vue.ref(0);
+			const y = Vue.ref(0);
+			function update() {
+				const el = unrefElement(target);
+				if (!el) {
+					if (reset) {
+						height.value = 0;
+						bottom.value = 0;
+						left.value = 0;
+						right.value = 0;
+						top.value = 0;
+						width.value = 0;
+						x.value = 0;
+						y.value = 0;
+					}
+					return;
+				}
+				const rect = el.getBoundingClientRect();
+				height.value = rect.height;
+				bottom.value = rect.bottom;
+				left.value = rect.left;
+				right.value = rect.right;
+				top.value = rect.top;
+				width.value = rect.width;
+				x.value = rect.x;
+				y.value = rect.y;
+			}
+			useResizeObserver(target, update);
+			Vue.watch(
+				() => unrefElement(target),
+				ele => !ele && update()
+			);
+			if (windowScroll) useEventListener("scroll", update, { capture: true, passive: true });
+			if (windowResize) useEventListener("resize", update, { passive: true });
+			tryOnMounted(() => {
+				if (immediate) update();
+			});
+			return {
+				height,
+				bottom,
+				left,
+				right,
+				top,
+				width,
+				x,
+				y,
+				update
+			};
+		},
+		useWindowSize(options = {}) {
+			const { initialWidth = Infinity, initialHeight = Infinity, listenOrientation = true, includeScrollbar = true } = options;
+			const width = Vue.ref(initialWidth);
+			const height = Vue.ref(initialHeight);
+			const update = () => {
+				if (defaultWindow) {
+					if (includeScrollbar) {
+						width.value = defaultWindow.innerWidth;
+						height.value = defaultWindow.innerHeight;
+					} else {
+						width.value = defaultWindow.document.documentElement.clientWidth;
+						height.value = defaultWindow.document.documentElement.clientHeight;
+					}
+				}
+			};
+			update();
+			tryOnMounted(update);
+			useEventListener("resize", update, { passive: true });
+			if (listenOrientation) useEventListener("orientationchange", update, { passive: true });
+			return { width, height };
+		}
 	};
 }
 </script>
-<style lang="less">
-.MUST_MODIFY {
-	color: red;
-}
-</style>

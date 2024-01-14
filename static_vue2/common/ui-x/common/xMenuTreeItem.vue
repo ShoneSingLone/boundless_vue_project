@@ -1,14 +1,14 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const X_MENU_TREE_ITEM = "xMenuTreeItem";
 
 	return {
 		name: X_MENU_TREE_ITEM,
-		props: ["item", "clickItem", "renders", "active"],
+		props: ["item", "clickItem", "renders", "active", "isDefaultOpen"],
 		setup(props, { slots }) {
 			const vm = this;
 			var state = {
-				isOpen: false
+				isOpen: props.isDefaultOpen || false
 			};
 			state = reactive(state);
 			vm.$on("open", isOpen => {
@@ -119,7 +119,7 @@ export default async function () {
 						"div",
 						{ vIf: isFolder },
 						_.map(cpt_children, function (child, index) {
-							return h("xMenuTreeItem", {
+							const treeProps = {
 								directives: [
 									{
 										name: "show",
@@ -136,7 +136,8 @@ export default async function () {
 								active: active,
 								clickItem: clickItem,
 								item: child
-							});
+							};
+							return h("xMenuTreeItem", treeProps);
 						})
 					)
 				]

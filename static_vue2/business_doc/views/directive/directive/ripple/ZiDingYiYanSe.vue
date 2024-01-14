@@ -17,13 +17,11 @@
 		</li>
 	</ul>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {
-			return {
-				title: "MUST_MODIFY"
-			};
+			return {};
 		}
 	});
 }

@@ -22,6 +22,13 @@
 - [devui](https://vue-devui.github.io/components/code-editor/)
 - [tiny-vue](https://opentiny.design/tiny-vue/zh-CN/os-theme/components/form)
 
+### 国际化
+
+```bash
+pnpm i18n zhong_liang
+```
+
+
 ### demo
 - 简单的参考elButton.vue，直接CV
 - 复杂点的例如[virtualized-table](https://element-plus.org/zh-CN/component/table-v2.html#virtualized-table-%E8%99%9A%E6%8B%9F%E5%8C%96%E8%A1%A8%E6%A0%BC)
@@ -52,8 +59,26 @@ window.APP_ENTRY_NAME 默认entry 其他的也可以
 - git rm -r --cached
 - [visualRegex](https://wangwl.net/static/projects/visualRegex#)
 
+## d.ts
+
+- pnpm d.ts rules
+- pnpm d.ts api xxx
+
 ## TODO
+
+
 
 
 ## 参考
 [](https://template-explorer.vuejs.org/#eyJzcmMiOiIgIDxlbC1pbnB1dFxyXG4gICAgcGxhY2Vob2xkZXI9XCLor7fpgInmi6nml6XmnJ9cIlxyXG4gICAgdi1tb2RlbD1cImlucHV0M1wiPlxyXG4gICAgPGkgc2xvdD1cInN1ZmZpeFwiIGNsYXNzPVwiZWwtaW5wdXRfX2ljb24gZWwtaWNvbi1kYXRlXCI+PC9pPlxyXG4gIDwvZWwtaW5wdXQ+XHJcbiAgPGVsLWlucHV0XHJcbiAgICBwbGFjZWhvbGRlcj1cIuivt+i+k+WFpeWGheWuuVwiXHJcbiAgICB2LW1vZGVsPVwiaW5wdXQ0XCI+XHJcbiAgICA8aSBzbG90PVwicHJlZml4XCIgY2xhc3M9XCJlbC1pbnB1dF9faWNvbiBlbC1pY29uLXNlYXJjaFwiPjwvaT5cclxuICA8L2VsLWlucHV0PiIsIm9wdGlvbnMiOnt9fQ==)
+
+- [vscode 国际化插件](https://mp.weixin.qq.com/s/-eomr-pofHNodJHbACcuLQ)
+- [vtable](https://visactor.io/vtable/demo/edit/pivot-table-editor)
+
+- [husky](https://www.npmjs.com/package/husky)
+  - [githooks](https://git-scm.com/docs/githooks)
+  - `npx husky add .husky/pre-commit "npm test"`
+
+- [appflowy](https://www.appflowy.io/)
+- [LocalSend](https://localsend.org/#/)
+- [insomnia](https://github.com/Kong/insomnia)

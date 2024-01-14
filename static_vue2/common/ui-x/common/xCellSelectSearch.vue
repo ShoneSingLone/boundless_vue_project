@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	Vue._CurrentCellId = Vue._CurrentCellId || ref(0);
 	return {
@@ -87,7 +87,7 @@ export default async function () {
 	};
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .select-search {
 	display: flex;
 

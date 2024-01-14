@@ -1,5 +1,5 @@
 <template>
-	<div class="MUST_MODIFY">
+	<div>
 		<h6>
 			<slot> </slot>
 		</h6>
@@ -11,7 +11,7 @@
 		</h4>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	const title = this.THIS_FILE_URL;
 	return defineComponent({
@@ -23,8 +23,3 @@ export default async function () {
 	});
 }
 </script>
-<style lang="less">
-.MUST_MODIFY {
-	color: red;
-}
-</style>

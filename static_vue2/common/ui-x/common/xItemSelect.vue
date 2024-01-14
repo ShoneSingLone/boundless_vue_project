@@ -4,7 +4,7 @@
 	</xSelect>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	return defineComponent({
@@ -19,8 +19,8 @@ export default async function () {
 		render() {
 			const vm = this;
 			let attrs = {};
-			if (_.isFunction(Vue._useXui?.globalConfigs?.xItemSelect?.defaultProps)) {
-				attrs = Vue._useXui.globalConfigs.xItemSelect.defaultProps(vm, vm.$attrs);
+			if (_.isFunction(_useXui?.globalConfigs?.xItemSelect?.defaultProps)) {
+				attrs = _useXui.globalConfigs.xItemSelect.defaultProps(vm, vm.$attrs);
 			}
 
 			return h(

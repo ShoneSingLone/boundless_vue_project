@@ -18,7 +18,7 @@
 		</div>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		components: {
@@ -33,9 +33,7 @@ export default async function () {
 			}
 		},
 		data() {
-			return {
-				title: "MUST_MODIFY"
-			};
+			return {};
 		}
 	});
 }

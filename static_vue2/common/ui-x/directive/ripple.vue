@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const DEFAULT_PLUGIN_OPTIONS = {
 		directive: "ripple",

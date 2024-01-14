@@ -1,23 +1,81 @@
-<script>
+<script lang="ts">
 export default async function () {
-	if (!Vue._yapi_api) {
+	if (!window._api.yapi) {
 		(function () {
-			_.$ajax.requestInjector = function (options) {
-				const _url = new URL(String(options.url).replace("#", ""), location.origin);
-				_.each(_.$lStorage.x_token, (v, k) => {
-					_url.searchParams.set(k, v);
-				});
-				const { href } = _url;
-				options.url = href;
-				return options;
+			_.$ajax.requestInjector = function (req) {
+				req.url = Vue._yapi_utils.appendToken(req.url);
+				return req;
+			};
+			_.$ajax.responseInjector = function (res) {
+				if (res.errcode !== 0) {
+					_.$msgError(res.message);
+				}
+				return res;
 			};
 
-			Vue._yapi_api = {
+			window._api.yapi = {
+				/* log */
+				getLogList({ typeid, type, page, limit }) {
+					return handleRequest(async () => {
+						return _.$ajax.get("/api/log/list", {
+							data: { typeid: Number(typeid), type, page, limit }
+						});
+					});
+				},
+				postLogListByUpdate(group_id) {
+					return handleRequest(async () => {
+						return _.$ajax.post("/api/log/list_by_update", {
+							data: { group_id }
+						});
+					});
+				},
 				/* project */
+				apiInterfaceListMenu(project_id) {
+					return handleRequest(async () => {
+						return _.$ajax.get("/api/interface/list_menu", {
+							data: { project_id }
+						});
+					});
+				},
 				getProjectByGroupId(group_id) {
 					return handleRequest(async () => {
 						return _.$ajax.get("/api/project/list", {
 							data: { group_id }
+						});
+					});
+				},
+				getProjectById(id) {
+					return handleRequest(async () => {
+						return _.$ajax.get("/api/project/get", {
+							data: { id }
+						});
+					});
+				},
+				copyProject(data) {
+					return handleRequest(async () => {
+						return _.$ajax.post("/api/project/copy", {
+							data
+						});
+					});
+				},
+				addProject(formData) {
+					return handleRequest(async () => {
+						return _.$ajax.post("/api/project/add", {
+							data: formData
+						});
+					});
+				},
+				projectAddFollow(data) {
+					return handleRequest(async () => {
+						return _.$ajax.post("/api/follow/add", {
+							data
+						});
+					});
+				},
+				projectDelFollow(projectid) {
+					return handleRequest(async () => {
+						return _.$ajax.post("/api/follow/del", {
+							data: { projectid }
 						});
 					});
 				},
@@ -93,11 +151,30 @@ export default async function () {
 					});
 				},
 				/* user */
+				async uploadAvatar(data) {
+					return handleRequest(async () => {
+						return _.$ajax.post(`/api/user/upload_avatar`, {
+							data
+						});
+					});
+				},
+				async getUserById(id) {
+					return handleRequest(async () => {
+						return _.$ajax.get(`/api/user/find`, {
+							data: {
+								id: Number(id)
+							}
+						});
+					});
+				},
 				async getUserSearch(data) {
 					return handleRequest(async () => {
 						return _.$ajax.get(`/api/user/search`, { data });
 					});
 				},
+				/**
+				 * 获取用户状态
+				 */
 				async getUserStatus() {
 					return handleRequest(async () => {
 						return _.$ajax.get(`/api/user/status`);
@@ -153,6 +230,6 @@ export default async function () {
 		})();
 	}
 
-	return Vue._yapi_api;
+	return window._api.yapi;
 }
 </script>

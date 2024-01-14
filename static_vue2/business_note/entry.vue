@@ -1,6 +1,5 @@
-<script>
+<script lang="ts">
 export default async function () {
-	_.THIS_FILE_URL;
 	await Promise.all([
 		_.$importVue("/common/ui-tiny/useTinyUI.vue"),
 		_.$importVue("/common/ui-x/useXui.vue"),

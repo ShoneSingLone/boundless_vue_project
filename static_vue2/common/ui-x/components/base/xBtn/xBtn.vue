@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	/* 定制颜色基本上就是 text hover，focus active disabled */
 	const { useProps } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
@@ -98,7 +98,7 @@ export default async function () {
 			},
 			cptLabel() {
 				if (_.isFunction(this.configs?.label)) {
-					return this.configs.label();
+					return this.configs.label.call(this.configs, { xBtn: this });
 				}
 				if (_.isString(this.configs?.label)) {
 					return this.configs.label;
@@ -190,10 +190,13 @@ export default async function () {
 						{
 							name: "xtips",
 							value: {
+								_btnInnerTips: !!vm.cptDisabledTips,
 								placement: "top",
 								content: vm.cptDisabledTips
 							}
-						}
+						},
+						/* 合并props里面的指令 */
+						...(vm.$vnode.data.directives || [])
 					],
 					onClick() {
 						vm.handleClick();
@@ -207,8 +210,8 @@ export default async function () {
 				[
 					h("i", { vIf: vm.cptLoading, class: "el-icon-loading" }),
 					h("i", { vIf: !vm.cptLoading && vm.cptIcon, class: vm.cptIcon }),
-					/* vNode的变动不会触发render重新执行 */
-					vm.cptChildren || this.$slots.default
+					/* vNode的变动不会触发render重新执行 template的slot优先级最高*/
+					this.$slots.default || vm.cptChildren
 				]
 			);
 		}
@@ -218,6 +221,9 @@ export default async function () {
 
 <style lang="less">
 .el-button {
+	&.xItem-wrapper {
+		width: unset;
+	}
 	/* default */
 	--el-button-text-color: var(--el-text-color-regular);
 	--el-button-border-color: var(--el-border-color);
@@ -225,11 +231,11 @@ export default async function () {
 	/* hover;focus */
 	--el-button-hover-text-color: var(--ui-primary);
 	--el-button-hover-border-color: var(--ui-primary);
-	--el-button-hover-bg-color: var(--el-color-primary-light-9);
+	--el-button-hover-bg-color: var(--ui-primary-light-9);
 	/* active */
 	--el-button-active-text-color: var(--ui-primary-active);
 	--el-button-active-border-color: var(--ui-primary-active);
-	--el-button-active-bg-color: var(--el-color-primary-light-9);
+	--el-button-active-bg-color: var(--ui-primary-light-9);
 	/* disabled */
 	--el-button-disabled-text-color: var(--el-disabled-text-color);
 	--el-button-disabled-border-color: var(--el-border-color-light);
@@ -246,8 +252,8 @@ export default async function () {
 		--el-button-active-border-color: var(--ui-primary-active);
 		--el-button-active-bg-color: var(--ui-primary-active);
 		--el-button-disabled-text-color: var(--el-color-white);
-		--el-button-disabled-border-color: var(--el-color-primary-light-5);
-		--el-button-disabled-bg-color: var(--el-color-primary-light-5);
+		--el-button-disabled-border-color: var(--ui-primary-light-5);
+		--el-button-disabled-bg-color: var(--ui-primary-light-5);
 	}
 
 	color: var(--el-button-text-color);

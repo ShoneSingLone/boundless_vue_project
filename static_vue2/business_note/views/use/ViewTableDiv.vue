@@ -5,19 +5,12 @@
 		</xPageContent>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {
-			return {
-				title: "MUST_MODIFY"
-			};
+			return {};
 		}
 	});
 }
 </script>
-<style lang="less">
-.MUST_MODIFY {
-	color: red;
-}
-</style>

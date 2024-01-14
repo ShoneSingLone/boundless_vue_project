@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 export default async function () {
-	const { createGrid, AUTO_ALIGNMENT, SMART_ALIGNMENT, START_ALIGNMENT, CENTERED_ALIGNMENT, END_ALIGNMENT } = Vue._useXui;
+	const { createGrid, AUTO_ALIGNMENT, SMART_ALIGNMENT, START_ALIGNMENT, CENTERED_ALIGNMENT, END_ALIGNMENT } = _useXui;
 
 	return createGrid({
 		name: "ComponentFixedSizeGrid",

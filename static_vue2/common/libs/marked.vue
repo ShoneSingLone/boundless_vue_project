@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	if (!window.marked) {
 		window.marked = (function (root) {

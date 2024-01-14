@@ -1,6 +1,5 @@
-const { _n } = require("@ventose/utils-node");
-const path = require("path");
-const asyncFs = require("fs").promises;
+const { fs, path, _, _n } = require("../preprocess.utils");
+const asyncFs = fs.promises;
 
 function VueLoader(sourceCodeString) {
 	function getSource(source, pickType) {

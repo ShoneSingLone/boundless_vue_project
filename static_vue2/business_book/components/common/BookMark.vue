@@ -2,7 +2,7 @@
 	<div class="bookmark" :style="style" ref="bookmark"></div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { px2rem } = await _.$importVue("@/utils/utils.vue");
 	return {

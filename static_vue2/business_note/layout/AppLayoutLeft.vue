@@ -14,7 +14,7 @@
 		</aside>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	const MenuArray = await _.$importVue("@/router/MenuArray.vue");
 	return {
@@ -111,7 +111,8 @@ export default async function () {
 
 	aside.sidebar-menu-wrapper {
 		position: relative;
-		height: 100%;
+		height: 1px;
+		flex:1;
 		width: var(--left-aside-width);
 
 		&.hide {

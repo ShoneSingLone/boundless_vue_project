@@ -8,10 +8,10 @@
 			{ 'is-without-controls': !controls },
 			{ 'is-controls-right': controlsAtRight }
 		]">
-		<span class="el-input-number__decrease" role="button" v-if="controls" v-repeat-click="decrease" :class="{ 'is-disabled': minDisabled }" @keydown.enter="decrease">
+		<span class="el-input-number__decrease" role="button" v-if="controls" @click="decrease" :class="{ 'is-disabled': minDisabled }" @keydown.enter="decrease">
 			<i :class="cptDecreaseClass"></i>
 		</span>
-		<span class="el-input-number__increase" role="button" v-if="controls" v-repeat-click="increase" :class="{ 'is-disabled': maxDisabled }" @keydown.enter="increase">
+		<span class="el-input-number__increase" role="button" v-if="controls" @click="increase" :class="{ 'is-disabled': maxDisabled }" @keydown.enter="increase">
 			<i :class="cptIncreaseClass"></i>
 		</span>
 		<xInput
@@ -34,10 +34,9 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { useFocus } = await _.$importVue("/common/utils/hooks.vue");
-	const repeatClick = await _.$importVue("/common/ui-x/directive/repeatClick.vue");
 
 	return defineComponent({
 		name: "xInputNumber",
@@ -53,9 +52,7 @@ export default async function () {
 				default: ""
 			}
 		},
-		directives: {
-			repeatClick
-		},
+		directives: {},
 		props: {
 			step: {
 				type: Number,
@@ -261,7 +258,8 @@ export default async function () {
 				this.$refs.input.select();
 			}
 		},
-		mounted() {
+		async mounted() {
+			await _.$ensure(() => this.$refs.input?.$refs?.input);
 			let innerInput = this.$refs.input.$refs.input;
 			innerInput.setAttribute("role", "spinbutton");
 			innerInput.setAttribute("aria-valuemax", this.max);

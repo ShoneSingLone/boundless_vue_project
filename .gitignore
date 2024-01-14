@@ -3,3 +3,8 @@ node_modules
 ventose
 dist
 ast.json
+zh-CN.js
+en-US.js
+vscode.workspace/**.code-workspace
+out
+preprocess/genDocMd/ast.left.json

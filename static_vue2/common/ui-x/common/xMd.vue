@@ -1,11 +1,14 @@
 <template>
 	<div :class="['markdown-wrapper', itemConfits.value]">
+		<div ref="refSlot" class="markdown-wrapper_description mt10 display-none">
+			<slot> </slot>
+		</div>
 		<!-- <xItem :configs="itemConfits" /> -->
 		<div class="markdown-wrapper_description mt10" v-html="html"></div>
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function ({ code }) {
 	const [hljs, marked] = await Promise.all([_.$importVue("/common/libs/highlight.vue"), _.$importVue("/common/libs/marked.vue")]);
 
@@ -133,7 +136,9 @@ export default async function ({ code }) {
 		},
 		methods: {
 			init() {
-				this.originHTML = this.md || _.$val(this, "$slots.default.0.text") || "";
+				let text = $(this.$refs.refSlot).text();
+				text = text.replace(/\\`\\`\\`/g, "```");
+				this.originHTML = this.md || text;
 				const { Renderer } = marked;
 				marked.options = { langClass: "hljs" };
 				const renderer = new Renderer();

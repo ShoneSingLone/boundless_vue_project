@@ -1,36 +1,71 @@
+<style lang="less">
+.GroupAside {
+	background-color: white;
+}
+</style>
+
 <template>
 	<aside class="GroupAside x-sider_wrapper" :style="stateStyle">
 		<div class="x-sider_wrapper_tree flex vertical">
 			<div class="group-operate flex start middle mb10 left-tree box-shadow">
 				<xItem :configs="configsSearch" class="flex1" />
 				<xGap l="10" />
-				<div class="pointer" @click="upsertGroup" v-xtips="{ content: '添加分组', placement: 'right', style: '--min-width:unset;' }">
+				<div class="pointer" @click="() => Group.openGroupUpsertDialog()" v-xtips="{ content: '添加分组', placement: 'right', style: '--min-width:unset;' }">
+					<!-- 添加分组 -->
 					<xIcon icon="_add" class="icon-opreation_click" />
 				</div>
 			</div>
-			<xScrollbar class="flex1">
+			<div class="flex1" style="height: 1px; overflow: auto" ref="refTreeScroll">
 				<elTree :data="groupListForShow" node-key="href" default-expand-all :expand-on-click-node="false">
 					<xRender :render="nodeRender" :payload="payload" slot-scope="payload" />
 				</elTree>
-			</xScrollbar>
+			</div>
 		</div>
 		<div class="resize_bar" icon="scroll" v-xmove="resizeOptions" />
 	</aside>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	const { useXmove } = await _.$importVue("@/utils/hooks.vue");
-
 	/* 分组信息 */
 	return defineComponent({
 		inject: ["APP", "Group"],
+		mounted() {
+			this.scrollToLocation();
+		},
 		setup(props) {
+			const { stateStyle, resizeOptions } = useXmove(props);
+			return {
+				stateStyle,
+				resizeOptions,
+				fnUpsertGroupInfo: () => console.log("fnUpsertGroupInfo")
+			};
+		},
+		data() {
 			const vm = this;
-			vm.searchGroup = _.debounce(function () {
+			return {
+				configsSearch: defItem({
+					isSearch: false,
+					value: "",
+					placeholder: "搜索分组",
+					onEmitValue() {
+						vm.searchGroup();
+					},
+					clearable: true
+				}),
+				groupListForShow: []
+			};
+		},
+		methods: {
+			searchGroup: _.debounce(function () {
+				const vm = this;
 				const { groupList } = vm.APP;
 				const keywords = vm.configsSearch.value;
 				let groupListForShow;
 
+				const a = {
+					label: "11"
+				};
 				if (keywords === "") {
 					const { true: notInGroup, undefined: inGroup } = _.groupBy(groupList, "notInGroup");
 					const { owner, member } = _.groupBy(inGroup, "role");
@@ -73,33 +108,21 @@ export default async function () {
 						}
 					];
 				} else {
-					groupListForShow = _.filter(groupList, group => new RegExp(keywords, "i").test(group.group_name));
+					groupListForShow = _.filter(groupList, group => new RegExp(keywords, "i").test(group.group_name)).map(i => ({
+						...i,
+						icon: "_icon_group_exclude"
+					}));
 				}
 				vm.groupListForShow = groupListForShow;
-			}, 300);
-
-			const { stateStyle, resizeOptions } = useXmove(props);
-
-			return {
-				stateStyle,
-				resizeOptions,
-				fnUpsertGroupInfo: () => console.log("fnUpsertGroupInfo")
-			};
-		},
-		data() {
-			const vm = this;
-			return {
-				configsSearch: defItem({
-					isSearch: false,
-					value: "",
-					placeholder: "搜索分组",
-					onEmitValue: vm.searchGroup,
-					clearable: true
-				}),
-				groupListForShow: []
-			};
-		},
-		methods: {
+			}, 300),
+			async scrollToLocation() {
+				await _.$ensure(() => this.$refs.refTreeScroll);
+				setTimeout(() => {
+					try {
+						this.$el.querySelector(".is-current").scrollIntoView({ behavior: "smooth", block: "center" });
+					} catch (error) {}
+				}, 1000);
+			},
 			/* 菜单 */
 			nodeRender({ node, data }) {
 				const { _id } = this.APP.cptCurrentGroup || {};
@@ -114,9 +137,7 @@ export default async function () {
 					},
 					[
 						h("xIcon", { icon: data.icon }),
-						h("span", { staticClass: "node-name" }, [data.group_name]),
-						h("xGap", { attrs: { f: "" } }),
-						h("xIcon", { icon: "_add", staticClass: "node-icon-add" }),
+						h("div", { staticClass: "node-name" }, [data.group_name]),
 						h("xIcon", {
 							icon: "currentLocation",
 							staticClass: "node-icon-current",
@@ -129,50 +150,14 @@ export default async function () {
 				if (!groupId) {
 					return;
 				}
-				this.$router.push({ path: this.$route.path, query: { ...this.$route.query, groupId } });
-			},
-			upsertGroup() {
-				this.Group.upsertGroup();
+				this.$router.push({ path: "/api/group", query: { groupId } });
 			}
 		},
 		watch: {
 			"APP.groupList"() {
 				this.searchGroup();
-			},
-			"APP.cptCurrentGroup": {
-				immediate: true,
-				handler(group) {
-					if (group?._id) {
-					}
-				}
 			}
 		}
 	});
 }
 </script>
-
-<style lang="less">
-.asideTreeItem {
-	display: flex;
-	flex: 1;
-	padding: var(--ui-one);
-	align-items: center;
-	&:hover {
-		.node-icon-add {
-			display: inline-block;
-		}
-	}
-	&.is-current {
-		.node-icon-current {
-			display: inline-block;
-		}
-	}
-	.node-icon-current,
-	.node-icon-add {
-		display: none;
-	}
-}
-
-.GroupAside {
-}
-</style>

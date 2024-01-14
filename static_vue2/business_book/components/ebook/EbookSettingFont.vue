@@ -37,7 +37,7 @@
 	</transition>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { FONT_SIZE_LIST } = await _.$importVue("@/utils/book.vue");
 	const { saveFontSize } = await _.$importVue("@/utils/localStorage.vue");

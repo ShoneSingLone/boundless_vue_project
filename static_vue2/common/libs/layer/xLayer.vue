@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	if (!Vue._xLayer) {
 		const layerType = {

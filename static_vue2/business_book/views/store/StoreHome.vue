@@ -17,7 +17,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const SearchBar = await _.$importVue("../../components/home/SearchBar.vue");
 	const FlapCard = await _.$importVue("../../components/home/FlapCard.vue");

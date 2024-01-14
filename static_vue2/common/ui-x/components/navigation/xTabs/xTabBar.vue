@@ -1,7 +1,7 @@
 <template>
 	<div class="el-tabs__active-bar" :class="cptClassName" :style="barStyle"></div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		name: "xTabBar",

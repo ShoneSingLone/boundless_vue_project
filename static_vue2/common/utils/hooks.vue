@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function hooks() {
 	const { addResizeListener, removeResizeListener } = await _.$importVue("/common/utils/utils.vue");
 

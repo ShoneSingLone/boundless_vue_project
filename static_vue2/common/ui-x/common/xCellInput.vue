@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const { useCellArgs } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	return {

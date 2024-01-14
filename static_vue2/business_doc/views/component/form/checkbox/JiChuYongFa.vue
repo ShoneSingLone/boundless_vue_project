@@ -1,19 +1,14 @@
 <template>
-	<h1>aa</h1>
+	<div>{{ THIS_FILE_URL }}</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
+	const { THIS_FILE_URL } = this;
 	return defineComponent({
 		data() {
-			return {
-				title: "MUST_MODIFY"
-			};
+			return { THIS_FILE_URL };
 		}
 	});
 }
 </script>
-<style lang="less">
-.MUST_MODIFY {
-	color: red;
-}
-</style>
+<style lang="less"></style>

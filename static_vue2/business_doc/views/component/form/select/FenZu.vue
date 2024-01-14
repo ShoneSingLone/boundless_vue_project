@@ -2,18 +2,18 @@
 	<div>
 		<xMd :md="md" />
 		<xSelect v-model="value" placeholder="请选择">
-			<xOption-group v-for="group in options" :key="group.label" :label="group.label">
+			<xOptionGroup v-for="group in options" :key="group.label" :label="group.label">
 				<xOption v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value"> </xOption>
-			</el-option-group>
+			</xOptionGroup>
 		</xSelect>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {
 			return {
-				md: "备选项进行分组展示\n\n使用`el-option-group`对备选项进行分组，它的`label`属性为分组名",
+				md: "备选项进行分组展示\n\n使用`xOptionGroup`对备选项进行分组，它的`label`属性为分组名",
 				options: [
 					{
 						label: "热门城市",

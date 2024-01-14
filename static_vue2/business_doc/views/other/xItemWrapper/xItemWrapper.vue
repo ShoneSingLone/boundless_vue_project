@@ -1,9 +1,9 @@
 <template>
-	<div>
+	<DocContentOfDemo>
 		<DemoAndCode title="基础用法" path="@/views/other/xItemWrapper/JiChuYongFa.vue" unfold />
-	</div>
+	</DocContentOfDemo>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({});
 }

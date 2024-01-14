@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const [Clickoutside] = await Promise.all([_.$importVue("/common/ui-x/directive/clickoutside.vue")]);
 

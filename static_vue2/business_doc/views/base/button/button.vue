@@ -1,5 +1,5 @@
 <template>
-	<div class="dropdown-demo">
+	<DocContentOfDemo class="dropdown-demo">
 		<xMd :md="md" />
 		<DemoAndCode title="configs用法" path="@/views/base/button/ConfigsYongFa.vue" unfold />
 		<DemoAndCode title="按钮数组" path="@/views/base/button/AnNiuShuZu.vue" unfold />
@@ -10,10 +10,10 @@
 		<DemoAndCode title="加载中" path="@/views/base/button/JiaZaiZhong.vue" unfold />
 		<DemoAndCode title="不同尺寸" path="@/views/base/button/BuTongChiCun.vue" unfold />
 		<xMd :md="apiString" />
-	</div>
+	</DocContentOfDemo>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		data() {

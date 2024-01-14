@@ -1279,7 +1279,7 @@ var VueRouter = (function (exports, vue) {
 				? () => {
 						// since other matchers are aliases, they should be removed by the original matcher
 						removeRoute(originalMatcher);
-				  }
+					}
 				: noop;
 		}
 		function removeRoute(matcherRef) {
@@ -2064,7 +2064,7 @@ var VueRouter = (function (exports, vue) {
 								}, [])
 							)
 					)
-			  ).then(() => route);
+				).then(() => route);
 	}
 
 	// TODO: we could allow currentRoute as a prop to expose `isActive` and
@@ -2189,7 +2189,7 @@ var VueRouter = (function (exports, vue) {
 								class: elClass.value
 							},
 							children
-					  );
+						);
 			};
 		}
 	});
@@ -3177,7 +3177,7 @@ var VueRouter = (function (exports, vue) {
 						newTargetLocation.includes("?") || newTargetLocation.includes("#")
 							? (newTargetLocation = locationAsObject(newTargetLocation))
 							: // force empty params
-							  { path: newTargetLocation };
+								{ path: newTargetLocation };
 					// @ts-expect-error: force empty params when a string is passed to let
 					// the router parse them again
 					newTargetLocation.params = {};
@@ -3244,11 +3244,11 @@ var VueRouter = (function (exports, vue) {
 				.catch(error =>
 					isNavigationFailure(error)
 						? // navigation redirects still mark the router as ready
-						  isNavigationFailure(error, 2 /* ErrorTypes.NAVIGATION_GUARD_REDIRECT */)
+							isNavigationFailure(error, 2 /* ErrorTypes.NAVIGATION_GUARD_REDIRECT */)
 							? error
 							: markAsReady(error) // also returns the error
 						: // reject any unknown error
-						  triggerError(error, toLocation, from)
+							triggerError(error, toLocation, from)
 				)
 				.then(failure => {
 					if (failure) {
@@ -3261,7 +3261,7 @@ var VueRouter = (function (exports, vue) {
 								// @ts-expect-error: added only in dev
 								(redirectedFrom._count = redirectedFrom._count
 									? // @ts-expect-error
-									  redirectedFrom._count + 1
+										redirectedFrom._count + 1
 									: 1) > 30
 							) {
 								warn(

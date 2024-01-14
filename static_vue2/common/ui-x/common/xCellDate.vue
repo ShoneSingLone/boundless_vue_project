@@ -2,7 +2,7 @@
 	<span>{{ cpt_label }}</span>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		data() {

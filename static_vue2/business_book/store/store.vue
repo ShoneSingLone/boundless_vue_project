@@ -1,6 +1,6 @@
 <template></template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const Vuex = await _.$importVue("/common/libs/Vuex.vue");
 	const book = await _.$importVue("@/store/modules/book.vue");

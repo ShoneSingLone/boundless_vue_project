@@ -4,7 +4,7 @@
 		<xInputNumber v-model="num" :precision="2" :step="0.1" :max="10"></xInputNumber>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

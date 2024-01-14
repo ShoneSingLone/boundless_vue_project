@@ -16,7 +16,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { useElementSize } = await _.$importVue("/common/utils/hooks.vue");
 	const { ref, watch } = Vue;

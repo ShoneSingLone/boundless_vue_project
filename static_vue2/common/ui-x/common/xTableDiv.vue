@@ -10,7 +10,7 @@
 		</div>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	/* table disabled */
 	/* 行数据disabled */
@@ -19,9 +19,7 @@ export default async function () {
 	return defineComponent({
 		props: ["configs", "data"],
 		data() {
-			return {
-				title: "MUST_MODIFY"
-			};
+			return {};
 		}
 	});
 }

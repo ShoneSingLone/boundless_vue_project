@@ -4,7 +4,7 @@
 		<xInput v-model="input" placeholder="请输入内容"></xInput>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

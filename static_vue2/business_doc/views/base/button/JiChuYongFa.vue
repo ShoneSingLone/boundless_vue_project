@@ -11,7 +11,7 @@
 		</el-row>
 
 		<el-row>
-			<xBtn plain>朴素按钮</xBtn>
+			<xBtn>朴素按钮</xBtn>
 			<xBtn preset="primary" plain>主要按钮</xBtn>
 			<xBtn preset="success" plain>成功按钮</xBtn>
 			<xBtn preset="info" plain>信息按钮</xBtn>
@@ -38,7 +38,7 @@
 		</el-row>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		methods: {

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	let hasModal = false;
 	let hasInitZIndex = false;

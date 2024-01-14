@@ -1,6 +1,6 @@
 <template></template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	(function () {
 		/*!
@@ -88,7 +88,7 @@ export default async function () {
 										};
 									} else if ("document" in global && "onreadystatechange" in global.document.createElement("script")) {
 										scheduleDrain = function () {
-											// Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+											// Create a <script lang="ts"> element; its readystatechange event will be fired asynchronously once it is inserted
 											// into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
 											var scriptEl = global.document.createElement("script");
 											scriptEl.onreadystatechange = function () {
@@ -415,10 +415,10 @@ export default async function () {
 								typeof Symbol === "function" && typeof Symbol.iterator === "symbol"
 									? function (obj) {
 											return typeof obj;
-									  }
+										}
 									: function (obj) {
 											return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-									  };
+										};
 
 							function _classCallCheck(instance, Constructor) {
 								if (!(instance instanceof Constructor)) {
@@ -510,10 +510,10 @@ export default async function () {
 										typeof BlobBuilder !== "undefined"
 											? BlobBuilder
 											: typeof MSBlobBuilder !== "undefined"
-											? MSBlobBuilder
-											: typeof MozBlobBuilder !== "undefined"
-											? MozBlobBuilder
-											: WebKitBlobBuilder;
+												? MSBlobBuilder
+												: typeof MozBlobBuilder !== "undefined"
+													? MozBlobBuilder
+													: WebKitBlobBuilder;
 									var builder = new Builder();
 									for (var i = 0; i < parts.length; i += 1) {
 										builder.append(parts[i]);
@@ -1452,7 +1452,7 @@ export default async function () {
 													forages[i]._dbInfo.db = db;
 												}
 												return db;
-										  });
+											});
 
 									if (!options.storeName) {
 										promise = dbPromise.then(function (db) {
@@ -3002,7 +3002,7 @@ export default async function () {
 										this._driverSet !== null
 											? this._driverSet["catch"](function () {
 													return Promise$1.resolve();
-											  })
+												})
 											: Promise$1.resolve();
 
 									this._driverSet = oldDriverSetDone

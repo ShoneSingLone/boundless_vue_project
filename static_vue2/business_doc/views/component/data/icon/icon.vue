@@ -1,15 +1,29 @@
 <template>
-	<div class="icon-demo">
+	<DocContentOfDemo class="icon-demo">
+		<xMd :md="md" />
 		<DemoAndCode title="基础用法" path="@/views/component/data/icon/JiChuYongFa.vue" unfold />
-		<DemoAndCode title="业务相关" path="@/views/component/data/icon/YeWuXiangGuan.vue" unfold />
+		<DemoAndCode title="icon未找到" path="@/views/component/data/icon/IconWeiZhaoDao.vue" unfold />
+		<DemoAndCode title="icon颜色" path="@/views/component/data/icon/YanSe.vue" unfold />
 		<DemoAndCode title="加载图片" path="@/views/component/data/icon/JiaZaiTuPian.vue" unfold />
-	</div>
+		<xMd :md="apiString" />
+		<DemoAndCode title="字体图标" path="@/views/component/data/icon/ZiTiTuBiao.vue" unfold />
+	</DocContentOfDemo>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
-		setup() {}
+		data() {
+			return {
+				md: `>图标哪里找？[Good Frend](https://www.iconfont.cn/search/index?searchType=icon&q=%E6%9C%8B%E5%8F%8B&page=1&fromCollection=1)`,
+				apiString: `### Attributes
+| 参数                | 说明             | 类型    | 可选值                      | 默认值 |
+|---------------------|------------------|---------|-----------------------------|--------|
+| icon                | svg路径             | string  | — | —      |
+| img                | 图片路径             | string  | — | —      |
+`
+			};
+		}
 	};
 }
 </script>

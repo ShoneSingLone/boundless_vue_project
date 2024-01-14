@@ -14,7 +14,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	/* TODO:首次刷新加载不成功 */
 	return {

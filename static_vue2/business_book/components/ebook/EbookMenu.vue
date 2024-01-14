@@ -24,7 +24,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const EbookSettingFont = await _.$importVue("./EbookSettingFont.vue");
 	const EbookSettingFontPopup = await _.$importVue("./EbookSettingFontPopup.vue");

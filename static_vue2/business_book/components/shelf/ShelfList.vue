@@ -11,7 +11,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { storeShelfMixin } = await _.$importVue("@/utils/mixin.vue");
 	const ShelfItem = await _.$importVue("@/components/shelf/ShelfItem.vue");

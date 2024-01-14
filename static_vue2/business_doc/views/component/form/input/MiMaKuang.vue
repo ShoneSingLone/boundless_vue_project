@@ -4,7 +4,7 @@
 		<xInput placeholder="请输入密码" v-model="input" show-password></xInput>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

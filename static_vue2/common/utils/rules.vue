@@ -1,14 +1,9 @@
-<script>
-/**
- * @type RULES
- */
+<script lang="ts">
 export default async function () {
 	await _.$importVue("/common/utils/regexp.vue");
-	/**
-	 * @typedef RULES
-	 */
-	if (!Vue._rules) {
-		Vue._rules = {
+
+	if (!window._rules) {
+		window._rules = {
 			serviceName() {
 				return {
 					name: "serviceName",
@@ -18,7 +13,7 @@ export default async function () {
 						}
 						const errorTips = "以小写字母开头,由小写字母，数字，中划线(-)组成，63个字符之内,且不能以中划线(-)结尾。";
 
-						var urlRegex = Vue._reg.serviceName();
+						var urlRegex = _reg.serviceName();
 						if (urlRegex.test(val)) {
 							return "";
 						} else {
@@ -28,6 +23,10 @@ export default async function () {
 					trigger: ["change", "blur"]
 				};
 			},
+			/**
+			 * 域名，可以以*开头
+			 * 只能由字母、数字、中划线、星号组成。星号只能在开头，中划线不能在开头或未尾，至少包含两个字符串，单个字符串不超过63个字符，字符串间以点分制，且总长度不超过100个字符。例如 :example.com 或*.example.com。
+			 */
 			domainWithAnyStart: () => {
 				return {
 					name: "domain",
@@ -35,7 +34,7 @@ export default async function () {
 						if (!_.$isInput(val)) {
 							return;
 						}
-						var urlRegex = Vue._reg.domainReg();
+						var urlRegex = _reg.domainReg();
 						if (urlRegex.test(val)) {
 							return "";
 						} else if (urlRegex.test(val.replace(/^\*\./, ""))) {
@@ -54,8 +53,8 @@ export default async function () {
 						if (!_.$isInput(val)) {
 							return;
 						}
-						var urlRegex = Vue._reg.keyVal();
-						var urlRegex2 = Vue._reg.keyValOnlyOne();
+						var urlRegex = _reg.keyVal();
+						var urlRegex2 = _reg.keyValOnlyOne();
 
 						if (String(val).length > 1) {
 							if (!urlRegex.test(val)) {
@@ -79,7 +78,7 @@ export default async function () {
 						if (!_.$isInput(val)) {
 							return;
 						}
-						var urlRegex = Vue._reg.url1();
+						var urlRegex = _reg.url1();
 						if (!urlRegex.test(val)) {
 							return "以/开头，由英文字母、数字或特殊字符-/.%?#&=组成";
 						}
@@ -95,7 +94,7 @@ export default async function () {
 						if (!_.$isInput(val)) {
 							return;
 						}
-						var urlRegex = Vue._reg.url2();
+						var urlRegex = _reg.url2();
 						if (urlRegex.test(val)) {
 							return "";
 						} else {
@@ -129,6 +128,10 @@ export default async function () {
 					trigger: ["change", "blur"]
 				};
 			},
+			/**
+			 * 要求控件必填，提示信息默认i18n("必填项")
+			 * @param defaultMsg 自定义的提示信息
+			 */
 			required: defaultMsg => {
 				defaultMsg = defaultMsg === undefined ? i18n("必填项") : defaultMsg;
 				return {
@@ -149,7 +152,7 @@ export default async function () {
 				return {
 					name: "email",
 					async validator({ val }) {
-						var urlRegex = Vue._reg.email();
+						var urlRegex = _reg.email();
 						if (!urlRegex.test(val)) {
 							return i18n("请输入Email");
 						}
@@ -193,7 +196,7 @@ export default async function () {
 				};
 			},
 			port165535: () => {
-				return Vue._rules.portRange(1, 65535);
+				return _rules.portRange(1, 65535);
 			},
 			ipV4: size => {
 				return {
@@ -248,6 +251,18 @@ export default async function () {
 					trigger: ["change", "input", "blur"]
 				};
 			},
+			workloadName(msg = i18n("msgEnter220DigitsLettersNumbers")) {
+				return {
+					name: "name",
+					async validator({ val }) {
+						if (_reg.workloadName().test(val)) {
+							return "";
+						}
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
+			},
 			/* 匹配一个字符串，该字符串以小写英文字母或数字开头，并且只包含字母或数字 */
 			lettersOrNumbers(msg = i18n("以小写英文字母或数字开头，并且只包含字母、数字或者-")) {
 				return {
@@ -294,17 +309,11 @@ export default async function () {
 					name: "required",
 					async validator({ val, xItem }) {
 						const record = [];
-						// debugger;
 						let rows = xItem.configs?.payload?.row || {};
-						// for (let key in rows) {
-						// 	if (rowArray.includes(key)) {
-						// 		record.push(rows[key]);
-						// 	}
-						// }
 						for (let key of rowArray) {
 							record.push(rows[key]);
 						}
-
+						debugger;
 						if (_.every(record, i => !i)) {
 							/* 都没填 */
 							return "";
@@ -348,9 +357,21 @@ export default async function () {
 					},
 					trigger: ["change", "blur"]
 				};
+			},
+			notAllNumReg(msg = i18n("msgEnter220DigitsLettersNumbers")) {
+				return {
+					name: "notAllNumReg",
+					async validator({ val }) {
+						if (!val || _reg.notAllNumReg().test(val)) {
+							return "";
+						}
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
 			}
 		};
 	}
-	return Vue._rules;
+	return _rules;
 }
 </script>

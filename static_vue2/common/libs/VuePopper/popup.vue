@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		props: {
@@ -128,7 +128,6 @@ export default async function () {
 						if (this.withoutHiddenClass) {
 							this.bodyPaddingRight = document.body.style.paddingRight;
 							this.computedBodyPaddingRight = parseInt(getStyle(document.body, "paddingRight"), 10);
-							debugger;
 						}
 						scrollBarWidth = getScrollBarWidth();
 						let bodyHasOverflow = document.documentElement.clientHeight < document.body.scrollHeight;

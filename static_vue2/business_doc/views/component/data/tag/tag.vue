@@ -1,15 +1,15 @@
 <template>
-	<div>
+	<DocContentOfDemo>
 		<DemoAndCode title="基础用法" path="@/views/component/data/tag/JiChuYongFa.vue" unfold />
 		<DemoAndCode title="可移除标签" path="@/views/component/data/tag/KeYiChuBiaoQian.vue" />
 		<DemoAndCode title="动态编辑标签" path="@/views/component/data/tag/DongTaiBianJiBiaoQian.vue" />
 		<DemoAndCode title="不同尺寸" path="@/views/component/data/tag/BuTongChiCun.vue" />
 		<DemoAndCode title="不同主题" path="@/views/component/data/tag/BuTongZhuTi.vue" />
 		<xMd :md="apiString" />
-	</div>
+	</DocContentOfDemo>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		data() {

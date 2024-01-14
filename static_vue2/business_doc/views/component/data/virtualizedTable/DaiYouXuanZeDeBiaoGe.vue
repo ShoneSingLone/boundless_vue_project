@@ -1,7 +1,7 @@
 <template>
 	<xTableVir :columns="columns" :data="data" :height="500" fixed />
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		setup() {
@@ -32,7 +32,8 @@ export default async function () {
 
 			columns.unshift({
 				prop: "selection",
-				width: 50,
+				width: 32,
+				fixed: "left",
 				cellRenderer: ({ rowData }) => {
 					const onChange = value => (rowData.checked = value);
 
@@ -61,8 +62,3 @@ export default async function () {
 	});
 }
 </script>
-<style lang="less">
-.MUST_MODIFY {
-	color: red;
-}
-</style>

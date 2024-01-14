@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	return {
 		mixins: [mixins],
-		props: ["value", "configs"],
+		props: ["value", "configs", "options"],
 		data() {
 			return {
 				col: 4
@@ -24,8 +24,8 @@ export default async function () {
 			minWidth() {
 				return this.configs?.minWidth || 200;
 			},
-			options() {
-				return this.configs?.options || [];
+			selectOptions() {
+				return this.options || this.configs?.options || [];
 			},
 			cptGroupProps() {
 				return merge_hFnProps([
@@ -40,10 +40,17 @@ export default async function () {
 				]);
 			},
 			vDomItems() {
+				const vm = this;
 				/*el-radio-button*/
 				const tag = this.configs?.type || "el-radio";
-				return _.map(this.options, ({ value, label }) =>
-					h("div", {}, [
+				const renderOption = this.configs?.renderOption;
+				return _.map(this.selectOptions, item => {
+					let { value, label } = item;
+					if (renderOption) {
+						label = renderOption.call(vm.configs, item);
+					}
+
+					return h("div", {}, [
 						h(
 							tag,
 							{
@@ -51,6 +58,7 @@ export default async function () {
 								key: value,
 								value: this.mixin_value,
 								disabled: this.cptDisabled,
+								staticClass: "flex middle",
 								nativeOn: {
 									click: () => {
 										if (!this.cptDisabled) {
@@ -61,8 +69,8 @@ export default async function () {
 							},
 							[label]
 						)
-					])
-				);
+					]);
+				});
 			}
 		},
 		methods: {

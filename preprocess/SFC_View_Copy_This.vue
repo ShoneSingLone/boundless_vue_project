@@ -16,7 +16,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { getOptions_az, modifyTenant } = await _.$importVue();
 	const 可用 = "1";
@@ -33,11 +33,11 @@ export default async function () {
 				try {
 					_.$loading(true);
 					await _.$ensure(() => this.c_search.siteId.value && this.c_search.azId.value);
-					const { current, pagesize } = _.$setPagination(this.configsTable, pagination);
+					const { page, sieze } = _.$setPagination(this.configsTable, pagination);
 
 					const queryData = {
-						limit: pagesize,
-						start: current
+						limit: sieze,
+						start: page
 					};
 
 					const { siteId, azId, queryName } = this.searchParams;
@@ -129,9 +129,9 @@ export default async function () {
 						vm.getTableData(pagination);
 					},
 					pagination: {
-						current: 0,
-						count: 0,
-						pagesize: 10
+						page: 0,
+						total: 0,
+						size: 10
 					},
 					data: {
 						list: []

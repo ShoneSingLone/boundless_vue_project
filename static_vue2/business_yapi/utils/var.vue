@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 export default async function () {
-	if (!Vue._var) {
+	if (!Vue._yapi_var) {
 		const OPEN_BLANK = i18n("新窗口打开");
 		const TAB_KEY_PROJECT_WIKI = i18n("项目文档");
 		const TAB_KEY_PROJECT_SETTING = i18n("项目设置");
@@ -47,7 +47,15 @@ export default async function () {
 		const BODY = "body";
 
 		/* 常量 */
-		Vue._var = {
+		Vue._yapi_var = {
+			LOG_TYPE: {
+				project: "项目",
+				group: "分组",
+				interface: "接口",
+				interface_col: "接口集",
+				user: "用户",
+				other: "其他"
+			},
 			OPEN_BLANK,
 			TAB_KEY_PROJECT_WIKI,
 			TAB_KEY_PROJECT_SETTING,
@@ -94,6 +102,6 @@ export default async function () {
 			}
 		};
 	}
-	return Vue._var;
+	return Vue._yapi_var;
 }
 </script>

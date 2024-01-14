@@ -14,7 +14,7 @@
 		</slot>
 	</li>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	const escapeRegexpString = (value = "") => String(value).replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
 	return defineComponent({
@@ -160,8 +160,3 @@ export default async function () {
 	});
 }
 </script>
-<style lang="less">
-.MUST_MODIFY {
-	color: red;
-}
-</style>

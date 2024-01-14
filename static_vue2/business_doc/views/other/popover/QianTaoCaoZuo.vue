@@ -14,7 +14,7 @@
 		</elPopover>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	const DemoTips = await _.$importVue("@/views/other/popover/QianTaoCaoZuo.confirm.vue");
 	return defineComponent({

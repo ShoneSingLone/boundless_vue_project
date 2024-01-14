@@ -1,17 +1,18 @@
 <template>
 	<div class="title flex middle xPageTitle">
 		<slot name="title">
-			<span class="title-text">{{ i18n(title) }}</span>
+			<span class="title-text mr4">{{ i18n(title) }}</span>
+			<xIcon icon="tips" v-if="tips" v-xtips="i18n(tips)" />
 		</slot>
 		<span class="flex1"> </span>
 		<slot />
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
-		props: ["title"]
+		props: ["title", "tips"]
 	};
 }
 </script>

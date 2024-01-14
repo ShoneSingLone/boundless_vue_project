@@ -11,7 +11,7 @@
 		<xBtn :configs="xBtnConfigs" />
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		computed: {
@@ -40,7 +40,7 @@ export default async function () {
 					onBlur() {
 						vm.xItemInputValue = "onBlur";
 					},
-					rules: [Vue._rules.required()]
+					rules: [_rules.required()]
 				},
 				xItemInput2: {
 					value: "",

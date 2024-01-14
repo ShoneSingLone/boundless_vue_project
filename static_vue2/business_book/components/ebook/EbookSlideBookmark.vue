@@ -12,7 +12,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const Scroll = await _.$importVue("@/common/Scroll.vue");
 	const { getBookmark } = await _.$importVue("../../utils/localStorage");

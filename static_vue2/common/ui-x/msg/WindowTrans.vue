@@ -8,7 +8,7 @@
 	</xDialog>
 </template>
 
-<script>
+<script lang="ts">
 export default async function ({ onOk, onCancel, content }) {
 	const isUpdate = false;
 	/*  */

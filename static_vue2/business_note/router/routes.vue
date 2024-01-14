@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	return [
 		_.$newRoute("/dev", "@/views/dev/ViewDev.vue"),

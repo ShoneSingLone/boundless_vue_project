@@ -1,11 +1,11 @@
 <template>
 	<div class="GroupSectionProjectListPrivate" v-if="isShow">
 		<!-- 我的项目 -->
-		<xRender :render="renderNoFollowPanel" />
 		<xRender :render="renderFollowPanel" />
+		<xRender :render="renderNoFollowPanel" />
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		inject: ["APP", "GroupSection"],
@@ -16,7 +16,7 @@ export default async function () {
 		methods: {
 			renderNoFollowPanel() {
 				const isUnfollow = project => !project.follow;
-				let unfollowArray = _.sortBy(_.filter(this.APP.projectList, isUnfollow), ["up_time"]);
+				let unfollowArray = _.sortBy(_.filter(this.APP.groupProjectList, isUnfollow), ["up_time"]);
 
 				if (_.$isArrayFill(unfollowArray)) {
 					return h(
@@ -27,6 +27,7 @@ export default async function () {
 								"card-header-border-left": true
 							}
 						},
+						/* 项目Card */
 						[this.GroupSection.genProjectCard(unfollowArray, this.GroupSection.canAddProject)]
 					);
 				}
@@ -34,7 +35,7 @@ export default async function () {
 			},
 			renderFollowPanel() {
 				const isFollow = project => !!project.follow;
-				let followProject = _.sortBy(_.filter(this.APP.projectList, isFollow), ["up_time"]);
+				let followProject = _.sortBy(_.filter(this.APP.groupProjectList, isFollow), ["up_time"]);
 				if (_.$isArrayFill(followProject)) {
 					return h(
 						"xBlock",
@@ -53,12 +54,11 @@ export default async function () {
 		},
 		computed: {
 			isShow() {
-				return this.APP.cptCurrentGroup?.type === Vue._var.PRIVATE;
+				return this.APP.cptCurrentGroup?.type === Vue._yapi_var.PRIVATE;
 			}
 		}
 	});
 }
 </script>
 
-<style lang="less">
-</style>
+<style lang="less"></style>

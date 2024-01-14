@@ -1,5 +1,5 @@
 <template>
-	<div class="dropdown-demo">
+	<DocContentOfDemo class="dropdown-demo">
 		<xMd :md="'将动作或菜单折叠到下拉菜单中。'" />
 		<DemoAndCode title="基础用法" path="@/views/component/navigation/dropdown/JiChuYongFa.vue" unfold />
 		<DemoAndCode title="触发对象" path="@/views/component/navigation/dropdown/ChuFaDuiXiang.vue" unfold />
@@ -8,10 +8,10 @@
 		<DemoAndCode title="指令事件" path="@/views/component/navigation/dropdown/ZhiLingShiJian.vue" unfold />
 		<DemoAndCode title="不同尺寸" path="@/views/component/navigation/dropdown/BuTongChiCun.vue" unfold />
 		<xMd :md="apiString" />
-	</div>
+	</DocContentOfDemo>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		data() {

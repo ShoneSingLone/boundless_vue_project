@@ -1,12 +1,19 @@
 <template>
 	<el-checkbox-group v-model="mixin_value" v-bind="$attrs" v-on="mixin_listeners">
-		<el-checkbox-button v-for="option in options" :label="option.label" :key="option.value">
-			{{ option.label }}
-		</el-checkbox-button>
+		<template v-if="isButton">
+			<el-checkbox-button v-for="option in options" :label="option.label" :key="option.value">
+				{{ option.label }}
+			</el-checkbox-button>
+		</template>
+		<template v-else>
+			<el-checkbox v-for="option in options" :label="option.value" :key="option.label">
+				{{ option.label }}
+			</el-checkbox>
+		</template>
 	</el-checkbox-group>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	return (() => {
@@ -16,6 +23,9 @@ export default async function () {
 			computed: {
 				options() {
 					return this.configs?.options || [];
+				},
+				isButton() {
+					return this.configs?.button || false;
 				}
 			},
 			data() {

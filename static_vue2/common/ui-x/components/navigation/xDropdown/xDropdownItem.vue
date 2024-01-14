@@ -12,7 +12,7 @@
 		<slot></slot>
 	</li>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		name: "xDropdownItem",

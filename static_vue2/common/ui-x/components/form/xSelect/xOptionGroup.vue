@@ -8,7 +8,7 @@
 		</li>
 	</ul>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		name: "xOptionGroup",
@@ -51,8 +51,3 @@ export default async function () {
 	});
 }
 </script>
-<style lang="less">
-.MUST_MODIFY {
-	color: red;
-}
-</style>

@@ -22,7 +22,7 @@
 	</xDialog>
 </template>
 
-<script>
+<script lang="ts">
 export default async function ({ groupInfo }) {
 	const isUpdate = !!groupInfo;
 
@@ -43,7 +43,7 @@ export default async function ({ groupInfo }) {
 						value: "",
 						label: i18n("分组名"),
 						placeholder: i18n("请输入分组名称"),
-						rules: [Vue._rules.required()]
+						rules: [_rules.required()]
 					}),
 					newGroupDesc: defItem({
 						value: "> 简洁",
@@ -51,21 +51,21 @@ export default async function ({ groupInfo }) {
 						label: i18n("简介"),
 						tips: "尝试markdown格式",
 						placeholder: "请输入分组描述",
-						rules: [Vue._rules.required()]
+						rules: [_rules.required()]
 					}),
 					owner_uids: defItem({
 						itemType: "YapiItemUac",
 						value: [],
 						label: i18n("组长"),
 						placeholder: "请输入分组描述",
-						rules: [Vue._rules.required()]
+						rules: [_rules.required()]
 					}),
 					/* update */
 					currGroupName: {
 						value: "",
 						label: i18n("分组名"),
 						placeholder: i18n("请输入分组名称"),
-						rules: [Vue._rules.required()]
+						rules: [_rules.required()]
 					},
 					currGroupDesc: {
 						value: "",
@@ -73,14 +73,14 @@ export default async function ({ groupInfo }) {
 						label: i18n("简介"),
 						tips: "尝试markdown格式",
 						placeholder: "请输入分组描述",
-						rules: [Vue._rules.required()]
+						rules: [_rules.required()]
 					},
 					custom_field1_enable: {
 						itemType: "xItemSwitch",
 						value: false,
 						label: i18n("启用接口自定义字段"),
 						placeholder: "请输入分组描述",
-						rules: [Vue._rules.required()]
+						rules: [_rules.required()]
 					},
 					custom_field1_name: {
 						value: "",
@@ -91,13 +91,13 @@ export default async function ({ groupInfo }) {
 						label: i18n("接口自定义字段"),
 						tips: i18n("可以在接口中添加 额外字段 数据"),
 						placeholder: i18n("额外字段"),
-						rules: [Vue._rules.required()],
+						rules: [_rules.required()],
 						once() {
 							vm.$watch(
 								"form.custom_field1_enable.value",
 								isUse => {
 									if (isUse) {
-										this.rules = [Vue._rules.required()];
+										this.rules = [_rules.required()];
 									} else {
 										this.rules = [];
 									}
@@ -131,7 +131,7 @@ export default async function ({ groupInfo }) {
 
 						if (isUpdate) {
 							const { currGroupName, currGroupDesc, custom_field1_enable, custom_field1_name } = vm.cptFormData;
-							await Vue._yapi_api.groupUpdateGroup({
+							await _api.yapi.groupUpdateGroup({
 								...groupInfo,
 								group_name: currGroupName,
 								group_desc: currGroupDesc,
@@ -144,7 +144,7 @@ export default async function ({ groupInfo }) {
 							_.$msgSuccess("分组修改成功");
 						} else {
 							const { newGroupName, newGroupDesc, owner_uids } = vm.cptFormData;
-							await Vue._yapi_api.groupAddGroup({
+							await _api.yapi.groupAddGroup({
 								group_name: newGroupName,
 								group_desc: newGroupDesc,
 								owner_uids: owner_uids
@@ -180,7 +180,7 @@ export default async function ({ groupInfo }) {
 			renderDeleteGroup() {
 				const vm = this;
 				/* 只有超级管理员能删除分组 */
-				if (this.APP.user.role === Vue._var.ADMIN) {
+				if (this.APP.user.role === Vue._yapi_var.ADMIN) {
 					return h(
 						"elAlert",
 						{
@@ -231,7 +231,7 @@ export default async function ({ groupInfo }) {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 #admin-delete-group-alert {
 	.el-alert__content {
 		width: 100%;

@@ -1,6 +1,6 @@
 <template></template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { getReadTime } = await _.$importVue("@/utils/localStorage.vue");
 	const { realPx } = await _.$importVue("@/utils/utils.vue");

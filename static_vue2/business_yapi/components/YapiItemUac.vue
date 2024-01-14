@@ -4,7 +4,7 @@
 	</xSelect>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 
@@ -16,7 +16,7 @@ export default async function () {
 			const vm = this;
 			vm.doSearch = _.debounce(async params => {
 				try {
-					const { data } = await Vue._yapi_api.getUserSearch(params);
+					const { data } = await _api.yapi.getUserSearch(params);
 					this.optionArray = data;
 				} catch (error) {
 					console.error(error);
@@ -64,7 +64,4 @@ export default async function () {
 }
 </script>
 
-<style lang="less">
-.YapiItemUac {
-}
-</style>
+<style lang="less"></style>

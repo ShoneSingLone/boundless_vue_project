@@ -7,7 +7,7 @@
 		<xTag size="mini" closable>超小标签</xTag>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({});
 }

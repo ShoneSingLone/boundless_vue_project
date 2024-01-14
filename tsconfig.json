@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "jsx": "react"
+    "moduleResolution": "node",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
   },
-  "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": [
-    "./",
-    "static_vue2/common/ui-element/index.min.js",
-    ".prettierrc",
+    "./**/*"
   ],
   "vueCompilerOptions": {
     "target": 2.7

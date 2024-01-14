@@ -2,9 +2,9 @@
 	<xDialog>
 		<!-- '--xItem-label-width': "144px" -->
 		<xCard class="mt10">
-			<form ref="form">
-				<xItem :configs="configs" v-for="(configs, prop) in form" :key="prop" />
-			</form>
+			<xForm ref="form">
+				<xItem :configs="configs" v-for="(configs, prop) in form" :key="prop" span="full" />
+			</xForm>
 		</xCard>
 		<template #footer>
 			<xBtn :configs="btnOk" />
@@ -13,7 +13,7 @@
 	</xDialog>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 

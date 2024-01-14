@@ -28,7 +28,7 @@
 	</transition>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { storeShelfMixin } = await _.$importVue("@/utils/mixin.vue");
 	const { clearLocalStorage, saveBookShelf } = await _.$importVue("@/utils/localStorage.vue");
@@ -81,8 +81,8 @@ export default async function () {
 				return selectedNumber <= 0
 					? this.$t("shelf.selectBook")
 					: selectedNumber === 1
-					? this.$t("shelf.haveSelectedBook").replace("$1", selectedNumber)
-					: this.$t("shelf.haveSelectedBooks").replace("$1", selectedNumber);
+						? this.$t("shelf.haveSelectedBook").replace("$1", selectedNumber)
+						: this.$t("shelf.haveSelectedBooks").replace("$1", selectedNumber);
 			},
 			popupCancelBtn() {
 				return this.createPopupBtn(this.$t("shelf.cancel"), () => {

@@ -7,7 +7,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const DetailTitle = await _.$importVue("../../components/detail/DetaiTitle.vue");
 	const Scroll = await _.$importVue("../../components/common/Scroll.vue");

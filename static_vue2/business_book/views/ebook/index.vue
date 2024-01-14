@@ -9,7 +9,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const EbookReader = await _.$importVue("../../components/ebook/EbookReader");
 	const EbookTitle = await _.$importVue("../../components/ebook/EbookTitle");

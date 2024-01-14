@@ -1,7 +1,7 @@
 <template>
 	<h1>{{ title }}</h1>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		data() {

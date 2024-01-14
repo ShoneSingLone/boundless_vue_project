@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		name: "xGap",
@@ -37,7 +37,7 @@ export default async function () {
 						if (attrs.a?.length) {
 							gapStyle.margin = `${attrs.a}px`;
 						} else {
-							gapStyle.margin = `var(--app-padding)`;
+							gapStyle.margin = `var(--ui-one)`;
 						}
 					}
 
@@ -48,7 +48,7 @@ export default async function () {
 								//@ts-ignore
 								gapStyle[`margin-${prop}`] = `${value}px`;
 							} else {
-								gapStyle[`margin-${prop}`] = `var(--app-padding)`;
+								gapStyle[`margin-${prop}`] = `var(--ui-one)`;
 							}
 						}
 					});

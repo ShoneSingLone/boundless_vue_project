@@ -2,7 +2,7 @@
 	<el-date-picker v-model="mixin_value" type="datetime" :placeholder="i18n('msgSelectDateTime')" />
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	return (() => {

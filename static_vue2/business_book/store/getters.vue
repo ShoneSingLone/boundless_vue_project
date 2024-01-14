@@ -1,6 +1,6 @@
 <template></template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const book = {
 		fileName: state => state.book.fileName,

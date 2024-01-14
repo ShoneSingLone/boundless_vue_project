@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const { useProps } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	const RULES = await _.$importVue("/common/utils/rules.vue");
 	const { EVENT_ARRAY } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
-	const { useAutoResize } = Vue._useXui;
+	const { useAutoResize } = _useXui;
 	const NormalRender = await _.$importVue("/common/ui-x/common/xItem.NormalRender.vue");
 
 	/* TODO:
@@ -22,7 +22,7 @@ export default async function () {
   } */
 
 	return {
-		props: ["configs", "value"],
+		props: ["configs", "value", "payload"],
 		provide() {
 			const xItem = this;
 			return {
@@ -258,7 +258,8 @@ export default async function () {
 					if (this.configs?.onEmitValue) {
 						this.configs.onEmitValue.call(this.configs, {
 							val,
-							...(this?.configs?.payload || {})
+							...(this?.configs?.payload || {}),
+							xItem: this
 						});
 					}
 				} catch (error) {
@@ -293,12 +294,13 @@ export default async function () {
 				}
 			},
 			reset() {},
-			async validate() {
+			async validate(payload) {
 				if (this.configs.rules && this.configs.rules.length > 0) {
 					for await (const rule of this.configs.rules) {
 						const msg = await rule.validator.call(this.configs, {
 							val: this.p_value,
-							xItem: this
+							xItem: this,
+							payload
 						});
 						if (msg) {
 							this.errorTips = msg;
@@ -375,7 +377,10 @@ export default async function () {
 
 <style lang="less">
 .xItem-wrapper {
-	width: 200px;
+	width: var(--xItem-wrapper-width);
+	&.w-100 {
+		width: 100%;
+	}
 	overflow: hidden;
 	.xItem_controller.el-form-item {
 		margin-bottom: unset;
@@ -400,6 +405,7 @@ export default async function () {
 	width: var(--xItem-label-width);
 	text-align: right;
 	margin-right: 16px;
+	justify-content: var(--xItem-label-position);
 }
 
 .xItem_label-required {

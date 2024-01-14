@@ -7,7 +7,7 @@
 		</span>
 	</button>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		name: "ElButton",

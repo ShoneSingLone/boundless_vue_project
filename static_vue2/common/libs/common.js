@@ -5,7 +5,88 @@ const isDev = !!localStorage.isDev;
 		console.log("common.js");
 	}
 
-	/* lodash 主要是纯函数 $前缀的是自定义函数*/
+	/**
+	 *
+	 * @param {*} timestamp 多少时间以前
+	 * @returns
+	 */
+	/* @typescriptDeclare (timestamp:string)=>string */
+	_.$timeAgo = function (timestamp) {
+		let minutes, hours, days, mouth;
+		let year;
+		const timeNow = parseInt(String(new Date().getTime() / 1000));
+		let seconds = timeNow - timestamp;
+		if (seconds > 86400 * 30 * 12) {
+			year = parseInt(String(seconds / (86400 * 30 * 12)));
+		} else {
+			year = 0;
+		}
+		if (seconds > 86400 * 30) {
+			mouth = parseInt(String(seconds / (86400 * 30)));
+		} else {
+			mouth = 0;
+		}
+		if (seconds > 86400) {
+			days = parseInt(String(seconds / 86400));
+		} else {
+			days = 0;
+		}
+		if (seconds > 3600) {
+			hours = parseInt(String(seconds / 3600));
+		} else {
+			hours = 0;
+		}
+		minutes = parseInt(String(seconds / 60));
+		if (year > 0) {
+			return year + "年前";
+		} else if (mouth > 0 && year <= 0) {
+			return mouth + "月前";
+		} else if (days > 0 && mouth <= 0) {
+			return days + "天前";
+		} else if (days <= 0 && hours > 0) {
+			return hours + "小时前";
+		} else if (hours <= 0 && minutes > 0) {
+			return minutes + "分钟前";
+		} else if (minutes <= 0 && seconds > 0) {
+			if (seconds < 30) {
+				return "刚刚";
+			} else {
+				return seconds + "秒前";
+			}
+		} else {
+			return "刚刚";
+		}
+	};
+
+	/**
+	 * 浅-判断对象值是否相同
+	 * @param {*} a
+	 * @param {*} b
+	 * @returns
+	 */
+	/* @typescriptDeclare (a:object,b:object)=>boolean */
+	_.$eqObj = (a, b) => {
+		if (Object.keys(a).length !== Object.keys(b).length) {
+			return false;
+		}
+		for (let key in a) {
+			if (_.isFunction(a[key])) {
+				var _a = a[key].toString();
+				var _b = b[key].toString();
+				if (_a !== _b) {
+					return false;
+				}
+			} else if (!_.eq(a[key], b[key])) {
+				return false;
+			}
+		}
+		return true;
+	};
+
+	/** 全局工具函数，共享lodash的全局变量_
+	 *  $前缀的是自定义函数
+	 */
+	/*  */
 	window.defItem = (...args) => {
 		let options = _.merge.apply(_, args);
 
@@ -15,7 +96,12 @@ const isDev = !!localStorage.isDev;
 		return Vue.reactive(options);
 	};
 
-	/* 从jQuery对象中，获取leftTop的数值 */
+	/**
+	 * 从jQuery对象中，获取leftTop的数值
+	 * @param {*} $ele
+	 * @returns
+	 */
+	/* @typescriptDeclare ($ele:jQuery)=>object */
 	_.$getLeftTopFromAbsolute = $ele => {
 		const _top = $ele.css("top");
 		const _left = $ele.css("left");
@@ -31,7 +117,7 @@ const isDev = !!localStorage.isDev;
 		const left = getNum(_left);
 		return { top, left };
 	};
-	_.$getLeftTopFromTranslate = ($ele /*  JQuery */) => {
+	_.$getLeftTopFromTranslate = $ele => {
 		const transform = $ele.css("transform");
 		const match = String(transform).match(/^matrix\((.*)\)$/);
 		if (!match) {
@@ -50,7 +136,7 @@ const isDev = !!localStorage.isDev;
 	};
 
 	/***
-	 *  pathname search
+	 * pathname search
 	 * @param urlLike
 	 * @param query
 	 */
@@ -64,6 +150,13 @@ const isDev = !!localStorage.isDev;
 		};
 	}
 
+	/**
+	 * 将一个url转换为VueRouter使用的a标签href
+	 * @param {*} urlLike
+	 * @param {*} query
+	 * @returns
+	 */
+	/* @typescriptDeclare (urlLike:string, query:object) => string */
 	_.$aHashLink = (urlLike, query) => {
 		const { url } = transToUrl(urlLike, query);
 		const targetUrl = new URL(location.href, location.origin);
@@ -71,7 +164,28 @@ const isDev = !!localStorage.isDev;
 		return targetUrl.href;
 	};
 
-	_.$isSame = (a, b) => String(a) === String(b);
+	/**
+	 * 设置主题
+	 * @param {*} theme
+	 */
+	/* @typescriptDeclare (theme:string)=>void */
+	_.$setAppTheme = function (theme) {
+		$("html").attr("data-theme", theme || "");
+		Vue.prototype.$X_APP_THEME = theme;
+		Vue.forceUpdate();
+		$(window).trigger("xUiThemeChange", theme);
+	};
+
+	/**
+	 * 判断两个值是否相等,转换为字符串比较
+	 * @param {*} a
+	 * @param {*} b
+	 * @returns
+	 */
+	/* @typescriptDeclare  (a:any,b:any)=>boolean */
+	_.$isSame = (a, b) => {
+		return String(a) === String(b);
+	};
 
 	_.$isIE = function () {
 		return !Vue.prototype.$isServer && !isNaN(Number(document.documentMode));
@@ -121,16 +235,31 @@ const isDev = !!localStorage.isDev;
 		}
 	};
 
+	/**
+	 * 首字母大写
+	 * @param {*} str
+	 * @returns
+	 */
+	/* @typescriptDeclare (str:string)=>string */
 	_.$firstUpperCase = function (str) {
 		return str.toLowerCase().replace(/( |^)[a-z]/g, L => L.toUpperCase());
 	};
 
-	/* 判断是否是Mac */
+	/**
+	 * 判断是否是Mac
+	 * @returns
+	 */
+	/* @typescriptDeclare ()=>boolean */
 	_.$isMac = function () {
 		return /macintosh|mac os x/i.test(navigator.userAgent);
 	};
 
-	/* 数字 非 NaN */
+	/**
+	 * 数字 非 NaN
+	 * @param {*} value
+	 * @returns
+	 */
+	/* @typescriptDeclare (value:any)=>boolean */
 	_.$isNumber = value => {
 		return _.isNumber(value) && !_.isNaN(value);
 	};
@@ -157,6 +286,12 @@ const isDev = !!localStorage.isDev;
 		});
 	};
 
+	/**
+	 * 该函数_$trylog接受一个异步函数asyncFn作为参数，通过try-catch语句执行asyncFn并返回结果。如果发生错误，将错误信息和asyncFn的调用信息打印到控制台
+	 * @param {*} asyncFn
+	 * @returns
+	 */
+	/* @typescriptDeclare (asyncFn:()=>Promise<any>)=>Promise<any> */
 	_.$trylog = asyncFn => {
 		try {
 			return asyncFn();
@@ -188,19 +323,7 @@ const isDev = !!localStorage.isDev;
 		}
 	});
 
-	/**
-	 * @name _.$ajax
-	 * 请求API的工具函数
-	 * _.$ajax.get
-	 * _.$ajax.post
-	 *
-	 */
-	_.$ajax = (() => {
-		/*
-		 *
-		 * @param {any} { type, url, options, success: resolve, error: reject }
-		 * @returns
-		 * */
+	_.$ajax = (function () {
 		function configs(API_OPTIONS) {
 			let { requestInjector, responseInjector } = this;
 
@@ -267,7 +390,6 @@ const isDev = !!localStorage.isDev;
 						}
 					}
 					return resolve(response);
-
 				},
 				error(response) {
 					if (401 === response.status) {
@@ -327,19 +449,31 @@ const isDev = !!localStorage.isDev;
 						})
 					);
 				});
+			},
+			delete: (url, options = {}) => {
+				return new Promise((resolve, reject) => {
+					$.ajax(
+						configs.call($ajax, {
+							type: "delete",
+							url: urlWrapper(url),
+							options,
+							success: resolve,
+							error: reject
+						})
+					);
+				});
 			}
 		};
-
 		return $ajax;
 	})();
 	/*  */
 	(function () {
 		/**
-		 * @name _.$genId
 		 * 生成一串随机数，category作为前缀
-		 * @param {any} category
+		 * @param {*} category
 		 * @returns
 		 */
+		/* @typescriptDeclare (category?:string)=>string  */
 		_.$genId = function (category) {
 			if (_.$genId.idCount > _.$genId.ID_COUNT_MAX) {
 				_.$genId.idCount = 1;
@@ -353,24 +487,40 @@ const isDev = !!localStorage.isDev;
 	})();
 
 	/**
-	 * @name _.$dateFormat
 	 * 日期格式化
-	 * @param {any} date 为long类型
-	 * @param {any} type 为格式化参数
+	 * @param {*} date {date|number}日期或者时间戳
+	 * @param {number} type {number} 0:默认YYYY-MM-DD HH:mm:ss 1:YYYY-MM-DD
 	 * @returns
 	 */
+	/* @typescriptDeclare (date:string|number, type?:number)=>string */
 	_.$dateFormat = (date = null, type = 0) => {
+		let format = "YYYY-MM-DD HH:mm:ss";
 		if (!date) {
 			return "";
 		}
-		date = date || Date.now();
-		if (!type) {
-			return dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+		/* 如果是时间戳 */
+		if (typeof date === "number") {
+			if (String(date).length === 10) {
+				/* Unix 时间戳 (毫秒) */
+				date = dayjs.unix(date);
+			}
+			if (String(date).length === 13) {
+				/* Unix 时间戳 (秒) */
+				date = dayjs(date);
+			}
 		}
+		date = date || Date.now();
 		if (type === 1) {
+			format = "YYYY-MM-DD";
 			return dayjs(date).format("YYYY-MM-DD");
 		}
-		return dayjs(date).format(type);
+
+		if (!type) {
+			format = "YYYY-MM-DD HH:mm:ss";
+		}
+		const label = dayjs(date).format(format);
+		const isInvalidDate = label == "Invalid Date";
+		return isInvalidDate ? "--" : label;
 	};
 
 	/**
@@ -389,22 +539,28 @@ const isDev = !!localStorage.isDev;
 	};
 
 	/**
-	 * @name _.$randomName
 	 * name作为前缀的符合name要求的字符串
-	 * @param {any} name
+	 * @param {string} name
 	 * @returns string
 	 */
+
 	_.$randomName = name => {
 		return name + parseInt((new Date().getTime() % 61439) + 4096).toString(16);
 	};
+
+	/**
+	 * 判断是否为200，转换为字符串来判断
+	 * @param {any} val
+	 * @returns boolean
+	 */
 
 	_.$is200 = function is200(val) {
 		return String(val) === "200";
 	};
 	/**
 	 * 默认检测obj上每一个属性都能通过isInput，如果给定keys，	则只检测keys中的属性
-	 * @param {*} obj
-	 * @param {*} keys
+	 * @param {object} obj
+	 * @param {string[]} keys
 	 * @returns
 	 */
 	_.$isEveryInput = function (obj, keys = []) {
@@ -423,12 +579,12 @@ const isDev = !!localStorage.isDev;
 	};
 
 	/**
-	 * @name _.$isInput
 	 * 是否已输入
 	 * false 0 为真 空数组[]为false
 	 * @param {any} val
 	 * @returns boolean
 	 */
+	/* @typescriptDeclare (val:any)=>boolean */
 	_.$isInput = function (val) {
 		if (_.isArray(val)) {
 			return val.length > 0;
@@ -440,13 +596,12 @@ const isDev = !!localStorage.isDev;
 	};
 
 	/**
-	 * @name _.$doNoting
-	 * 啥都不干的函数
+	 * 什么都不干的函数
+	 * @returns
 	 */
-	_.$doNoting = () => { };
-
+	/* @typescriptDeclare ()=>void */
+	_.$doNoting = () => null;
 	/**
-	 * @name _.$sleep
 	 * 异步函数，延时 记得用await
 	 * @param {any} timeout
 	 * @returns
@@ -486,10 +641,11 @@ const isDev = !!localStorage.isDev;
 		}.bind(vm);
 	};
 	/**
-	 * @name _.$isArrayFill
-	 * @param {any} val
+	 * 数组至少有一个元素
+	 * @param {*} val
 	 * @returns
 	 */
+	/* @typescriptDeclare (val:any[])=>boolean */
 	_.$isArrayFill = val => _.isArray(val) && val.length > 0;
 
 	/**
@@ -513,6 +669,7 @@ const isDev = !!localStorage.isDev;
 	 * @param {any} isLoading
 	 * TODO: 超时关闭并提示
 	 */
+	/* @typescriptDeclare  (isLoading?:boolean)=>void*/
 	_.$loading = function loading(isLoading = false) {
 		_.$loading.count = _.$loading.count || 0;
 		if (isLoading) {
@@ -552,6 +709,12 @@ const isDev = !!localStorage.isDev;
 		}
 	}, 1000 * 3);
 
+	/**
+	 * 确认信息
+	 * @param {*} options
+	 * @returns
+	 */
+	/* @typescriptDeclare (options?:any)=>Promise<any> */
 	_.$confirm = (options = {}) => {
 		return new Promise(async (resolve, reject) => {
 			const isDelete = !!options.isDelete;
@@ -590,7 +753,14 @@ const isDev = !!localStorage.isDev;
 			duration: 0
 		});
 	};
-	/*  */
+
+	/**
+	 * notify 弹窗，成功提示，可复写
+	 * @param {*} title
+	 * @param {*} options
+	 * @returns
+	 */
+	/* @typescriptDeclare (title:string,options?:any)=>Promise<any> */
 	_.$msgSuccess = title => {
 		return new Promise(resolve => {
 			layer.msg(
@@ -603,7 +773,13 @@ const isDev = !!localStorage.isDev;
 			);
 		});
 	};
-	/*  */
+	/**
+	 * notify 弹窗，错误提示，可复写
+	 * @param {*} title
+	 * @param {*} options
+	 * @returns
+	 */
+	/* @typescriptDeclare (title:string,options?:any)=>Promise<any> */
 	_.$msgError = (title, options) =>
 		new Promise(resolve => {
 			if (!title) {
@@ -654,14 +830,14 @@ const isDev = !!localStorage.isDev;
 			}, 300)
 		);
 
-		_.$privateSetWindowVmDefaultMethods = function (WindowVueCtor, indexPanel) {
+		function $privateSetWindowVmDefaultMethods(WindowVueCtor, indexPanel) {
 			WindowVueCtor.propsData = WindowVueCtor.propsData || {};
 			WindowVueCtor.propsData.$closeWindow = () => layer.close(indexPanel);
 			WindowVueCtor.propsData.$layerMax = () => layer.full(indexPanel);
 			WindowVueCtor.propsData.$layerMin = () => layer.min(indexPanel);
 			WindowVueCtor.propsData.$layerRestore = () => layer.restore(indexPanel);
 			return new Vue(WindowVueCtor);
-		};
+		}
 
 		_.$privateLayerSuccessThenMountVueComponent = function (WindowVueCtor, indexPanel, vm, layero, options, id, DIALOG_CACHE, layerVM) {
 			if (WindowVueCtor.parent) {
@@ -672,7 +848,7 @@ const isDev = !!localStorage.isDev;
 			}
 
 			// WindowVueCtor.el = `#${id}`;
-			vm = _.$privateSetWindowVmDefaultMethods(WindowVueCtor, indexPanel);
+			vm = $privateSetWindowVmDefaultMethods(WindowVueCtor, indexPanel);
 			/* 在window内可以直接调用 */
 			vm.$bus = _.merge({ layero, indexPanel }, WindowVueCtor?.bus || {});
 
@@ -705,6 +881,14 @@ const isDev = !!localStorage.isDev;
 			return vm;
 		};
 
+		/**
+		 *
+		 * @param {*} title：{stirng}dialog标题
+		 * @param {*} WindowVueCtor:Vue组件,通常用_.$importVue引入
+		 * @param {*} options:{layer的参数，但是一般用不到，有需要可以自己看源码}
+		 * @returns
+		 */
+		/* @typescriptDeclare (title:string, WindowVueCtor:Vue, options?:object)=>void */
 		_.$openWindow = async (title, WindowVueCtor, options = {}) => {
 			if (!WindowVueCtor) {
 				throw new Error("openWindow WindowVueCtor is null ");
@@ -769,7 +953,13 @@ const isDev = !!localStorage.isDev;
 		console.log("🚀:", "$ensure", _.$ensure.collection);
 	}, 1000);
 
-	/* 等待fnGetValue为真值，duration为0就不断尝试，若不在给定时间内完成，则失败 */
+	/**
+	 *
+	 * @param {*} fnGetValue 执行此函数，直到返回真值
+	 * @param {*} duration 默认为0即不断尝试；若给定时间，未在给定时间内完成，则失败
+	 * @returns
+	 */
+	/* @typescriptDeclare (fnGetValue:()=>Promise<any>, duration:number) =>Promise<any> */
 	_.$ensure = async (fnGetValue, duration = 0) => {
 		var fnString = fnGetValue.toString();
 		_.$ensure.collection.add(fnString);
@@ -837,6 +1027,16 @@ const isDev = !!localStorage.isDev;
 	}
 
 	_.$globalVar = $globalVar;
+	/**
+	 * 从location.search  get val
+	 * @param {*} key[]
+	 * @returns val[]
+	 */
+	/* @typescriptDeclare (key:string[])=>string[] */
+	_.$urlSearch = keys => {
+		const search = new URLSearchParams(location.search);
+		return _.map(keys, key => search[key]);
+	};
 	/*  */
 	_.$location = {
 		hash(key, val) {
@@ -918,7 +1118,7 @@ const isDev = !!localStorage.isDev;
 				let component = {};
 
 				try {
-					scfObjAsyncFn = new Function("payload", `with (Vue){${innerCode};}`);
+					scfObjAsyncFn = new Function("payload", `with ({..._,...Vue}){${innerCode};}`);
 				} catch (e) {
 					console.warn(innerCode);
 					throw e;
@@ -992,13 +1192,9 @@ const isDev = !!localStorage.isDev;
 			}
 		);
 
-		/**
-		 *
-		 * @returns { scritpSourceCode, templateSourceCode, styleSourceCode }
-		 */
-
 		_.$sourceCodeSFC = async function ({ resolvedURL, sourceCode }) {
-			/* 非开发模式下，如果已经加载，直接返回，否则每次都获取最新的代码 */
+			/* @descript 非开发模式下，如果已经加载，直接返回，否则每次都获取最新的代码 */
+			/* @declare { scritpSourceCode, templateSourceCode, styleSourceCode } */
 			if (!isDev && VUE_COMPONENTS_CACHE[resolvedURL]) {
 				return VUE_COMPONENTS_CACHE[resolvedURL];
 			}
@@ -1014,7 +1210,6 @@ const isDev = !!localStorage.isDev;
 
 		/**
 		 * 利用less添加样式,独立处理资源路径
-		 *
 		 * @param {any} styleSourceCode
 		 */
 		async function $appendSfcStyle(styleSourceCode, url) {
@@ -1036,6 +1231,13 @@ const isDev = !!localStorage.isDev;
 			}
 		}
 
+		/**
+		 * @deprecated 用h函数吧
+		 * @param {*} tpl
+		 * @param {*} scope
+		 * @param  {...any} args
+		 * @returns
+		 */
 		_.$vNode = function $vNode(tpl, scope, ...args) {
 			try {
 				const { render } = Vue.compile(tpl);
@@ -1045,12 +1247,19 @@ const isDev = !!localStorage.isDev;
 				return null;
 			}
 		};
+
 		/**
 		 * 加载自定义的SFC vue 文件
-		 * @param {*} url
-		 * @param {*} payload
+		 * @param {*} url 文件地址：@为当前app目录，/common为通用目录
+		 * @param {*} payload {parent是一个保留字，用于Vue实例的继承关系，这样才可以使用provier和inject}
+		 * @example
+		 * export default async function ({parent,row,index,otherAnyParams}) {
+		 * //这里是_.$importVue引入的SFC文件
+		 * 	......
+		 * }
 		 * @returns
 		 */
+		/* @typescriptDeclare (url:object|string|any[], payload?:object)=>any|any[] */
 		_.$importVue = async function (url, payload = {}) {
 			if (_.isPlainObject(url)) {
 				/* 直接传入对象 */
@@ -1098,7 +1307,6 @@ const isDev = !!localStorage.isDev;
 		};
 
 		/**
-		 * @name _.$newRoute
 		 * 生成VueRouter 的 route
 		 * path 与name相同，也不要使用 /:id这种不方便找对应的组件
 		 * @param {*} path 必须是完成路径 比如 /a /a/b /a/b/c
@@ -1136,7 +1344,7 @@ const isDev = !!localStorage.isDev;
 		}
 
 		if (configs.pagination) {
-			configs.pagination.count = total || 0;
+			configs.pagination.total = total || 0;
 		}
 	};
 
@@ -1176,19 +1384,20 @@ const isDev = !!localStorage.isDev;
 	 * TODO: isHide的元素不需要校验
 	 *
 	 * @param {any} selector  满足jQuery能选出来就行 form#表单的包裹元素，校验元素内的所有控件
-	 * @returns 如果都通过返回空数组，否则返回
+	 * @returns 如果都通过，则返回空数组，否则返回
 	 * [
 	 *  [msg,vm],
 	 *  [msg,vm],
 	 *  ...
 	 * ]的数组元素
 	 *  @example
-	 * const [error] = await _.$validateForm("this.$el");//这个范围就是整个组件
+	 * const [error] = await _.$validateForm(this.$el);//这个范围就是整个组件
 	 * if (error) {
 	 *  return;
 	 * }
 	 *
 	 */
+	/* @typescriptDeclare (selector:string)=>Promise<[msg,vm][]> */
 	_.$validateForm = async selector => {
 		const $target = getTargetBy(selector);
 		const errorArray = [];
@@ -1222,6 +1431,7 @@ const isDev = !!localStorage.isDev;
 	 * @param {*} selector
 	 * @param {*} attrs
 	 */
+	/* @typescriptDeclare (selector:string, attrs:object)=>void */
 	_.$modifyItemsAttrs = async (selector, attrs) => {
 		const $target = getTargetBy(selector);
 		for (const dom of $target) {
@@ -1250,7 +1460,14 @@ const isDev = !!localStorage.isDev;
 			return vm;
 		}
 	};
-	/* 从Table 中获取xItem的vm */
+	/**
+	 * 从Table 中获取xItem的vm
+	 * @param {*} rowIndex
+	 * @param {*} colProp
+	 * @param {*} selector
+	 * @returns
+	 */
+	/* @typescriptDeclare (rowIndex:number,colProp:string,selector:string)=>object */
 	_.$getCellItemVm = (rowIndex, colProp, selector) => {
 		let vm = {};
 		try {
@@ -1264,6 +1481,7 @@ const isDev = !!localStorage.isDev;
 			return vm;
 		}
 	};
+
 	/**
 	 * 从指定selector范围的xTable 表中获取rowIndex colProp 对应xItem的实例
 	 * @param selector
@@ -1287,6 +1505,13 @@ const isDev = !!localStorage.isDev;
 		});
 	};
 
+	/**
+	 * 数据回填，
+	 * @param {*} form {object} xItem formconfigs
+	 * @param {*} data {object} 回填数据
+	 * @param {*} order {array} 有依赖关系（联动）回填顺序
+	 */
+	/* @typescriptDeclare ({form,data,order})=>Promise<void> */
 	_.$fillBackData = async function ({ form, data, order }) {
 		let target;
 		while ((target = order.shift())) {
@@ -1294,7 +1519,7 @@ const isDev = !!localStorage.isDev;
 			if (_.isString(target)) {
 				const prop = target;
 				form[prop].value = data[prop];
-				await _.$sleep(100);
+				await _.$sleep(32);
 			}
 
 			if (_.isPlainObject(target)) {
@@ -1310,6 +1535,7 @@ const isDev = !!localStorage.isDev;
 	 * @param {any} form xItem 配置信息，config带有value属性
 	 * @param {any} values
 	 */
+	/* @typescriptDeclare (form:object,values:object)=>void */
 	_.$setValToForm = function setValToForm(form, values) {
 		_.each(values, (value, prop) => {
 			if (value !== undefined && _.isPlainObject(form[prop])) {
@@ -1318,12 +1544,12 @@ const isDev = !!localStorage.isDev;
 		});
 	};
 
-	/*  */
 	/**
 	 * 从 cofnigs 中获取value 返回 {xxx:value,...}形式的对象
 	 * @param {any} configs
 	 * @returns
 	 */
+	/* @typescriptDeclare (configs:object)=>object */
 	_.$pickValueFromConfigs = function (configs) {
 		return _.reduce(
 			configs,
@@ -1336,7 +1562,13 @@ const isDev = !!localStorage.isDev;
 			{}
 		);
 	};
-	/*  */
+
+	/**
+	 * 从数组中取第一个元素的value，如果数组为空则返回defaultValue
+	 * @param {*} options
+	 * @param {*} defaultValue
+	 * @returns
+	 */
 	_.$valFirstOrDefault = (options, defaultValue) => {
 		if (defaultValue === undefined) {
 			alert("_.$valFirstOrDefault miss defaultValue");
@@ -1412,6 +1644,12 @@ const isDev = !!localStorage.isDev;
 
 (async function () {
 	await (async function setI18n() {
+		/**
+		 * 国际化
+		 * @param {*} key
+		 * @param {*} payload
+		 * @returns
+		 */
 		const i18n = function (key, payload) {
 			/!*使用 {变量名} 赋值*!/;
 			_.templateSettings.interpolate = /{([\s\S]+?)}/g;
@@ -1425,16 +1663,14 @@ const isDev = !!localStorage.isDev;
 		/* 国际化 */
 		window.i18n = i18n;
 		await _.$appendScript(`@/i18n/${I18N_LANGUAGE}.js`);
-		Vue.prototype.$i18n = i18n;
+
 		Vue.prototype.i18n = i18n;
 	})();
 	/* setup */
 	await (async function setVueConfigs() {
-		Vue.prototype.$genId = _.$genId;
 		await _.$ensure(() => window.SRC_ROOT_PATH !== undefined);
 		_.$importVue.Nprogress = await _.$importVue("/common/libs/Nprogress.vue");
 	})();
-
 	// document.title = window.i18n("adminConsole");
 	const APP = await _.$importVue(`${SRC_ROOT_PATH}/business_${APP_NAME}/${APP_ENTRY_NAME}.vue`);
 	if (isDev) {

@@ -1,19 +1,49 @@
 <template></template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const [App, router, store] = await Promise.all([_.$importVue("@/layout/LayoutAppBook.vue"), _.$importVue("@/router.vue"), _.$importVue("@/store/store.vue")]);
 
-	Vue.prototype.$t = Vue.prototype.$i18n;
+	Vue.prototype.$t = Vue.prototype.i18n;
 	/* app entry  */
 	function setRemBase() {
+		debugger;
 		const wWidth = $(window).width();
 		const rate = wWidth / 375;
 		const unit = (16 * rate) / 16;
 		$("html").css("font-size", unit + "px");
 	}
+	debugger;
+	$(window)
+		.on("resize", setRemBase)
+		.on("orientationchange", function () {
+			debugger;
+			// 这个时候屏幕的尺寸数据还没有变化
+			let orientation = window.orientation;
+			switch (orientation) {
+				case 90:
+				case -90:
+					orientation = "landscape"; //这里是横屏
+					break;
+				default:
+					orientation = "portrait"; //竖屏
+			}
+		});
+	// 监听屏幕转动
+	window.addEventListener("orientationchange", function () {
+		debugger;
+		// 这个时候屏幕的尺寸数据还没有变化
+		let orientation = window.orientation;
+		switch (orientation) {
+			case 90:
+			case -90:
+				orientation = "landscape"; //这里是横屏
+				break;
+			default:
+				orientation = "portrait"; //竖屏
+		}
+	});
 
-	$(window).on("resize", setRemBase);
 	setRemBase();
 
 	return new Vue({

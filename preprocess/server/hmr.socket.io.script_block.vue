@@ -31,20 +31,41 @@ window.ONLY_USE_IN_DEV_MODEL = function () {
 			owners.length = 0;
 		}
 	};
+	/* VueRouter 加载的组件 */
+	Vue._HandleVueRouterAsyncComponentResolved = function ({ resolvedDef, def, match, key, pending, next }) {
+		if (Vue.isESModule(resolvedDef)) {
+			resolvedDef = resolvedDef.default;
+		}
+
+		const { FILE_URL } = resolvedDef;
+		if (HMR_COMPONENT_COLLECTION && FILE_URL) {
+			HMR_COMPONENT_COLLECTION[FILE_URL] = { factory: def, match, key };
+		}
+		// save resolved on async factory in case it's used elsewhere
+		def.resolved = typeof resolvedDef === "function" ? resolvedDef : Vue.extend(resolvedDef);
+		match.components[key] = def.resolved;
+		pending.count--;
+		if (pending.count <= 0) {
+			next();
+		}
+	};
 
 	const forceUpdate = _.debounce(function () {
-		HMR_APP && HMR_APP.$forceUpdate();
+		window.HMR_APP && HMR_APP.$forceUpdate();
 	}, 600);
 
 	ws.on("hmr", async ({ filename: changedPath, content }) => {
 		changedPath = _.toLower(_.camelCase(changedPath));
-		_.some(HMR_COMPONENT_COLLECTION, ({ factory }, resolvedURL) => {
+		_.some(HMR_COMPONENT_COLLECTION, ({ factory, match, key }, resolvedURL) => {
 			const oldPath = _.toLower(_.camelCase(resolvedURL));
 			if (~oldPath.indexOf(changedPath)) {
 				(async function () {
 					try {
 						const newComponent = await _.$sfcVueObject({ resolvedURL, sourceCode: content });
 						factory.resolved = Vue.extend(newComponent);
+						if (match && key) {
+							match.components[key] = factory.resolved;
+						}
 						forceUpdate();
 					} catch (error) {
 						console.error(error);

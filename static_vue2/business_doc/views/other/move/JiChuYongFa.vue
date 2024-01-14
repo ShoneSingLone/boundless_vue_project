@@ -5,7 +5,7 @@
 		<div class="border2" />
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		setup() {

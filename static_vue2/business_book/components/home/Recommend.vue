@@ -17,7 +17,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const TitleView = await _.$importVue("./Title.vue");
 	const { storeHomeMixin } = await _.$importVue("@/utils/mixin.vue");

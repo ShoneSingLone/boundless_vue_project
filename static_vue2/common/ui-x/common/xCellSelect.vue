@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	Vue._CurrentCellId = Vue._CurrentCellId || ref(0);
 	return defineComponent({

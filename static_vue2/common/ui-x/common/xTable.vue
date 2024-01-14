@@ -1,5 +1,7 @@
-<script>
+<script lang="ts">
 export default async function () {
+	const { emptyRender } = await _.$importVue("/common/ui-x/components/data/xTableVir/xTableEmptyRender.vue");
+	const NEVER_USE = "never_use";
 	/**
 	 * 如果有COL_MULTIPLE ，就必须有vm.selectedBy:"id", selected：[]
 	 */
@@ -7,7 +9,7 @@ export default async function () {
 	return defineComponent({
 		props: ["configs", "data"],
 		setup(props) {
-			const { useAutoResize } = Vue._useXui;
+			const { useAutoResize } = _useXui;
 			const { height, width, sizer: refxTable } = useAutoResize(props);
 
 			const setColActionWidthImmediate = () => {
@@ -63,21 +65,17 @@ export default async function () {
 				return h("el-table", TableProps, [
 					{
 						/* 无数据显示 */
-						empty: () =>
-							h("div", { staticClass: "flex vertical middle center" }, [
-								h(
-									"xIcon",
-									{
-										icon: "icon_no_data",
-										staticClass: "empty"
-									},
-									[]
-								),
-								h("span", {}, [i18n("暂无数据")])
-							]),
+						empty: emptyRender,
 						/* 列信息 */
 						default: () => {
 							const genChildByProp = prop => {
+								if (prop === NEVER_USE) {
+									const currentDisplay = _.filter(vm.displayProps, i => !["COL_MULTIPLE", "COL_SINGLE", "COL_ACTIONS"].includes(i));
+									/* 如果没有需要显示的列，空白列占满列表，否则用1表个意思 */
+									const width = currentDisplay.length ? 1 : "";
+									return h("elTableColumn", { key: NEVER_USE, width });
+								}
+
 								const child = {
 									/* 列头 */
 									header: (params = {}) => {
@@ -111,7 +109,8 @@ export default async function () {
 									/* 列 cell */
 									default: (params = {}) => {
 										const { $index, column, store, _self, row } = params;
-										const [tag, tableCellProps, children] = (function () {
+
+										const [cellTag, cellProps, cellChildren] = (function () {
 											const configsProps = {
 												prop,
 												row,
@@ -165,7 +164,6 @@ export default async function () {
 													[]
 												];
 											}
-
 											/* 默认*/
 											return [
 												"xRender",
@@ -178,10 +176,11 @@ export default async function () {
 											];
 										})();
 
-										tableCellProps.key = prop;
-										tableCellProps.dataColProp = prop;
-										tableCellProps.dataRowIndex = $index;
-										return h(tag, tableCellProps, children);
+										cellProps.key = prop;
+										cellProps.dataColProp = prop;
+										cellProps.dataRowIndex = $index;
+
+										return h(cellTag, cellProps, cellChildren);
 									}
 								};
 
@@ -195,9 +194,9 @@ export default async function () {
 									};
 								})();
 
-								return h("el-table-column", tableColumnProps, [child]);
+								return h("elTableColumn", tableColumnProps, [child]);
 							};
-							return _.map(vm.displayProps, genChildByProp);
+							return _.map([...vm.displayProps, NEVER_USE], genChildByProp);
 						}
 					}
 				]);
@@ -229,6 +228,9 @@ export default async function () {
 			getLabelBy(prop) {
 				const configsCol = this.allColInfo[prop];
 				if (configsCol) {
+					if (_.isFunction(configsCol.label)) {
+						return configsCol.label.call(configsCol);
+					}
 					if (configsCol.label) {
 						return configsCol.label;
 					}
@@ -462,11 +464,10 @@ export default async function () {
 		}
 	}
 
-	.empty {
-		width: 300px;
-		height: 150px;
-		padding: 40px;
-		padding-bottom: 20px;
+	.cell {
+		> .xItem-wrapper {
+			width: unset;
+		}
 	}
 
 	.fixed-right {

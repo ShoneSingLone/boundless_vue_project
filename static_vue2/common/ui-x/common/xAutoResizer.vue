@@ -1,14 +1,12 @@
-<script>
+<script lang="ts">
 export default async function () {
-	const { useNamespace, useAutoResize, autoResizerProps } = Vue._useXui;
-
 	return defineComponent({
 		name: "xAutoResizer",
-		props: autoResizerProps,
+		props: _useXui.autoResizerProps,
 		setup(props, context) {
 			const { slots } = context;
-			const ns = useNamespace("auto-resizer");
-			const { height, width, sizer } = useAutoResize(props);
+			const ns = _useXui.useNamespace("auto-resizer");
+			const { height, width, sizer } = _useXui.useAutoResize(props);
 			return function () {
 				return h(
 					"div",

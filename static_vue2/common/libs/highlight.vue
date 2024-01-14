@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	if (!window.hljs) {
 		/* Highlight.js 10.4.0 (4055826e) License: BSD-3-Clause Copyright (c) 2006-2020, Ivan Sagalaev */
@@ -14,7 +14,7 @@ export default async function () {
 										throw Error("map is read-only");
 									})
 						: t instanceof Set &&
-						  (t.add =
+							(t.add =
 								t.clear =
 								t.delete =
 									() => {
@@ -67,13 +67,13 @@ export default async function () {
 								3 === r.nodeType
 									? (s += r.nodeValue.length)
 									: 1 === r.nodeType &&
-									  (t.push({
+										(t.push({
 											event: "start",
 											offset: s,
 											node: r
-									  }),
-									  (s = e(r, s)),
-									  i(r).match(/br|hr|img|input/) ||
+										}),
+										(s = e(r, s)),
+										i(r).match(/br|hr|img|input/) ||
 											t.push({
 												event: "stop",
 												offset: s,
@@ -178,7 +178,7 @@ export default async function () {
 							? (e.children = [e.children.join("")])
 							: e.children.forEach(e => {
 									u._collapse(e);
-							  }));
+								}));
 				}
 			}
 			class g extends u {
@@ -446,7 +446,7 @@ export default async function () {
 											? s("keyword", e)
 											: Object.keys(e).forEach(t => {
 													s(t, e[t]);
-											  }),
+												}),
 										n
 									);
 									function s(e, s) {
@@ -491,12 +491,12 @@ export default async function () {
 										e.cached_variants
 											? e.cached_variants
 											: L(e)
-											? a(e, {
-													starts: e.starts ? a(e.starts) : null
-											  })
-											: Object.isFrozen(e)
-											? a(e)
-											: e
+												? a(e, {
+														starts: e.starts ? a(e.starts) : null
+													})
+												: Object.isFrozen(e)
+													? a(e)
+													: e
 									))("self" === e ? i : e)
 								)
 							)),
@@ -629,7 +629,7 @@ export default async function () {
 										(e = p(y.subLanguage, M, !0, R[y.subLanguage])), (R[y.subLanguage] = e.top);
 									} else e = m(M, y.subLanguage.length ? y.subLanguage : null);
 									y.relevance > 0 && (L += e.relevance), k.addSublanguage(e.emitter, e.language);
-							  })()
+								})()
 							: (() => {
 									if (!y.keywords) return void k.addText(M);
 									let e = 0;
@@ -648,7 +648,7 @@ export default async function () {
 										(e = y.keywordPatternRe.lastIndex), (t = y.keywordPatternRe.exec(M));
 									}
 									(n += M.substr(e)), k.addText(n);
-							  })(),
+								})(),
 							(M = "");
 					}
 					function g(e) {
@@ -2060,10 +2060,10 @@ export default async function () {
 											s = e.input[a];
 										"<" !== s
 											? ">" === s &&
-											  (((e, { after: n }) => {
+												(((e, { after: n }) => {
 													const a = "</" + e[0].slice(1);
 													return -1 !== e.input.indexOf(a, n);
-											  })(e, { after: a }) ||
+												})(e, { after: a }) ||
 													n.ignoreMatch())
 											: n.ignoreMatch();
 									}
@@ -4442,10 +4442,10 @@ export default async function () {
 									s = e.input[a];
 								"<" !== s
 									? ">" === s &&
-									  (((e, { after: n }) => {
+										(((e, { after: n }) => {
 											const a = "</" + e[0].slice(1);
 											return -1 !== e.input.indexOf(a, n);
-									  })(e, { after: a }) ||
+										})(e, { after: a }) ||
 											n.ignoreMatch())
 									: n.ignoreMatch();
 							}
@@ -5846,6 +5846,7 @@ export default async function () {
 		font-weight: 500;
 		font-size: 14px;
 		color: #5e6d82;
+		margin: 0;
 	}
 	code {
 		padding: 4px;
@@ -5858,9 +5859,9 @@ export default async function () {
 
 	blockquote {
 		padding: 8px 16px;
-		background-color: var(--el-color-primary-light-8);
+		background-color: var(--ui-primary-light-8);
 		border-radius: 4px;
-		border-left: 5px solid var(--el-color-primary);
+		border-left: 5px solid var(--ui-primary);
 		margin: 20px 0;
 	}
 
@@ -5873,10 +5874,16 @@ export default async function () {
 		margin-left: var(--ui-one);
 	}
 
-	ul > li {
-		line-height: 24px;
-		list-style: initial;
+	ul {
+		> li {
+			text-indent: 16px;
+			margin-top: 4px;
+			line-height: 24px;
+			list-style: disc;
+			list-style-position: inside;
+		}
 	}
+
 	table {
 		display: table;
 		border-collapse: collapse;
@@ -6061,7 +6068,7 @@ export default async function () {
 		overflow-x: auto;
 		background: #fefefe;
 		color: #545454;
-		padding: 0.5em;
+		padding: var(--ui-one);
 	}
 
 	.hljs-emphasis {

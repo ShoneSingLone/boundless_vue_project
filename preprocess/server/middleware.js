@@ -3,7 +3,7 @@ const useProxy = require("koa2-proxy-middleware"); //引入代理模块
 const { appUseKoaAssets } = require("./middleware.appUseKoaAssets");
 const { appUseSocketMiddleware } = require("./middleware.appUseSocketMiddleware");
 const { appUseHMR } = require("./middleware.appUseHMR");
-const { PROXY_OPTIONS } = require("./server.configs");
+const { PROXY_OPTIONS, SERVER_PORT } = require("./server.configs");
 const { serverContorller } = require("./server.controller");
 
 function appUseProxy(app) {
@@ -19,7 +19,9 @@ function appUseProxy(app) {
 }
 
 function appRun(app, port = 3000) {
+	port = SERVER_PORT || port;
 	app.listen(port).on("error", () => {
+		app.server.close();
 		console.log("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀", `端口${port}被占用`);
 		appRun(app, ++port);
 	});

@@ -12,7 +12,7 @@
 	</xDialog>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		props: ["configs"],

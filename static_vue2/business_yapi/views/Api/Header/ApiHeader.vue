@@ -1,20 +1,22 @@
 <template>
 	<header class="AppLayoutHeader flex middle">
-		<span :click="goToGroup" class="flex middle pointer">
+		<span class="flex middle YapiLogo">
 			<xIcon :icon="icon" :style="logoStyle" />
 		</span>
-		<BreadcrumbNavigation />
+		<YapiBreadcrumbNavigation />
 		<xGap f />
-		<ToolUserBar />
+		<YapiToolUserBar />
 	</header>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
+		inject: ["APP"],
+		name: "AppLayoutHeader",
 		components: {
-			ToolUserBar: () => _.$importVue("@/components/ToolUserBar.vue"),
-			BreadcrumbNavigation: () => _.$importVue("@/components/BreadcrumbNavigation.vue")
+			YapiToolUserBar: () => _.$importVue("@/components/YapiToolUserBar.vue"),
+			YapiBreadcrumbNavigation: () => _.$importVue("@/components/YapiBreadcrumbNavigation.vue")
 		},
 		methods: {
 			handleCommand(value) {
@@ -45,7 +47,7 @@ export default async function () {
 				if (["/api/group", "/wiki", "/xI"].includes(this.$route.path)) {
 					return "_yapi_logo";
 				}
-				return "back_group";
+				return "_yapi_logo";
 			},
 			logoStyle() {
 				return { width: "48px", height: "48px" };
@@ -78,5 +80,11 @@ export default async function () {
 	background-color: var(--el-color-white);
 	box-shadow: var(--el-box-shadow-lighter);
 	z-index: 1;
+	.YapiLogo {
+		box-shadow: var(--el-box-shadow-lighter);
+		// border: 1px solid gray;
+		border-radius: 50%;
+		margin-right: var(--ui-one);
+	}
 }
 </style>

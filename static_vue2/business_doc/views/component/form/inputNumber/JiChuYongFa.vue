@@ -4,7 +4,7 @@
 		<xInputNumber v-model="num" @change="handleChange" :min="1" :max="10" label="描述文字"></xInputNumber>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

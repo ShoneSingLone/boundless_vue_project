@@ -16,7 +16,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		props: ["title", "header", "footer"],
@@ -61,7 +61,7 @@ export default async function () {
 				}, 1000 * 3);
 
 				try {
-					$target[0].scrollIntoView({ behavior: "smooth" });
+					$target[0].scrollIntoView({ behavior: "smooth", block: "center" });
 				} catch (e) {
 					console.error(e);
 				}

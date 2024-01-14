@@ -14,10 +14,11 @@
 		</div>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
-		props: ["projectData", "isShow", "index", "projectData", "callbackResult"],
+		inject: ["APP"],
+		props: ["projectData", "isShow", "index", "projectData"],
 		data() {
 			return {};
 		},
@@ -26,10 +27,13 @@ export default async function () {
 				return h(
 					"div",
 					{
+						attrs: {
+							title: this.followIconTitle
+						},
 						staticClass: "pointer icon-item-wrapper",
 						onClick: this.followIconClickHandler
 					},
-					[h("xIcon", { icon: `_${this.followIconIcon}`, style: "fill: #faad14" })]
+					[h("xIcon", { icon: `_${this.followIconIcon}`, style: "color: #faad14" })]
 				);
 			},
 			copyIcon() {
@@ -38,9 +42,9 @@ export default async function () {
 						"div",
 						{
 							staticClass: "pointer icon-copy icon-item-wrapper",
-							onClick: this.showCopyProjectDialog
+							onClick: this.openCopyProjectDialog
 						},
-						[h("xIcon", { icon: "_copy", style: "fill: #232426" })]
+						[h("xIcon", { icon: "_copy", style: "color: var(--ui-aide-text)" })]
 					);
 				}
 				return null;
@@ -56,25 +60,27 @@ export default async function () {
 			},
 			isFollowStatus() {
 				/* 处于follow页面全是已follow的 */
-				return Boolean(this.projectData.follow || this.inFollowPage);
+				return Boolean(this.projectData.follow);
 			},
 			followIconTitle() {
-				return this.isFollowStatus ? "取消关注" : "添加关注";
+				return this.isFollowStatus ? "从我的关注取消" : "添加到我的关注";
 			},
 			followIconIcon() {
-				return this.isFollowStatus ? "follow" : "unfollow";
+				return this.isFollowStatus ? "twrap_done" : "twrap_un";
 			},
 			followIconClickHandler() {
-				return this.isFollowStatus ? this.del : this.add;
+				return this.isFollowStatus ? this.unfollow : this.follow;
 			},
 			logo() {
 				return h(
 					"a",
 					{
-						href: _.$aHashLink("/project", {
-							project_id: this.projectData._id,
-							group_id: this.$route.query.groupId
-						})
+						attrs: {
+							href: _.$aHashLink("/api/project", {
+								projectId: this.projectData._id,
+								groupId: this.$route.query.groupId
+							})
+						}
 					},
 					[h("xIcon", { class: "ui-logo", icon: `_${this.projectData.icon}`, style: this.iconStyle })]
 				);
@@ -84,48 +90,41 @@ export default async function () {
 			}
 		},
 		methods: {
-			showCopyProjectDialog() {
-				_.dialog({
-					title: `复制项目${this.projectData.name}`,
-					component: ViewCopyProject,
-					copyProject: this.copyProject,
-					projectName: this.projectData.name
+			async openCopyProjectDialog() {
+				const vm = this;
+				const addMember = await _.$importVue("@/components/YapiProjectCard.CopyProject.vue", {
+					parent: vm,
+					projectData: vm.projectData,
+					onOk() {
+						vm.$emit("change");
+					}
 				});
+				_.$openWindow(`复制项目${this.projectData.name}`, addMember);
 			},
-			async copyProject({ newProjectName, icon }) {
-				const id = this.projectData._id;
-				let { data } = await API.project.getProjectById(id);
-				data = _.merge(data, { icon }, { name: newProjectName }, { preName: data.name });
-				await API.project.copyProjectMsg(data);
-				_.message.success("项目复制成功");
-				this.callbackResult();
-			},
-			add: _.debounce(async function () {
+			follow: _.debounce(async function () {
 				try {
 					const { projectData } = this;
-					const uid = this.APP.user.uid;
 					const param = {
-						uid,
 						projectid: projectData._id,
 						projectname: projectData.name,
 						icon: projectData.icon,
 						color: projectData.color
 					};
-					await API.project.addFollow(param);
+					await _api.yapi.projectAddFollow(param);
 				} catch (error) {
 					console.error(error);
 				} finally {
-					this.callbackResult();
+					this.$emit("change");
 				}
 			}, 300),
-			del: _.debounce(async function () {
+			unfollow: _.debounce(async function () {
 				try {
-					const id = this.projectData.projectid || this.projectData._id;
-					await API.project.delFollow(id);
+					const id = this.projectData._id;
+					await _api.yapi.projectDelFollow(id);
 				} catch (error) {
 					console.error(error);
 				} finally {
-					this.callbackResult();
+					this.$emit("change");
 				}
 			}, 300)
 		}

@@ -1,6 +1,6 @@
 <template></template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const axios = function ({ url, method, params, data }) {
 		return _.$ajax[method](url, { params, data });

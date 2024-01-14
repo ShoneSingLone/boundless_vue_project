@@ -9,6 +9,7 @@
 })(function () {
 	"use strict";
 	const X_COMP = {};
+	let vmHolder;
 
 	function elSetAttribute(el, key, value) {
 		if (!["function", "object"].includes(typeof value)) {
@@ -17,6 +18,11 @@
 	}
 	var emptyObject = Object.freeze({});
 	var isArray = Array.isArray;
+
+	function isESModule(obj) {
+		return obj.__esModule || obj[Symbol.toStringTag] === "Module";
+	}
+
 	// These helpers produce better VM code in JS engines due to their
 	// explicitness and function inlining.
 	function isUndef(v) {
@@ -34,7 +40,6 @@
 	function isFalse(v) {
 		return v === false;
 	}
-
 	/**
 	 * Check if value is primitive.
 	 */
@@ -129,10 +134,10 @@
 		return expectsLowerCase
 			? function (val) {
 					return map[val.toLowerCase()];
-			  }
+				}
 			: function (val) {
 					return map[val];
-			  };
+				};
 	}
 
 	/**
@@ -2591,7 +2596,7 @@
 		var props = isArray(raw)
 			? raw.reduce(function (normalized, p) {
 					return (normalized[p] = {}), normalized;
-			  }, {})
+				}, {})
 			: raw;
 		for (var key in defaults) {
 			var opt = props[key];
@@ -2764,13 +2769,26 @@
 		}
 	}
 
+	function _HandleVueRouterAsyncComponentResolved({ resolvedDef, def, match, key, pending, next }) {
+		if (isESModule(resolvedDef)) {
+			resolvedDef = resolvedDef.default;
+		}
+		// save resolved on async factory in case it's used elsewhere
+		def.resolved = typeof resolvedDef === "function" ? resolvedDef : Vue.extend(resolvedDef);
+		match.components[key] = resolvedDef;
+		pending.count--;
+		if (pending.count <= 0) {
+			next();
+		}
+	}
+
 	/**
 	 * 用于解析异步组件。在组件定义中，通过调用该函数可以异步加载组件，并在加载完成之后触发回调函数。如果加载失败，会调用错误处理函数。函数还实现了组件加载中的状态更新和组件缓存功能
 	 * @param {*} factory 异步组件的工厂函数 AppHeader: 【() => _.$importVue("@/layout/AppLayoutHeader.vue")】,
 	 * @param {*} baseCtor
 	 *
 	 */
-	function resolveAsyncComponent(factory, baseCtor) {
+	function resolveAsyncComponentImportByImportVue(factory, baseCtor) {
 		if (isTrue(factory.error) && isDef(factory.errorComp)) {
 			return factory.errorComp;
 		}
@@ -3688,7 +3706,7 @@
 					(isMultiSource
 						? newValue.some(function (v, i) {
 								return hasChanged(v, oldValue[i]);
-						  })
+							})
 						: hasChanged(newValue, oldValue))
 				) {
 					// cleanup before running cb again
@@ -4974,6 +4992,15 @@
 			if (vm.$options.el) {
 				vm.$mount(vm.$options.el);
 			}
+
+			(function () {
+				if (!vmHolder) {
+					vmHolder = vm;
+				}
+				vm.$on("hook:beforeDestroy", function () {
+					vmHolder = null;
+				});
+			})();
 		};
 	}
 
@@ -5226,7 +5253,7 @@
 		if (isUndef(Ctor.cid)) {
 			asyncFactory = Ctor;
 			/* component是一个异步组件，由一个异步函数加载 */
-			Ctor = resolveAsyncComponent(asyncFactory, baseCtor);
+			Ctor = resolveAsyncComponentImportByImportVue(asyncFactory, baseCtor);
 			if (Ctor === undefined) {
 				/*
 				 * 这个JavaScript函数是一个辅助函数， 用于在异步组件渲染时返回一个占位节点。
@@ -5381,6 +5408,7 @@
 			if (error) {
 				throw error;
 			} else {
+				console.log(`[Vue warn]:`, vm);
 				console.error(`[Vue warn]: ${vm?.$vnode?.FILE_URL || ""}\n${msg}`);
 			}
 		}
@@ -6312,8 +6340,8 @@
 				var key =
 					vnode.key == null
 						? // same constructor may get registered as different local components
-						  // so cid alone is not enough (#3269)
-						  componentOptions.Ctor.cid + (componentOptions.tag ? "::".concat(componentOptions.tag) : "")
+							// so cid alone is not enough (#3269)
+							componentOptions.Ctor.cid + (componentOptions.tag ? "::".concat(componentOptions.tag) : "")
 						: vnode.key;
 				if (cache[key]) {
 					vnode.componentInstance = cache[key].componentInstance;
@@ -6409,9 +6437,9 @@
 		return isFalsyAttrValue(value) || value === "false"
 			? "false"
 			: // allow arbitrary string value for contenteditable
-			key === "contenteditable" && isValidContentEditableValue(value)
-			? value
-			: "true";
+				key === "contenteditable" && isValidContentEditableValue(value)
+				? value
+				: "true";
 	};
 	var isBooleanAttr = makeMap(
 		"allowfullscreen,async,autofocus,autoplay,checked,compact,controls,declare," +
@@ -8698,7 +8726,7 @@
 			: setTimeout
 		: /* istanbul ignore next */ function (/* istanbul ignore next */ fn) {
 				return fn();
-		  };
+			};
 
 	function nextFrame(fn) {
 		raf(function () {
@@ -9073,7 +9101,7 @@
 						rm();
 					}
 				}
-		  }
+			}
 		: {};
 	var platformModules = [attrs, klass$1, events, domProps, style$1, transition];
 	// the directive module should be applied last, after all
@@ -9143,7 +9171,7 @@
 					var needReset = el.multiple
 						? binding.value.some(function (v) {
 								return hasNoMatchingOption(v, curOptions_1);
-						  })
+							})
 						: binding.value !== binding.oldValue && hasNoMatchingOption(binding.value, curOptions_1);
 					if (needReset) {
 						trigger(el, "change");
@@ -10254,7 +10282,7 @@
 									? {
 											start: attr.start + attr.name.indexOf("["),
 											end: attr.start + attr.name.length
-									  }
+										}
 									: undefined
 							);
 						}
@@ -10674,9 +10702,9 @@
 		}
 		return dynamicArgRE.test(name)
 			? // dynamic [name]
-			  { name: name.slice(1, -1), dynamic: true }
+				{ name: name.slice(1, -1), dynamic: true }
 			: // static name
-			  { name: '"'.concat(name, '"'), dynamic: false };
+				{ name: '"'.concat(name, '"'), dynamic: false };
 	}
 
 	// handle <slot/> outlets
@@ -11245,10 +11273,10 @@
 			var handlerCode = isMethodPath
 				? "return ".concat(handler.value, ".apply(null, arguments)")
 				: isFunctionExpression
-				? "return (".concat(handler.value, ").apply(null, arguments)")
-				: isFunctionInvocation
-				? "return ".concat(handler.value)
-				: handler.value;
+					? "return (".concat(handler.value, ").apply(null, arguments)")
+					: isFunctionInvocation
+						? "return ".concat(handler.value)
+						: handler.value;
 			return "function($event){".concat(code).concat(handlerCode, "}");
 		}
 	}
@@ -11817,7 +11845,7 @@
 								dynamic: attr.dynamic
 							};
 						})
-				  )
+					)
 				: null;
 		var bind = el.attrsMap["v-bind"];
 		if ((attrs || bind) && !children) {
@@ -12397,7 +12425,7 @@
 			hook = shadowMode
 				? function () {
 						injectStyles.call(this, (options.functional ? this.parent : this).$root.$options.shadowRoot);
-				  }
+					}
 				: injectStyles;
 		}
 		if (hook) {
@@ -12454,16 +12482,27 @@
 		}
 	}
 
-	function broadcast(e, t, i) {
-		(function e(t, i, n) {
-			this.$children.forEach(function (r) {
-				r.$options.componentName === t ? r.$emit.apply(r, [i].concat(n)) : e.apply(r, [t, i].concat([n]));
+	function broadcast(componentName, eventName, payload) {
+		(function e(componentName, eventName, payload) {
+			this.$children.forEach(function (vm) {
+				vm.$options.componentName === componentName ? vm.$emit.apply(vm, [eventName, payload]) : e.apply(vm, [componentName, eventName, payload]);
 			});
-		}).call(this, e, t, i);
+		}).call(this, componentName, eventName, payload);
+	}
+
+	/**
+	 * data-theme变动之后刷新页面数据
+	 */
+	function forceUpdate() {
+		if (vmHolder) {
+			vmHolder.$root.$forceUpdate();
+		}
 	}
 
 	/* ffffffffffffffffffffffffffffffffffffffffffffffffffffffff */
+	Vue.forceUpdate = _.debounce(forceUpdate, 600);
 	Vue.normalizeComponent = normalizeComponent;
+	Vue.isESModule = isESModule;
 	Vue.effect = effect;
 	Vue.compile = compileToFunctions;
 	Vue.isVNode = vm => !!vm?.TYPE_IS_VNODE;
@@ -12475,6 +12514,7 @@
 	Vue._immediate = { immediate: true };
 	Vue.stringifyClass = stringifyClass;
 	Vue._HandleAsyncComponentResolved = _HandleAsyncComponentResolved;
+	Vue._HandleVueRouterAsyncComponentResolved = _HandleVueRouterAsyncComponentResolved;
 	Vue.getFirstComponentChild = getFirstComponentChild;
 	Vue.resolveScopedSlots = resolveScopedSlots;
 	/* ffffffffffffffffffffffffffffffffffffffffffffffffffffffff */
@@ -12496,6 +12536,7 @@
 	Vue.prototype.broadcast = broadcast;
 	Vue.prototype.isDef = isDef;
 	Vue.X_COMP = X_COMP;
+	Vue.camelize = camelize;
 	/* ffffffffffffffffffffffffffffffffffffffffffffffffffffffff */
 	return Vue;
 });

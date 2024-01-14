@@ -13,7 +13,7 @@
 	</xDialog>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 

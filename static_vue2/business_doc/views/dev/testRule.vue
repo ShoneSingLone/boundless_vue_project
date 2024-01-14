@@ -8,7 +8,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		inject: ["APP"],
@@ -23,7 +23,7 @@ export default async function () {
 					url2: {
 						value: "",
 						label: i18n("url2"),
-						rules: [Vue._rules.keyVal()]
+						rules: [_rules.keyVal()]
 					}
 				}
 			};

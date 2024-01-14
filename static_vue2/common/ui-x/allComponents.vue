@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	return [
 		/* *************** */
@@ -6,22 +6,30 @@ export default async function () {
 		"components/base/xBtn/xBtnArray",
 		"components/base/xBtn/xBtnGroup",
 		/*  */
+		"components/data/xMenuTree/xMenuTree",
 		"components/navigation/xTabs/xTabs",
 		"components/navigation/xTabs/xTabPane",
 		"components/data/xTag/xTag",
 		"components/data/xTableVir/xTableVir",
+		"components/data/xVirtualList/xFixedSizeList",
+		"components/data/xTree/xTree",
+		"components/data/xTree/xTreeNode",
+		"components/data/xTree/xNodeContent",
 		"components/form/xInput/xInput",
 		"components/form/xSelect/xSelect",
 		"components/form/xInputNumber/xInputNumber",
 		"components/form/xCheckbox/xCheckbox",
 		"components/other/xCard/xCard",
 		"components/other/xBlock/xBlock",
+		"components/other/xAffix/xAffix",
 		/*  */
 		"components/form/xSelect/xSelect",
 		"components/form/xSelect/xOption",
 		"components/form/xSelect/xOptionGroup",
 		"components/form/xSelect/xSelectDropdown",
 		/*  */
+		"components/navigation/xBreadcrumb/xBreadcrumb",
+		"components/navigation/xBreadcrumb/xBreadcrumbItem",
 		"components/navigation/xDropdown/xDropdown",
 		"components/navigation/xDropdown/xDropdownItem",
 		"components/navigation/xDropdown/xDropdownMenu",

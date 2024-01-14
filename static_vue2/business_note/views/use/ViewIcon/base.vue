@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<fieldset>
-			<legend>可以直接使用svg的名字作为icon=============commonn/assets/SVG 文件夹下是UI默认的资源地址，</legend>
+			<legend>可以直接使用svg的名字作为icon=============commonn/assets/svg 文件夹下是UI默认的资源地址，</legend>
 			<xIcon icon="icon_no_data" class="empty" />
 			<xIcon icon="arrow_triangle-left" class="empty" />
 			<xIcon icon="x-loading" class="empty" />
@@ -9,7 +9,7 @@
 		</fieldset>
 		<fieldset>
 			<legend>业务相关的放在business_xxxxxx/assets/svg 文件夹下,使用时在svg的名字前加上下划线_</legend>
-			<xIcon icon="_icon_report" class="empty" />
+			<xIcon icon="icon_report" class="empty" />
 			<xIcon icon="_icon_fold" class="empty" />
 			<xIcon icon="_icon_rerun" class="empty" />
 			<xIcon icon="_icon_sourcecode" class="empty" />
@@ -22,7 +22,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		setup() {}

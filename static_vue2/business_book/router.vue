@@ -1,6 +1,6 @@
 <template></template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const VueRouter = await _.$importVue("/common/libs/VueRouter.vue");
 

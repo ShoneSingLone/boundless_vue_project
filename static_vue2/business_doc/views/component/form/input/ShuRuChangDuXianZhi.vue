@@ -6,7 +6,7 @@
 		<xInput type="textarea" placeholder="请输入内容" v-model="textarea" maxlength="30" show-word-limit> </xInput>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

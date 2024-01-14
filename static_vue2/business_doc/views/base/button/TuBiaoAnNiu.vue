@@ -8,7 +8,7 @@
 		<xBtn preset="primary">上传<i class="el-icon-upload el-icon--right"></i></xBtn>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

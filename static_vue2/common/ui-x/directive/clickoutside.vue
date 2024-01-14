@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const nodeList = [];
 	const ctx = "@@clickoutsideContext";

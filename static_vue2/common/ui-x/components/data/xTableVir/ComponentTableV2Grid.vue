@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 export default async function () {
 	Vue.component("ComponentTableV2Header", () => _.$importVue("/common/ui-x/components/data/xTableVir/ComponentTableV2Header.vue"));
 	Vue.component("ComponentFixedSizeGrid", () => _.$importVue("/common/ui-x/components/data/xTableVir/ComponentFixedSizeGrid.vue"));
-	const { useTableGrid, TableV2InjectionKey, tableV2GridProps } = Vue._useXui;
+	const { useTableGrid, TableV2InjectionKey, tableV2GridProps } = _useXui;
 
 	/* ScrollBar */
 	return defineComponent({

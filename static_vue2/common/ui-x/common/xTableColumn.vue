@@ -38,7 +38,7 @@
 	</el-table>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	/**
 	 * 如果有COL_MULTIPLE ，就必须有vm.selectedBy:"id", selected：[]

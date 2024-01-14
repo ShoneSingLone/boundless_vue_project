@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 export default async function () {
-	const { tableV2RowProps, useTableRow } = Vue._useXui;
+	const { tableV2RowProps, useTableRow } = _useXui;
 
 	return defineComponent({
 		name: "ComponentTableV2Row",
@@ -30,7 +30,7 @@ export default async function () {
 									rowData,
 									rowIndex,
 									onExpand
-							  }
+								}
 							: void 0
 					};
 					return $vSlots.cell(cellParams);

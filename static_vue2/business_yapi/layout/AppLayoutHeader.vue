@@ -1,10 +1,10 @@
 <template>
 	<div class="AppLayoutHeader">
-		<xIcon img="@/assets/svg/icon_report.svg" style="width: 48px; height: 48px" />
+		<xIcon img="@/assets/svg/yapi_logo.svg" style="width: 48px; height: 48px" />
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		methods: {

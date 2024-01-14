@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {
@@ -54,8 +54,3 @@ export default async function () {
 	});
 }
 </script>
-<style lang="less">
-.MUST_MODIFY {
-	color: red;
-}
-</style>

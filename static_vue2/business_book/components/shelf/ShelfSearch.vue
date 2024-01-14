@@ -30,7 +30,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { setLocalStorage } = await _.$importVue("@/utils/localStorage.vue");
 	const { storeShelfMixin } = await _.$importVue("@/utils/mixin.vue");
@@ -55,7 +55,7 @@ export default async function () {
 		},
 		computed: {
 			lang() {
-				return this.$i18n.locale;
+				return this.i18n.locale;
 			},
 			tabs() {
 				return [
@@ -83,11 +83,11 @@ export default async function () {
 			},
 			switchLocale() {
 				if (this.lang === "en") {
-					this.$i18n.locale = "cn";
+					this.i18n.locale = "cn";
 				} else {
-					this.$i18n.locale = "en";
+					this.i18n.locale = "en";
 				}
-				setLocalStorage("locale", this.$i18n.locale);
+				setLocalStorage("locale", this.i18n.locale);
 			},
 			onSearchClick() {
 				this.ifInputClicked = true;

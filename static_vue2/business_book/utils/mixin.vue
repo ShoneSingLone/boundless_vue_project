@@ -1,6 +1,6 @@
 <template></template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { mapGetters, mapActions } = await _.$importVue("/common/libs/Vuex.vue");
 	const { themeList, addCss, getReadTimeByMinute } = await _.$importVue("@/utils/book.vue");

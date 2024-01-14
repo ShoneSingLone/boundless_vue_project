@@ -1,7 +1,4 @@
-<template>
-	<h1 class="MUST_MODIFY">{{ title }}</h1>
-</template>
-<script>
+<script lang="ts">
 export default async function () {
 	let scrollBarWidth;
 
@@ -30,8 +27,3 @@ export default async function () {
 	};
 }
 </script>
-<style lang="less">
-.MUST_MODIFY {
-	color: red;
-}
-</style>

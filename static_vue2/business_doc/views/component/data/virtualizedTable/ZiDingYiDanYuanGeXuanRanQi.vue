@@ -1,7 +1,7 @@
 <template>
-	<xTableVir :columns="columns" :data="data" :width="700" :height="400" fixed />
+	<xTableVir :columns="columns" :data="data" :height="400" fixed style="outline: 1px solid salmon" />
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		setup() {
@@ -10,34 +10,34 @@ export default async function () {
 				name: "Tom",
 				date: "2020" + index
 			});
-
 			const columns = [
 				{
 					prop: "date",
 					label: "Date",
-					width: 150,
+					width: 250,
 					fixed: "left",
 					cellRenderer: ({ cellData: date }) =>
 						h(
 							"ElTooltip",
 							{
-								content: dayjs(date).format("YYYY/MM/DD"),
+								content: _.$dateFormat(date),
 								placement: "top"
 							},
-							[h("span", { class: "flex items-center" }, [h("xIcon", { icon: "el-icon-timer" }), dayjs(date).format("YYYY/MM/DD")])]
+							[h("span", { class: "flex" }, [h("xIcon", { icon: "msg", staticClass: "mr" }), _.$dateFormat(date)])]
 						)
 				},
 				{
 					prop: "name",
 					label: "Name",
-					width: 150,
 					align: "center",
-					cellRenderer: ({ cellData: name }) => h("xTag", [name])
+					cellRenderer: ({ cellData: name }) => {
+						return h("xTag", [name]);
+					}
 				},
 				{
 					prop: "operations",
 					label: "Operations",
-					cellRenderer: ({ cellData }) => [h("xBtn", { type: "primary" }, ["Edit"]), h("xBtn", { type: "primary" }, ["Delete"])],
+					cellRenderer: ({ cellData }) => [h("xBtn", { preset: "blue" }, ["Edit"]), h("xBtn", { preset: "blue" }, ["Delete"])],
 					width: 150,
 					align: "center"
 				}

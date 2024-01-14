@@ -11,7 +11,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const ShelfTitle = await _.$importVue("../../components/shelf/ShelfTitle.vue");
 	const ShelfList = await _.$importVue("../../components/shelf/ShelfList.vue");

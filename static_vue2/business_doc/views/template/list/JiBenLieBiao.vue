@@ -16,7 +16,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		inject: ["APP"],
@@ -29,10 +29,10 @@ export default async function () {
 			async getTableData(pagination = {}) {
 				try {
 					_.$loading(true);
-					const { current, pagesize } = _.$setPagination(this.configsTable, pagination);
+					const { page, size } = _.$setPagination(this.configsTable, pagination);
 					const queryData = {
-						limit: pagesize,
-						start: current
+						limit: size,
+						start: page
 					};
 
 					const { siteId, azId, queryName } = this.searchParams;
@@ -90,13 +90,13 @@ export default async function () {
 						value: "",
 						clearable: false,
 						itemType: "xItemSelect",
-						options: Vue._opts.normal
+						options: _opts.normal
 					},
 					azId: {
 						value: "",
 						clearable: false,
 						itemType: "xItemSelect",
-						options: Vue._opts.normal
+						options: _opts.normal
 					},
 					queryName: {
 						value: "",
@@ -110,9 +110,9 @@ export default async function () {
 						vm.getTableData(pagination);
 					},
 					pagination: {
-						current: 0,
-						count: 0,
-						pagesize: 10
+						page: 0,
+						total: 0,
+						size: 10
 					},
 					data: {
 						list: []

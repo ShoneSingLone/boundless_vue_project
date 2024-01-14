@@ -1,13 +1,10 @@
 <template>
 	<section id="ViewGroup" v-xloading="!APP.cptGroupId">
-		<aside class="white-border flex vertical box-shadow">
-			<GroupAside />
-		</aside>
-		<xGap l="16" />
+		<GroupAside />
 		<GroupSection />
 	</section>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		inject: ["APP"],
@@ -24,18 +21,14 @@ export default async function () {
 				Group
 			};
 		},
-		data() {
-			return {
-				groupId: "asdfsf"
-			};
-		},
 		methods: {
-			async upsertGroup(groupInfo) {
+			async openGroupUpsertDialog(groupInfo) {
+				const isModify = !!groupInfo;
 				const upsert = await _.$importVue("@/views/Api/Group/Group.Upsert.vue", {
 					parent: this,
 					groupInfo
 				});
-				_.$openWindow(!!groupInfo ? i18n("修改分组信息") : i18n("添加分组"), upsert);
+				_.$openWindow(isModify ? i18n("修改分组信息") : i18n("添加分组"), upsert);
 			}
 		}
 	});
@@ -47,26 +40,5 @@ export default async function () {
 	height: 100%;
 	display: flex;
 	flex-flow: row nowrap;
-	padding: var(--ui-one);
-
-	#Group-layout-content-tabs {
-		display: flex;
-		flex-flow: column nowrap;
-
-		> div.el-tabs-nav {
-			display: flex;
-
-			> .el-tabs-extra-content {
-			}
-		}
-
-		.el-tabs__content {
-			height: 100%;
-
-			.el-tab-pane {
-				height: 100%;
-			}
-		}
-	}
 }
 </style>

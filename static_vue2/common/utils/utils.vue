@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function UTILS() {
 	if (!Vue._utils) {
 		/* istanbul ignore next */

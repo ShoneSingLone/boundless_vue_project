@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	/* v-loading 已在element-ui中使用
 	 * 所以叫 v-xloading */

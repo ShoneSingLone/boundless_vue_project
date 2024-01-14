@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 export default async function () {
-	if (!Vue._opts) {
+	if (!window._opts) {
 		/*枚举选项*/
-		Vue._opts = {
+		window._opts = {
 			normal: [
 				{ label: i18n("一般"), value: "4" },
 				{ label: i18n("紧急"), value: "3" },
@@ -11,6 +11,6 @@ export default async function () {
 			]
 		};
 	}
-	return Vue._opts;
+	return window._opts;
 }
 </script>

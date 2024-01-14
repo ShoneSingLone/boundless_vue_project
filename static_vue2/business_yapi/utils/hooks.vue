@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	if (!Vue._yapi_use_hooks) {
 		Vue._yapi_use_hooks = {
@@ -13,15 +13,18 @@ export default async function () {
 					)
 				);
 
-				const resizeOptions = {
-					onMoving({ clickEvent, movingEvent, clickInfo }) {
-						const { left: leftStart } = clickInfo;
-						let left = 16 + leftStart + movingEvent.clientX - clickEvent.clientX;
-						if (left < 100) {
-							left = 100;
-						}
-						stateStyle.width = `${left}px`;
+				const onMoving = _.throttle(function ({ clickEvent, movingEvent, clickInfo }) {
+					const { left: leftStart } = clickInfo;
+					let left = 16 + leftStart + movingEvent.clientX - clickEvent.clientX;
+					if (left < 100) {
+						left = 100;
 					}
+					stateStyle.width = `${left}px`;
+					console.log("🚀 ~ onMoving ~ stateStyle.width :", stateStyle.width);
+				}, 100);
+
+				const resizeOptions = {
+					onMoving
 				};
 
 				return {
@@ -34,8 +37,3 @@ export default async function () {
 	return Vue._yapi_use_hooks;
 }
 </script>
-<style lang="less">
-.MUST_MODIFY {
-	color: red;
-}
-</style>

@@ -1,6 +1,6 @@
 <template></template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { getLocalStorage, getBookShelf, saveBookShelf } = await _.$importVue("@/utils/localStorage.vue");
 

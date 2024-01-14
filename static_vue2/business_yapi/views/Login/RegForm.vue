@@ -17,7 +17,7 @@
 		</div>
 	</xForm>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		props: {
@@ -43,12 +43,12 @@ export default async function () {
 						size: "large",
 						/* render的时候重新获取 */
 						placeholder: i18n("用户名，显示给其他人看"),
-						rules: [Vue._rules.required(i18n("请输入用户名!")["blur"])],
+						rules: [_rules.required(i18n("请输入用户名!")["blur"])],
 						$vSlots: {
 							prefix() {
 								return h("xIcon", {
 									icon: "_UserOutlined",
-									style: Vue._var.stylesLoginFormIcon
+									style: Vue._yapi_var.stylesLoginFormIcon
 								});
 							}
 						}
@@ -58,12 +58,12 @@ export default async function () {
 						size: "large",
 						/* render的时候重新获取 */
 						placeholder: i18n("E-mail，登录和收邮件用"),
-						rules: [Vue._rules.required(i18n("请输入Email!")), Vue._rules.email()],
+						rules: [_rules.required(i18n("请输入Email!")), _rules.email()],
 						$vSlots: {
 							prefix() {
 								return h("xIcon", {
 									icon: "_MailOutlined",
-									style: Vue._var.stylesLoginFormIcon
+									style: Vue._yapi_var.stylesLoginFormIcon
 								});
 							}
 						}
@@ -74,7 +74,7 @@ export default async function () {
 						size: "large",
 						/* render的时候重新获取 */
 						placeholder: i18n("密码"),
-						rules: [Vue._rules.required(i18n("请输入密码"), ["update"])],
+						rules: [_rules.required(i18n("请输入密码"), ["update"])],
 						onValidateFail: thisConfigs => {
 							console.log(thisConfigs.itemTips);
 						},
@@ -82,7 +82,7 @@ export default async function () {
 							prefix() {
 								return h("xIcon", {
 									icon: "_LockOutlined",
-									style: Vue._var.stylesLoginFormIcon
+									style: Vue._yapi_var.stylesLoginFormIcon
 								});
 							}
 						}
@@ -94,7 +94,7 @@ export default async function () {
 						/* render的时候重新获取 */
 						placeholder: i18n("请再次输入密码!"),
 						rules: [
-							Vue._rules.required(i18n("请再次输入密码!")),
+							_rules.required(i18n("请再次输入密码!")),
 							{
 								validator: async ({ val }) => {
 									if (vm.configsForm.password.value !== val) {
@@ -109,7 +109,7 @@ export default async function () {
 							prefix() {
 								return h("xIcon", {
 									icon: "_LockOutlined",
-									style: Vue._var.stylesLoginFormIcon
+									style: Vue._yapi_var.stylesLoginFormIcon
 								});
 							}
 						}
@@ -119,12 +119,12 @@ export default async function () {
 						size: "large",
 						/* render的时候重新获取 */
 						placeholder: i18n("邮箱验证码"),
-						rules: [Vue._rules.required(i18n("请输入邮箱收到的验证码"))],
+						rules: [_rules.required(i18n("请输入邮箱收到的验证码"))],
 						$vSlots: {
 							prefix() {
 								return h("xIcon", {
 									icon: "_verifyCode",
-									style: Vue._var.stylesLoginFormIcon
+									style: Vue._yapi_var.stylesLoginFormIcon
 								});
 							}
 						}
@@ -140,11 +140,11 @@ export default async function () {
 					// preset: "blue",
 					label: i18n("获取验证码"),
 					disabled() {
-						return !Vue._reg.email().test(vm.configsForm.email.value);
+						return !_reg.email().test(vm.configsForm.email.value);
 					},
 					async onClick() {
 						try {
-							const { data } = await Vue._yapi_api.postNewVarifyCode(vm.configsForm.email.value);
+							const { data } = await _api.yapi.postNewVarifyCode(vm.configsForm.email.value);
 							if (data) {
 								_.$msgSuccess(data.msg);
 								vm.$router.push({ path: "/group" });
@@ -174,7 +174,7 @@ export default async function () {
 							if (error) {
 								console.error("未通过验证");
 							} else {
-								const res = await Vue._yapi_api.postUserReg(formData);
+								const res = await _api.yapi.postUserReg(formData);
 								_.$msgSuccess(i18n("注册成功"));
 								vm.$router.push({ path: "/group" });
 							}

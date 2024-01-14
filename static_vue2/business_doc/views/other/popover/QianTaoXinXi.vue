@@ -10,7 +10,7 @@
 		</elPopover>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	const DemoTable = await _.$importVue("@/views/other/popover/QianTaoXinXi.table.vue");
 	return defineComponent({

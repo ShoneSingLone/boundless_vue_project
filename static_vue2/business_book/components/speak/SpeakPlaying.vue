@@ -4,7 +4,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { px2rem } = await _.$importVue("@/utils/utils.vue");
 

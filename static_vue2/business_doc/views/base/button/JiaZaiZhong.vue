@@ -4,7 +4,7 @@
 		<xBtn preset="primary" :loading="true">加载中</xBtn>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

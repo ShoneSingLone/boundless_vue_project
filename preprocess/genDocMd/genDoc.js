@@ -1,10 +1,13 @@
-const _ = require("../../static_assets/libs/lodash.js");
-const fs = require("fs");
-const path = require("path");
-const NEW_LINE = "\r\n";
+const { fs, path, _ } = require("../preprocess.utils");
 
-const TARGET_FILE_ARRAY = [path.resolve(__dirname, "../../static_assets/libs/common.js")];
+const TARGET_FILE_ARRAY = [path.resolve(__dirname, "../../static_vue2/common/libs/common.js")];
 
+/**
+ * @description asdfasdf
+ *
+ * @param {any} content
+ * @returns
+ */
 function getFnName(content) {
 	const res = content.match(/@name (.*)/);
 	if (res) {
@@ -32,6 +35,12 @@ function genMdSummary(content) {
 `;
 }
 
+/**
+ * @description 生成markdown文档
+ *
+ * @param {any} fileurls
+ * @param {any} readMeMd
+ */
 function makeMarkdownContent(fileurls, readMeMd) {
 	_.each(fileurls, fileurl => {
 		const fnSrcString = fs.readFileSync(fileurl, "utf-8");

@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 export default async function () {
-	const { tableV2HeaderRowProps } = Vue._useXui;
+	const { tableV2HeaderRowProps } = _useXui;
 
 	return defineComponent({
 		name: "ComponentTableV2HeaderRow",

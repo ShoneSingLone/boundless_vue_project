@@ -5,7 +5,7 @@
 		<xBtn preset="text" disabled>文字按钮</xBtn>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

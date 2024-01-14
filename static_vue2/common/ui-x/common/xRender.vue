@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		props: [
@@ -23,7 +23,7 @@ export default async function () {
 
 				if (_.isArray(cellAny)) {
 					tips = "isArray";
-					return cellAny;
+					return h("xFragment", cellAny);
 				}
 				if (cellAny?.TYPE_IS_VNODE) {
 					tips = "TYPE_IS_VNODE";

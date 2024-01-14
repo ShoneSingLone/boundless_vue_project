@@ -1,20 +1,20 @@
 <template>
 	<div class="xPagination flex end">
 		<el-pagination
-			v-if="privateValue.count > 0"
+			v-if="!!privateValue.total"
 			background
-			@size-change="pagesize => handleChange({ current: 1, pagesize })"
-			@current-change="current => handleChange({ current })"
-			:current-page="privateValue.current"
+			@size-change="size => handleChange({ page: 1, size })"
+			@current-change="page => handleChange({ page })"
+			:current-page="privateValue.page"
 			:page-sizes="[10, 20, 30]"
-			:page-size="privateValue.pagesize"
+			:page-size="privateValue.size"
 			layout="total, sizes, prev, pager, next, jumper"
-			:total="privateValue.count">
+			:total="privateValue.total">
 		</el-pagination>
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	/* xPagination  后台是以0开始，注意current的加减*/
 	return {
@@ -23,7 +23,8 @@ export default async function () {
 			prop: "value",
 			event: "change"
 		},
-		props: ["value", "options", "configs", "toolbar"],
+		/* page,size,total */
+		props: ["value", "options", "configs"],
 		data() {
 			return {
 				pagination: {}
@@ -37,18 +38,10 @@ export default async function () {
 			}
 		},
 		methods: {
-			emitChange({ count, current, pagesize }) {
-				/* 给外部查询用 */
-				let pagination = {
-					count,
-					current: (current - 1) * pagesize,
-					pagesize
-				};
-
+			emitChange(pagination) {
 				if (this.configs?.pagination) {
 					this.configs.pagination = pagination;
 				}
-
 				this.$emit("change", pagination);
 				if (this?.configs?.onQuery) {
 					this.$nextTick(() => {
@@ -57,27 +50,16 @@ export default async function () {
 				}
 			},
 			handleChange(pagination) {
-				this.emitChange(_.merge({}, this.privateValue, pagination));
+				this.privateValue = _.merge({}, this.privateValue, pagination);
 			}
 		},
 		computed: {
 			privateValue: {
 				get() {
-					let { count, current, pagesize } = (() => {
-						if (this.configs?.pagination) {
-							return this.configs.pagination;
-						}
-						return this.value;
-					})();
-					current = Math.ceil((current + 1) / pagesize);
-					let pagination = {
-						count,
-						current,
-						pagesize
-					};
-					/* 在内部给ElPagination使用 */
-
-					return pagination;
+					if (this.configs?.pagination) {
+						return this.configs.pagination;
+					}
+					return this.value;
 				},
 				set(val) {
 					this.emitChange(val);

@@ -24,7 +24,7 @@
 									}
 								}
 								return src || js[last].src;
-						  })(),
+							})(),
 					GLOBAL = window.LAYUI_GLOBAL || {};
 				return GLOBAL.layer_dir || jsPath.substring(0, jsPath.lastIndexOf("/") + 1);
 			})(),
@@ -190,14 +190,14 @@
 						? {
 								skin: skin + " layui-layer-hui",
 								anim: anim
-						  }
+							}
 						: (function () {
 								options = options || {};
 								if (options.icon === -1 || (options.icon === undefined && !ready.config.skin)) {
 									options.skin = skin + " " + (options.skin || "layui-layer-hui");
 								}
 								return options;
-						  })()
+							})()
 				)
 			);
 		},
@@ -248,7 +248,7 @@
 			? creat()
 			: setTimeout(function () {
 					creat();
-			  }, 30);
+				}, 30);
 	};
 
 	Class.pt = Class.prototype;
@@ -362,7 +362,7 @@
 									button += '<a class="' + doms[6] + "" + i + '">' + config.btn[i] + "</a>";
 								}
 								return '<div class="' + doms[6] + " layui-layer-btn-" + (config.btnAlign || "") + '">' + button + "</div>";
-						  })()
+							})()
 						: "") +
 					(config.resize ? '<span class="x-layer-resize"></span>' : "") +
 					"</div>"
@@ -450,7 +450,7 @@
 						config.type == 2 || config.type == 4
 							? (function () {
 									$("body").append(html[1]);
-							  })()
+								})()
 							: (function () {
 									if (!content.parents("." + doms[0])[0]) {
 										content.data("display", content.css("display")).show().addClass("layui-layer-wrap").wrap(html[1]);
@@ -458,8 +458,8 @@
 											.find("." + doms[5])
 											.before(titleHTML);
 									}
-							  })();
-				  })()
+								})();
+					})()
 				: body.append(html[1]);
 			$("#" + doms.MOVE)[0] || body.append((ready.moveElem = moveElem));
 
@@ -491,7 +491,7 @@
 								that.layero.css("visibility", "visible");
 							});
 						})();
-			  })();
+				})();
 
 		//如果是固定定位
 		if (config.fixed) {
@@ -1207,7 +1207,7 @@
 					? '<textarea class="layui-layer-input"' + style + "></textarea>"
 					: (function () {
 							return '<input type="' + (options.formType == 1 ? "password" : "text") + '" class="layui-layer-input">';
-					  })();
+						})();
 
 		var success = options.success;
 		delete options.success;
@@ -1576,7 +1576,7 @@
 	//加载方式
 	window.layui && layui.define
 		? (layer.ready(),
-		  layui.define("jquery", function (exports) {
+			layui.define("jquery", function (exports) {
 				//layui 加载
 				layer.path = layui.cache.dir;
 				ready.run(layui.$);
@@ -1584,16 +1584,16 @@
 				//暴露模块
 				window.layer = layer;
 				exports("layer", layer);
-		  }))
+			}))
 		: typeof define === "function" && define.amd
-		? define(["jquery"], function () {
-				//requirejs 加载
-				ready.run(window.jQuery);
-				return layer;
-		  })
-		: (function () {
-				//普通 script 标签加载
-				layer.ready();
-				ready.run(window.jQuery);
-		  })();
+			? define(["jquery"], function () {
+					//requirejs 加载
+					ready.run(window.jQuery);
+					return layer;
+				})
+			: (function () {
+					//普通 script 标签加载
+					layer.ready();
+					ready.run(window.jQuery);
+				})();
 })(window);

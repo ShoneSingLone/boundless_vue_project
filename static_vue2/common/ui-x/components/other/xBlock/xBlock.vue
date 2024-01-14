@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		props: ["header"],
@@ -65,7 +65,7 @@ export default async function () {
 
 	.el-card__body {
 		.el-card {
-			margin-top: var(--app-padding);
+			margin-top: var(--ui-one);
 		}
 	}
 

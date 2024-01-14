@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const { addResizeListener, removeResizeListener } = await _.$importVue("/common/utils/utils.vue");
 
@@ -206,7 +206,7 @@ export default async function () {
 							},
 							[h("i", { class: "el-icon-arrow-right" })]
 						)
-				  ]
+					]
 				: null;
 
 			const tabs = _.map(panes, (pane, index) => {
@@ -230,7 +230,7 @@ export default async function () {
 								}
 							},
 							[h("i", { class: "el-icon-close" })]
-					  )
+						)
 					: null;
 
 				const tabLabelContent = pane.$slots.label || pane.label;

@@ -4,7 +4,7 @@
 		<xRender :render="renderNoFollowPanel" />
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		inject: ["APP", "GroupSection"],
@@ -14,7 +14,7 @@ export default async function () {
 		},
 		methods: {
 			renderNoFollowPanel() {
-				if (_.$isArrayFill(this.APP.projectList)) {
+				if (_.$isArrayFill(this.APP.groupProjectList)) {
 					return h(
 						"xBlock",
 						{
@@ -23,7 +23,7 @@ export default async function () {
 								"card-header-border-left": true
 							}
 						},
-						[this.GroupSection.genProjectCard(this.APP.projectList, this.GroupSection.canAddProject)]
+						[this.GroupSection.genProjectCard(this.APP.groupProjectList, this.GroupSection.canAddProject)]
 					);
 				}
 				return null;
@@ -31,7 +31,7 @@ export default async function () {
 		},
 		computed: {
 			isShow() {
-				return this.APP.cptCurrentGroup?.type !== Vue._var.PRIVATE;
+				return this.APP.cptCurrentGroup?.type !== Vue._yapi_var.PRIVATE;
 			}
 		}
 	});

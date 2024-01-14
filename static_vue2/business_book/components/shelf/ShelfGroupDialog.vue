@@ -30,7 +30,7 @@
 	</ebook-dialog>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const EbookDialog = await _.$importVue("@/common/Dialog.vue");
 	const { storeShelfMixin } = await _.$importVue("@/utils/mixin.vue");

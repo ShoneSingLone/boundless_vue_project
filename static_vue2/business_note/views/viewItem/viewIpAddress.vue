@@ -5,7 +5,7 @@
 		<tiny-ip-address type="IPv6" v-model="value2"></tiny-ip-address>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

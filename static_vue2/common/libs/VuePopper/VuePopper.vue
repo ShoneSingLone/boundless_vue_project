@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const PopupManager = await _.$importVue("/common/libs/VuePopper/popupManager.vue");
 	const PopperJS = await _.$appendScript("/common/libs/VuePopper/popper.js", "Popper");

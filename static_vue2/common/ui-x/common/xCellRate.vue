@@ -6,7 +6,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		data() {
@@ -62,7 +62,7 @@ export default async function () {
 		color: black;
 		height: 16px;
 		border: var(--el-color-success-dark-2) 1px solid;
-		border-radius: 2px;
+		border-radius: var(--border-radius--mini);
 		// border: var(--ui-success-line) 1px solid;
 		margin: auto;
 		overflow: hidden;

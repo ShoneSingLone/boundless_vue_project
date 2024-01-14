@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	if (!window.Vuex) {
 		/**
@@ -131,10 +131,10 @@ export default async function () {
 				return Array.isArray(map)
 					? map.map(function (key) {
 							return { key: key, val: key };
-					  })
+						})
 					: Object.keys(map).map(function (key) {
 							return { key: key, val: map[key] };
-					  });
+						});
 			}
 
 			function isObject(obj) {
@@ -260,7 +260,7 @@ export default async function () {
 							entry.map(function (handler) {
 								return handler(payload);
 							})
-					  )
+						)
 					: entry[0](payload);
 			};
 
@@ -534,7 +534,7 @@ export default async function () {
 				return path.length
 					? path.reduce(function (state, key) {
 							return state[key];
-					  }, state)
+						}, state)
 					: state;
 			}
 

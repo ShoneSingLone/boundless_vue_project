@@ -4,7 +4,7 @@
 		<xInput type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"> </xInput>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

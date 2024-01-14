@@ -17,7 +17,7 @@ exports.appUseKoaAssets = function (app) {
 		const pathArray = ctx.path.split("/");
 
 		if (pathArray.join("") === "") {
-			ctx.path = "/doc.html";
+			ctx.path = "/business_doc/doc.html";
 		}
 		try {
 			let targetPath = app.pathResolve(ctx.path.replace(/^\/(static)?/, "../../static_vue2/"));
@@ -33,7 +33,7 @@ exports.appUseKoaAssets = function (app) {
 			async function handleIndexHtml() {
 				ctx.status = 200;
 				ctx.set("Content-Type", mime.lookup(targetPath));
-				const indexHtmlString = await fs.promises.readFile(targetPath, "utf-8");
+				const indexHtmlString = await fs.promises.readFile(decodeURIComponent(targetPath), "utf-8");
 				const $ = cheerio.load(indexHtmlString);
 				/* 首页注入 hmr 代码 */
 				let scriptBlockString = await fs.promises.readFile(app.pathResolve("./hmr.socket.io.script_block.vue"), "utf-8");

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	if (!window.WebStorageCache) {
 		/*!
@@ -82,7 +82,7 @@ export default async function () {
 				}),
 					j
 						? ((this.storage = i),
-						  (this.quotaExceedHandler = function (a, b, c) {
+							(this.quotaExceedHandler = function (a, b, c) {
 								if ((console.warn("Quota exceeded!"), c && c.force === !0)) {
 									var d = this.deleteAllExpires();
 									console.warn("delete all expires CacheItem : [" + d + "] and try execute `set` method again!");
@@ -92,7 +92,7 @@ export default async function () {
 										console.warn(e);
 									}
 								}
-						  }))
+							}))
 						: a(this, o);
 			}
 			var l = new Date("Fri, 31 Dec 9999 23:59:59 UTC"),

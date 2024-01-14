@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	function setSelectedRows(vm, rows) {
 		vm.configs.selectedRows = rows;

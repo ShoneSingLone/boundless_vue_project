@@ -5,7 +5,7 @@
 		<el-table-column width="300" property="address" label="地址"></el-table-column>
 	</el-table>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		data() {

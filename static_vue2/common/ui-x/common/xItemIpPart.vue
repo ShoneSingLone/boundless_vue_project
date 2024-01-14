@@ -31,7 +31,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	const RULES = await _.$importVue("/common/utils/rules.vue");

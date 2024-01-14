@@ -1,61 +1,61 @@
-<script>
+<script lang="ts">
 export default async function () {
 	return [
 		{
-			icon: "_icon_report",
+			icon: "icon_report",
 			label: i18n("DevModel"),
 			children: [
 				{
-					icon: "_icon_report",
+					icon: "icon_report",
 					label: i18n("DEV"),
 					href: "/dev"
 				},
 				{
-					icon: "_icon_report",
+					icon: "icon_report",
 					label: i18n("socket.io"),
 					href: "/io"
 				}
 			]
 		},
 		{
-			icon: "_icon_report",
+			icon: "icon_report",
 			label: i18n("组件"),
 			children: [
 				{
-					icon: "_icon_report",
+					icon: "icon_report",
 					label: i18n("xBlock"),
 					href: "/xBlock"
 				},
 				{
-					icon: "_icon_report",
+					icon: "icon_report",
 					label: i18n("xTableVir"),
 					href: "/xTableVir"
 				},
 				{
-					icon: "_icon_report",
+					icon: "icon_report",
 					label: i18n("xTable"),
 					href: "/xTable"
 				},
 				{
-					icon: "_icon_report",
+					icon: "icon_report",
 					label: i18n("xTableDiv"),
 					href: "/xTableDiv"
 				},
 				{
-					icon: "_icon_report",
+					icon: "icon_report",
 					label: i18n("xItem"),
 					icon: "_icon_rerun",
 					children: [
 						{
 							href: "/xItem/xItemInput",
-							icon: "_icon_report",
+							icon: "icon_report",
 							label: i18n("xItemInput")
 						}
 					]
 				},
-				{ icon: "_icon_report", label: i18n("xIcon"), href: "/xIcon" },
+				{ icon: "icon_report", label: i18n("xIcon"), href: "/xIcon" },
 				{
-					icon: "_icon_report",
+					icon: "icon_report",
 					label: i18n("openWindow"),
 					href: "/dialog_with_layer"
 				}

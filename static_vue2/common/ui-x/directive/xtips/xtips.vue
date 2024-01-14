@@ -1,11 +1,10 @@
-<script>
+<script lang="ts">
 export default async function () {
 	let PopoverComponent;
 
 	const TIPS_OPTIONS = new Map();
 	/* 可能是Vue实例，也可能是原始dom */
 	const VM_REFRENCE = new Map();
-	window.VM_REFRENCE = VM_REFRENCE;
 	const VM_POPOVER = new Map();
 
 	const X_TIPS_REF = "x-tips-ref";
@@ -21,16 +20,24 @@ export default async function () {
 	const TIMEOUT_DELAY = 200;
 
 	function setOptions(refId, options) {
-		let _options = {
-			trigger: "hover"
-		};
-
+		const oldOptions = TIPS_OPTIONS.get(refId);
 		if (_.isString(options)) {
-			_options.content = options;
-		} else {
-			_options = _.merge(_options, options);
+			/* 简写 */
+			TIPS_OPTIONS.set(refId, {
+				content: options,
+				placement: "top",
+				trigger: "hover"
+			});
+		} else if (_.isPlainObject(options)) {
+			if (hasOwn(options, "_btnInnerTips")) {
+				/* 只有btn disabled是true的时候才会显示 */
+				if (options._btnInnerTips) {
+					TIPS_OPTIONS.set(refId, _.merge(oldOptions, options));
+				}
+			} else {
+				TIPS_OPTIONS.set(refId, _.merge(oldOptions, options));
+			}
 		}
-		TIPS_OPTIONS.set(refId, _options);
 	}
 	/* placement offset arrowOffset */
 	function usePops(ele) {
@@ -157,17 +164,30 @@ export default async function () {
 		/* @ts-ignore */
 		inserted(ele, binding, vnode) {
 			/* v-xtips绑定在dom元素上 */
-			const vm = vnode.componentInstance || vnode.context;
+			let vm = vnode.componentInstance || vnode.context;
 			const refId = _.$genId(X_TIPS_REF);
 			setOptions(refId, binding.value);
 			VM_REFRENCE.set(refId, vm);
 
 			$(ele)
 				.addClass(CLASS_NAME_REFERENCE)
-				.attr({ [SELECTOR_REFERENCE]: refId });
+				.attr({ [SELECTOR_REFERENCE]: refId })
+				.data("oldValue", { ...binding.value });
 		},
 		componentUpdated(ele, binding) {
-			const { refId, $popover, vmPopover } = usePops(ele);
+			const { refId, $popover, vmPopover, $ele } = usePops(ele);
+			const oldValue = $ele.data("oldValue");
+			$ele.data("oldValue", { ...binding.value });
+			if (hasOwn(binding.value, "_btnInnerTips")) {
+				return;
+			} else {
+				if (_.$eqObj(binding.value, _.omit(oldValue, ["$reference"]))) {
+					return;
+				}
+				if (_.$eqObj(binding.value, oldValue)) {
+					return;
+				}
+			}
 			setOptions(refId, binding.value);
 
 			if ("manual" === binding.value?.trigger) {

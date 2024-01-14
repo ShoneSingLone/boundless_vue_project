@@ -1,31 +1,41 @@
 <template>
-	<section class="box-shadow flex1 white-border padding flex vertical">
-		<div class="flex vertical">
+	<section id="GroupSection" class="page-view">
+		<xPageContent>
 			<xBlock class="mb group-desc-wrapper">
-				<xMd :md="cptGroupDesc" />
-				<xBtn :configs="btnEditGroup" class="edit-group-desc" />
+				<el-collapse>
+					<el-collapse-item>
+						<template #title>
+							<span class="group-name">
+								{{ cptGroupName }}
+							</span>
+						</template>
+						<xMd :md="cptGroupDesc" />
+					</el-collapse-item>
+				</el-collapse>
+				<xBtn :configs="btnEditGroup" class="edit-group-desc ml" />
 			</xBlock>
 			<xRender :render="renderSwitchBtnGroup" />
-		</div>
-		<GroupSectionProjectList />
-		<div>{this.vDomTabMember}</div>
-		<div>{this.vDomTabGroupLog}</div>
-		<div>{this.vDomTabGroupWiki}</div>
+			<GroupSectionProjectList />
+			<GroupSectionMemberList />
+			<GroupSectionLog />
+		</xPageContent>
 	</section>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
-	const TAB_KEY_PROJECT_LIST = Vue._var.TAB_KEY_PROJECT_LIST;
-	const TAB_KEY_MEMBER_LIST = Vue._var.TAB_KEY_MEMBER_LIST;
-	const TAB_KEY_GROUP_LOG = Vue._var.TAB_KEY_GROUP_LOG;
-	const TAB_KEY_GROUP_WIKI = Vue._var.TAB_KEY_GROUP_WIKI;
-	const ADMIN = Vue._var.ADMIN;
-	const OWNER = Vue._var.OWNER;
+	const TAB_KEY_PROJECT_LIST = Vue._yapi_var.TAB_KEY_PROJECT_LIST;
+	const TAB_KEY_MEMBER_LIST = Vue._yapi_var.TAB_KEY_MEMBER_LIST;
+	const TAB_KEY_GROUP_LOG = Vue._yapi_var.TAB_KEY_GROUP_LOG;
+	const TAB_KEY_GROUP_WIKI = Vue._yapi_var.TAB_KEY_GROUP_WIKI;
+	const ADMIN = Vue._yapi_var.ADMIN;
+	const OWNER = Vue._yapi_var.OWNER;
 
 	return defineComponent({
 		inject: ["APP", "Group"],
 		components: {
-			GroupSectionProjectList: () => _.$importVue("@/views/Api/Group/Section/ProjectList/GroupSectionProjectList.vue")
+			GroupSectionProjectList: () => _.$importVue("@/views/Api/Group/Section/ProjectList/GroupSectionProjectList.vue"),
+			GroupSectionMemberList: () => _.$importVue("@/views/Api/Group/Section/MemberList/GroupSectionMemberList.vue"),
+			GroupSectionLog: () => _.$importVue("@/views/Api/Group/Section/Log/GroupSectionLog.vue")
 		},
 		provide() {
 			const GroupSection = this;
@@ -39,8 +49,17 @@ export default async function () {
 			};
 		},
 		computed: {
+			cptViewList() {
+				if (this.APP.cptCurrentGroup.privateSpace) {
+					return [TAB_KEY_PROJECT_LIST, TAB_KEY_GROUP_LOG, TAB_KEY_GROUP_WIKI];
+				}
+				return [TAB_KEY_PROJECT_LIST, TAB_KEY_MEMBER_LIST, TAB_KEY_GROUP_LOG, TAB_KEY_GROUP_WIKI];
+			},
 			cptGroupDesc() {
-				return `${this.APP.cptCurrentGroup.group_desc || "分组简介"}`;
+				return `${this.APP.cptCurrentGroup?.group_desc || "分组简介"}`;
+			},
+			cptGroupName() {
+				return `${this.APP.cptCurrentGroup?.group_name || "--"}`;
 			},
 			btnEditGroup() {
 				const vm = this;
@@ -48,7 +67,7 @@ export default async function () {
 					// label: i18n("编辑分组"),
 					icon: "el-icon-edit",
 					circle: true,
-					onClick: vm.upsertGroup
+					onClick: vm.openGroupUpsertDialog
 				};
 			},
 			canAddProject() {
@@ -61,25 +80,30 @@ export default async function () {
 			},
 			cptGroupViewTabName() {
 				const { GroupViewTabName } = this.$route.query;
-				if (!GroupViewTabName) {
+				if (this.cptViewList.includes(GroupViewTabName)) {
+					return GroupViewTabName;
+				} else {
+					/* 不存在或者不存在当前角色列表，就默认第一个 */
 					this.APP.routerUpsertQuery({ GroupViewTabName: TAB_KEY_PROJECT_LIST });
 					return TAB_KEY_PROJECT_LIST;
 				}
-				return GroupViewTabName;
 			}
 		},
 		methods: {
-			upsertGroup() {
-				this.Group.upsertGroup(this.APP.cptCurrentGroup);
+			openGroupUpsertDialog() {
+				this.Group.openGroupUpsertDialog(this.APP.cptCurrentGroup);
 			},
-			genProjectCard(projectItems, isShow = false) {
+			genProjectCard(projectArray, isShow = false) {
+				const vm = this;
 				return h("div", { class: "flex like-float" }, [
-					_.map(projectItems, (item, index) => {
+					_.map(projectArray, (projectData, index) => {
 						return h("YapiProjectCard", {
+							onChange() {
+								vm.APP.updateGroupProjectList();
+							},
 							isShow,
 							index,
-							projectData: item,
-							callbackResult: this.updateProjectList
+							projectData
 						});
 					})
 				]);
@@ -88,7 +112,7 @@ export default async function () {
 				const vm = this;
 				return h(
 					"xBtnGroup",
-					_.map([TAB_KEY_PROJECT_LIST, TAB_KEY_MEMBER_LIST, TAB_KEY_GROUP_LOG, TAB_KEY_GROUP_WIKI], tabName => {
+					_.map(vm.cptViewList, tabName => {
 						return h("xBtn", {
 							configs: {
 								label: tabName,
@@ -106,19 +130,40 @@ export default async function () {
 }
 </script>
 <style lang="less">
-.group-desc-wrapper {
-	position: relative;
-	max-height: 300px;
-	overflow: auto;
-	.edit-group-desc {
-		display: none;
-	}
-	&:hover {
+#GroupSection {
+	flex: 1;
+	.group-desc-wrapper {
+		position: relative;
+		.el-collapse,
+		.el-collapse-item__header {
+			border-top: unset;
+			border-bottom: unset;
+			.group-name {
+				font-size: 16px;
+				font-weight: 600;
+			}
+		}
+		.el-collapse-item__wrap {
+			max-height: 300px;
+			border-bottom: unset;
+			overflow: auto;
+			.el-collapse-item__content {
+				padding-bottom: unset;
+			}
+		}
 		.edit-group-desc {
+			display: none;
 			position: absolute;
-			display: block;
-			left: 0;
-			top: 0;
+			transition: 0.3s ease-in-out;
+		}
+
+		&:hover {
+			.edit-group-desc {
+				top: -12px;
+				left: -28px;
+				display: block;
+				z-index: 1;
+			}
 		}
 	}
 }

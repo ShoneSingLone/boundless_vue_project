@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
 export default async function () {
-	if (!Vue._api) {
+	if (!window._api.doc) {
 		/*枚举选项*/
-		Vue._api = {
+		window._api.doc = {
 			allProject() {
 				return _.$ajax.get("/boundless-api/project/all");
 			}
 		};
 	}
-	return Vue._api;
+	return window._api.doc;
 }
 </script>

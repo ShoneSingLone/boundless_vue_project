@@ -9,9 +9,8 @@
 		</div>
 	</xForm>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
-	const RULES = await _.$importVue("/common/utils/rules.vue");
 	return defineComponent({
 		inject: ["APP"],
 		props: {
@@ -31,12 +30,12 @@ export default async function () {
 							_.$lStorage.email = val;
 						},
 						onKeypress(e) {},
-						rules: [RULES.required("", ["blur"]), RULES.email()],
+						rules: [_rules.required("", ["blur"]), _rules.email()],
 						$vSlots: {
 							prefix() {
 								return h("xIcon", {
 									icon: "_MailOutlined",
-									style: Vue._var.stylesLoginFormIcon
+									style: Vue._yapi_var.stylesLoginFormIcon
 								});
 							}
 						}
@@ -50,12 +49,12 @@ export default async function () {
 						onEmitValue({ val }) {
 							_.$lStorage.password = val;
 						},
-						rules: [RULES.required(i18n("请输入密码"), ["blur"])],
+						rules: [_rules.required(i18n("请输入密码"), ["blur"])],
 						$vSlots: {
 							prefix() {
 								return h("xIcon", {
 									icon: "_LockOutlined",
-									style: Vue._var.stylesLoginFormIcon
+									style: Vue._yapi_var.stylesLoginFormIcon
 								});
 							}
 						}
@@ -81,17 +80,17 @@ export default async function () {
 						const formData = _.$pickValueFromConfigs(vm.configsForm);
 						const {
 							data: { x_token }
-						} = await Vue._yapi_api.postUserLogin(formData);
+						} = await _api.yapi.postUserLogin(formData);
 
 						if (x_token) {
 							_.$lStorage.x_token = x_token;
 							_.$msgSuccess("登录成功! ");
 							await this.APP.refreshUserInfo();
-							
 						}
 					}
 				} catch (e) {
 					console.error(e);
+					debugger;
 					_.$msgError(e.message);
 				}
 			}

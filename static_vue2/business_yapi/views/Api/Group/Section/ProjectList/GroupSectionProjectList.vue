@@ -3,7 +3,7 @@
 		<div class="GroupSectionProjectList-header flex middle mt">
 			<div>
 				<span>共</span>
-				<span> {{ APP.projectList.length }} </span>
+				<span> {{ APP.groupProjectList.length }} </span>
 				<span>个项目</span>
 			</div>
 			<xGap f />
@@ -14,11 +14,11 @@
 		<div>
 			<GroupSectionProjectListPrivate />
 			<GroupSectionProjectListNormal />
-			<YapiPlaceholderView v-if="!APP.projectList.length" view="GroupSectionProjectList" />
+			<YapiPlaceholderView v-if="!APP.groupProjectList.length" view="GroupSectionProjectList" />
 		</div>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		inject: ["APP", "GroupSection"],
@@ -26,20 +26,16 @@ export default async function () {
 			GroupSectionProjectListPrivate: () => _.$importVue("@/views/Api/Group/Section/ProjectList/Private/GroupSectionProjectListPrivate.vue"),
 			GroupSectionProjectListNormal: () => _.$importVue("@/views/Api/Group/Section/ProjectList/Normal/GroupSectionProjectListNormal.vue")
 		},
-		data() {
-			return {};
-		},
-		mounted() {},
 		computed: {
 			isShow() {
-				return this.$route.query.GroupViewTabName === Vue._var.TAB_KEY_PROJECT_LIST;
+				return this.$route.query.GroupViewTabName === Vue._yapi_var.TAB_KEY_PROJECT_LIST;
 			},
 			btn_addProject() {
 				const vm = this;
 				return {
 					label: i18n("添加项目"),
 					preset: "blue",
-					onClick: vm.showAddProjectDialog,
+					onClick: vm.openGroupProjectDialog,
 					disabled() {
 						if (vm.GroupSection.canAddProject) {
 							return "";
@@ -48,6 +44,32 @@ export default async function () {
 						}
 					}
 				};
+			}
+		},
+		methods: {
+			async openGroupProjectDialog() {
+				const vm = this;
+				const addMember = await _.$importVue("@/views/Api/Group/Section/ProjectList/GroupSectionProjectList.AddProject.vue", {
+					parent: this,
+					onOk() {
+						vm.APP.updateGroupProjectList();
+					}
+				});
+				_.$openWindow(i18n("添加项目"), addMember);
+			}
+		},
+		watch: {
+			"APP.cptGroupId": {
+				immediate: true,
+				async handler(groupId) {
+					if (groupId) {
+						try {
+							this.APP.updateGroupProjectList();
+						} catch (error) {
+							console.error(error);
+						}
+					}
+				}
 			}
 		}
 	});

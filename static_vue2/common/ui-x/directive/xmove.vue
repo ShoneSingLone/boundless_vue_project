@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const xMoveClassName = "data-xmove";
 	const { xLayerTools } = await _.$importVue("/common/libs/layer/xLayer.vue");

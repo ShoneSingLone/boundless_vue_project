@@ -1,5 +1,5 @@
 <template>
-	<div class="demo-input">
+	<DocContentOfDemo class="demo-input">
 		<xMd :md="mdTips" />
 		<DemoAndCode title="基础用法" path="@/views/component/form/input/JiChuYongFa.vue" unfold />
 		<DemoAndCode title="禁用状态" path="@/views/component/form/input/JinYongZhuangTai.vue" unfold />
@@ -15,10 +15,10 @@
 		<DemoAndCode title="远程搜索" path="@/views/component/form/input/YuanChengSouSuo.vue" unfold />
 		<DemoAndCode title="输入长度限制" path="@/views/component/form/input/ShuRuChangDuXianZhi.vue" unfold />
 		<xMd :md="apiString" />
-	</div>
+	</DocContentOfDemo>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		data() {

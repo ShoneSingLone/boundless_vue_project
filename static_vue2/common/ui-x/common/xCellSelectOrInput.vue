@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const { useCellArgs } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	Vue._CurrentCellId = Vue._CurrentCellId || ref(0);
@@ -58,7 +58,6 @@ export default async function () {
 				return dis ?? false;
 			},
 			searchValue() {
-				// debugger;
 				return this.configs?.row?.searchValue || "";
 			}
 		},
@@ -105,18 +104,18 @@ export default async function () {
 							size: "mini",
 							value: vm.privateModel,
 							onChange: val => (vm.privateModel = val)
-					  })
+						})
 					: h("xItem", {
 							configs: this.res.innerComponentConfigs,
 							value: this.res.privateModel,
 							size: "mini"
-					  })
+						})
 			]);
 		}
 	};
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .select-search {
 	display: flex;
 

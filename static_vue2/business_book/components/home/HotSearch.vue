@@ -19,7 +19,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { realPx } = await _.$importVue("@/utils/utils");
 

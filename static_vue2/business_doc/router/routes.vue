@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const ComponentPageRouterView = {
 		render(h) {
-			return h("div", { class: "page-view" }, [h("xPageContent", [h("router-view")])]);
+			return h("div", { class: "page-view Demo-view" }, [h("xPageContent", [h("router-view")])]);
 		}
 	};
 	const ComponentRouterView = {
@@ -12,6 +12,12 @@ export default async function () {
 	};
 
 	return [
+		_.$newRoute("/demo", ComponentRouterView, {
+			children: [_.$newRoute("/demo/config", "@/views/demo/demo/configList.vue")]
+		}),
+		_.$newRoute("/guide", ComponentPageRouterView, {
+			children: [_.$newRoute("/guide/i18n", "@/views/guide/guide/ViewI18n.vue"), _.$newRoute("/guide/class", "@/views/common/css/ClassName.vue")]
+		}),
 		_.$newRoute("/all-project", "@/views/ViewAllProject.vue"),
 		/* 指令 */
 		_.$newRoute("/directive", ComponentPageRouterView, {
@@ -19,7 +25,7 @@ export default async function () {
 		}),
 		/* 聚合类 */
 		_.$newRoute("/x-component", ComponentPageRouterView, {
-			children: [_.$newRoute("/x-component/x-item", "@/views/xComponent/xItem.vue"), _.$newRoute("/x-component/x-form", "@/views/xComponent/xForm.vue")]
+			children: [_.$newRoute("/x-component/x-item", "@/views/xComponent/xItemDemo.vue"), _.$newRoute("/x-component/x-form", "@/views/xComponent/xForm.vue")]
 		}),
 		/* base */
 		_.$newRoute("/base", ComponentPageRouterView, {
@@ -42,6 +48,7 @@ export default async function () {
 						_.$newRoute("/component/data/icon", "@/views/component/data/icon/icon.vue"),
 						_.$newRoute("/component/data/card", "@/views/component/data/card/card.vue"),
 						_.$newRoute("/component/data/tag", "@/views/component/data/tag/tag.vue"),
+						_.$newRoute("/component/data/tree", "@/views/component/data/tree/DemoTree.vue"),
 						_.$newRoute("/component/data/virtualized-table", "@/views/component/data/virtualizedTable/virtualizedTable.vue")
 					]
 				}),
@@ -49,7 +56,8 @@ export default async function () {
 				_.$newRoute("/component/navigation", ComponentRouterView, {
 					children: [
 						_.$newRoute("/component/navigation/tabs", "@/views/component/navigation/tabs/tabs.vue"),
-						_.$newRoute("/component/navigation/dropdown", "@/views/component/navigation/dropdown/dropdown.vue")
+						_.$newRoute("/component/navigation/dropdown", "@/views/component/navigation/dropdown/dropdown.vue"),
+						_.$newRoute("/component/navigation/breadcrumb", "@/views/component/navigation/breadcrumb/breadcrumb.vue")
 					]
 				})
 			]
@@ -57,6 +65,8 @@ export default async function () {
 		/* other */
 		_.$newRoute("/other", ComponentPageRouterView, {
 			children: [
+				_.$newRoute("/other/affix", "@/views/other/affix/DemoAffix.vue"),
+				_.$newRoute("/other/notification", "@/views/other/notification/Notification.vue"),
 				_.$newRoute("/other/layer", "@/views/other/layer/layer.vue"),
 				_.$newRoute("/other/move", "@/views/other/move/move.vue"),
 				_.$newRoute("/other/popover", "@/views/other/popover/popover.vue"),

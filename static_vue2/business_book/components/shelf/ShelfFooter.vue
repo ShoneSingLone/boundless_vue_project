@@ -18,7 +18,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { storeShelfMixin } = await _.$importVue("@/utils/mixin.vue");
 	const { saveBookShelf, removeLocalStorage } = await _.$importVue("@/utils/localStorage.vue");

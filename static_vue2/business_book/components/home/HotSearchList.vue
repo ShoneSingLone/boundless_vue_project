@@ -8,7 +8,7 @@
 	</transition>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const Scroll = await _.$importVue("@/common/Scroll.vue");
 	const HotSearch = await _.$importVue("./HotSearch.vue");

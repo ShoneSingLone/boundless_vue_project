@@ -3,7 +3,7 @@
 		<slot></slot>
 	</div>
 </template>
-<script>
+<script lang="ts">
 export default async function () {
 	const Popper = await _.$importVue("/common/libs/VuePopper/VuePopper.vue");
 	return defineComponent({

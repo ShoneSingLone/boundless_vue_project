@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	const { addResizeListener, removeResizeListener } = await _.$importVue("/common/utils/utils.vue");
 	const scrollbarWidth = await _.$importVue("/common/ui-x/components/other/xScrollbar/scrollbarWidth.vue");

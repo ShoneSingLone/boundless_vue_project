@@ -1,11 +1,11 @@
 <template>
-	<div class="demo-input">
+	<DocContentOfDemo class="demo-input">
 		<xMd :md="mdTips" />
 		<DemoAndCode title="基础用法" path="@/views/component/form/checkbox/JiChuYongFa.vue" unfold />
-	</div>
+	</DocContentOfDemo>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		data() {

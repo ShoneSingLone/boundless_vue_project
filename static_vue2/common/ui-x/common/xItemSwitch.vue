@@ -2,7 +2,7 @@
 	<el-switch v-model="mixin_value" v-bind="$attrs" v-on="mixin_listeners"> </el-switch>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	return {

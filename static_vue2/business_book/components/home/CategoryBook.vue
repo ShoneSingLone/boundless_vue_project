@@ -15,7 +15,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const TitleView = await _.$importVue("./Title.vue");
 	const { categoryText, getCategoryName } = await _.$importVue("../../utils/store");

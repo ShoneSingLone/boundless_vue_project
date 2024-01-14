@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	if (!window.VueRouter) {
 		(function () {
@@ -839,7 +839,7 @@ export default async function () {
 			 */
 			function tokensToRegExp(tokens, keys, options) {
 				if (!isarray(keys)) {
-					options = /** @type {!Object} */ (keys || options);
+					options = /** @type {!Object} */ keys || options;
 					keys = [];
 				}
 
@@ -915,21 +915,21 @@ export default async function () {
 			 */
 			function pathToRegexp(path, keys, options) {
 				if (!isarray(keys)) {
-					options = /** @type {!Object} */ (keys || options);
+					options = /** @type {!Object} */ keys || options;
 					keys = [];
 				}
 
 				options = options || {};
 
 				if (path instanceof RegExp) {
-					return regexpToRegexp(path, /** @type {!Array} */ (keys));
+					return regexpToRegexp(path, /** @type {!Array} */ keys);
 				}
 
 				if (isarray(path)) {
-					return arrayToRegexp(/** @type {!Array} */ (path), /** @type {!Array} */ (keys), options);
+					return arrayToRegexp(/** @type {!Array} */ path, /** @type {!Array} */ keys, options);
 				}
 
-				return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options);
+				return stringToRegexp(/** @type {string} */ path, /** @type {!Array} */ keys, options);
 			}
 			pathToRegexp_1.parse = parse_1;
 			pathToRegexp_1.compile = compile_1;
@@ -2003,7 +2003,7 @@ export default async function () {
 			function resolveAsyncComponents(matched) {
 				return function (to, from, next) {
 					var hasAsync = false;
-					var pending = 0;
+					var pending = { count: 0 };
 					var error = null;
 
 					flatMapComponents(matched, function (def, _, match, key) {
@@ -2014,19 +2014,20 @@ export default async function () {
 						// resolved.
 						if (typeof def === "function" && def.cid === undefined) {
 							hasAsync = true;
-							pending++;
+							pending.count++;
 
 							var resolve = once(function (resolvedDef) {
-								if (isESModule(resolvedDef)) {
+								/* if (isESModule(resolvedDef)) {
 									resolvedDef = resolvedDef.default;
 								}
 								// save resolved on async factory in case it's used elsewhere
 								def.resolved = typeof resolvedDef === "function" ? resolvedDef : _Vue.extend(resolvedDef);
 								match.components[key] = resolvedDef;
-								pending--;
-								if (pending <= 0) {
+								pending.count--;
+								if (pending.count <= 0) {
 									next();
-								}
+								} */
+								Vue._HandleVueRouterAsyncComponentResolved({ resolvedDef, def, match, key, pending, next });
 							});
 
 							var reject = once(function (reason) {
@@ -2364,7 +2365,7 @@ export default async function () {
 						return Array.isArray(guard)
 							? guard.map(function (guard) {
 									return bind(guard, instance, match, key);
-							  })
+								})
 							: bind(guard, instance, match, key);
 					}
 				});

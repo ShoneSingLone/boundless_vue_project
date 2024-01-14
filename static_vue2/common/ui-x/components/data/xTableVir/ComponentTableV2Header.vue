@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 export default async function () {
-	const { castArray, enforceUnit, useNamespace, tableV2HeaderProps } = Vue._useXui;
+	const { castArray, enforceUnit, useNamespace, tableV2HeaderProps } = _useXui;
 
 	return defineComponent({
 		name: "ComponentTableV2Header",

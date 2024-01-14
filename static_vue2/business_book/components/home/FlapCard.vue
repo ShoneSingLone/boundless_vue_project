@@ -34,7 +34,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	const { storeHomeMixin } = await _.$importVue("@/utils/mixin.vue");
 	const { flapCardList, categoryText } = await _.$importVue("@/utils/store.vue");

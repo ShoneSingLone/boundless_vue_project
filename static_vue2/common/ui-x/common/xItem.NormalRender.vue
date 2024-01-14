@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	return function render() {
 		const vm = this;
@@ -31,6 +31,7 @@ export default async function () {
 				vIf: !vm.cpt_isHide,
 				staticClass: "xItem-wrapper flex vertical",
 				attrs: {
+					"data-form-item-type": vm.itemType,
 					"data-form-item-id": vm.cpt_id
 				}
 			},
@@ -38,7 +39,7 @@ export default async function () {
 				h(
 					"div",
 					{
-						staticClass: "flex middle center flex1"
+						staticClass: "xItem-wrapper_layout flex middle center flex1"
 					},
 					[
 						/* label */
@@ -47,7 +48,7 @@ export default async function () {
 							{
 								ref: "refItemLabel",
 								vIf: vm.cpt_label,
-								staticClass: "xItem_label flex end middle"
+								staticClass: "xItem_label flex middle"
 							},
 							[
 								h(

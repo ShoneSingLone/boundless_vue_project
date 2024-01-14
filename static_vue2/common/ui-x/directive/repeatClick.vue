@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export default async function () {
 	return {
 		bind(el, binding, vnode) {
@@ -23,7 +23,7 @@ export default async function () {
 			});
 		}
 	};
-}
+// }
 </script>
 
 <style></style>

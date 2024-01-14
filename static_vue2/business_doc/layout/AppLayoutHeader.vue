@@ -1,12 +1,14 @@
 <template>
 	<div class="AppLayoutHeader">
-		<xIcon img="@/assets/svg/icon_report.svg" style="width: 48px; height: 48px" />
+		<xIcon icon="_icon_wiki" style="width: 48px; height: 48px" />
+		<!-- <xIcon img="@/assets/svg/icon_wiki.svg" style="width: 48px; height: 48px" /> -->
 		<xGap f />
-		<xInput v-model="APP.searchKey" style="width: 200px" placeholder="Search"></xInput>
+		<xItem :configs="AppTheme" style="width: 240px" />
+		<!-- <xInput v-model="APP.searchKey" style="width: 200px" placeholder="Search"></xInput> -->
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 export default async function () {
 	return defineComponent({
 		inject: ["APP"],
@@ -20,6 +22,25 @@ export default async function () {
 		},
 		data() {
 			return {
+				AppTheme: {
+					label: "UI主题",
+					value: _.$lStorage._doc_app_theme || "默认",
+					itemType: "xItemSelect",
+					options: [
+						{
+							label: "默认",
+							value: "默认"
+						},
+						{
+							label: "tiny",
+							value: "tiny"
+						}
+					],
+					onEmitValue({ val }) {
+						_.$setAppTheme(val);
+						_.$lStorage._doc_app_theme = val;
+					}
+				},
 				languageOptions: [
 					{
 						label: "中文",
