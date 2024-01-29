@@ -6,7 +6,7 @@
 			@size-change="size => handleChange({ page: 1, size })"
 			@current-change="page => handleChange({ page })"
 			:current-page="privateValue.page"
-			:page-sizes="[10, 20, 30]"
+			:page-sizes="cptPageSizes"
 			:page-size="privateValue.size"
 			layout="total, sizes, prev, pager, next, jumper"
 			:total="privateValue.total">
@@ -54,6 +54,9 @@ export default async function () {
 			}
 		},
 		computed: {
+			cptPageSizes() {
+				return this.configs?.pagination?.pageSizes || [10, 20, 30];
+			},
 			privateValue: {
 				get() {
 					if (this.configs?.pagination) {

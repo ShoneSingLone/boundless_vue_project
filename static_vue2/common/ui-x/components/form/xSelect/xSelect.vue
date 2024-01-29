@@ -217,11 +217,15 @@ export default async function () {
 					return true;
 				}
 			},
+			selectOptions: Array,
 			automaticDropdown: Boolean,
 			size: String,
 			disabled: Boolean,
 			clearable: Boolean,
-			filterable: Boolean,
+			filterable: {
+				type: Boolean,
+				default: true
+			},
 			allowCreate: Boolean,
 			loading: Boolean,
 			popperClass: String,

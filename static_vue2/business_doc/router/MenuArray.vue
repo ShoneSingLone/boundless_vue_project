@@ -46,7 +46,7 @@ export default async function () {
 				{ icon: "icon_report", label: i18n("move"), href: "/other/move" },
 				{ icon: "icon_report", label: i18n("Popover"), href: "/other/popover" },
 				{ icon: "icon_report", label: i18n("dialog"), href: "/other/open_window" },
-				{ icon: "icon_report", label: i18n("notification 通知"), href: "/other/notification" }
+				{ icon: "icon_report", label: `${i18n("Notification")} ${i18n("通知")}`, href: "/other/notification" }
 			]
 		},
 		{
@@ -98,7 +98,12 @@ export default async function () {
 				},
 				{
 					icon: "icon_report",
-					label: i18n("Tag") + i18n("标签"),
+					label: `${i18n("Descriptions")} ${i18n("描述列表")}`,
+					href: "/component/data/descriptions"
+				},
+				{
+					icon: "icon_report",
+					label: `${i18n("Tag")} ${i18n("标签")}`,
 					href: "/component/data/tag"
 				},
 				{
@@ -113,8 +118,9 @@ export default async function () {
 				},
 				{ icon: "icon_report", label: i18n("tabs"), href: "/component/navigation/tabs" },
 				{ icon: "icon_report", label: i18n("dropdown"), href: "/component/navigation/dropdown" },
-				{ icon: "_icon_breadcrumb", label: i18n("breadcrumb面包屑"), href: "/component/navigation/breadcrumb" },
-				{ icon: "_icon_affix", label: i18n("affix 固钉"), href: "/other/affix" }
+				{ icon: "_icon_breadcrumb", label: `${i18n("Breadcrumb")} ${i18n("面包屑")}`, href: "/component/navigation/breadcrumb" },
+				{ icon: "_icon_affix", label: `${i18n("Affix")} ${i18n("固钉")}`, href: "/other/affix" },
+				{ icon: "_icon_affix", label: `${i18n("Alert")} ${i18n("警告")}`, href: "/other/alert" }
 			]
 		},
 		{

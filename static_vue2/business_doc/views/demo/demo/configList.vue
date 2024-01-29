@@ -1,8 +1,7 @@
 <template>
 	<div class="page-view">
-		<xPageTitle title="这里是标题，可以直接使用i18n的key" />
+		<xPageTitle title="这里是标题，可以直接使用i18n的key" :tips="cptTips" />
 		<xPageContent>
-			{{ configsTable.data.selected }}
 			<xTablebar :configs="configsTable">
 				<template #left>
 					<xBtnArray :configs="oprBtnArray" />
@@ -50,8 +49,8 @@ export default async function () {
 						list: images,
 						total
 					});
-				} catch (e) {
-					_.$msgError(e);
+				} catch (error) {
+					_.$msgError(error);
 				} finally {
 					_.$loading(false);
 				}
@@ -257,6 +256,15 @@ export default async function () {
 			};
 		},
 		computed: {
+			cptTips() {
+				return h("div", [
+					"当前选择:",
+					h(
+						"ul",
+						this.configsTable.data.selected.map(row => h("li", row))
+					)
+				]);
+			},
 			searchParams() {
 				return _.$pickValueFromConfigs(this.formSearch);
 			}

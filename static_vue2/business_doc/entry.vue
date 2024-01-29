@@ -9,7 +9,6 @@ export default async function () {
 		};
 
 		_.$msgError = msg => {
-			debugger;
 			return _.$notify.error({
 				title: "错误",
 				message: msg

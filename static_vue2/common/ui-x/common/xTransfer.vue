@@ -3,7 +3,7 @@
 		<div class="flex xTransfer center" v-if="slotSearchForm" :is="slotSearchForm" ref="slotSearchForm" :vm="vm"></div>
 		<div class="flex">
 			<xSearchList class="flex1" :items="originItems" v-model="originValue" :title="originTitle" :on-query="queryOrigin" ref="origin" :slotSearchForm="slotSearchFormOrigin" />
-			<div class="flex vertical middle center padding16">
+			<div class="flex vertical middle center padding">
 				<xBtn :configs="btnLeft" />
 				<xBtn :configs="btnRight" />
 			</div>
@@ -94,4 +94,20 @@ export default async function () {
 }
 </script>
 
-<style lang="less"></style>
+<style lang="less">
+.xTransfer {
+	margin: 20px 0;
+	.card-body {
+		min-width: 246px;
+		height: 246px;
+		overflow: auto;
+	}
+	.card {
+		box-shadow: 0 3px 8px rgb(0 0 0 / 15%);
+		border-radius: var(--border-radius--mini);
+		border: 0px solid var(--el-text-color-primary);
+		padding: 10px;
+		background-color: #ffff;
+	}
+}
+</style>

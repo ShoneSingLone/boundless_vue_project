@@ -1,7 +1,18 @@
 <script lang="ts">
 export default async function () {
 	return {
-		props: ["header"],
+		props: {
+			bodyClass: {
+				type: Object,
+				default() {
+					return {};
+				}
+			},
+			header: {
+				type: String,
+				default: ""
+			}
+		},
 		data() {
 			return {
 				isLoading: false
@@ -16,6 +27,9 @@ export default async function () {
 			}
 		},
 		methods: {
+			getBodyClass(classObject) {
+				return _.merge({}, this.getClass(classObject), this.bodyClass);
+			},
 			getClass(classObject) {
 				if (hasOwn(this.$attrs, "card-no-border")) {
 					classObject["el-card"] = false;
@@ -28,7 +42,8 @@ export default async function () {
 				if (hasOwn(this.$attrs, "bg-is-gray")) {
 					classObject["bg-is-gray"] = true;
 				}
-				return classObject;
+
+				return _.merge(classObject, this.bodyClass);
 			},
 			vDomHeader() {
 				if (this.$scopedSlots.header) {
@@ -45,7 +60,7 @@ export default async function () {
 			const header = this.vDomHeader();
 			return h("div", { class: this.getClass({ xBlock: true, "el-card": true }) }, [
 				h("div", { vIf: header, class: this.getClass({ "el-card__header": true }) }, [header]),
-				h("div", { class: this.getClass({ "el-card__body": true }) }, [this.$scopedSlots.default?.()])
+				h("div", { class: this.getBodyClass({ "el-card__body": true }) }, [this.$scopedSlots.default?.()])
 			]);
 		}
 	};

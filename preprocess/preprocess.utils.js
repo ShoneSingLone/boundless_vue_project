@@ -3,14 +3,46 @@ const fs = require("fs");
 const path = require("path");
 const iconv = require("iconv-lite");
 const { _n } = require("@ventose/utils-node");
+var exec = require("child_process").exec;
+
+const DIRS_ARRAY = fs.readdirSync(path.resolve(__dirname, `../static_vue2`));
+
+const APP_NAME_ARRAY = DIRS_ARRAY.reduce((target, dirname) => {
+	const [, appName] = String(dirname).match(/business_(.*)/) || [];
+	if (appName) {
+		target.push(appName);
+	}
+	return target;
+}, []);
+
+exports.APP_NAME_ARRAY = APP_NAME_ARRAY;
+
+
+function log(data) {
+	console.log(stdDecode(data));
+}
+exports.log = log;
+
+
+function execCmd(cmd, options) {
+	let startTime = Date.now();
+	return new Promise((resolve, reject) => {
+		const result = exec(cmd, { maxBuffer: 1024 * 2000, encoding: "gbk" });
+		result.stdout.on("data", log);
+		result.stderr.on("data", log);
+		result.on("close", code => {
+			console.log(`🚀 exec ${cmd} spend time ${(Date.now() - startTime) / 1000}s`);
+			resolve();
+		});
+	});
+};
+
+exports.execCmd = execCmd;
+
 
 const stdDecode = content => {
 	content = iconv.decode(content, "gbk");
 	return content.replace("\r", "").replace("\n", "");
-};
-
-exports.log = data => {
-	console.log(stdDecode(data));
 };
 
 var val = (item, prop, val) => {

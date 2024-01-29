@@ -7,4 +7,6 @@ zh-CN.js
 en-US.js
 vscode.workspace/**.code-workspace
 out
-preprocess/genDocMd/ast.left.json
+preprocess
+static_vue2/common/utils/useMoCommon.vue
+static_vue2/common/utils/useMoCommon

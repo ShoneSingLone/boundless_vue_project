@@ -27,6 +27,10 @@ export default async function () {
 				type: Boolean,
 				default: true
 			},
+			confirm: {
+				type: [Object, Boolean],
+				default: false
+			},
 			loading: Boolean,
 			disabled: Boolean,
 			plain: Boolean,
@@ -48,6 +52,15 @@ export default async function () {
 			};
 		},
 		computed: {
+			cptConfirm() {
+				if (this.confirm) {
+					return this.confirm;
+				}
+				if (this.configs?.confirm) {
+					return this.configs.confirm;
+				}
+				return false;
+			},
 			cptIcon() {
 				if (this.icon) {
 					return this.icon;
@@ -181,39 +194,46 @@ export default async function () {
 			if (this.cptIsHide) {
 				return null;
 			}
-			//
-			return h(
-				"button",
-				{
-					directives: [
-						vm.cptUseRipple,
-						{
-							name: "xtips",
-							value: {
-								_btnInnerTips: !!vm.cptDisabledTips,
-								placement: "top",
-								content: vm.cptDisabledTips
-							}
+
+			if (vm.cptConfirm) {
+				return h("xBtnWithConfirm", {
+					...vm.cptConfirm,
+					configs: {
+						..._.omit(vm.configs, ["confirm"]),
+						preset: vm.preset
+					}
+				});
+			}
+
+			if (vm.configs)
+				//
+				return h(
+					"button",
+					{
+						attrs: {
+							title: vm.cptDisabledTips
 						},
-						/* 合并props里面的指令 */
-						...(vm.$vnode.data.directives || [])
-					],
-					onClick() {
-						vm.handleClick();
+						directives: [
+							vm.cptUseRipple,
+							/* 合并props里面的指令 */
+							...(vm.$vnode.data.directives || [])
+						],
+						onClick() {
+							vm.handleClick();
+						},
+						on: vm.$listeners,
+						disabled: vm.buttonDisabled || vm.cptLoading,
+						autofocus: vm.autofocus,
+						type: vm.type,
+						class: vm.cptClassName
 					},
-					on: vm.$listeners,
-					disabled: vm.buttonDisabled || vm.cptLoading,
-					autofocus: vm.autofocus,
-					type: vm.type,
-					class: vm.cptClassName
-				},
-				[
-					h("i", { vIf: vm.cptLoading, class: "el-icon-loading" }),
-					h("i", { vIf: !vm.cptLoading && vm.cptIcon, class: vm.cptIcon }),
-					/* vNode的变动不会触发render重新执行 template的slot优先级最高*/
-					this.$slots.default || vm.cptChildren
-				]
-			);
+					[
+						h("i", { vIf: vm.cptLoading, class: "el-icon-loading mr4" }),
+						h("i", { vIf: !vm.cptLoading && vm.cptIcon, class: [vm.cptIcon, "mr4"] }),
+						/* vNode的变动不会触发render重新执行 template的slot优先级最高*/
+						this.$slots.default || vm.cptChildren
+					]
+				);
 		}
 	});
 }
@@ -268,6 +288,9 @@ export default async function () {
 		border-color: var(--el-button-hover-border-color);
 		background-color: var(--el-button-hover-bg-color);
 		transform: scale(1.01);
+		.xIcon {
+			color: var(--el-button-hover-text-color);
+		}
 	}
 
 	&:active {

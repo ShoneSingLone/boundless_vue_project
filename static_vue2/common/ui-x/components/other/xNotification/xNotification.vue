@@ -1,6 +1,13 @@
 <template>
 	<transition name="el-notification-fade">
-		<div :class="['el-notification', customClass, horizontalClass]" v-show="visible" :style="positionStyle" @mouseenter="clearTimer()" @mouseleave="startTimer()" @click="click" role="alert">
+		<div
+			:class="['el-notification', wrapperClass, customClass, horizontalClass]"
+			v-show="visible"
+			:style="positionStyle"
+			@mouseenter="clearTimer()"
+			@mouseleave="startTimer()"
+			@click="click"
+			role="alert">
 			<i class="el-notification__icon" :class="[typeClass, iconClass]" v-if="type || iconClass"> </i>
 			<div class="el-notification__group" :class="{ 'is-with-icon': typeClass || iconClass }">
 				<h2 class="el-notification__title" v-text="title"></h2>
@@ -44,6 +51,9 @@ export default async function () {
 		},
 
 		computed: {
+			wrapperClass() {
+				return this.type ? `xNotification ${this.type}` : "xNotification";
+			},
 			typeClass() {
 				return this.type && typeMap[this.type] ? `el-icon-${typeMap[this.type]}` : "";
 			},

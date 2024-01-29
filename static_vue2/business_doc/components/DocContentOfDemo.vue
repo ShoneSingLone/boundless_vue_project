@@ -1,6 +1,7 @@
 <style lang="less">
 .el-DocContentOfDemo {
 	&-left {
+		position: relative;
 		display: flex;
 		flex-flow: column nowrap;
 		flex: 1;

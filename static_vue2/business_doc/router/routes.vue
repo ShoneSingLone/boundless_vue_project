@@ -49,6 +49,7 @@ export default async function () {
 						_.$newRoute("/component/data/card", "@/views/component/data/card/card.vue"),
 						_.$newRoute("/component/data/tag", "@/views/component/data/tag/tag.vue"),
 						_.$newRoute("/component/data/tree", "@/views/component/data/tree/DemoTree.vue"),
+						_.$newRoute("/component/data/descriptions", "@/views/component/data/descriptions/DemoDescriptions.vue"),
 						_.$newRoute("/component/data/virtualized-table", "@/views/component/data/virtualizedTable/virtualizedTable.vue")
 					]
 				}),
@@ -67,6 +68,7 @@ export default async function () {
 			children: [
 				_.$newRoute("/other/affix", "@/views/other/affix/DemoAffix.vue"),
 				_.$newRoute("/other/notification", "@/views/other/notification/Notification.vue"),
+				_.$newRoute("/other/alert", "@/views/other/alert/DemoAlert.vue"),
 				_.$newRoute("/other/layer", "@/views/other/layer/layer.vue"),
 				_.$newRoute("/other/move", "@/views/other/move/move.vue"),
 				_.$newRoute("/other/popover", "@/views/other/popover/popover.vue"),
@@ -89,7 +91,7 @@ export default async function () {
 		{
 			/* 本来应该是NotFound，但是没有必要 */
 			path: "*",
-			redirect: "/all-project"
+			redirect: "/other/alert"
 		}
 	];
 }

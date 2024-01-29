@@ -18,7 +18,7 @@
 		@mouseleave="hovering = false">
 		<template v-if="type !== 'textarea'">
 			<!-- 前置元素 -->
-			<div class="el-input-group__prepend" v-if="$scopedSlots.prepend">
+			<div class="el-input-group__prepend el-input-group__prepend-sub" v-if="$scopedSlots.prepend">
 				<slot name="prepend"></slot>
 			</div>
 			<input
@@ -31,6 +31,7 @@
 				:readonly="readonly"
 				:autocomplete="autoComplete || autocomplete"
 				ref="input"
+				@keyup.enter="handleEnter"
 				@compositionstart="handleCompositionStart"
 				@compositionupdate="handleCompositionUpdate"
 				@compositionend="handleCompositionEnd"
@@ -259,6 +260,10 @@ export default async function () {
 					}
 				};
 			},
+			handleEnter(event) {
+				this.focused = true;
+				this.$emit("enter", event);
+			},
 			handleBlur(event) {
 				this.focused = false;
 				this.$emit("blur", event);
@@ -393,6 +398,7 @@ export default async function () {
 </script>
 <style lang="less">
 .xItem {
+	--xItem-prepend-width: 72px;
 	.el-input__prefix,
 	.el-input__suffix {
 		width: 30px;
@@ -400,6 +406,43 @@ export default async function () {
 
 	.el-input__count-inner {
 		padding: 0 0px;
+	}
+
+	.xInput {
+		> .el-input-group__prepend {
+			padding: 0;
+			> .xItem-wrapper {
+				width: var(--xItem-prepend-width);
+			}
+		}
+	}
+}
+
+.xItem-wrapper[data-form-item-type="xItemInput"] {
+	.xItem_controller.is-error {
+		.el-input-group--prepend {
+			border: 1px solid var(--el-color-error);
+			border-radius: var(--border-radius);
+			.el-input-group__append,
+			.el-input-group__prepend {
+				border: unset;
+			}
+
+			.el-input-group__prepend-sub {
+				border: 1px solid transparent;
+				// border-color: var(--el-color-error);
+				+ .el-input__inner {
+					border: unset;
+					border-left: 1px solid #dcdfe6;
+				}
+			}
+		}
+	}
+}
+
+.el-input-group__prepend-sub {
+	> div[data-form-item-type="xItemSelect"] {
+		margin: 0 -20px;
 	}
 }
 </style>

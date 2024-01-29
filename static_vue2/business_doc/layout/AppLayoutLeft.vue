@@ -1,5 +1,5 @@
 <template>
-	<div id="AppLayoutLeft" :style="cptLeftStyle">
+	<div id="AppLayoutLeft" :style="leftStyle" :class="{ close: !isOpen }">
 		<div class="padding">
 			<xInput v-model="filterText" placeholder="Search" clearable />
 		</div>
@@ -130,7 +130,7 @@ export default async function () {
 			cptIconName() {
 				return this.isOpen ? "arrow_triangle-left" : "arrow_triangle-right";
 			},
-			cptLeftStyle() {
+			leftStyle() {
 				if (!this.isOpen) {
 					return `--left-aside-width:1px`;
 				}
@@ -175,117 +175,4 @@ export default async function () {
 	};
 }
 </script>
-<style lang="less">
-#AppLayoutLeft {
-	width: var(--left-aside-width);
-	position: relative;
-	background-color: #ffffff;
-	height: 100%;
-	display: flex;
-	flex-flow: column nowrap;
-	box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-
-	aside.sidebar-menu-wrapper {
-		position: relative;
-		height: 1px;
-		flex:1;
-		width: var(--left-aside-width);
-
-		&.hide {
-			.log-title-wrapper,
-			.sidebar-menu {
-				display: none;
-			}
-		}
-
-		.log-title-wrapper {
-			> .xIcon {
-				width: 48px;
-				height: 48px;
-				margin: 30px 30px 0;
-			}
-
-			> .title {
-				position: relative;
-				font-size: 20px;
-				padding-bottom: 30px;
-				font-weight: 700;
-				background: var(--el-color-white);
-				text-align: left;
-
-				&::before {
-					content: " ";
-					display: block;
-					position: absolute;
-					left: 4px;
-					right: 8px;
-					bottom: 10px;
-					border-bottom: 1px dashed var(--el-text-color-placeholder);
-					z-index: 1;
-				}
-			}
-		}
-
-		.sidebar-menu {
-			overflow: auto;
-			flex: 1;
-
-			.el-menu {
-				border-right: unset;
-
-				.el-submenu {
-					.el-submenu__title {
-						--height: 48px;
-						height: var(--height);
-						line-height: var(--height);
-					}
-				}
-
-				&.active {
-					.el-submenu {
-						.el-submenu__title {
-							background-color: #ecf5ff;
-							color: var(--ui-primary) !important;
-							// font-weight: 600;
-
-							&::before {
-								content: " ";
-								display: block;
-								position: absolute;
-								top: 0;
-								right: 0;
-								bottom: 0;
-								left: 0;
-								border-right: 4px solid var(--ui-primary) !important;
-								z-index: 1;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		.leftmenu-toggle {
-			--app-toggle-width: 10px;
-			position: absolute;
-			top: 50%;
-			left: var(--left-aside-width);
-			background-color: var(--el-color-white);
-			border-radius: 0 var(--app-toggle-width) var(--app-toggle-width) 0;
-			cursor: pointer;
-			height: 80px;
-			position: absolute;
-			top: 50%;
-			transform: translateY(-50%);
-			width: var(--app-toggle-width);
-			display: flex;
-			justify-content: center;
-			align-items: center;
-
-			&:hover {
-				box-shadow: var(--el-box-shadow);
-			}
-		}
-	}
-}
-</style>
+<style lang="less"></style>

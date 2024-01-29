@@ -151,7 +151,7 @@ async function onlyHandleJs(filePath, fileProp) {
 				}
 			} else if (right.name) {
 				/* right.type === "Identifier" */
-				console.log("🚀 ~ AssignmentExpression ~ right.name:", right.name);
+				console.log("right.name:", right.name);
 				const def = Identifier[right.name];
 				if (def) {
 					vars[prop] = def;

@@ -4,7 +4,13 @@ export default async function () {
 	const RULES = await _.$importVue("/common/utils/rules.vue");
 	const { EVENT_ARRAY } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	const { useAutoResize } = _useXui;
-	const NormalRender = await _.$importVue("/common/ui-x/common/xItem.NormalRender.vue");
+
+	/* 懒加载对应的渲染器  */
+	const _xItem_lazyLoadRender = {
+		ItemAsWrapper: false,
+		NormalRender: false,
+		ReadonlyAsRender: false
+	};
 
 	/* TODO:
 	xForm disabled
@@ -22,7 +28,9 @@ export default async function () {
   } */
 
 	return {
-		props: ["configs", "value", "payload"],
+		name: "xItem",
+		componentName: "xItem",
+		props: ["emitVM", "configs", "value", "payload", "readOnlyAs", /* 直接加在xItem上 */ "label", "rules"],
 		provide() {
 			const xItem = this;
 			return {
@@ -35,7 +43,19 @@ export default async function () {
 		},
 		setup(props) {
 			const vm = this;
+			if (vm.emitVM) {
+				vm.emitVM(vm);
+			}
 			const { cptPlaceholder } = useProps(vm);
+
+			function forceUpdate() {
+				vm.$forceUpdate();
+			}
+
+			_.$single.win.on("X_ITEM_RENDER_UPDATE", forceUpdate);
+			onBeforeUnmount(() => {
+				_.$single.win.off("X_ITEM_RENDER_UPDATE", forceUpdate);
+			});
 
 			/**
 			 * 配合modifyItemsAttrs的私有变量
@@ -44,12 +64,23 @@ export default async function () {
 				isDisabled: ""
 			});
 			if (!vm.configs) {
-				alert("xItem的configs为必填项");
-				vm.configs = {
-					label: "xItem的configs为必填项",
-					value: "当前xItem缺失必要configs",
-					rules: [RULES.required()]
-				};
+
+				if (this.$slots.default) {
+					vm.configs = {
+						THIS_CONFIGS_ONLY_FOR_LABEL: true,
+						label: this.label
+					};
+					if (this.rules) {
+						vm.configs.rules = this.rules;
+					}
+				} else {
+					alert("xItem的configs为必填项");
+					vm.configs = {
+						label: "xItem的configs为必填项",
+						value: "当前xItem缺失必要configs",
+						rules: [RULES.required()]
+					};
+				}
 			}
 			vm.configs = reactive(vm.configs);
 			// this.configs = reactive(this.configs);
@@ -180,7 +211,7 @@ export default async function () {
 				return `x_form_id_${this._uid}`;
 			},
 			cpt_label() {
-				return this.configs?.label;
+				return this.label || this.configs?.label;
 			},
 			cpt_isRequired() {
 				try {
@@ -215,25 +246,6 @@ export default async function () {
 			},
 			itemType() {
 				return this.configs.itemType || "xItemInput";
-			},
-			cptMsg() {
-				if (_.isString(this.configs?.msg) && this.configs?.msg) {
-					return h("div", [this.configs.msg]);
-				}
-				if (_.isFunction(this.configs?.msg)) {
-					return this.configs.msg.call(this.configs, { xItem: this });
-				}
-
-				if (this.configs?.msg?.TYPE_IS_VNODE) {
-					return this.configs.msg;
-				}
-				return null;
-			},
-			cptTips() {
-				if (_.isString(this.configs.tips)) {
-					return this.configs.tips;
-				}
-				return this.configs.tips || "";
 			}
 		},
 		data() {
@@ -253,6 +265,48 @@ export default async function () {
 			};
 		},
 		methods: {
+			calTips() {
+				if (_.isString(this.configs.tips)) {
+					return this.configs.tips;
+				}
+				if (_.isFunction(this.configs?.tips)) {
+					return this.configs.tips.call(this.configs, { xItem: this });
+				}
+				return this.configs.tips || "";
+			},
+			calMsg() {
+				/* msg之前一直是计算属性，但是msg可用作为render函数，里面的组件可能是懒加载，懒加载完成后触发update，由于计算属性的缓存机制无法更新，所以改用方法tips */
+				if (_.isString(this.configs?.msg) && this.configs?.msg) {
+					return h("div", [this.configs.msg]);
+				}
+				if (_.isFunction(this.configs?.msg)) {
+					return this.configs.msg.call(this.configs, { xItem: this });
+				}
+
+				if (this.configs?.msg?.TYPE_IS_VNODE) {
+					return this.configs.msg;
+				}
+				return null;
+			},
+			async asyncLoadRender(renderName) {
+				if (_xItem_lazyLoadRender[renderName]) {
+					return;
+				}
+				if (_.isString(_xItem_lazyLoadRender[renderName])) {
+					return;
+				}
+				_xItem_lazyLoadRender[renderName] = "";
+				const item = {
+					ItemAsWrapper: () => _.$importVue("/common/ui-x/common/xItem.ItemAsWrapper.vue"),
+					NormalRender: () => _.$importVue("/common/ui-x/common/xItem.NormalRender.vue"),
+					ReadonlyAsRender: () => _.$importVue("/common/ui-x/common/xItem.ReadonlyAsRender.vue")
+				};
+				const getter = item[renderName];
+				const render = await getter();
+				console.log(renderName, `this.$root.broadcast("xItem", "xItemRenderUpdate", render);`);
+				_xItem_lazyLoadRender[renderName] = render;
+				_.$single.win.trigger("X_ITEM_RENDER_UPDATE");
+			},
 			triggerOnEmitValue(val) {
 				try {
 					if (this.configs?.onEmitValue) {
@@ -369,7 +423,37 @@ export default async function () {
 			}
 		},
 		render() {
-			return NormalRender.call(this);
+			/* 只读模式 */
+			if (this.readOnlyAs) {
+				if (_xItem_lazyLoadRender.ReadonlyAsRender) {
+					return _xItem_lazyLoadRender.ReadonlyAsRender.call(this);
+				} else {
+					this.asyncLoadRender("ReadonlyAsRender");
+				}
+			}
+
+			/* 与表单一致，只为了统一样式 */
+			if (this.configs?.THIS_CONFIGS_ONLY_FOR_LABEL) {
+				if (_xItem_lazyLoadRender.ItemAsWrapper) {
+					return _xItem_lazyLoadRender.ItemAsWrapper.call(this);
+				} else {
+					this.asyncLoadRender("ItemAsWrapper");
+				}
+			}
+
+			/* 正常 */
+			if (_xItem_lazyLoadRender.NormalRender) {
+				return _xItem_lazyLoadRender.NormalRender.call(this);
+			} else {
+				this.asyncLoadRender("NormalRender");
+			}
+
+			/* 骨架 */
+			return h("div", { staticClass: "el-skeleton is-animated " }, [
+				h("div", {
+					staticClass: "el-skeleton__item el-skeleton__p el-skeleton__paragraph"
+				})
+			]);
 		}
 	};
 }
@@ -377,6 +461,11 @@ export default async function () {
 
 <style lang="less">
 .xItem-wrapper {
+	--xItem-layout-justify-content: center;
+	--xItem-layout-align-items: center;
+	--xItem-controller-width: 1px;
+	--xItem-controller-flex: 1;
+
 	width: var(--xItem-wrapper-width);
 	&.w-100 {
 		width: 100%;
@@ -389,6 +478,13 @@ export default async function () {
 	.xItem_info-msg {
 		max-width: 90%;
 		overflow: auto;
+	}
+
+	.xItem-wrapper_layout {
+		display: flex;
+		justify-content: var(--xItem-layout-justify-content);
+		align-items: var(--xItem-layout-align-items);
+		flex: 1;
 	}
 }
 .xItem-wrapper + .xItem-wrapper {
@@ -413,8 +509,8 @@ export default async function () {
 }
 
 .xItem_controller {
-	width: 1px;
-	flex: 1;
+	width: var(--xItem-controller-width);
+	flex: var(--xItem-controller-flex);
 	display: flex;
 	flex-flow: column nowrap;
 	overflow: hidden !important;
@@ -432,8 +528,10 @@ export default async function () {
 	}
 }
 
-.xItem_controller > [class^="el-"] {
-	width: 100%;
+.xItem_controller {
+	> [class^="el-"] {
+		width: 100%;
+	}
 }
 
 .xItem_error-msg {

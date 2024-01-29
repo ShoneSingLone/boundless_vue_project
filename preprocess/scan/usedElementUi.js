@@ -18,7 +18,6 @@ async function scanFile(fileurl) {
 	}
 }
 
-// scanFile(`/Users/shone/workspace/m2o/static_vue2/common/ui-x/common/xItemSelect.vue`);
 const main = async () => {
 	const [, files] = await _n.asyncAllDirAndFile([targetDir]);
 	let file;

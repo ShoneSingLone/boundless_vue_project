@@ -31,6 +31,7 @@ export default async function () {
 						on: vm.mixin_listeners,
 						/* configs,value */
 						onChange(val) {
+							debugger;
 							vm.mixin_value = val;
 						}
 					},

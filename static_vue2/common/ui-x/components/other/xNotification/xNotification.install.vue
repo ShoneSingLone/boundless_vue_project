@@ -13,13 +13,10 @@ export default async function () {
 		};
 
 		_.$notify = async function (options) {
-			console.time("xNotification");
 			const xNotification = await getCurrentNotifyComponent(_useXui.globalConfigs?.xNotification?.componentName);
 			const PopupManager = await _.$importVue("/common/libs/VuePopper/popupManager.vue");
-			console.timeEnd("xNotification");
 
 			const NotificationConstructor = Vue.extend(xNotification);
-
 			options = _.merge({}, options);
 			const userOnClose = options.onClose;
 			const id = "notification_" + seed++;

@@ -20,7 +20,6 @@ async function scanFile(fileurl) {
 	}
 }
 
-// scanFile(`D:/Users/SSL/Documents/ghca_code/m2o/static_vue2/business_doc/entry.vue`);
 
 (async () => {
 	const [, files] = await _n.asyncAllDirAndFile([targetDir]);
