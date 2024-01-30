@@ -104,7 +104,15 @@ export default async function () {
 			 * workloadName: /^[a-z]([-a-z0-9]*[a-z0-9])?$/
 			 * @returns {RegExp}
 			 */
-			workloadName: () => /^[a-z]([-a-z0-9]*[a-z0-9])?$/
+			workloadName: () => /^[a-z]([-a-z0-9]*[a-z0-9])?$/,
+			/**
+			 * 端口名称校验
+			 */
+			scRancherPortName: () => /^(?=.*\d)(?=.*[a-zA-Z])/,
+			/**
+			 * 环境变量名称校验
+			 */
+			scEnvName: () => /[-._a-zA-Z][-._a-zA-Z0-9]*'/
 		};
 	}
 

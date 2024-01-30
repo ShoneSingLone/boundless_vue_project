@@ -251,7 +251,7 @@ export default async function () {
 					trigger: ["change", "input", "blur"]
 				};
 			},
-			workloadName(msg = i18n("msgEnter220DigitsLettersNumbers")) {
+			workloadName(msg = i18n("workloadName")) {
 				return {
 					name: "name",
 					async validator({ val }) {
@@ -362,7 +362,59 @@ export default async function () {
 				return {
 					name: "notAllNumReg",
 					async validator({ val }) {
-						if (!val || _reg.notAllNumReg().test(val)) {
+						if (/^\d+$/.test(val) || val === "") {
+							return "";
+						}
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
+			},
+			scRancherPortName(msg = i18n("msgEnter220DigitsLettersNumbers")) {
+				return {
+					name: "scRancherPortName",
+					async validator({ val }) {
+						if (/^(?=.*\d)(?=.*[a-zA-Z])/.test(val)) {
+							return "";
+						}
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
+			},
+			scEnvName(msg = i18n("msgEnter220DigitsLettersNumbers")) {
+				return {
+					name: "scEnvName",
+					async validator({ val }) {
+						if (/[-._a-zA-Z][-._a-zA-Z0-9]*/.test(val)) {
+							return "";
+						}
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
+			},
+			/**
+			 * 天翼云evs名字正则
+			 * @param msg
+			 */
+			ctyunEvsName(msg = "") {
+				return {
+					name: "",
+					async validator({ val }) {
+						if (!/^[\u4e00-\u9fa5]{2,63}$/.test(val)) {
+							return "";
+						}
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
+			},
+			ctyunVpcName(msg = "") {
+				return {
+					name: "",
+					async validator({ val }) {
+						if (!/^[\u4e00-\u9fa5a-zA-Z0-9_-]{2,63}$/.test(val)) {
 							return "";
 						}
 						return msg;

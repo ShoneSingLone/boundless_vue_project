@@ -158,13 +158,10 @@
 			}
 		});
 	}
+	/*  */
 
 	/**
 	 * 用"xx.xx.xx"的字符串，安全get、set对象的值，如果是vue2，则用$set保证响应
-	 * @param {any} item
-	 * @param {any} prop
-	 * @param {any} val
-	 * @returns
 	 */
 	/* @typescriptDeclare (item: object, prop: string, val?: any)=> any */
 	function $val(item, prop, val) {
@@ -229,6 +226,8 @@
 		}
 		return item;
 	}
+
+	/*  */
 
 	/**
 	 * 依赖全局变量SRC_ROOT_PATH
@@ -457,6 +456,7 @@
 
 		/* dep jQuery */
 		await Promise.all([$appendStyle("/common/libs/layer/theme/default/layer.css"), $appendScript("/common/libs/layer/layer.js"), $appendScript("/common/libs/common.js")]);
+		await $appendScript("/common/libs/common.$.ajax.js");
 		/*  */
 		if (isDev) {
 			window.ONLY_USE_IN_DEV_MODEL && window.ONLY_USE_IN_DEV_MODEL();

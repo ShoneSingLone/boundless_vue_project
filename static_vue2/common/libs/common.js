@@ -4,7 +4,120 @@ const isDev = !!localStorage.isDev;
 	if (isDev) {
 		console.log("common.js");
 	}
+	/**
+	 * 名字随机
+	 * @param e
+	 */
+	/* @typescriptDeclare (e:number):string */
+	_.$ramdomStr = function (e) {
+		e = e || 26;
+		var t = "abcdefhijkmnprstwxyz0123456789";
+		var a = t.length;
+		var n = "";
+		for (let i = 0; i < e; i++) n += t.charAt(Math.floor(Math.random() * a));
+		return n;
+	};
+	/**
+	 * 打开选择器
+	 * @returns
+	 */
+	/* @typescriptDeclare ()=>Promise<void> */
+	_.$openFileSelector = function () {
+		let lock = false;
+		return new Promise((resolve, reject) => {
+			// create input file
+			const el = document.createElement("input");
+			el.style.display = "none";
+			el.setAttribute("type", "file");
+			document.body.appendChild(el);
 
+			el.addEventListener(
+				"change",
+				() => {
+					lock = true;
+					resolve(el.files);
+					// remove dom
+					document.body.removeChild(el);
+				},
+				{ once: true }
+			);
+
+			// file blur
+			window.addEventListener(
+				"focus",
+				() => {
+					setTimeout(() => {
+						if (!lock && el) {
+							reject(new Error("onblur"));
+							// remove dom
+							document.body.removeChild(el);
+						}
+					}, 300);
+				},
+				{ once: true }
+			);
+
+			// open file select box
+			el.click();
+		});
+	};
+
+	/**
+	 * 读取文件为文本
+	 * @param {*} file
+	 */
+	/* @typescriptDeclare (obj:Object)=>Promise<string> */
+	_.$readFileAsText = async function (file) {
+		return new Promise((resolve, reject) => {
+			var reader = new FileReader();
+			reader.readAsText(file);
+			reader.onload = function () {
+				resolve(reader.result);
+			};
+			reader.onerror = reject;
+		});
+	};
+
+	/**
+	 * 下载文本为文件
+	 * @param {*} dataString
+	 * @param {*} filename
+	 */
+	/* @typescriptDeclare (obj:Object, filename:string)=>Promise<void> */
+	_.$downloadTextAsBlob = function (dataString, filename) {
+		return new Promise(resolve => {
+			var eleLink = document.createElement("a");
+			eleLink.download = filename;
+			eleLink.style.display = "none";
+			var blob = new Blob([dataString], { type: "text/plain;charset=utf-8" });
+			eleLink.href = URL.createObjectURL(blob);
+			document.body.appendChild(eleLink);
+			eleLink.click();
+			document.body.removeChild(eleLink);
+
+			resolve();
+		});
+	};
+
+	/**
+	 * 获取对象的值
+	 */
+	/*@typescriptDeclare (obj:Object,key:string)=>string */
+	_.$handleSetFormValue = (obj, key) => {
+		return obj[`${key}`] || "";
+	};
+	/**
+	 * //将空字符串转换为null
+	 * @param str
+	 * @return {null|*}
+	 */
+	/* @typescriptDeclare (str:string)=>null|string */
+	_.$translateStrByNull = str => {
+		if (str === "") {
+			return null;
+		}
+		return str;
+	};
 	/**
 	 *
 	 * @param {*} timestamp 多少时间以前
@@ -86,10 +199,119 @@ const isDev = !!localStorage.isDev;
 	/** 全局工具函数，共享lodash的全局变量_
 	 *  $前缀的是自定义函数
 	 */
+
 	/*  */
+	window.defTable = options => {
+		if (!Vue.hasOwn(options, "isHideFilter")) {
+			options.isHideFilter = false;
+		}
+		if (!Vue.hasOwn(options, "isHideQuery")) {
+			options.isHideQuery = false;
+		}
+		if (!Vue.hasOwn(options, "pagination")) {
+			options.pagination = {
+				page: 1,
+				total: 0,
+				size: 10
+			};
+		}
+		if (!Vue.hasOwn(options, "disabled")) {
+			options.disabled = false;
+		}
+		return options;
+	};
+
+	window.defTable.colMultiple = ({ by, getConfigs }) => {
+		const { h } = Vue;
+		const checkbox = {
+			prop: "COL_MULTIPLE",
+			label: i18n("checkbox"),
+			width: 48,
+			fixed: "left",
+			headerCellRenderer(_props) {
+				const tableConfigs = getConfigs();
+				const isChecked = tableConfigs.data.list.length > 0 && tableConfigs.data.set.size === tableConfigs.data.list.length;
+				const isIndeterminate = tableConfigs.data.set.size > 0 && tableConfigs.data.set.size < tableConfigs.data.list.length;
+				const checkBoxProps = {
+					indeterminate: isIndeterminate,
+					value: isChecked,
+					onChange() {
+						if (tableConfigs.data.set.size < tableConfigs.data.list.length) {
+							tableConfigs.data.set = new Set(_.map(tableConfigs.data.list, i => i[by]));
+						} else {
+							tableConfigs.data.set = new Set();
+						}
+					}
+				};
+				const checkBoxVnode = h("elCheckbox", checkBoxProps);
+				return h(
+					"div",
+					{
+						class: "flex center width100"
+					},
+					[checkBoxVnode]
+				);
+			},
+			cellRenderer: ({ rowData }) => {
+				const tableConfigs = getConfigs();
+				const isChecked = tableConfigs.data.set.has(rowData[by]);
+				return h(
+					"div",
+					{
+						class: "flex center width100"
+					},
+					[
+						h("elCheckbox", {
+							value: isChecked,
+							onChange(value) {
+								if (value) {
+									tableConfigs.data.set.add(rowData[by]);
+								} else {
+									tableConfigs.data.set.delete(rowData[by]);
+								}
+								/* vue2 未对set map 做响应式支持？？？ */
+								tableConfigs.data.set = _.clone(tableConfigs.data.set);
+							}
+						})
+					]
+				);
+			}
+		};
+		return checkbox;
+	};
+	window.defTable.colActions = ({ cellRenderer, width, fixed = "right" }) => {
+		const columnDefaultConfigs = {
+			prop: "COL_ACTIONS",
+			label: i18n("checkbox"),
+			fixed,
+			width,
+			headerCellRenderer(_props) {
+				return i18n("操作");
+			}
+		};
+
+		if (cellRenderer) {
+			columnDefaultConfigs.cellRenderer = cellRenderer;
+		}
+		return columnDefaultConfigs;
+	};
+
+	window.defItems = options => {
+		return _.reduce(
+			options,
+			(target, configs, prop) => {
+				if (!Vue.hasOwn(configs, "disabled")) {
+					configs.disabled = false;
+				}
+				target[prop] = configs;
+				return target;
+			},
+			{}
+		);
+	};
+
 	window.defItem = (...args) => {
 		let options = _.merge.apply(_, args);
-
 		if (!Vue.hasOwn(options, "disabled")) {
 			options.disabled = false;
 		}
@@ -323,149 +545,6 @@ const isDev = !!localStorage.isDev;
 		}
 	});
 
-	_.$ajax = (function () {
-		function configs(API_OPTIONS) {
-			let { requestInjector, responseInjector } = this;
-
-			const normal = options => options;
-
-			requestInjector = requestInjector || normal;
-			responseInjector = responseInjector || normal;
-
-			let { type, url, options, success: resolve, error: reject } = API_OPTIONS;
-
-			const data = (isUseBodyParams => {
-				if (isUseBodyParams) {
-					if (options.query) {
-						url = (() => {
-							if (options.query) {
-								if (_.isString(options.query)) {
-									return url + "?" + options.query;
-								}
-								if (_.isPlainObject(options.query)) {
-									return url + "?" + _.map(options.query, (value, key) => `${key}=${encodeURIComponent(value)}`).join("&");
-								}
-							}
-						})();
-					}
-					return JSON.stringify(options.data || {});
-				} else {
-					if (_.isString(options.data)) {
-						return options.data;
-					}
-					if (_.isPlainObject(options.data)) {
-						return _.map(options.data, (value, key) => `${key}=${encodeURIComponent(value)}`).join("&");
-					}
-				}
-			})(["POST", "PUT"].includes(_.toUpper(type)));
-
-			const headers = _.merge({ "X-Language": localStorage["X-Language"] }, options.headers);
-			const errorCodeArray = [400, 401, 402, 403, 404, 405, 500, 555];
-			return requestInjector({
-				headers,
-				dataType: "json",
-				url,
-				type,
-				data,
-				contentType: "application/json",
-				dataType: "JSON",
-				success(response) {
-					response = responseInjector(response);
-					if (_.isPlainObject(response)) {
-						/* 兼容 */
-						const errcode = response?.errcode || response?.code;
-
-						if (errcode) {
-							if (errorCodeArray.includes(errcode)) {
-								reject(response.body || response);
-								return;
-							}
-						}
-						if (response?.status) {
-							if (errorCodeArray.includes(response.status)) {
-								const { body, message } = response || {};
-								reject(body || message);
-								return;
-							}
-						}
-					}
-					return resolve(response);
-				},
-				error(response) {
-					if (401 === response.status) {
-						//超时了
-						let locationUrl = response.getResponseHeader("Location");
-						location.assign(locationUrl);
-					} else {
-						if (errorCodeArray.includes(response.status)) {
-							reject(response?.responseJSON?.message || JSON?.stringify(response?.responseJSON, null, 2));
-						} else {
-							reject(response);
-						}
-					}
-				}
-			});
-		}
-
-		const urlWrapper = url => `${window._URL_PREFIX || ""}${url}`;
-
-		const $ajax = {
-			post: (url, options = {}) => {
-				return new Promise((resolve, reject) => {
-					$.ajax(
-						configs.call($ajax, {
-							type: "POST",
-							url: urlWrapper(url),
-							options,
-							success: resolve,
-							error: reject
-						})
-					);
-				});
-			},
-			get: (url, options = {}) => {
-				return new Promise((resolve, reject) => {
-					$.ajax(
-						configs.call($ajax, {
-							type: "GET",
-							url: urlWrapper(url),
-							options,
-							timeout: 1000 * 60,
-							success: resolve,
-							error: reject
-						})
-					);
-				});
-			},
-			put: (url, options = {}) => {
-				return new Promise((resolve, reject) => {
-					$.ajax(
-						configs.call($ajax, {
-							type: "put",
-							url: urlWrapper(url),
-							options,
-							success: resolve,
-							error: reject
-						})
-					);
-				});
-			},
-			delete: (url, options = {}) => {
-				return new Promise((resolve, reject) => {
-					$.ajax(
-						configs.call($ajax, {
-							type: "delete",
-							url: urlWrapper(url),
-							options,
-							success: resolve,
-							error: reject
-						})
-					);
-				});
-			}
-		};
-		return $ajax;
-	})();
 	/*  */
 	(function () {
 		/**
@@ -830,9 +909,13 @@ const isDev = !!localStorage.isDev;
 			}, 300)
 		);
 
-		function $privateSetWindowVmDefaultMethods(WindowVueCtor, indexPanel) {
+		function $privateSetWindowVmDefaultMethods({ WindowVueCtor, indexPanel, options, layero }) {
 			WindowVueCtor.propsData = WindowVueCtor.propsData || {};
-			WindowVueCtor.propsData.$closeWindow = () => layer.close(indexPanel);
+			/* 点击$closeWindow 和 X 都会触发关闭 */
+			WindowVueCtor.propsData.$closeWindow = () => {
+				var close = options.cancel && options.cancel(indexPanel, layero);
+				close === false || layer.close(indexPanel);
+			};
 			WindowVueCtor.propsData.$layerMax = () => layer.full(indexPanel);
 			WindowVueCtor.propsData.$layerMin = () => layer.min(indexPanel);
 			WindowVueCtor.propsData.$layerRestore = () => layer.restore(indexPanel);
@@ -848,7 +931,7 @@ const isDev = !!localStorage.isDev;
 			}
 
 			// WindowVueCtor.el = `#${id}`;
-			vm = $privateSetWindowVmDefaultMethods(WindowVueCtor, indexPanel);
+			vm = $privateSetWindowVmDefaultMethods({ WindowVueCtor, indexPanel, options, layero });
 			/* 在window内可以直接调用 */
 			vm.$bus = _.merge({ layero, indexPanel }, WindowVueCtor?.bus || {});
 
@@ -882,11 +965,13 @@ const isDev = !!localStorage.isDev;
 		};
 
 		/**
-		 *
 		 * @param {*} title：{stirng}dialog标题
 		 * @param {*} WindowVueCtor:Vue组件,通常用_.$importVue引入
 		 * @param {*} options:{layer的参数，但是一般用不到，有需要可以自己看源码}
-		 * @returns
+		 * @returns Vue组件实例
+		 * hooks vm.onWindowClose事件
+		 * @example const vm = await _.$openWindow(...)
+		 * vm.onWindowClose = callBackFunction
 		 */
 		/* @typescriptDeclare (title:string, WindowVueCtor:Vue, options?:object)=>void */
 		_.$openWindow = async (title, WindowVueCtor, options = {}) => {
@@ -918,6 +1003,7 @@ const isDev = !!localStorage.isDev;
 							},
 							success(layero, indexPanel, layerVM) {
 								vm = _.$privateLayerSuccessThenMountVueComponent(WindowVueCtor, indexPanel, vm, layero, options, id, DIALOG_CACHE, layerVM);
+								resolve(vm);
 							},
 							yes(indexPanel, layero) {
 								if (_.isFunction(options._yes)) {
@@ -928,7 +1014,7 @@ const isDev = !!localStorage.isDev;
 									layer.close(indexPanel);
 								}
 							},
-							cancel: _.$doNoting,
+							cancel: options.cancel || _.$doNoting,
 							end(indexPanel) {
 								const $layerPanel = $(vm.$el).parents(".layui-layer.layui-layer-page.layer-anim-close");
 								$layerPanel.remove();
@@ -938,8 +1024,11 @@ const isDev = !!localStorage.isDev;
 								vm.$destroy();
 								$container.remove();
 								$container = null;
+								if (vm.onWindowClose) {
+									const onWindowClose = vm.onWindowClose;
+									onWindowClose();
+								}
 								vm = null;
-								resolve();
 							}
 						},
 						options
@@ -1120,7 +1209,7 @@ const isDev = !!localStorage.isDev;
 				try {
 					scfObjAsyncFn = new Function("payload", `with ({..._,...Vue}){${innerCode};}`);
 				} catch (e) {
-					console.warn(innerCode);
+					console.error(innerCode);
 					throw e;
 				}
 				const fnPayload = new Proxy(payload, {
@@ -1135,7 +1224,7 @@ const isDev = !!localStorage.isDev;
 					_.THIS_FILE_URL.push(resolvedURL);
 					component = await scfObjAsyncFn(fnPayload);
 				} catch (e) {
-					console.warn(scfObjAsyncFn.toString());
+					console.error(scfObjAsyncFn.toString());
 					throw e;
 				} finally {
 					_.THIS_FILE_URL.pop();
@@ -1147,6 +1236,7 @@ const isDev = !!localStorage.isDev;
 				}
 				return component;
 			} catch (error) {
+				console.error(scritpSourceCode);
 				console.error(error);
 			}
 		};
@@ -1330,21 +1420,26 @@ const isDev = !!localStorage.isDev;
 		}
 		return configs.pagination;
 	};
-	/*  */
-	_.$setTableData = function (configs, { list, total, selected = [] }) {
-		if (configs.data) {
-			if (selected !== undefined && _.isArray(selected)) {
-				configs.data.selected = selected;
-			}
+	/**
+	 * 设置列表信息
+	 * @param {*} tableConfigs
+	 * @param {*} param1 如果不是特意保留，每次会清空已选
+	 */
+	/* @typescriptDeclare (configs:object, payload:{list:any[]; total?:number, selected?:string[], set?:Set<string>}) => void */
+	_.$setTableData = function (tableConfigs, { list, total = 0, selected = [], set = new Set() }) {
+		if (tableConfigs.data) {
+			tableConfigs.data.selected = selected;
+			tableConfigs.data.set = set;
 			if (list !== undefined && _.isArray(list)) {
-				configs.data.list = list;
+				tableConfigs.data.list = list;
 			}
 		} else {
 			throw new Error("table cofigs 必须要有data属性且为对象");
 		}
 
-		if (configs.pagination) {
-			configs.pagination.total = total || 0;
+		/* pagination 非 required */
+		if (tableConfigs.pagination) {
+			tableConfigs.pagination.total = total;
 		}
 	};
 

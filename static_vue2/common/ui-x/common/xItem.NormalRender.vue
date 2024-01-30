@@ -25,6 +25,7 @@ export default async function () {
 				vm.p_value = val;
 			}
 		};
+
 		return h(
 			"div",
 			{
@@ -39,7 +40,7 @@ export default async function () {
 				h(
 					"div",
 					{
-						staticClass: "xItem-wrapper_layout flex middle center flex1"
+						staticClass: "xItem-wrapper_layout"
 					},
 					[
 						/* label */
@@ -63,9 +64,9 @@ export default async function () {
 								h(
 									"elTooltip",
 									{
-										vIf: vm.cptTips,
+										vIf: vm.calTips(),
 										// effect: "dark",
-										content: vm.cptTips,
+										content: vm.calTips(),
 										placement: "top-end"
 									},
 									[
@@ -113,7 +114,7 @@ export default async function () {
 					]
 				),
 				/* 信息提示 */
-				h("div", { vIf: vm.cptMsg, staticClass: "xItem_info-msg", style: { overflow: "hidden", margin: `8px 0 16px ${vm.width + 16}px` } }, [vm.cptMsg])
+				h("div", { vIf: vm.calMsg(), staticClass: "xItem_info-msg", style: { overflow: "hidden", margin: `8px 0 16px ${vm.width + 16}px` } }, [vm.calMsg()])
 			]
 		);
 	};

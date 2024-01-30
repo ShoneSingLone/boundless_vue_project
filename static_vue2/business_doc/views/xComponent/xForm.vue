@@ -2,7 +2,7 @@
 	<div>
 		<xForm>
 			<xItem :configs="xItemInput" />
-			<xItem :configs="xItemInput2" />
+			<xItem :configs="xItemSelect" />
 			<xItem :configs="xItemInput3" />
 			<xItem :configs="xItemInput3" />
 			<xItem :configs="xItemInput3" />
@@ -27,6 +27,7 @@ export default async function () {
 			}
 		},
 		data() {
+			const vm = this;
 			return {
 				xItemInputValue: "",
 				xItemInput: {
@@ -42,9 +43,40 @@ export default async function () {
 					},
 					rules: [_rules.required()]
 				},
-				xItemInput2: {
+				xItemSelect: {
 					value: "",
-					label: "2",
+					label: "xItemSelect",
+					itemType: "xItemSelect",
+					options: [
+						{
+							label: "1",
+							value: "1"
+						},
+						{
+							label: "2",
+							value: "2"
+						}
+					],
+					onFocus() {
+						vm.xItemInputValue = "onFocus";
+					},
+					onBlur() {
+						vm.xItemInputValue = "onBlur";
+					}
+				},
+				xItemSelectSub: {
+					value: "",
+					itemType: "xItemSelect",
+					options: [
+						{
+							label: "1",
+							value: "1"
+						},
+						{
+							label: "2",
+							value: "2"
+						}
+					],
 					onFocus() {
 						vm.xItemInputValue = "onFocus";
 					},
@@ -56,12 +88,18 @@ export default async function () {
 					value: "",
 					label: "label3",
 					msg: "提示",
+					$vSlots: {
+						prepend() {
+							return h("xItem", { configs: vm.xItemSelectSub, style: `--xItem-wrapper-width:80px` });
+						}
+					},
 					onFocus() {
 						vm.xItemInputValue = "onFocus";
 					},
 					onBlur() {
 						vm.xItemInputValue = "onBlur";
-					}
+					},
+					rules: [_rules.required()]
 				}
 			};
 		}

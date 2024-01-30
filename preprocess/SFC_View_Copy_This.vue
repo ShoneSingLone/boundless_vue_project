@@ -1,6 +1,6 @@
 <template>
 	<div class="page-view">
-		<xPageTitle title="标题使用i18n的key" />
+		<xPageTitle :title="i18n('标题使用i18n的key')" />
 		<xPageContent>
 			<xTablebar :configs="configsTable">
 				<template #left>
@@ -54,9 +54,9 @@ export default async function () {
 						list: images,
 						total
 					});
-				} catch (e) {
-					_.$msgError(e);
-				} finally {
+				} catch (error) {
+					_.$msgError(error);
+				}  finally {
 					_.$loading(false);
 				}
 			},
@@ -129,7 +129,7 @@ export default async function () {
 						vm.getTableData(pagination);
 					},
 					pagination: {
-						page: 0,
+						page: 1,
 						total: 0,
 						size: 10
 					},

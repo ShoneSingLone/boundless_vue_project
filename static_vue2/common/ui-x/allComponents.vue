@@ -2,14 +2,22 @@
 export default async function () {
 	return [
 		/* *************** */
+		"components/other/xAlert/xAlert",
+		"components/TableCell/TableCell",
+		"components/TableCell/TableCellItem",
+		/*  */
+		"components/base/xBtn/xBtnWithConfirm",
 		"components/base/xBtn/xBtn",
 		"components/base/xBtn/xBtnArray",
 		"components/base/xBtn/xBtnGroup",
+		"components/base/xBtn/xColActionAndMore",
 		/*  */
 		"components/data/xMenuTree/xMenuTree",
 		"components/navigation/xTabs/xTabs",
 		"components/navigation/xTabs/xTabPane",
 		"components/data/xTag/xTag",
+		"components/data/xDesc/xDesc",
+		"components/data/xDesc/xDescItem",
 		"components/data/xTableVir/xTableVir",
 		"components/data/xVirtualList/xFixedSizeList",
 		"components/data/xTree/xTree",
@@ -36,6 +44,10 @@ export default async function () {
 		/*  */
 		"components/other/xScrollbar/xScrollbar",
 		/* *************** */
+		"components/layout/page/xPageTitle",
+		"components/layout/page/xPageContent",
+		"components/layout/page/xPageFooter",
+		/* ********************** */
 		"common/xMd",
 		"common/xItemWrapper",
 		"common/xAutoResizer",
@@ -66,10 +78,9 @@ export default async function () {
 		"common/xItemRadioGroup",
 		"common/xItemSelect",
 		"common/xItemSwitch",
+		"common/xItemCheckBox",
 		"common/xMenuTreeItem",
 		"common/xOprWithMore",
-		"common/xPageContent",
-		"common/xPageTitle",
 		"common/xPagination",
 		"common/xRender",
 		"common/xSearchList",

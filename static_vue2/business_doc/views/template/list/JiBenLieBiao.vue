@@ -49,8 +49,8 @@ export default async function () {
 						list: images,
 						total
 					});
-				} catch (e) {
-					_.$msgError(e);
+				} catch (error) {
+					_.$msgError(error);
 				} finally {
 					_.$loading(false);
 				}

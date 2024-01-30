@@ -14,7 +14,6 @@ export default async function () {
 		},
 		render(h) {
 			const vm = this;
-
 			let tag = "xInput";
 			if (this.isNumber) {
 				tag = "xInputNumber";

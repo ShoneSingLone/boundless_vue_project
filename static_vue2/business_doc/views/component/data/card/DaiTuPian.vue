@@ -50,15 +50,5 @@ export default async function () {
 		width: 100%;
 		display: block;
 	}
-
-	.clearfix:before,
-	.clearfix:after {
-		display: table;
-		content: "";
-	}
-
-	.clearfix:after {
-		clear: both;
-	}
 }
 </style>

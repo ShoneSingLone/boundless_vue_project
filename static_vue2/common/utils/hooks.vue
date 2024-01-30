@@ -4,6 +4,38 @@ export default async function hooks() {
 
 	if (!Vue._hooks) {
 		Vue._hooks = {
+			useTabName({ vm, propName, defaultName }) {
+				if (!vm.$route) {
+					throw new Error("$route is undefined");
+				}
+				return computed({
+					get() {
+						const { path, query } = vm.$route;
+						if (query[propName]) {
+							return query[propName];
+						} else {
+							vm.$router.push({
+								path,
+								query: {
+									...query,
+									[propName]: defaultName
+								}
+							});
+						}
+						return defaultName;
+					},
+					set(tab_anme) {
+						const { path, query } = vm.$route;
+						vm.$router.push({
+							path,
+							query: {
+								...query,
+								[propName]: tab_anme
+							}
+						});
+					}
+				});
+			},
 			useDialogProps() {
 				return ["$closeWindow", "$layerMax", "$layerMin", "$layerRestore"];
 			},

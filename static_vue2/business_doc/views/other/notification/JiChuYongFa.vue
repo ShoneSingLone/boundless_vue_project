@@ -14,6 +14,7 @@
 		</div>
 		<div class="mt">
 			<xMd :md="md3" />
+			<xItem :configs="form.type" class="mb" />
 			<xBtn :configs="btnSingle" />
 			<xBtn :configs="btnClose" />
 		</div>
@@ -28,12 +29,12 @@ export default async function () {
 				const vm = this;
 				return {
 					label: "_.$notify.success",
-					preset: "success",
+					preset: vm.form.type.value,
 					disabled() {
 						return vm.notifyVm;
 					},
 					async onClick() {
-						vm.notifyVm = await _.$notify.success({
+						vm.notifyVm = await _.$notify[vm.form.type.value]({
 							title: "这是一条不会自动关闭的消息",
 							message: () => h("i", { style: "color: teal" }, "将message作为render函数使用,返回vNode"),
 							duration: 0
@@ -60,6 +61,30 @@ export default async function () {
 		},
 		data() {
 			return {
+				form: defItems({
+					type: {
+						value: "success",
+						itemType: "xItemSelect",
+						options: [
+							{
+								label: "success",
+								value: "success"
+							},
+							{
+								label: "info",
+								value: "info"
+							},
+							{
+								label: "warning",
+								value: "warning"
+							},
+							{
+								label: "error",
+								value: "error"
+							}
+						]
+					}
+				}),
 				notifyVm: false,
 				md: `\`_.$notify\`会返回instance`,
 				md2: `关闭所有实例:\`_.$notify.closeAll()\``,

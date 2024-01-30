@@ -5852,7 +5852,7 @@ export default async function () {
 		padding: 4px;
 		background-color: #fdf6ec;
 		border-color: #faecd8;
-		color: #e6a23c;
+		color: var(--el-color-warning);
 		border-radius: var(--border-radius);
 		box-shadow: var(--el-box-shadow);
 	}

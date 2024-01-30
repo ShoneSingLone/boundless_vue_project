@@ -4,8 +4,8 @@
 			<xIcon icon="icon_table_filter" style="width: 24px; height: 24px; color: var(--ui-base-color-5)" class="pointer ml4" />
 		</div>
 		<el-dropdown-menu slot="dropdown">
-			<el-dropdown-item v-for="item in items" :key="item.label">
-				<el-checkbox v-model="item.isShow">{{ item.label }}</el-checkbox>
+			<el-dropdown-item v-for="item in cptColumnsForShow" :key="item.label">
+				<el-checkbox :value="isShow(item)" @change="$event => setIsShow(item, $event)">{{ item.label }}</el-checkbox>
 			</el-dropdown-item>
 		</el-dropdown-menu>
 	</el-dropdown>
@@ -27,9 +27,28 @@ export default async function () {
 		},
 		mounted() {},
 		watch: {},
-		methods: {},
+		methods: {
+			isShow(item) {
+				if (hasOwn(item, "isShow")) {
+					return item.isShow;
+				} else {
+					return true;
+				}
+			},
+			setIsShow(item, val) {
+				_.$val(item, "isShow", val);
+			}
+		},
 		computed: {
-			items() {
+			cptColumnsForShow() {
+				if (this.configs?.columns) {
+					return _.filter(this.configs?.columns, col => {
+						const isCol = /COL_/.test(col.prop);
+						return !isCol;
+					});
+				}
+
+				/* xTable colInfo 配置项*/
 				return _.filter(this.configs?.colInfo, (col, prop) => {
 					const isCol = /COL_/.test(prop);
 					return !isCol;

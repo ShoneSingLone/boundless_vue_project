@@ -34,7 +34,7 @@ export default async function () {
 		},
 		methods: {
 			resetIconColor() {
-				$(this.$el).css("color", this.cptColor);
+				// $(this.$el).css("color", this.cptColor);
 			},
 			handleClick(event) {
 				if (this.$listeners.click) {

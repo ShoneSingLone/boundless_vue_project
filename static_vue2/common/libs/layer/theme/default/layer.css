@@ -382,11 +382,11 @@ html #layuicss-layer {
 	height: 42px;
 	line-height: 42px;
 	border-bottom: 1px solid #eee;
-	font-size: 14px;
-	color: #333;
 	overflow: hidden;
 	background-color: #ffffff;
 	border-radius: 2px 2px 0 0;
+	font-size: var(--ui-font-size-modal-title);
+	color: var(--el-text-color-primary);
 }
 
 .layui-layer-setwin {

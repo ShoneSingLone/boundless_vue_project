@@ -61,7 +61,7 @@ export default async function () {
 }
 
 .xDialog-footer {
-	padding: 8px var(--xDialog-padding);
+	padding: 0 var(--xDialog-padding) var(--xDialog-padding);
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: flex-end;

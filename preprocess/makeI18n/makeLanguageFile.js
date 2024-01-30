@@ -8,7 +8,7 @@ const I18N_COMMON = require(path.resolve(__dirname, "./i18n.common.js"));
 /* 对应语言文件 */
 const LANGUAGE_FILE_ORDER = ["zh-CN", "en-US"];
 
-const specialI18nFilePath = `../../static_vue2/business_${APP_NAME}/i18n/i18n.all.js`;
+const specialI18nFilePath = `../../static_vue2/business_${APP_NAME}/i18n/all.i18n.js`;
 const I18N_SPECIAL = require(path.resolve(__dirname, specialI18nFilePath));
 
 let I18N_CONTENT = _.merge(I18N_SPECIAL, I18N_COMMON);

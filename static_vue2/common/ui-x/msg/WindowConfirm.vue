@@ -1,15 +1,18 @@
 <template>
 	<xDialog id="WindowConfirm">
-		<div v-html="content" />
+		<xRender :render="content" />
 		<template #footer>
-			<xBtn :configs="btnOk" />
-			<xBtn :configs="btnCancel" />
+			<xRender :render="renderFooter" v-if="renderFooter" />
+			<template v-else>
+				<xBtn :configs="btnOk" />
+				<xBtn :configs="btnCancel" />
+			</template>
 		</template>
 	</xDialog>
 </template>
 
 <script lang="ts">
-export default async function ({ onOk, onCancel, content }) {
+export default async function ({ onOk, onCancel, content, renderFooter }) {
 	const isUpdate = false;
 	/*  */
 	const RULES = await _.$importVue("/common/utils/rules.vue");
@@ -17,35 +20,23 @@ export default async function ({ onOk, onCancel, content }) {
 
 	return defineComponent({
 		props: useDialogProps(),
-		mounted() {
-			this.init();
-		},
 		data() {
 			return {
-				content,
-				form: {
-					cloudInfraId: {
-						label: i18n("resourcePool"),
-						itemType: "xItemSelect",
-						options: [],
-						rules: [RULES.required()]
-					},
-					name: {
-						label: i18n("availablePartitionName"),
-						rules: [RULES.required()]
-					}
-				},
-				formData: {
-					cloudInfraId: "",
-					name: ""
-				}
+				content
 			};
 		},
 		computed: {
+			renderFooter() {
+				if (renderFooter) {
+					return renderFooter(this);
+				}
+				return null;
+			},
 			btnOk() {
 				const vm = this;
+				let label = i18n("确定");
 				return {
-					label: i18n("确定"),
+					label,
 					async onClick() {
 						vm.$closeWindow();
 						onOk();
@@ -54,8 +45,9 @@ export default async function ({ onOk, onCancel, content }) {
 			},
 			btnCancel() {
 				const vm = this;
+				let label = i18n("取消");
 				return {
-					label: i18n("取消"),
+					label,
 					/* 因为是弹出确认框，引导用户取消 */
 					preset: "blue",
 					async onClick() {
@@ -63,24 +55,6 @@ export default async function ({ onOk, onCancel, content }) {
 						onCancel();
 					}
 				};
-			}
-		},
-		methods: {
-			init() {
-				/* 表单默认值 */
-				if (isUpdate) {
-					/* 修改 */
-					const { cloudInfraId, name } = row;
-					this.formData.cloudInfraId = cloudInfraId;
-					this.formData.name = name;
-				} else {
-					const item = _.first([]);
-					let cloudInfraId = "";
-					if (item) {
-						cloudInfraId = item.value;
-					}
-					this.formData.cloudInfraId = cloudInfraId;
-				}
 			}
 		}
 	});
@@ -90,11 +64,5 @@ export default async function ({ onOk, onCancel, content }) {
 <style lang="less">
 #WindowConfirm {
 	min-width: unset;
-
-	.xDialog-footer {
-		display: flex;
-		justify-content: center;
-		align-items: middle;
-	}
 }
 </style>

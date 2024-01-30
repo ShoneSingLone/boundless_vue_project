@@ -4,7 +4,7 @@
 			<xRender :render="btn.label" :payload="configs" />
 		</xBtn>
 		<xDropdown v-if="isShowMoreBtn" trigger="click" @visible-change="handleVisibleChange">
-			<xBtn type="text">
+			<xBtn preset="text">
 				{{ i18n("更多") }}
 			</xBtn>
 			<xDropdownMenu slot="dropdown" ref="ElDropdownMenu">
