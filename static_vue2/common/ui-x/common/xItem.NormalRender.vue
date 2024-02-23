@@ -8,11 +8,13 @@ export default async function () {
 			disabled: vm.cptDisabled,
 			attrs: {
 				...vm.cpt_bindProps.attrs,
-				disabled: vm.cptDisabled
+				disabled: vm.cptDisabled,
+				queryData: vm.cpt_queryData
 			},
 			props: {
 				...vm.cpt_bindProps.props,
-				disabled: vm.cptDisabled
+				disabled: vm.cptDisabled,
+				queryData: vm.cpt_queryData
 			},
 			configs: {
 				...vm.configs,
@@ -114,7 +116,7 @@ export default async function () {
 					]
 				),
 				/* 信息提示 */
-				h("div", { vIf: vm.calMsg(), staticClass: "xItem_info-msg", style: { overflow: "hidden", margin: `8px 0 16px ${vm.width + 16}px` } }, [vm.calMsg()])
+				h("div", { vIf: vm.calMsg(), staticClass: "xItem_info-msg color-secondary", style: { overflow: "hidden", margin: `8px 0 16px ${vm.width + 16}px` } }, [vm.calMsg()])
 			]
 		);
 	};

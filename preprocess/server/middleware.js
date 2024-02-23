@@ -19,11 +19,10 @@ function appUseProxy(app) {
 }
 
 function appRun(app, port = 3000) {
-	port = SERVER_PORT || port;
 	app.listen(port).on("error", () => {
 		app.server.close();
-		console.log("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀", `端口${port}被占用`);
-		appRun(app, ++port);
+		console.log("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀", `端口${port}被占用`, ++port);
+		appRun(app, port);
 	});
 
 	app.LOCALHOST_PORT = `http://localhost:${port}`;

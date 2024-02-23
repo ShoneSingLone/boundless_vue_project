@@ -101,7 +101,9 @@ export default async function ({ onSelect, onCancel, service_type, icon }) {
 					/* 云硬盘 */
 					evs: "mo_icon-ebs_center_console",
 					/* VPC */
-					vpc: "mo_icon-vpc_center_console"
+					vpc: "mo_icon-vpc_center_console",
+					/* 快照 */
+					snapshot: "mo_icon-snapshot"
 				};
 				return ICON_MAP[icon] || "xloading";
 			},

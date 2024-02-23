@@ -4,11 +4,60 @@ const isDev = !!localStorage.isDev;
 	if (isDev) {
 		console.log("common.js");
 	}
+
+
+	/**
+	 * requestAnimationFrame Throttle
+	 */
+	_.$rafThrottle = function (fn) {
+		let locked = false;
+		return function (...args) {
+			if (locked) return;
+			locked = true;
+			window.requestAnimationFrame(_ => {
+				fn.apply(this, args);
+				locked = false;
+			});
+		};
+	};
+
+
+
+	/**
+	 * 复制到剪贴板
+	 * @param textToCopy
+	 */
+	/* @typescriptDeclare (textToCopy:string)=>Promise<void> */
+	_.$copyToClipboard = function (textToCopy) {
+		// navigator clipboard 需要https等安全上下文
+		if (navigator.clipboard && window.isSecureContext) {
+			// navigator clipboard 向剪贴板写文本
+			return navigator.clipboard.writeText(textToCopy);
+		} else {
+			// 创建text area
+			let textArea = document.createElement("textarea");
+			textArea.value = textToCopy;
+			// 使text area不在viewport，同时设置不可见
+			textArea.style.position = "absolute";
+			textArea.style.opacity = 0;
+			textArea.style.left = "-999999px";
+			textArea.style.top = "-999999px";
+			document.body.appendChild(textArea);
+			textArea.focus();
+			textArea.select();
+			return new Promise((res, rej) => {
+				// 执行复制命令并移除文本框
+				document.execCommand('copy') ? res() : rej();
+				textArea.remove();
+			});
+		}
+	};
+
 	/**
 	 * 名字随机
 	 * @param e
 	 */
-	/* @typescriptDeclare (e:number):string */
+	/* @typescriptDeclare (e:number)=>string */
 	_.$ramdomStr = function (e) {
 		e = e || 26;
 		var t = "abcdefhijkmnprstwxyz0123456789";
@@ -66,7 +115,7 @@ const isDev = !!localStorage.isDev;
 	 * 读取文件为文本
 	 * @param {*} file
 	 */
-	/* @typescriptDeclare (obj:Object)=>Promise<string> */
+	/* @typescriptDeclare (obj:object)=>Promise<string> */
 	_.$readFileAsText = async function (file) {
 		return new Promise((resolve, reject) => {
 			var reader = new FileReader();
@@ -83,7 +132,7 @@ const isDev = !!localStorage.isDev;
 	 * @param {*} dataString
 	 * @param {*} filename
 	 */
-	/* @typescriptDeclare (obj:Object, filename:string)=>Promise<void> */
+	/* @typescriptDeclare (obj:object, filename:string)=>Promise<void> */
 	_.$downloadTextAsBlob = function (dataString, filename) {
 		return new Promise(resolve => {
 			var eleLink = document.createElement("a");
@@ -102,7 +151,7 @@ const isDev = !!localStorage.isDev;
 	/**
 	 * 获取对象的值
 	 */
-	/*@typescriptDeclare (obj:Object,key:string)=>string */
+	/*@typescriptDeclare (obj:object,key:string)=>string */
 	_.$handleSetFormValue = (obj, key) => {
 		return obj[`${key}`] || "";
 	};
@@ -200,101 +249,198 @@ const isDev = !!localStorage.isDev;
 	 *  $前缀的是自定义函数
 	 */
 
-	/*  */
-	window.defTable = options => {
-		if (!Vue.hasOwn(options, "isHideFilter")) {
-			options.isHideFilter = false;
-		}
-		if (!Vue.hasOwn(options, "isHideQuery")) {
-			options.isHideQuery = false;
-		}
-		if (!Vue.hasOwn(options, "pagination")) {
-			options.pagination = {
-				page: 1,
-				total: 0,
-				size: 10
-			};
-		}
-		if (!Vue.hasOwn(options, "disabled")) {
-			options.disabled = false;
-		}
-		return options;
-	};
-
-	window.defTable.colMultiple = ({ by, getConfigs }) => {
-		const { h } = Vue;
-		const checkbox = {
-			prop: "COL_MULTIPLE",
-			label: i18n("checkbox"),
-			width: 48,
-			fixed: "left",
-			headerCellRenderer(_props) {
-				const tableConfigs = getConfigs();
-				const isChecked = tableConfigs.data.list.length > 0 && tableConfigs.data.set.size === tableConfigs.data.list.length;
-				const isIndeterminate = tableConfigs.data.set.size > 0 && tableConfigs.data.set.size < tableConfigs.data.list.length;
-				const checkBoxProps = {
-					indeterminate: isIndeterminate,
-					value: isChecked,
-					onChange() {
-						if (tableConfigs.data.set.size < tableConfigs.data.list.length) {
-							tableConfigs.data.set = new Set(_.map(tableConfigs.data.list, i => i[by]));
-						} else {
-							tableConfigs.data.set = new Set();
-						}
-					}
+	(function () {
+		/*  */
+		window.defTable = options => {
+			if (!Vue.hasOwn(options, "isHideFilter")) {
+				options.isHideFilter = false;
+			}
+			if (!Vue.hasOwn(options, "isHideQuery")) {
+				options.isHideQuery = false;
+			}
+			if (!Vue.hasOwn(options, "pagination")) {
+				options.pagination = {
+					page: 1,
+					total: 0,
+					size: 10
 				};
-				const checkBoxVnode = h("elCheckbox", checkBoxProps);
-				return h(
-					"div",
-					{
-						class: "flex center width100"
-					},
-					[checkBoxVnode]
-				);
-			},
-			cellRenderer: ({ rowData }) => {
-				const tableConfigs = getConfigs();
-				const isChecked = tableConfigs.data.set.has(rowData[by]);
-				return h(
-					"div",
-					{
-						class: "flex center width100"
-					},
-					[
-						h("elCheckbox", {
-							value: isChecked,
-							onChange(value) {
-								if (value) {
-									tableConfigs.data.set.add(rowData[by]);
-								} else {
-									tableConfigs.data.set.delete(rowData[by]);
-								}
-								/* vue2 未对set map 做响应式支持？？？ */
-								tableConfigs.data.set = _.clone(tableConfigs.data.set);
-							}
-						})
-					]
-				);
 			}
-		};
-		return checkbox;
-	};
-	window.defTable.colActions = ({ cellRenderer, width, fixed = "right" }) => {
-		const columnDefaultConfigs = {
-			prop: "COL_ACTIONS",
-			label: i18n("checkbox"),
-			fixed,
-			width,
-			headerCellRenderer(_props) {
-				return i18n("操作");
+			if (!Vue.hasOwn(options, "disabled")) {
+				options.disabled = false;
 			}
+			return options;
 		};
 
-		if (cellRenderer) {
-			columnDefaultConfigs.cellRenderer = cellRenderer;
+		function SetAddAll(targetSet, sourceSet) {
+			for (const item of sourceSet) {
+				targetSet.add(item);
+			}
 		}
-		return columnDefaultConfigs;
-	};
+
+		/* ((((((((((((((((((((((coltypes))))))))))))))))))))))  */
+		window.defTable.colMultiple = ({ by, getConfigs, disabled }) => {
+			const { h } = Vue;
+			const checkbox = {
+				prop: "COL_MULTIPLE",
+				label: i18n("checkbox"),
+				width: 48,
+				fixed: "left",
+				headerCellRenderer(_props) {
+					const tableConfigs = getConfigs();
+					const isChecked = tableConfigs.data.list.length > 0 && tableConfigs.data.set.size === tableConfigs.data.list.length;
+					const isIndeterminate = tableConfigs.data.set.size > 0 && tableConfigs.data.set.size < tableConfigs.data.list.length;
+					const checkBoxProps = {
+						indeterminate: isIndeterminate,
+						value: isChecked,
+						onChange() {
+							const old = Array.from(tableConfigs.data.set);
+							if (tableConfigs.data.set.size < tableConfigs.data.list.length) {
+								_.each(tableConfigs.data.list, i => tableConfigs.data.set.add(i[by]));
+								tableConfigs.data.set = new Set(Array.from(tableConfigs.data.set));
+							} else {
+								_.each(tableConfigs.data.list, i => tableConfigs.data.set.delete(i[by]));
+								tableConfigs.data.set = new Set(Array.from(tableConfigs.data.set));
+							}
+
+							if (tableConfigs.onSelectedChange) {
+								tableConfigs.onSelectedChange(Array.from(tableConfigs.data.set), old);
+							}
+						}
+					};
+					const checkBoxVnode = h("elCheckbox", checkBoxProps);
+					return h(
+						"div",
+						{
+							class: "flex center width100"
+						},
+						[checkBoxVnode]
+					);
+				},
+				cellRenderer: params => {
+					const { rowData } = params;
+					const tableConfigs = getConfigs();
+					const isChecked = tableConfigs.data.set.has(rowData[by]);
+					let disabledTips = "";
+					let isDisabled = (() => {
+						if (_.isFunction(disabled)) {
+							return disabled(params);
+						}
+						return false;
+					})();
+
+					if (_.isString(isDisabled)) {
+						disabledTips = isDisabled;
+						isDisabled = !!isDisabled;
+					}
+					return h(
+						"div",
+						{
+							class: "flex center width100"
+						},
+						[
+							h("elCheckbox", {
+								value: isChecked,
+								disabled: isDisabled,
+								attrs: {
+									title: disabledTips
+								},
+								onChange(value) {
+									const old = Array.from(tableConfigs.data.set);
+
+									if (value) {
+										tableConfigs.data.set.add(rowData[by]);
+									} else {
+										tableConfigs.data.set.delete(rowData[by]);
+									}
+									/* vue2 未对set map 做响应式支持？？？ */
+									tableConfigs.data.set = _.clone(tableConfigs.data.set);
+									if (tableConfigs.onSelectedChange) {
+										tableConfigs.onSelectedChange(Array.from(tableConfigs.data.set), old);
+									}
+								}
+							})
+						]
+					);
+				}
+			};
+			return checkbox;
+		};
+		window.defTable.colSingle = ({ by, getConfigs, disabled }) => {
+			const { h } = Vue;
+			const checkbox = {
+				prop: "COL_SINGLE",
+				label: i18n("checkbox"),
+				width: 48,
+				fixed: "left",
+				headerCellRenderer(_props) {
+					return null;
+				},
+				cellRenderer: params => {
+					const { rowData } = params;
+					const tableConfigs = getConfigs();
+					const isChecked = tableConfigs.data.set.has(rowData[by]);
+					let disabledTips = "";
+					let isDisabled = (() => {
+						if (_.isFunction(disabled)) {
+							return disabled(params);
+						}
+						return false;
+					})();
+
+					if (_.isString(isDisabled)) {
+						disabledTips = isDisabled;
+						isDisabled = !!isDisabled;
+					}
+
+					return h(
+						"div",
+						{
+							class: "flex center width100"
+						},
+						[
+							h("elCheckbox", {
+								value: isChecked,
+								disabled: isDisabled,
+								attrs: {
+									title: disabledTips
+								},
+								onChange(value) {
+									const old = Array.from(tableConfigs.data.set);
+
+									const id = rowData[by];
+									if (value) {
+										tableConfigs.data.set = new Set([id]);
+									} else {
+										tableConfigs.data.set = new Set();
+									}
+									if (tableConfigs.onSelectedChange) {
+										tableConfigs.onSelectedChange(Array.from(tableConfigs.data.set), old);
+									}
+								}
+							})
+						]
+					);
+				}
+			};
+			return checkbox;
+		};
+		window.defTable.colActions = ({ cellRenderer, width, fixed = "right" }) => {
+			const columnDefaultConfigs = {
+				prop: "COL_ACTIONS",
+				label: i18n("checkbox"),
+				fixed,
+				width,
+				headerCellRenderer(_props) {
+					return i18n("操作");
+				}
+			};
+
+			if (cellRenderer) {
+				columnDefaultConfigs.cellRenderer = cellRenderer;
+			}
+			return columnDefaultConfigs;
+		};
+	})();
 
 	window.defItems = options => {
 		return _.reduce(
@@ -604,16 +750,14 @@ const isDev = !!localStorage.isDev;
 
 	/**
 	 * value to label
-	 * @param {*} value
-	 * @param {*} options
-	 * @returns
 	 */
-	_.$val2L = (value, options) => {
+	/* @typescriptDeclare (value:any, options:any, defaultValue?: any)=>string */
+	_.$val2L = (value, options, defaultValue = "") => {
 		const item = _.find(options, item => String(item.value) === String(value));
 		if (item) {
 			return item.label;
 		} else {
-			return "";
+			return defaultValue;
 		}
 	};
 
@@ -622,7 +766,7 @@ const isDev = !!localStorage.isDev;
 	 * @param {string} name
 	 * @returns string
 	 */
-
+	/* @typescriptDeclare (name:string)=>string */
 	_.$randomName = name => {
 		return name + parseInt((new Date().getTime() % 61439) + 4096).toString(16);
 	};
@@ -632,7 +776,7 @@ const isDev = !!localStorage.isDev;
 	 * @param {any} val
 	 * @returns boolean
 	 */
-
+	/* @typescriptDeclare (val:any)=>boolean */
 	_.$is200 = function is200(val) {
 		return String(val) === "200";
 	};
@@ -642,6 +786,7 @@ const isDev = !!localStorage.isDev;
 	 * @param {string[]} keys
 	 * @returns
 	 */
+	/* @typescriptDeclare (obj:object, keys:string[])=>boolean */
 	_.$isEveryInput = function (obj, keys = []) {
 		if (Object.keys(obj).length > 0) {
 			if (_.$isArrayFill(keys)) {

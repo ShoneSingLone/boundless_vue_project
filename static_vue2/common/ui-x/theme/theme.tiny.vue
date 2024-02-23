@@ -342,6 +342,8 @@ export default async function () {}
 	--border-radius--small: 0;
 	--border-radius--mini: 0;
 
+	--normal-box-shadow: unset;
+
 	.el-select__caret {
 		&.el-input__icon {
 			&.el-icon-arrow-up {

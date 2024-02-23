@@ -38,7 +38,7 @@ html #layuicss-layer {
 	-webkit-background-clip: content;
 	border-radius: var(--border-radius);
 	overflow: hidden;
-	box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: var(--normal-box-shadow);
 }
 
 .layui-layer-close {

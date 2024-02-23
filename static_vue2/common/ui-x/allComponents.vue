@@ -1,6 +1,8 @@
 <script lang="ts">
 export default async function () {
 	return [
+		"common/xItem/xItemCheck/xItemCheck",
+		"components/xExcalidraw/xExcalidraw",
 		/* *************** */
 		"components/other/xAlert/xAlert",
 		"components/TableCell/TableCell",
@@ -15,6 +17,7 @@ export default async function () {
 		"components/data/xMenuTree/xMenuTree",
 		"components/navigation/xTabs/xTabs",
 		"components/navigation/xTabs/xTabPane",
+		"components/data/xImg/xImg",
 		"components/data/xTag/xTag",
 		"components/data/xDesc/xDesc",
 		"components/data/xDesc/xDescItem",
@@ -70,6 +73,7 @@ export default async function () {
 		"common/xInfoCardItem",
 		"common/xInquire",
 		"common/xItem",
+		"common/xItemCheckBox",
 		"common/xItemCheckboxGroup",
 		"common/xItemDatetime",
 		"common/xItemInput",
@@ -78,7 +82,7 @@ export default async function () {
 		"common/xItemRadioGroup",
 		"common/xItemSelect",
 		"common/xItemSwitch",
-		"common/xItemCheckBox",
+		"common/xItemSlider",
 		"common/xMenuTreeItem",
 		"common/xOprWithMore",
 		"common/xPagination",

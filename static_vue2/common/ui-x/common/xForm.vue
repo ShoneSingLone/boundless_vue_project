@@ -50,7 +50,10 @@ export default async function () {
 	.xFormItem {
 		display: flex;
 		align-items: baseline;
-		margin-top: var(--ui-one);
+
+		& + .xFormItem {
+			margin-top: var(--ui-one);
+		}
 
 		> div {
 			width: 100%;

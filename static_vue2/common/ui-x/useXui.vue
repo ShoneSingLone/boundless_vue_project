@@ -1,5 +1,5 @@
 <script lang="ts">
-export default async function () {
+export default async function (options = {}) {
 	/* @ts-ignore */
 	window._api = window._api || {};
 	/* @ts-ignore */
@@ -12,6 +12,7 @@ export default async function () {
 		Promise.all(
 			_.map(
 				[
+					"/common/ui-x/components/data/xImg/xImg.install.vue",
 					"/common/ui-x/components/other/xNotification/xNotification.install.vue",
 					"/common/ui-x/directive/xtips/xtips.vue",
 					"/common/ui-x/directive/ripple.vue",
@@ -22,6 +23,9 @@ export default async function () {
 			)
 		)
 	]);
+	if (_.isFunction(options.bootstrap)) {
+		await options.bootstrap(window._useXui);
+	}
 
 	await (async function lazyLoadAllComponents() {
 		const ALL_COMPONENTS = await _.$importVue("/common/ui-x/allComponents.vue");

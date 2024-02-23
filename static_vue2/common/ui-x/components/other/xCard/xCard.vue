@@ -1,5 +1,5 @@
 <template>
-	<div class="el-card" :class="shadow ? 'is-' + shadow + '-shadow' : 'is-always-shadow'">
+	<div class="el-card" :class="cptClassName">
 		<div class="el-card__header" v-if="$slots.header || header">
 			<slot name="header">{{ header }}</slot>
 		</div>
@@ -21,6 +21,17 @@ export default async function () {
 			}
 		},
 		computed: {
+			cptClassName() {
+				if (this.shadow) {
+					return `is-${this.shadow}-shadow`;
+				} else {
+					if (this.$X_APP_THEME === "tiny") {
+						return "";
+					} else {
+						return "is-always-shadow";
+					}
+				}
+			},
 			cptBodyClass() {
 				return _.merge({ "el-card__body": true }, this.bodyClass || {});
 			}

@@ -211,7 +211,25 @@ export default async function () {
 						/* 返回""为success */
 						return msg;
 					},
-					trigger: ["blur"]
+					trigger: ["change", "input", "blur"]
+				};
+			},
+			ipV6: () => {
+				return {
+					name: "ipV6",
+					async validator({ val }) {
+						let msg = "";
+						const ipv6_regex =
+							/^([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}|([0-9a-f]{1,4}:){6}:[0-9a-f]{1,4}|([0-9a-f]{1,4}:){5}(:[0-9a-f]{1,4}){2}|([0-9a-f]{1,4}:){4}(:[0-9a-f]{1,4}){3}|([0-9a-f]{1,4}:){3}(:[0-9a-f]{1,4}){4}|([0-9a-f]{1,4}:){2}(:[0-9a-f]{1,4}){5}|[0-9a-f]{1,4}(:[0-9a-f]{1,4}){6}|:|0:0:0:0:0:0:0:0(%[0-9]{1,3}|[0-9a-f]{0,4})$/;
+
+						if (!ipv6_regex.test(val)) {
+							msg = i18n("msgEnterTheCorrectIPv6Address");
+						}
+						/* 返回提示信息即error */
+						/* 返回""为success */
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
 				};
 			},
 			inetUrl(msg = i18n("ruleEnterCorrectAddress")) {

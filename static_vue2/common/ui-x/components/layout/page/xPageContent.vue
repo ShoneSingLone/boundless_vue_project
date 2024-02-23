@@ -42,7 +42,7 @@
 		overflow: hidden;
 		flex: 1;
 		border-radius: var(--border-radius);
-		box-shadow: var(--el-box-shadow);
+		// box-shadow: var(--el-box-shadow);
 
 		> .page-header {
 			background: var(--el-color-white);

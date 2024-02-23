@@ -30,7 +30,7 @@ export default async function () {
 	return {
 		name: "xItem",
 		componentName: "xItem",
-		props: ["emitVM", "configs", "value", "payload", "readOnlyAs", /* 直接加在xItem上 */ "label", "rules"],
+		props: ["configs", "value", "payload", "readOnlyAs", /* 直接加在xItem上 */ "label", "rules", "disabled"],
 		provide() {
 			const xItem = this;
 			return {
@@ -43,9 +43,8 @@ export default async function () {
 		},
 		setup(props) {
 			const vm = this;
-			if (vm.emitVM) {
-				vm.emitVM(vm);
-			}
+			/*** xItem对外暴露自身实例*/
+			vm.$emit("setup", { xItem: vm });
 			const { cptPlaceholder } = useProps(vm);
 
 			function forceUpdate() {
@@ -64,7 +63,6 @@ export default async function () {
 				isDisabled: ""
 			});
 			if (!vm.configs) {
-
 				if (this.$slots.default) {
 					vm.configs = {
 						THIS_CONFIGS_ONLY_FOR_LABEL: true,
@@ -110,9 +108,18 @@ export default async function () {
 				}
 				return optionsProperty || vm._calOptionsArray;
 			});
+			let cpt_queryData = computed(() => {
+				if (_.isFunction(props.configs?.queryData)) {
+					props.configs.queryData = props.configs?.queryData?.();
+					return props.configs.queryData;
+				}
+			});
 
 			let cptDisabled = computed(() => {
 				if (privateState.isDisabled === "disabled") {
+					return true;
+				}
+				if (this.disabled) {
 					return true;
 				}
 				if (_.isFunction(vm.configs?.disabled)) {
@@ -163,6 +170,7 @@ export default async function () {
 				privateState,
 				cptDisabled,
 				cpt_options,
+				cpt_queryData,
 				cptPlaceholder
 			};
 		},
@@ -192,11 +200,13 @@ export default async function () {
 					style: this.p_style,
 					props: {
 						...this.p_props,
-						options: this.cpt_options
+						options: this.cpt_options,
+						queryData: this.cpt_queryData
 					},
 					attrs: {
 						...this.p_props,
-						options: this.cpt_options
+						options: this.cpt_options,
+						queryData: this.cpt_queryData
 					}
 				};
 			},
@@ -256,6 +266,7 @@ export default async function () {
 				vm.p_debounceValidate = _.debounce(vm.validate, 1000);
 			}, 1000 * 3);
 			return {
+				componentName: "xItem",
 				errorTips: "",
 				p_style: {},
 				p_props: {},

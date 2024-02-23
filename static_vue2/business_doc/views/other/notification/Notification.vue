@@ -8,6 +8,11 @@
 		<DemoAndCode title="使用 HTML 片段" path="@/views/other/notification/ShiYongHtmlPianDuan.vue" unfold />
 		<DemoAndCode title="隐藏关闭按钮" path="@/views/other/notification/YinCangGuanBiAnNiu.vue" unfold />
 		<xMd :md="apiString" />
+
+		<p>
+			/* const DialogTypeVueSFC = await _.$importVue("/common/utils/useMoCommon/MoMulDeleteConfirmTableDialog.vue", { parent: vm, tableConfigs: defTable({ data: { list:
+			Array.from(vm.configsTable.data.set) }, columns: vm.configsTable.columns }), onEnsure({ dialogVm }) {} }); _.$openWindow(i18n("删除密钥对"), DialogTypeVueSFC); */
+		</p>
 	</DocContentOfDemo>
 </template>
 

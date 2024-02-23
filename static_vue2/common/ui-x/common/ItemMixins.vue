@@ -164,7 +164,7 @@ export default async function () {
 							if (this.value === val) {
 								return;
 							}
-							return this.$emit("change", val, "5");
+							return this.$emit("change", val);
 						}
 					},
 					mixin_listeners() {

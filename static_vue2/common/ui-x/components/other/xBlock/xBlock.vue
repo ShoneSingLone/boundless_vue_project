@@ -43,7 +43,7 @@ export default async function () {
 					classObject["bg-is-gray"] = true;
 				}
 
-				return _.merge(classObject, this.bodyClass);
+				return _.merge(classObject);
 			},
 			vDomHeader() {
 				if (this.$scopedSlots.header) {
@@ -132,7 +132,7 @@ export default async function () {
 	}
 
 	.el-card__header + .el-card__body {
-		padding-top: 0;
+		// padding-top: 0;
 	}
 }
 

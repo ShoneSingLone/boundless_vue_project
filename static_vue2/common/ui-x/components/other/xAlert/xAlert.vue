@@ -183,7 +183,7 @@ export default async function () {
 			},
 			closable: {
 				type: Boolean,
-				default: true
+				default: false
 			},
 			closeText: {
 				type: String,

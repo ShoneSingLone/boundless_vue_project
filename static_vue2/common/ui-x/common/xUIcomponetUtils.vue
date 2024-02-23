@@ -1714,6 +1714,7 @@ export default async function () {
 			};
 		},
 		render: {
+			/* linkrender.linkrender.linkrender */
 			OptionsToLabel(value, options) {
 				const item = _.find(options, item => {
 					return _.$isSame(item.value, value);
@@ -1732,7 +1733,7 @@ export default async function () {
 					{
 						props,
 						attrs: props,
-						class: "el-button el-button--text el-button--small ellipsis"
+						class: "el-button el-button--text el-button--small ellipsis cell-link text-align-left"
 					},
 					[props.label]
 				);

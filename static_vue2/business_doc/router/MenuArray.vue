@@ -55,6 +55,8 @@ export default async function () {
 			children: [
 				{ href: "/x-component/x-form", icon: "icon_report", label: i18n("xForm") },
 				{ href: "/x-component/x-item", icon: "icon_report", label: i18n("xItem") },
+				{ href: "/x-component/x-item-checkbox-group", icon: "icon_report", label: i18n("xItemCheckboxGroup") },
+				{ href: "/x-component/x-item-check", icon: "icon_report", label: i18n("xItemCheck") },
 				{
 					icon: "icon_report",
 					label: i18n("xItemWrapper"),
@@ -86,6 +88,11 @@ export default async function () {
 					label: i18n("ip-address")
 				},
 
+				{
+					icon: "_icon_image",
+					label: i18n("image") + i18n("图片"),
+					href: "/component/data/image"
+				},
 				{
 					icon: "icon_report",
 					label: i18n("icon"),
@@ -120,7 +127,8 @@ export default async function () {
 				{ icon: "icon_report", label: i18n("dropdown"), href: "/component/navigation/dropdown" },
 				{ icon: "_icon_breadcrumb", label: `${i18n("Breadcrumb")} ${i18n("面包屑")}`, href: "/component/navigation/breadcrumb" },
 				{ icon: "_icon_affix", label: `${i18n("Affix")} ${i18n("固钉")}`, href: "/other/affix" },
-				{ icon: "_icon_affix", label: `${i18n("Alert")} ${i18n("警告")}`, href: "/other/alert" }
+				{ icon: "_icon_affix", label: `${i18n("Alert")} ${i18n("警告")}`, href: "/other/alert" },
+				{ icon: "_icon_affix", label: `${i18n("xExcalidraw")} ${i18n("白板")}`, href: "/component/data/excalidraw" }
 			]
 		},
 		{

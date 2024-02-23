@@ -5,6 +5,8 @@ import { t_opts } from "./types/business/_opts";
 import { t_rules } from "./types/business/_rules";
 import { t_reg } from "./types/business/_reg";
 import { t_useXui } from "./types/business/_useXui/index.d";
+import { i_defItems } from "./types/xUI/t_xItemConfigs.d";
+
 import {
 	reactive as t_reactive,
 	VueConstructor as t_Vue,
@@ -20,23 +22,10 @@ import {
 	watch as t_watch,
 	getCurrentInstance as t_getCurrentInstance,
 	isRef as t_isRef,
-	inject as t_inject
-	nextTick as t_nextTick,
+	inject as t_inject,
+	nextTick as t_nextTick
 } from "./types/vue";
-
-type t_normalizeComponent = (
-	scriptExports: any,
-	render: any,
-	staticRenderFns: any,
-	functionalTemplate: any,
-	injectStyles: any,
-	scopeId: any,
-	moduleIdentifier: any,
-	shadowMode: any
-) => {
-	exports: any;
-	options: any;
-};
+import { t_defTable } from "./types/xUI/t_tableConfigs";
 
 declare global {
 	const _MoCfContext: t_MoCfContext;
@@ -67,10 +56,10 @@ declare global {
 	}
 
 	/* window */
-	/**
-	 * 判断是否是vNode Vue.js里面TYPE_IS_VNODE
-	 */
-	const defItem: (obj: object) => any;
+	const defItems: i_defItems;
+	const defItem: any;
+	const defTable: t_defTable;
+
 	/* 国际化 */
 	const i18n: (prop: string, options?: object) => string;
 	/* window */
@@ -79,6 +68,10 @@ declare global {
 	 * 实际上是挂载在Vue上
 	 * ∵在sfc文件中使用了with
 	 * ∴可以直接使用
+	 */
+
+	/**
+	 * 判断是否是vNode Vue.js里面TYPE_IS_VNODE
 	 */
 	const isVNode: (obj: object) => boolean;
 	const h: CreateElement;
@@ -97,11 +90,6 @@ declare global {
 	const nextTick: typeof t_nextTick;
 	const onBeforeUnmount: typeof t_onBeforeUnmount;
 	const isObject: (obj: any) => boolean;
-	/**
-	 * 该函数是一个用于构建Vue组件的方法，接收多个参数，包括组件的脚本、渲染函数、静态渲染函数、模板类型、样式注入函数、作用域ID、模块标识符和阴影模式等。根据参数的不同，对组件进行配置和处理，最后返回一个包含组件脚本和选项的对象。
-	 */
-	const normalizeComponent: t_normalizeComponent;
-
 	/**
 	 * 判断对象是否有属性
 	 */

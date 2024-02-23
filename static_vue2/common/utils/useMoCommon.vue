@@ -1,9 +1,26 @@
 <script lang="ts">
 export default async function ({ APP_WEB_PATH }) {
-	$("html").addClass("mo-common");
-	window.appWebPath = APP_WEB_PATH;
+	(function () {
+		$("html").addClass("mo-common");
+		window.appWebPath = APP_WEB_PATH;
+		const moLang = new URLSearchParams(location.search).get("locale");
+		const i18nMap = {
+			"zh-cn": "zh-CN",
+			"en-us": "en-US"
+		};
+		const xLanguage = i18nMap[moLang] || "en-US";
+		localStorage["X-Language"] = xLanguage;
+		const domHtml = document.querySelector("html");
+		domHtml.dataset.lang = xLanguage;
+		domHtml.dataset.moLang = moLang;
+	})();
+	/* mo console ui 基座 */
+	/* 需要以script src 的形式引入，才能获取 baseURI = "/static/framework/2.0" */
+	await _.$appendScript("/static/framework/2.0/mo.console.ui.js", "", true);
+	/* mo API */
 	window._MoCfContext = { ...window.getMoCfContext() };
 
+	/* mo common components */
 	_.each(
 		{
 			xMoBuyLayer: "/common/utils/useMoCommon/xMoBuyLayer.vue",
@@ -14,6 +31,7 @@ export default async function ({ APP_WEB_PATH }) {
 		}
 	);
 
+	/* 基础参数 */
 	const [userInfo, appConfigs, regionsData, locale] = await Promise.all([_MoCfContext.getUser(), _MoCfContext.getGlobalConfig(), _MoCfContext.getRegions(), _MoCfContext.getLocale()]);
 	_MoCfContext.userInfo = userInfo;
 	_MoCfContext.appConfigs = appConfigs;
@@ -100,7 +118,9 @@ export default async function ({ APP_WEB_PATH }) {
 		_MoCfContext.isSidebarDisplay$()._subscribe(e => {
 			trigger("isSidebarDisplay", e);
 		});
-	} catch (error) {}
+	} catch (error) {
+		console.error(error);
+	}
 
 	_MoCfContext.checkAsidebarStatus = _.debounce(function (callbackFn) {
 		const subPage = $(`.page-view[hide-sidebar]`);
@@ -198,6 +218,24 @@ export default async function ({ APP_WEB_PATH }) {
 			},
 			options
 		);
+	};
+
+	_MoCfContext.getFirstServiceId = async function (service_type) {
+		var params = {
+			/* 不能有多余的参数 */
+			region_id: _MoCfContext.commonParams().regionId,
+			service_type,
+			start: 1,
+			limit: 4,
+			name: ""
+		};
+
+		let data = await _MoCfContext._api.getProductListFn(params);
+		if (data.total) {
+			return data.products[0].product_id;
+		} else {
+			return false;
+		}
 	};
 
 	_MoCfContext.AjaxRequestInjector = function (reqConfigs) {

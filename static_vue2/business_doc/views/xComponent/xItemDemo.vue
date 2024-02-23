@@ -5,6 +5,7 @@
 		<DemoAndCode title="itemType的扩展方法" path="@/views/xComponent/xItem/JiChuYongFa.vue" />
 		<DemoAndCode title="NormalRender" path="@/views/xComponent/xItem/JiChuYongFa.vue" />
 		<DemoAndCode title="_useXui.globalConfigs" path="@/views/xComponent/xItem/JiChuYongFa.vue" />
+		<xMd :md="apiString" />
 	</DocContentOfDemo>
 </template>
 
@@ -12,7 +13,13 @@
 export default async function () {
 	return {
 		data() {
-			return {};
+			return {
+				apiString: `### xItem Events
+
+| Name     | Description                        | Type                                                                |
+| -------- | ---------------------------------- | ------------------------------------------------------------------- |
+| \`setup\` | setup 运行时 emit 当前实例. | \`({xItem}) => void\`                               |`
+			};
 		}
 	};
 }

@@ -243,6 +243,7 @@ export default async function () {
 .el-button {
 	&.xItem-wrapper {
 		width: unset;
+		margin-bottom: 0;
 	}
 	/* default */
 	--el-button-text-color: var(--el-text-color-regular);

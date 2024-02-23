@@ -1,5 +1,5 @@
 <template>
-	<xBtn class="xItem-wrapper" preset="blue" @click="() => $emit('click')">
+	<xBtn preset="blue" @click="() => $emit('click')">
 		{{ i18n("查询") }}
 	</xBtn>
 </template>

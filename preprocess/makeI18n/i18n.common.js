@@ -1,6 +1,13 @@
 /*node makeLanguageFile.js */
 module.exports = {
 	Operation: ["操作", "Operation"],
+	sun: ["星期天", "Sun"],
+	mon: ["星期一", "Mon"],
+	tue: ["星期二", "Tue"],
+	wed: ["星期三", "Wed"],
+	thu: ["星期四", "Thu"],
+	fri: ["星期五", "Fri"],
+	sat: ["星期六", "Sat"],
 	el: {
 		colorpicker: {
 			confirm: ["确定", "OK"],

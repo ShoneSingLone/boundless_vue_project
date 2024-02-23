@@ -25,7 +25,6 @@ export default async function () {
 			options.onClose = function () {
 				_.$notify.close(id, userOnClose);
 			};
-
 			instance = new NotificationConstructor({
 				data: options
 			});

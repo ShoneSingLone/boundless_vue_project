@@ -87,6 +87,23 @@ export default async function () {
 			}
 		},
 		render() {
+			if (this.configs?.isButton) {
+				return h(
+					"xBtnGroup",
+					_.map(this.selectOptions, item => {
+						const props = {
+							onClick: () => {
+								this.mixin_value = item.value;
+							}
+						};
+						if (item.value === this.value) {
+							props.preset = "blue";
+						}
+						return h("xBtn", props, [item.label]);
+					})
+				);
+			}
+
 			return h("xAutoResizer", {}, [
 				{
 					default: ({ width, height }) => {

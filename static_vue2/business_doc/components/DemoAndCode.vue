@@ -41,6 +41,7 @@ export default async function () {
 					templateSourceCode,
 					payload: this.payload
 				});
+				BussinessComponent.parent = this;
 				this.BussinessComponent = markRaw(BussinessComponent);
 				this.isLoading = false;
 			},

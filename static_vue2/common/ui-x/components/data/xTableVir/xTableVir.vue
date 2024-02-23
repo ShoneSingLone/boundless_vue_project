@@ -2198,15 +2198,16 @@ export default async function () {
 				}
 				return props => h(TableV2Cell, merge_hFnProps([{}, props]));
 			})();
-			const cellData = _.isFunction(dataGetter)
-				? dataGetter({
-						columns: columns2,
-						column,
-						columnIndex,
-						rowData,
-						rowIndex
-					})
-				: get(rowData, prop || "", null);
+
+			/* 从rowData获取cell数据，可以使用 xxx.xxx.x的字符串方法 */
+			const cellData = (() => {
+				if (_.isFunction(dataGetter)) {
+					return dataGetter({ columns: columns2, column, columnIndex, rowData, rowIndex });
+				} else {
+					return get(rowData, prop || "", null);
+				}
+			})();
+
 			const extraCellProps = tryCall(_cellProps, {
 				cellData,
 				columns: columns2,

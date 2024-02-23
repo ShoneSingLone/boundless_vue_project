@@ -18,7 +18,7 @@ export default async function () {
 			return {
 				AppTheme: {
 					label: "UI主题",
-					value: _.$lStorage._doc_app_theme || "tiny",
+					value: _.$lStorage._doc_app_theme || "默认",
 					itemType: "xItemSelect",
 					options: [
 						{

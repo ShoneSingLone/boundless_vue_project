@@ -3,10 +3,12 @@ node_modules
 ventose
 dist
 ast.json
-zh-CN.js
-en-US.js
 vscode.workspace/**.code-workspace
 out
-preprocess
-static_vue2/common/utils/useMoCommon.vue
-static_vue2/common/utils/useMoCommon
+preprocess/genDocMd/ast.left.json
+node_modules.rar
+**/new_token.txt
+preprocess/uploadFileToRemote/privateCofnigs.js
+preprocess/uploadFileToRemote/zips
+/privateConfigs_MoTokenDataCofnigs.js
+vscode.workspace/

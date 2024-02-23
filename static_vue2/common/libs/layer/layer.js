@@ -5,6 +5,7 @@
 !(function (window, undefined) {
 	"use strict";
 	const TYPE_LOADING = 3;
+	const CURRENT_IS_FULLSCREEN = "xDialog-current-is-fullscreen";
 
 	var isLayui = window.layui && layui.define,
 		$,
@@ -12,19 +13,19 @@
 		ready = {
 			getPath: (function () {
 				var jsPath = document.currentScript
-						? document.currentScript.src
-						: (function () {
-								var js = document.scripts,
-									last = js.length - 1,
-									src;
-								for (var i = last; i > 0; i--) {
-									if (js[i].readyState === "interactive") {
-										src = js[i].src;
-										break;
-									}
-								}
-								return src || js[last].src;
-							})(),
+					? document.currentScript.src
+					: (function () {
+						var js = document.scripts,
+							last = js.length - 1,
+							src;
+						for (var i = last; i > 0; i--) {
+							if (js[i].readyState === "interactive") {
+								src = js[i].src;
+								break;
+							}
+						}
+						return src || js[last].src;
+					})(),
 					GLOBAL = window.LAYUI_GLOBAL || {};
 				return GLOBAL.layer_dir || jsPath.substring(0, jsPath.lastIndexOf("/") + 1);
 			})(),
@@ -188,16 +189,16 @@
 					},
 					type && !ready.config.skin
 						? {
-								skin: skin + " layui-layer-hui",
-								anim: anim
-							}
+							skin: skin + " layui-layer-hui",
+							anim: anim
+						}
 						: (function () {
-								options = options || {};
-								if (options.icon === -1 || (options.icon === undefined && !ready.config.skin)) {
-									options.skin = skin + " " + (options.skin || "layui-layer-hui");
-								}
-								return options;
-							})()
+							options = options || {};
+							if (options.icon === -1 || (options.icon === undefined && !ready.config.skin)) {
+								options.skin = skin + " " + (options.skin || "layui-layer-hui");
+							}
+							return options;
+						})()
 				)
 			);
 		},
@@ -247,8 +248,8 @@
 		document.body
 			? creat()
 			: setTimeout(function () {
-					creat();
-				}, 30);
+				creat();
+			}, 30);
 	};
 
 	Class.pt = Class.prototype;
@@ -317,55 +318,55 @@
 
 				//主体
 				'<div class="' +
-					doms[0] +
-					(" layui-layer-" + ready.type[config.type]) +
-					((config.type == 0 || config.type == 2) && !config.shade ? " layui-layer-border" : "") +
-					" " +
-					(config.skin || "") +
-					'" id="' +
-					doms[0] +
-					times +
-					'" type="' +
-					ready.type[config.type] +
-					'" times="' +
-					times +
-					'" showtime="' +
-					config.time +
-					'" conType="' +
-					(conType ? "object" : "string") +
-					'" ' +
-					`style="${styleString}"` +
-					">" +
-					(conType && config.type != 2 ? "" : titleHTML) +
-					'<div id="' +
-					(config.id || "") +
-					'" class="layui-layer-content' +
-					(config.type == 0 && config.icon !== -1 ? " layui-layer-padding" : "") +
-					(config.type == 3 ? " layui-layer-loading" + config.icon : "") +
-					'">' +
-					(config.type == 0 && config.icon !== -1 ? '<i class="layui-layer-ico layui-layer-ico' + config.icon + '"></i>' : "") +
-					(config.type == 1 && conType ? "" : config.content || "") +
-					"</div>" +
-					'<span class="layui-layer-setwin">' +
-					(function () {
-						var closebtn = ismax ? '<a class="layui-layer-min" href="javascript:;"><cite></cite></a><a class="layui-layer-ico layui-layer-max" href="javascript:;"></a>' : "";
-						config.closeBtn &&
-							(closebtn += '<a class="layui-layer-ico ' + doms[7] + " " + doms[7] + (config.title ? config.closeBtn : config.type == 4 ? "1" : "2") + '" href="javascript:;"></a>');
-						return closebtn;
-					})() +
-					"</span>" +
-					(config.btn
-						? (function () {
-								var button = "";
-								typeof config.btn === "string" && (config.btn = [config.btn]);
-								for (var i = 0, len = config.btn.length; i < len; i++) {
-									button += '<a class="' + doms[6] + "" + i + '">' + config.btn[i] + "</a>";
-								}
-								return '<div class="' + doms[6] + " layui-layer-btn-" + (config.btnAlign || "") + '">' + button + "</div>";
-							})()
-						: "") +
-					(config.resize ? '<span class="x-layer-resize"></span>' : "") +
-					"</div>"
+				doms[0] +
+				(" layui-layer-" + ready.type[config.type]) +
+				((config.type == 0 || config.type == 2) && !config.shade ? " layui-layer-border" : "") +
+				" " +
+				(config.skin || "") +
+				'" id="' +
+				doms[0] +
+				times +
+				'" type="' +
+				ready.type[config.type] +
+				'" times="' +
+				times +
+				'" showtime="' +
+				config.time +
+				'" conType="' +
+				(conType ? "object" : "string") +
+				'" ' +
+				`style="${styleString}"` +
+				">" +
+				(conType && config.type != 2 ? "" : titleHTML) +
+				'<div id="' +
+				(config.id || "") +
+				'" class="layui-layer-content' +
+				(config.type == 0 && config.icon !== -1 ? " layui-layer-padding" : "") +
+				(config.type == 3 ? " layui-layer-loading" + config.icon : "") +
+				'">' +
+				(config.type == 0 && config.icon !== -1 ? '<i class="layui-layer-ico layui-layer-ico' + config.icon + '"></i>' : "") +
+				(config.type == 1 && conType ? "" : config.content || "") +
+				"</div>" +
+				'<span class="layui-layer-setwin">' +
+				(function () {
+					var closebtn = ismax ? '<a class="layui-layer-min" href="javascript:;"><cite></cite></a><a class="layui-layer-ico layui-layer-max" href="javascript:;"></a>' : "";
+					config.closeBtn &&
+						(closebtn += '<a class="layui-layer-ico ' + doms[7] + " " + doms[7] + (config.title ? config.closeBtn : config.type == 4 ? "1" : "2") + '" href="javascript:;"></a>');
+					return closebtn;
+				})() +
+				"</span>" +
+				(config.btn
+					? (function () {
+						var button = "";
+						typeof config.btn === "string" && (config.btn = [config.btn]);
+						for (var i = 0, len = config.btn.length; i < len; i++) {
+							button += '<a class="' + doms[6] + "" + i + '">' + config.btn[i] + "</a>";
+						}
+						return '<div class="' + doms[6] + " layui-layer-btn-" + (config.btnAlign || "") + '">' + button + "</div>";
+					})()
+					: "") +
+				(config.resize ? '<span class="x-layer-resize"></span>' : "") +
+				"</div>"
 			],
 			titleHTML,
 			$('<div class="' + doms.MOVE + '" id="' + doms.MOVE + '"></div>')
@@ -447,19 +448,19 @@
 			}
 			conType
 				? (function () {
-						config.type == 2 || config.type == 4
-							? (function () {
-									$("body").append(html[1]);
-								})()
-							: (function () {
-									if (!content.parents("." + doms[0])[0]) {
-										content.data("display", content.css("display")).show().addClass("layui-layer-wrap").wrap(html[1]);
-										$("#" + doms[0] + times)
-											.find("." + doms[5])
-											.before(titleHTML);
-									}
-								})();
-					})()
+					config.type == 2 || config.type == 4
+						? (function () {
+							$("body").append(html[1]);
+						})()
+						: (function () {
+							if (!content.parents("." + doms[0])[0]) {
+								content.data("display", content.css("display")).show().addClass("layui-layer-wrap").wrap(html[1]);
+								$("#" + doms[0] + times)
+									.find("." + doms[5])
+									.before(titleHTML);
+							}
+						})();
+				})()
 				: body.append(html[1]);
 			$("#" + doms.MOVE)[0] || body.append((ready.moveElem = moveElem));
 
@@ -481,17 +482,17 @@
 		config.type == 4
 			? that.tips()
 			: (function () {
-					that.offset();
-					//首次弹出时，若 css 尚未加载，则等待 css 加载完毕后，重新设定尺寸
-					parseInt(ready.getStyle(document.getElementById(doms.MOVE), "z-index")) ||
-						(function () {
-							that.layero.css("visibility", "hidden");
-							layer.ready(function () {
-								that.offset();
-								that.layero.css("visibility", "visible");
-							});
-						})();
-				})();
+				that.offset();
+				//首次弹出时，若 css 尚未加载，则等待 css 加载完毕后，重新设定尺寸
+				parseInt(ready.getStyle(document.getElementById(doms.MOVE), "z-index")) ||
+					(function () {
+						that.layero.css("visibility", "hidden");
+						layer.ready(function () {
+							that.offset();
+							that.layero.css("visibility", "visible");
+						});
+					})();
+			})();
 
 		//如果是固定定位
 		if (config.fixed) {
@@ -642,11 +643,11 @@
 			follow = $(config.follow);
 		if (!follow[0]) follow = $("body");
 		var goal = {
-				width: follow.outerWidth(),
-				height: follow.outerHeight(),
-				top: follow.offset().top,
-				left: follow.offset().left
-			},
+			width: follow.outerWidth(),
+			height: follow.outerHeight(),
+			top: follow.offset().top,
+			left: follow.offset().left
+		},
 			tipsG = layero.find(".layui-layer-TipsG");
 
 		var guide = config.tips[0];
@@ -1075,6 +1076,9 @@
 
 		//恢复遮罩
 		shadeo.show();
+		if (layero.hasClass(CURRENT_IS_FULLSCREEN)) {
+			layero.removeClass(CURRENT_IS_FULLSCREEN);
+		}
 	};
 
 	//全屏
@@ -1099,6 +1103,7 @@
 				true
 			);
 			layero.find(".layui-layer-min").hide();
+			layero.addClass(CURRENT_IS_FULLSCREEN);
 		}, 100);
 	};
 
@@ -1131,7 +1136,7 @@
 							iframe.contentWindow.document.write("");
 							iframe.contentWindow.close();
 							layero.find("." + doms[5])[0].removeChild(iframe);
-						} catch (e) {}
+						} catch (e) { }
 					}
 					layero[0].innerHTML = "";
 					layero.remove();
@@ -1206,8 +1211,8 @@
 				options.formType == 2
 					? '<textarea class="layui-layer-input"' + style + "></textarea>"
 					: (function () {
-							return '<input type="' + (options.formType == 1 ? "password" : "text") + '" class="layui-layer-input">';
-						})();
+						return '<input type="' + (options.formType == 1 ? "password" : "text") + '" class="layui-layer-input">';
+					})();
 
 		var success = options.success;
 		delete options.success;
@@ -1587,13 +1592,13 @@
 			}))
 		: typeof define === "function" && define.amd
 			? define(["jquery"], function () {
-					//requirejs 加载
-					ready.run(window.jQuery);
-					return layer;
-				})
+				//requirejs 加载
+				ready.run(window.jQuery);
+				return layer;
+			})
 			: (function () {
-					//普通 script 标签加载
-					layer.ready();
-					ready.run(window.jQuery);
-				})();
+				//普通 script 标签加载
+				layer.ready();
+				ready.run(window.jQuery);
+			})();
 })(window);

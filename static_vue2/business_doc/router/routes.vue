@@ -25,7 +25,12 @@ export default async function () {
 		}),
 		/* 聚合类 */
 		_.$newRoute("/x-component", ComponentPageRouterView, {
-			children: [_.$newRoute("/x-component/x-item", "@/views/xComponent/xItemDemo.vue"), _.$newRoute("/x-component/x-form", "@/views/xComponent/xForm.vue")]
+			children: [
+				_.$newRoute("/x-component/x-item", "@/views/xComponent/xItemDemo.vue"),
+				_.$newRoute("/x-component/x-item-checkbox-group", "@/views/xComponent/DemoxItemCheckboxGroup.vue"),
+				_.$newRoute("/x-component/x-item-check", "@/views/xComponent/DemoxItemCheck/DemoxItemCheck.vue"),
+				_.$newRoute("/x-component/x-form", "@/views/xComponent/xForm.vue")
+			]
 		}),
 		/* base */
 		_.$newRoute("/base", ComponentPageRouterView, {
@@ -46,11 +51,13 @@ export default async function () {
 				_.$newRoute("/component/data", ComponentRouterView, {
 					children: [
 						_.$newRoute("/component/data/icon", "@/views/component/data/icon/icon.vue"),
+						_.$newRoute("/component/data/image", "@/views/component/data/image/image.vue"),
 						_.$newRoute("/component/data/card", "@/views/component/data/card/card.vue"),
 						_.$newRoute("/component/data/tag", "@/views/component/data/tag/tag.vue"),
 						_.$newRoute("/component/data/tree", "@/views/component/data/tree/DemoTree.vue"),
 						_.$newRoute("/component/data/descriptions", "@/views/component/data/descriptions/DemoDescriptions.vue"),
-						_.$newRoute("/component/data/virtualized-table", "@/views/component/data/virtualizedTable/virtualizedTable.vue")
+						_.$newRoute("/component/data/virtualized-table", "@/views/component/data/virtualizedTable/virtualizedTable.vue"),
+						_.$newRoute("/component/data/excalidraw", "@/views/component/data/xExcalidraw/DemoExcalidraw.vue")
 					]
 				}),
 				/* Navigation */
@@ -91,7 +98,7 @@ export default async function () {
 		{
 			/* 本来应该是NotFound，但是没有必要 */
 			path: "*",
-			redirect: "/other/alert"
+			redirect: "/all-project"
 		}
 	];
 }

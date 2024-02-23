@@ -1,6 +1,62 @@
 import _ = require("./index");
 			declare module "./index" {
 				interface LoDashStatic {/**
+	 * document.getElementsByTagName
+	 * @param {*} tagName
+	 * @returns
+	 */
+$$tags:   (tagName: string)=> HTMLElement[] ;
+/**
+	 * document.getElementsByTagName
+	 * @param {*} tagName
+	 * @returns
+	 */
+$$id:   (tagName: string)=> HTMLElement[] ;
+$val: any;
+$appendScript: any;
+$appendStyle: any;
+$resolveCssAssetsPath: any;
+$idb:any;
+$resolvePath: any;
+$loadText:any;
+$rafThrottle:any;
+/**
+	 * 复制到剪贴板
+	 * @param textToCopy
+	 */
+$copyToClipboard:   (textToCopy:string)=>Promise<void> ;
+/**
+	 * 名字随机
+	 * @param e
+	 */
+$ramdomStr:   (e:number)=>string ;
+/**
+	 * 打开选择器
+	 * @returns
+	 */
+$openFileSelector:   ()=>Promise<void> ;
+/**
+	 * 读取文件为文本
+	 * @param {*} file
+	 */
+$readFileAsText:   (obj:object)=>Promise<string> ;
+/**
+	 * 下载文本为文件
+	 * @param {*} dataString
+	 * @param {*} filename
+	 */
+$downloadTextAsBlob:   (obj:object, filename:string)=>Promise<void> ;
+/**
+	 * 获取对象的值
+	 */
+$handleSetFormValue:  (obj:object,key:string)=>string ;
+/**
+	 * //将空字符串转换为null
+	 * @param str
+	 * @return {null|*}
+	 */
+$translateStrByNull:   (str:string)=>null|string ;
+/**
 	 *
 	 * @param {*} timestamp 多少时间以前
 	 * @returns
@@ -84,10 +140,29 @@ $genId:   (category?:string)=>string  ;
 	 * @returns
 	 */
 $dateFormat:   (date:string|number, type?:number)=>string ;
-$val2L:any;
-$randomName:any;
-$is200:any;
-$isEveryInput:any;
+/**
+	 * value to label
+	 */
+$val2L:   (value:any, options:any, defaultValue?: any)=>string ;
+/**
+	 * name作为前缀的符合name要求的字符串
+	 * @param {string} name
+	 * @returns string
+	 */
+$randomName:   (name:string)=>string ;
+/**
+	 * 判断是否为200，转换为字符串来判断
+	 * @param {any} val
+	 * @returns boolean
+	 */
+$is200:   (val:any)=>boolean ;
+/**
+	 * 默认检测obj上每一个属性都能通过isInput，如果给定keys，	则只检测keys中的属性
+	 * @param {object} obj
+	 * @param {string[]} keys
+	 * @returns
+	 */
+$isEveryInput:   (obj:object, keys:string[])=>boolean ;
 /**
 	 * 是否已输入
 	 * false 0 为真 空数组[]为false
@@ -140,11 +215,13 @@ $msgSuccess:   (title:string,options?:any)=>Promise<any> ;
 $msgError:   (title:string,options?:any)=>Promise<any> ;
 $privateLayerSuccessThenMountVueComponent:any;
 /**
-		 *
 		 * @param {*} title：{stirng}dialog标题
 		 * @param {*} WindowVueCtor:Vue组件,通常用_.$importVue引入
 		 * @param {*} options:{layer的参数，但是一般用不到，有需要可以自己看源码}
-		 * @returns
+		 * @returns Vue组件实例
+		 * hooks vm.onWindowClose事件
+		 * @example const vm = await _.$openWindow(...)
+		 * vm.onWindowClose = callBackFunction
 		 */
 $openWindow:   (title:string, WindowVueCtor:Vue, options?:object)=>void ;
 /**
@@ -181,7 +258,12 @@ $importVue:   (url:object|string|any[], payload?:object)=>any|any[] ;
 $sfcVueObject:any;
 $newRoute:any;
 $setPagination:any;
-$setTableData:any;
+/**
+	 * 设置列表信息
+	 * @param {*} tableConfigs
+	 * @param {*} param1 如果不是特意保留，每次会清空已选
+	 */
+$setTableData:   (configs:object, payload:{list:any[]; total?:number, selected?:string[], set?:Set<string>}) => void ;
 /**
 	 * TODO: isHide的元素不需要校验
 	 *
@@ -243,37 +325,6 @@ $intToIp4:any;
 $ip4ToInt:any;
 $isIp4InCidr:any;
 $intToBin:any;
-$calculateCidrRange:any;
-/**
-	 * document.getElementsByTagName
-	 * @param {*} tagName
-	 * @returns
-	 */
-$$tags:   (tagName: string)=> HTMLElement[] ;
-/**
-	 * document.getElementsByTagName
-	 * @param {*} tagName
-	 * @returns
-	 */
-$$id:   (tagName: string)=> HTMLElement[] ;
-/**
-	 * 依赖全局变量SRC_ROOT_PATH
-	 * 返回静态资源路径
-	 * @param {any} url
-	 * @returns
-	 */
-$val:   (url: string)=>string ;
-$appendScript: any;
-$appendStyle: any;
-$resolveCssAssetsPath: any;
-$idb:any;
-/**
-	 * 依赖全局变量SRC_ROOT_PATH
-	 * 返回静态资源路径
-	 * @param {any} url
-	 * @returns
-	 */
-$resolvePath:   (url: string)=>string ;
-$loadText:any
+$calculateCidrRange:any
             }
         }

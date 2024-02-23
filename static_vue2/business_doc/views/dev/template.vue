@@ -4,6 +4,7 @@
 			<template #first>first</template>
 			<template #params="props">params:{{ props.title }}</template>
 		</xDev>
+		<xExcalidraw />
 	</div>
 </template>
 

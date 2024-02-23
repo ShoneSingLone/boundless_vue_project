@@ -18,6 +18,13 @@ export default async function () {
 </script>
 
 <style lang="less">
+.xDialog-current-is-fullscreen {
+	.xDialog {
+		&.xDialog-wrapper {
+			max-height: 100vh;
+		}
+	}
+}
 .xDialog {
 	--xDialog-padding: var(--ui-one);
 	--xDialog-min-width: 600px;
@@ -54,10 +61,6 @@ export default async function () {
 	padding: var(--xDialog-padding);
 	display: flex;
 	flex-flow: column nowrap;
-
-	.xCard {
-		// overflow: auto;
-	}
 }
 
 .xDialog-footer {

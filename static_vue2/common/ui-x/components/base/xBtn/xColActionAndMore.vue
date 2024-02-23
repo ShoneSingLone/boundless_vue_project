@@ -1,10 +1,10 @@
 <template>
-	<div class="xOprWithMore" ref="xOprWithMore">
+	<div class="xColActionAndMore" ref="xColActionAndMore">
 		<xBtn :preset="preset" v-for="(btnConfigs, index) in btnArray" :key="index" :configs="btnConfigs" />
 		<xDropdown v-if="isShowMoreBtn" trigger="click" @visible-change="handleVisibleChange">
 			<xBtn :preset="preset"> {{ i18n("更多") }}<i class="el-icon-arrow-down el-icon--right"></i> </xBtn>
 			<xDropdownMenu slot="dropdown" ref="ElDropdownMenu">
-				<div class="xOprWithMore-dropdown flex vertical center middle" ref="xOprWithMoreDropdown">
+				<div class="xColActionAndMore-dropdown flex vertical start middle" ref="xColActionAndMoreDropdown">
 					<xBtn :preset="preset" v-for="(btnConfigs, index) in btnArrayMore" :key="index" :configs="btnConfigs" />
 				</div>
 			</xDropdownMenu>
@@ -97,8 +97,8 @@ export default async function () {
 		methods: {
 			handleVisibleChange(isVisible) {
 				if (isVisible) {
-					const $el = $(this.$refs.xOprWithMoreDropdown).parent();
-					$el.addClass("xOprWithMoreDropdown");
+					const $el = $(this.$refs.xColActionAndMoreDropdown).parent();
+					$el.addClass("xColActionAndMoreDropdown");
 				}
 			},
 			setBtnInfo() {
@@ -135,7 +135,7 @@ export default async function () {
 </script>
 
 <style lang="less">
-.xOprWithMore {
+.xColActionAndMore {
 	margin: unset;
 	display: flex;
 
@@ -148,11 +148,14 @@ export default async function () {
 	}
 }
 
-.xOprWithMore-dropdown {
+.xColActionAndMore-dropdown {
 	padding: 10px;
+	.el-button + .el-button {
+		margin-left: 0;
+	}
 }
 
-.xOprWithMoreDropdown {
+.xColActionAndMoreDropdown {
 	padding: 0;
 	border: 1px solid var(--ui-brand);
 	margin-top: 0;

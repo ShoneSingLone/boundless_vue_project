@@ -22,17 +22,17 @@ module.exports = {
     ],
     "$appendStyle": [
       "2",
-      371,
+      370,
       1
     ],
     "$resolveCssAssetsPath": [
       "2",
-      363,
+      362,
       1
     ],
     "$idb": [
       "2",
-      453,
+      452,
       2
     ],
     "$resolvePath": [
@@ -42,382 +42,392 @@ module.exports = {
     ],
     "$loadText": [
       "2",
-      455,
+      454,
       2
     ],
-    "$ramdomStr": [
+    "$rafThrottle": [
       "1",
       12,
       1
     ],
+    "$copyToClipboard": [
+      "1",
+      31,
+      1
+    ],
+    "$ramdomStr": [
+      "1",
+      61,
+      1
+    ],
     "$openFileSelector": [
       "1",
-      25,
+      74,
       1
     ],
     "$readFileAsText": [
       "1",
-      70,
+      119,
       1
     ],
     "$downloadTextAsBlob": [
       "1",
-      87,
+      136,
       1
     ],
     "$handleSetFormValue": [
       "1",
-      106,
+      155,
       1
     ],
     "$translateStrByNull": [
       "1",
-      115,
+      164,
       1
     ],
     "$timeAgo": [
       "1",
-      127,
+      176,
       1
     ],
     "$eqObj": [
       "1",
-      181,
+      230,
       1
     ],
     "$getLeftTopFromAbsolute": [
       "1",
-      327,
+      473,
       1
     ],
     "$getLeftTopFromTranslate": [
       "1",
-      342,
+      488,
       1
     ],
     "$aHashLink": [
       "1",
-      382,
+      528,
       1
     ],
     "$setAppTheme": [
       "1",
-      394,
+      540,
       1
     ],
     "$isSame": [
       "1",
-      408,
+      554,
       1
     ],
     "$isIE": [
       "1",
-      412,
+      558,
       1
     ],
     "$isEdge": [
       "1",
-      416,
+      562,
       1
     ],
     "$isFirefox": [
       "1",
-      420,
+      566,
       1
     ],
     "$valueEquals": [
       "1",
-      424,
+      570,
       1
     ],
     "$scrollIntoView": [
       "1",
-      436,
+      582,
       1
     ],
     "$firstUpperCase": [
       "1",
-      466,
+      612,
       1
     ],
     "$isMac": [
       "1",
-      475,
+      621,
       1
     ],
     "$isNumber": [
       "1",
-      485,
+      631,
       1
     ],
     "$isKorean": [
       "1",
-      489,
+      635,
       1
     ],
     "$filterSomeInput": [
       "1",
-      495,
+      641,
       1
     ],
     "$filterAllInput": [
       "1",
-      503,
+      649,
       1
     ],
     "$trylog": [
       "1",
-      517,
+      663,
       1
     ],
     "$lStorage": [
       "1",
-      526,
+      672,
       1
     ],
     "$genId": [
       "1",
-      556,
+      702,
       2
     ],
     "$dateFormat": [
       "1",
-      575,
+      721,
       1
     ],
     "$val2L": [
       "1",
-      611,
+      755,
       1
     ],
     "$randomName": [
       "1",
-      626,
+      770,
       1
     ],
     "$is200": [
       "1",
-      636,
+      780,
       1
     ],
     "$isEveryInput": [
       "1",
-      645,
+      790,
       1
     ],
     "$isInput": [
       "1",
-      667,
+      812,
       1
     ],
     "$doNoting": [
       "1",
-      682,
+      827,
       1
     ],
     "$sleep": [
       "1",
-      688,
+      833,
       1
     ],
     "$asyncDebounce": [
       "1",
-      697,
+      842,
       1
     ],
     "$isArrayFill": [
       "1",
-      728,
+      873,
       1
     ],
     "$loading": [
       "1",
-      752,
+      897,
       1
     ],
     "$confirm": [
       "1",
-      797,
+      942,
       1
     ],
     "$delConfirm": [
       "1",
-      820,
+      965,
       1
     ],
     "$msgInfo": [
       "1",
-      828,
+      973,
       1
     ],
     "$msgSuccess": [
       "1",
-      843,
+      988,
       1
     ],
     "$msgError": [
       "1",
-      862,
+      1007,
       1
     ],
     "$privateLayerSuccessThenMountVueComponent": [
       "1",
-      925,
+      1070,
       2
     ],
     "$openWindow": [
       "1",
-      977,
+      1122,
       2
     ],
     "$ensure": [
       "1",
-      1052,
+      1197,
       1
     ],
     "$globalVar": [
       "1",
-      1091,
+      1236,
       1
     ],
     "$urlSearch": [
       "1",
-      1125,
+      1270,
       1
     ],
     "$location": [
       "1",
-      1130,
+      1275,
       1
     ],
     "$GenComponentOptions": [
       "1",
-      1196,
+      1341,
       2
     ],
     "$single": [
       "1",
-      1249,
+      1394,
       2
     ],
     "$sourceCodeSFC": [
       "1",
-      1285,
+      1430,
       2
     ],
     "$vNode": [
       "1",
-      1331,
+      1476,
       2
     ],
     "$importVue": [
       "1",
-      1353,
+      1498,
       2
     ],
     "$sfcVueObject": [
       "1",
-      1365,
+      1510,
       2
     ],
     "$newRoute": [
       "1",
-      1407,
+      1552,
       2
     ],
     "$setPagination": [
       "1",
-      1417,
+      1562,
       1
     ],
     "$setTableData": [
       "1",
-      1429,
+      1574,
       1
     ],
     "$validateForm": [
       "1",
-      1496,
+      1641,
       1
     ],
     "$hideRow": [
       "1",
-      1521,
+      1666,
       1
     ],
     "$modifyItemsAttrs": [
       "1",
-      1530,
+      1675,
       1
     ],
     "$getVmById": [
       "1",
-      1547,
+      1692,
       1
     ],
     "$getCellItemVm": [
       "1",
-      1566,
+      1711,
       1
     ],
     "$CellItem": [
       "1",
-      1587,
+      1732,
       1
     ],
     "$fillBackData": [
       "1",
-      1610,
+      1755,
       1
     ],
     "$setValToForm": [
       "1",
-      1634,
+      1779,
       1
     ],
     "$pickValueFromConfigs": [
       "1",
-      1648,
+      1793,
       1
     ],
     "$valFirstOrDefault": [
       "1",
-      1667,
+      1812,
       1
     ],
     "$firstIpFrom": [
       "1",
-      1678,
+      1823,
       1
     ],
     "$getIpInRangeAndUseable": [
       "1",
-      1684,
+      1829,
       1
     ],
     "$intToIp4": [
       "1",
-      1714,
+      1859,
       1
     ],
     "$ip4ToInt": [
       "1",
-      1715,
+      1860,
       1
     ],
     "$isIp4InCidr": [
       "1",
-      1716,
+      1861,
       1
     ],
     "$intToBin": [
       "1",
-      1726,
+      1871,
       1
     ],
     "$calculateCidrRange": [
       "1",
-      1733,
+      1878,
       1
     ]
   },

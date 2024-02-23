@@ -1,22 +1,22 @@
 <template>
 	<div>
 		<xMd :md="md" />
-		<xForm col="2" style="--xItem-label-position: flex-start">
-			<!-- <xItemWrapper label="输入的信息" :rules="rules" span="full">
+		<xForm col="1" style="--xItem-label-position: flex-start">
+			<xItem :configs="form.xItemRadioGroup" />
+			<xItem :configs="form.xItemSelect" />
+			<xItem :configs="form.xItemAny" />
+			<div>{{ viewMsg }}</div>
+			<xItemWrapper label="输入的信息" :rules="rules" span="full">
 				<template #controller>
 					<xBlock>
-						{{ xItemInput.value }}
+						{{ form.xItemAny.value }}
 					</xBlock>
 					<xBlock>
-						{{ xItemInput }}
+						{{ form.xItemAny }}
 					</xBlock>
 				</template>
 			</xItemWrapper>
-			<xItem :configs="itemType" /> -->
-			<xItem :configs="xItemInput" />
-			<div>{{ xItemInputValue }}</div>
 		</xForm>
-
 		<xBtn :configs="btnSubmit" />
 	</div>
 </template>
@@ -25,60 +25,71 @@ export default async function () {
 	return defineComponent({
 		data() {
 			const vm = this;
-			return {
-				xItemInputValue: "",
-				itemType: {
-					value: "xItemInput",
-					label: "itemType",
-					itemType: "xItemSelect",
-					options: [
-						{
-							label: "xItemInput",
-							value: "xItemInput"
-						},
-						{
-							label: "xItemSelect",
-							value: "xItemSelect"
-						}
-					],
-					onEmitValue({ val }) {
-						vm.xItemInput.itemType = val;
-					}
-				},
-				xItemInput: {
-					value: "",
+			const options = [
+				{
 					label: "xItemInput",
-					itemType: "xItemSelect",
-					options: [
-						{
-							label: "选项1",
-							value: "1"
-						},
-						{
-							label: "选项2",
-							value: "2"
-						}
-					],
-					placeholder: "请输入",
-					// value: "1
-					tips: "提示信息",
-					msg() {
-						return h("div", [h("xTag", ["msg"]), "提示信息"]);
-					},
-					onEnter() {
-						_.$msgSuccess("enter 事件");
-					},
-					onFocus() {
-						vm.xItemInputValue = "onFocus";
-					},
-					onBlur() {
-						vm.xItemInputValue = "onBlur";
-					},
-					onEmitValue({ val }) {
-						vm.xItemInputValue = val;
-					},
-					rules: [_rules.required()]
+					value: "xItemInput"
 				},
+				{
+					label: "xItemSelect",
+					value: "xItemSelect"
+				}
+			];
+			return {
+				form: defItems({
+					xItemAny: {
+						value: "",
+						label: "xItemAny",
+						itemType: "xItemSelect",
+						options: [
+							{
+								label: "选项1",
+								value: "1"
+							},
+							{
+								label: "选项2",
+								value: "2"
+							}
+						],
+						placeholder: "请输入",
+						// value: "1
+						tips: "提示信息",
+						msg() {
+							return h("div", [h("xTag", ["msg"]), "提示信息"]);
+						},
+						onEnter() {
+							_.$msgSuccess("enter 事件");
+						},
+						onFocus() {
+							vm.viewMsg = "onFocus";
+						},
+						onBlur() {
+							vm.viewMsg = "onBlur";
+						},
+						onEmitValue({ val }) {
+							vm.viewMsg = val;
+						},
+						rules: [_rules.required()]
+					},
+					xItemRadioGroup: {
+						value: "xItemInput",
+						label: i18n("xItemRadioGroup"),
+						isButton: true,
+						itemType: "xItemRadioGroup",
+						minWidth: 80,
+						options: options
+					},
+					xItemSelect: {
+						value: "xItemInput",
+						label: "xItemSelect",
+						itemType: "xItemSelect",
+						options: options,
+						onEmitValue({ val }) {
+							vm.form.xItemAny.itemType = val;
+						}
+					}
+				}),
+				viewMsg: "",
 				md: `### 基本用法
 - itemType:"xItemInput",如果是xItemInput，可以不填。(按照自定义方法，可以实现各种符合业务需要的xItem类组件)
 - 组件的属性和方法可以直接以configs对象的属性形式添加，跟h函数的用法一致。
