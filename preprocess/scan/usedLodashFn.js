@@ -20,7 +20,6 @@ async function scanFile(fileurl) {
 	}
 }
 
-
 (async () => {
 	const [, files] = await _n.asyncAllDirAndFile([targetDir]);
 	let file;

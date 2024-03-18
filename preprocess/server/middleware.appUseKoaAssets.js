@@ -1,6 +1,7 @@
 const mime = require("mime-types");
 const bodyparser = require("koa-bodyparser");
 const fs = require("fs");
+const _ = require("lodash");
 const path = require("path");
 const cheerio = require("cheerio");
 const { SERVER_CONFIGS } = require("./server.configs");
@@ -56,10 +57,18 @@ exports.appUseKoaAssets = function (app) {
 
 
 				const [isUseMoMockJsonData, _path] = (function () {
-					const whiteList = ['/rest/product/v3.0/apply/products'];
+					const whiteList = [
+						'/rest/product/v3.0/apply/products',
+						"/rest/momaintenance/custom/login",
+						"/rest/momaintenance/v1/timerRequest/announcements",
+						"/rest/task/v3.0/timerRequest/tasks",
+						"/goku/silvan/rest/v2.0/license",
+						"/rest/me"
+					];
+					let url;
 					/*  mo数据*/
-					if (whiteList.includes(ctx.path)) {
-						return [true, pathArray.slice(1)];
+					if (url = _.find(whiteList, url => ctx.path.includes(url))) {
+						return [true, [url.slice(1)]];
 					}
 
 					/* 项目数据 */

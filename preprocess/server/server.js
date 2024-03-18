@@ -1,6 +1,7 @@
 const Koa = require("koa");
 const path = require("path");
 const IO = require("koa-socket");
+const { SERVER_PORT } = require("./server.configs");
 
 /* const NODE_PATH = path.resolve(__dirname, "."); process.env.NODE_PATH = NODE_PATH; Module._initPaths(); */
 
@@ -21,4 +22,4 @@ appUseKoaAssets(app);
 appUseSocketMiddleware(ioWs);
 appUseHMR(ioWs);
 /* *********** */
-appRun(app);
+appRun(app, SERVER_PORT);

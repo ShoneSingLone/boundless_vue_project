@@ -19,11 +19,34 @@ exports.APP_NAME_ARRAY = APP_NAME_ARRAY;
 
 
 function log(data) {
-	console.log(stdDecode(data));
+	data = stdDecode(data);
+	console.log(data);
+	return data;
 }
 exports.log = log;
 
 
+async function execLog(cmd, options) {
+
+	const log = (content) => {
+		content = iconv.decode(content, "utf-8");
+		console.log("=================================\n", content, "\n=================================");
+		return content
+			.replace("\r", "")
+			.replace("\n", "");
+	};
+
+	return new Promise((resolve, reject) => {
+		const result = exec(cmd, { maxBuffer: 1024 * 2000, encoding: "gbk" });
+		result.stdout.on("data", data => {
+			resolve(log(data));
+		});
+		result.stderr.on("data", data => {
+			resolve(log(data));
+		});
+	});
+};
+exports.execLog = execLog;
 function execCmd(cmd, options) {
 	let startTime = Date.now();
 	return new Promise((resolve, reject) => {

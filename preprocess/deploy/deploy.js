@@ -4,14 +4,12 @@ var dayjs = require("dayjs");
 var adm_zip = require("adm-zip");
 const Client = require("@ventose/ssh2").Client;
 const subfix = dayjs().format(`YYYY-MM-DD_HH_mm_ss`);
-const { host1, host2, user1, host1user1Pwd, pwd1, user2, pwd2 } = require("../../../privateConfigs_n2one_azure.js").deploy;
+const { host1, host2, user1, host1user1Pwd, pwd1, user2, pwd2 } = require("../../../privateConfigs.js").deploy;
 
 const newVersion = `window.APP_VERSION = "${subfix}"`;
 console.log(newVersion);
 
-/* 主要是ghca-dept有18M，你敢信 */
 const TASK_MAP = {
-	/* 注册部署 全量，包括ghca-dept*/
 	部署全部并注册: {
 		filter() {
 			return true;
@@ -19,17 +17,7 @@ const TASK_MAP = {
 		command: [
 			`su ${user2}\n`,
 			`${pwd2}\n`,
-			`pwd
-	  cp ./aws_ecs.zip /opt/onframework/static/aws_ecs.zip
-	  chown -R ossuser:ossgroup /opt/onframework/static/aws_ecs.zip
-	  rm -rf /opt/onframework/static/aws_ecs/
-	  unzip /home/sopuser/aws_ecs.zip -d /opt/onframework/static
-	  chown -R ossuser:ossgroup /opt/onframework/static/aws_ecs/
-	  chmod -R 750 /opt/onframework/static/aws_ecs
-	  su ossuser
-	  whoami
-	  cd /opt/oss/Product/apps/MOConsoleFrameworkService/serviceRegister/
-	  /opt/oss/manager/agent/DeployAgent/rtsp/python/bin/python  /opt/oss/Product/apps/MOConsoleFrameworkService/serviceRegister/hulkRegister.py "{'deploy_console_info': {'fileName': 'aws_ecs.zip', 'type': 'aws_ecs'}}"
+			` unzip /home/doc.zip -d /opt/onframework/static
 	  \n`
 		]
 	}
@@ -37,11 +25,11 @@ const TASK_MAP = {
 
 const CURRENT_TASK = TASK_MAP.部署全部并注册;
 
-const entryPath = path.resolve(__dirname, "../src/static/aws_ecs/ghca-dep/1.0.4/lib/module/entry.js");
+const entryPath = path.resolve(__dirname, "../src/static/doc/dep/1.0.4/lib/module/entry.js");
 const entryString = fs.readFileSync(entryPath, "utf-8");
 fs.writeFileSync(entryPath, entryString.replace(/window.APP_VERSION = "(.*)"/, newVersion));
 
-const AppName = `aws_ecs`;
+const AppName = `doc`;
 const dir = path.resolve(__dirname, `./zips/${subfix}`);
 
 async function archiveFiles() {
