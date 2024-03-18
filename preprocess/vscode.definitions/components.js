@@ -60,11 +60,23 @@
     "xtips": [
         "static_vue2\\common\\ui-x\\directive\\xtips\\xtips.vue"
     ],
+    "xNotification": [
+        "static_vue2\\common\\ui-x\\directive\\xNotification\\xNotification.vue"
+    ],
     "xmove": [
         "static_vue2\\common\\ui-x\\directive\\xmove.vue"
     ],
+    "xModal": [
+        "static_vue2\\common\\ui-x\\directive\\xModal\\xModal.vue"
+    ],
     "xloading": [
         "static_vue2\\common\\ui-x\\directive\\xloading.vue"
+    ],
+    "xImg": [
+        "static_vue2\\common\\ui-x\\directive\\xImg\\xImg.vue"
+    ],
+    "ImageViewer": [
+        "static_vue2\\common\\ui-x\\directive\\xImg\\ImageViewer.vue"
     ],
     "ripple": [
         "static_vue2\\common\\ui-x\\directive\\ripple.vue",
@@ -72,6 +84,9 @@
     ],
     "repeatClick": [
         "static_vue2\\common\\ui-x\\directive\\repeatClick.vue"
+    ],
+    "directive.install": [
+        "static_vue2\\common\\ui-x\\directive\\directive.install.vue"
     ],
     "clickoutside": [
         "static_vue2\\common\\ui-x\\directive\\clickoutside.vue"
@@ -95,12 +110,6 @@
     ],
     "Bar": [
         "static_vue2\\common\\ui-x\\components\\other\\xScrollbar\\Bar.vue"
-    ],
-    "xNotification": [
-        "static_vue2\\common\\ui-x\\components\\other\\xNotification\\xNotification.vue"
-    ],
-    "xNotification.install": [
-        "static_vue2\\common\\ui-x\\components\\other\\xNotification\\xNotification.install.vue"
     ],
     "xCard": [
         "static_vue2\\common\\ui-x\\components\\other\\xCard\\xCard.vue"
@@ -177,6 +186,12 @@
     "xInput": [
         "static_vue2\\common\\ui-x\\components\\form\\xInput\\xInput.vue"
     ],
+    "xCheckboxGroup": [
+        "static_vue2\\common\\ui-x\\components\\form\\xCheckbox\\xCheckboxGroup.vue"
+    ],
+    "xCheckboxButton": [
+        "static_vue2\\common\\ui-x\\components\\form\\xCheckbox\\xCheckboxButton.vue"
+    ],
     "xCheckbox": [
         "static_vue2\\common\\ui-x\\components\\form\\xCheckbox\\xCheckbox.vue"
     ],
@@ -240,14 +255,18 @@
     "ComponentFixedSizeGrid": [
         "static_vue2\\common\\ui-x\\components\\data\\xTableVir\\ComponentFixedSizeGrid.vue"
     ],
+    "xPagination": [
+        "static_vue2\\common\\ui-x\\components\\data\\xPagination\\xPagination.vue",
+        "static_vue2\\common\\ui-x\\common\\xPagination.vue"
+    ],
+    "PrivatePagination": [
+        "static_vue2\\common\\ui-x\\components\\data\\xPagination\\PrivatePagination.vue"
+    ],
+    "Pager": [
+        "static_vue2\\common\\ui-x\\components\\data\\xPagination\\Pager.vue"
+    ],
     "xMenuTree": [
         "static_vue2\\common\\ui-x\\components\\data\\xMenuTree\\xMenuTree.vue"
-    ],
-    "xImg": [
-        "static_vue2\\common\\ui-x\\components\\data\\xImg\\xImg.vue"
-    ],
-    "ImageViewer": [
-        "static_vue2\\common\\ui-x\\components\\data\\xImg\\ImageViewer.vue"
     ],
     "xDescItem": [
         "static_vue2\\common\\ui-x\\components\\data\\xDesc\\xDescItem.vue"
@@ -306,9 +325,6 @@
     ],
     "xRender": [
         "static_vue2\\common\\ui-x\\common\\xRender.vue"
-    ],
-    "xPagination": [
-        "static_vue2\\common\\ui-x\\common\\xPagination.vue"
     ],
     "xOprWithMore": [
         "static_vue2\\common\\ui-x\\common\\xOprWithMore.vue"
@@ -439,6 +455,9 @@
     ],
     "useElementUI": [
         "static_vue2\\common\\ui-element\\useElementUI.vue"
+    ],
+    "useElementUI.NoJS": [
+        "static_vue2\\common\\ui-element\\useElementUI.NoJS.vue"
     ],
     "elButton": [
         "static_vue2\\common\\ui-element\\components\\elButton.vue"
@@ -627,6 +646,18 @@
     "Login": [
         "static_vue2\\business_yapi\\views\\Login\\Login.vue",
         "static_vue2\\business_ait\\views\\Login\\Login.vue"
+    ],
+    "I18n": [
+        "static_vue2\\business_yapi\\views\\I18n\\I18n.vue"
+    ],
+    "I18n.upsert.dialog": [
+        "static_vue2\\business_yapi\\views\\I18n\\I18n.upsert.dialog.vue"
+    ],
+    "I18n.translate.dialog": [
+        "static_vue2\\business_yapi\\views\\I18n\\I18n.translate.dialog.vue"
+    ],
+    "I18n.import.dialog": [
+        "static_vue2\\business_yapi\\views\\I18n\\I18n.import.dialog.vue"
     ],
     "ProjectTabs": [
         "static_vue2\\business_yapi\\views\\Api\\Project\\Tabs\\ProjectTabs.vue"
@@ -894,6 +925,9 @@
         "static_vue2\\business_book\\lang\\index.vue",
         "static_vue2\\business_ait\\views\\index.vue"
     ],
+    "CtyunErrorCenter": [
+        "static_vue2\\business_mo_ctyun\\views\\CtyunErrorCenter.vue"
+    ],
     "CtyunecsDev": [
         "static_vue2\\business_mo_ctyun\\views\\CtyunecsDev.vue"
     ],
@@ -1063,19 +1097,19 @@
         "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\group\\CtyunecsGroupGroupDetail.vue"
     ],
     "evsSnapshotRollback.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\EvsSnapshot\\evsSnapshotRollback.dialog.vue"
+        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evsSnapshot\\evsSnapshotRollback.dialog.vue"
     ],
     "evsSnapshotList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\EvsSnapshot\\evsSnapshotList.vue"
+        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evsSnapshot\\evsSnapshotList.vue"
     ],
     "evsSnapshotDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\EvsSnapshot\\evsSnapshotDetail.vue"
+        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evsSnapshot\\evsSnapshotDetail.vue"
     ],
     "evsSnapshotApply": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\EvsSnapshot\\evsSnapshotApply.vue"
+        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evsSnapshot\\evsSnapshotApply.vue"
     ],
     "ebsSnapshotList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\EvsSnapshot\\ebsSnapshotList.vue"
+        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evsSnapshot\\ebsSnapshotList.vue"
     ],
     "EvsAttachVolume.dialog": [
         "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evs\\EvsAttachVolume.dialog.vue"
@@ -1173,6 +1207,9 @@
     ],
     "MenuArrayByVpc": [
         "static_vue2\\business_mo_ctyun\\router\\MenuArrayByVpc.vue"
+    ],
+    "AppEntry": [
+        "static_vue2\\business_mo_ctyun\\layout\\AppEntry.vue"
     ],
     "CtyunItemVpc": [
         "static_vue2\\business_mo_ctyun\\components\\CtyunItemVpc.vue"
@@ -1367,6 +1404,7 @@
         "static_vue2\\business_doc\\views\\component\\data\\virtualizedTable\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\tree\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\tag\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\component\\data\\pagination\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\image\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\icon\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\descriptions\\JiChuYongFa.vue",
@@ -1579,7 +1617,8 @@
     ],
     "JinYongZhuangTai": [
         "static_vue2\\business_doc\\views\\component\\form\\inputNumber\\JinYongZhuangTai.vue",
-        "static_vue2\\business_doc\\views\\component\\form\\input\\JinYongZhuangTai.vue"
+        "static_vue2\\business_doc\\views\\component\\form\\input\\JinYongZhuangTai.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\checkbox\\JinYongZhuangTai.vue"
     ],
     "JingDu": [
         "static_vue2\\business_doc\\views\\component\\form\\inputNumber\\JingDu.vue"
@@ -1624,8 +1663,23 @@
     "DaiIconDeShuRuKuang": [
         "static_vue2\\business_doc\\views\\component\\form\\input\\DaiIconDeShuRuKuang.vue"
     ],
+    "KeXuanXiangMuShuLiangDeXianZhi": [
+        "static_vue2\\business_doc\\views\\component\\form\\checkbox\\KeXuanXiangMuShuLiangDeXianZhi.vue"
+    ],
+    "IndeterminateZhuangTai": [
+        "static_vue2\\business_doc\\views\\component\\form\\checkbox\\IndeterminateZhuangTai.vue"
+    ],
+    "DuoXuanKuangZu": [
+        "static_vue2\\business_doc\\views\\component\\form\\checkbox\\DuoXuanKuangZu.vue"
+    ],
+    "DaiYouBianKuang": [
+        "static_vue2\\business_doc\\views\\component\\form\\checkbox\\DaiYouBianKuang.vue"
+    ],
     "checkbox": [
         "static_vue2\\business_doc\\views\\component\\form\\checkbox\\checkbox.vue"
+    ],
+    "AnNiuYangShiDeDuoXuanZuHe": [
+        "static_vue2\\business_doc\\views\\component\\form\\checkbox\\AnNiuYangShiDeDuoXuanZuHe.vue"
     ],
     "DemoExcalidraw": [
         "static_vue2\\business_doc\\views\\component\\data\\xExcalidraw\\DemoExcalidraw.vue"
@@ -1659,6 +1713,27 @@
     ],
     "BuTongZhuTi": [
         "static_vue2\\business_doc\\views\\component\\data\\tag\\BuTongZhuTi.vue"
+    ],
+    "XiaoXingFenYe": [
+        "static_vue2\\business_doc\\views\\component\\data\\pagination\\XiaoXingFenYe.vue"
+    ],
+    "SheZhiZuiDaYeMaAnNiuShu": [
+        "static_vue2\\business_doc\\views\\component\\data\\pagination\\SheZhiZuiDaYeMaAnNiuShu.vue"
+    ],
+    "pagination": [
+        "static_vue2\\business_doc\\views\\component\\data\\pagination\\pagination.vue"
+    ],
+    "FuJiaGongNeng": [
+        "static_vue2\\business_doc\\views\\component\\data\\pagination\\FuJiaGongNeng.vue"
+    ],
+    "DangZhiYouYiYeShiYinCangFenYe": [
+        "static_vue2\\business_doc\\views\\component\\data\\pagination\\DangZhiYouYiYeShiYinCangFenYe.vue"
+    ],
+    "DaiYouBeiJingSeDeFenYe": [
+        "static_vue2\\business_doc\\views\\component\\data\\pagination\\DaiYouBeiJingSeDeFenYe.vue"
+    ],
+    "ConfigsChuYongFa": [
+        "static_vue2\\business_doc\\views\\component\\data\\pagination\\ConfigsChuYongFa.vue"
     ],
     "ZhanWeiNeiRong": [
         "static_vue2\\business_doc\\views\\component\\data\\image\\ZhanWeiNeiRong.vue"
@@ -2142,10 +2217,25 @@
     "ApplicationInformation": [
         "static_vue2\\business_anxin\\components\\ApplicationInformation.vue"
     ],
-    "b": [
-        "static_vue2\\business_ait\\views\\b.vue"
+    "ValueConfigList": [
+        "static_vue2\\business_ait\\views\\alarm\\ValueConfigList.vue"
     ],
-    "a": [
-        "static_vue2\\business_ait\\views\\a.vue"
+    "AlarmList": [
+        "static_vue2\\business_ait\\views\\alarm\\AlarmList.vue"
+    ],
+    "AlarmDetail": [
+        "static_vue2\\business_ait\\views\\alarm\\AlarmDetail.vue"
+    ],
+    "AlarmConfigList": [
+        "static_vue2\\business_ait\\views\\alarm\\AlarmConfigList.vue"
+    ],
+    "AlarmConfigDialog": [
+        "static_vue2\\business_ait\\views\\alarm\\AlarmConfigDialog.vue"
+    ],
+    "Alarm.upsert.dialog": [
+        "static_vue2\\business_ait\\views\\alarm\\Alarm.upsert.dialog.vue"
+    ],
+    "modifyPassword": [
+        "static_vue2\\business_ait\\components\\modifyPassword.vue"
     ]
 };

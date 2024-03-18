@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum=1.0,minimum=1.0,user-scalable=0" />
+		<title>BFW NEW PAGE</title>
+		<script src="//repo.bfw.wiki/bfwrepo/js/monaco-editor/loader.js"></script>
+		<style>
+			body {
+				height: 100vh;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="container" style="height: 100%"></div>
+		<script>
+			require.config({ paths: { vs: "//repo.bfw.wiki/bfwrepo/js/monaco-editor" } });
+			require(["vs/editor/editor.main"], function () {
+				monaco.editor.create(document.getElementById("container"), {
+					value: "function hello() {\n\talert('Hello world!');\n}",
+					language: "typescript"
+				});
+			});
+		</script>
+	</body>
+</html>

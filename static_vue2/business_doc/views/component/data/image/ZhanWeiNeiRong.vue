@@ -4,7 +4,7 @@
 		<div class="demo-image__placeholder flex">
 			<div class="block">
 				<span class="demonstration">默认</span>
-				<xImg :src="src"/>
+				<xImg :src="src" />
 			</div>
 			<div class="block">
 				<span class="demonstration">自定义</span>

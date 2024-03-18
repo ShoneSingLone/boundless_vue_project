@@ -1,5 +1,5 @@
 <template>
-	<div class="xDialog xDialog-wrapper" v-bind="$attrs">
+	<div class="xDialog xDialog-wrapper" v-bind="$attrs" ref="refDialog" :style="cptRootStyle">
 		<div class="xDialog-body">
 			<slot />
 		</div>
@@ -12,7 +12,34 @@
 <script lang="ts">
 export default async function () {
 	return {
-		props: ["title"]
+		props: ["title"],
+		setup(props) {
+			const { useAutoResize } = _useXui;
+			const { height, width, sizer: refDialog } = useAutoResize(props);
+			const { height: windowHeight, width: windowWidth } = _useXui.useWindowSize();
+
+			const cptRootStyle = computed(() => {
+				let _height,
+					_width,
+					_style = {};
+				if (height.value && height.value > windowHeight.value) {
+					_height = windowHeight.value;
+				}
+				if (width.value && width.value > windowWidth.value) {
+					_width = windowWidth.value;
+				}
+
+				if (_height) {
+					_style.height = _height + "px";
+				}
+				if (_width) {
+					_style.width = _width + "px";
+				}
+				return _style;
+			});
+
+			return { refDialog, cptRootStyle };
+		}
 	};
 }
 </script>
@@ -27,9 +54,6 @@ export default async function () {
 }
 .xDialog {
 	--xDialog-padding: var(--ui-one);
-	--xDialog-min-width: 600px;
-
-	min-width: var(--xDialog-min-width);
 
 	&.xDialog-wrapper {
 		display: flex;
@@ -54,7 +78,6 @@ export default async function () {
 }
 
 .xDialog-body {
-	width: 100%;
 	height: 1px;
 	flex: 1;
 	overflow: auto;

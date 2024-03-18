@@ -58,7 +58,6 @@ export type t_useXui = {
 	addUnit: any;
 	createGrid: any;
 	noop: any;
-	mutable: any;
 	ScrollbarDirKey: any;
 	renderThumbStyle: any;
 	definePropType: any;
@@ -94,7 +93,6 @@ export type t_useXui = {
 	useGetDerivedNamespace: any;
 	useEventListener: any;
 	useSupported: any;
-	useResizeObserver: any;
 	useAutoResize: any;
 	useTableRow: any;
 	useTableGrid: any;
@@ -103,6 +101,7 @@ export type t_useXui = {
 	useNamespace: any;
 	useWindowSize: any;
 	useElementBounding: any;
+	useResizeObserver: any;
 	/* render */
 	render: {
 		/**

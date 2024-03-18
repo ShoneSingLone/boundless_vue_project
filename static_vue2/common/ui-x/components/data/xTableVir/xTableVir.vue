@@ -1,338 +1,3 @@
-<style lang="less">
-.xDataGrid_table {
-	&.small {
-		.el-table-v2__row-cell {
-			font-size: 12px;
-		}
-	}
-}
-
-.xDataGrid {
-	position: relative;
-	//outline: 1px solid red;
-
-	.el-table-v2__header-cell {
-		// outline: 1px solid blue;
-		position: relative;
-
-		&::after {
-			position: absolute;
-			content: " ";
-			right: 0;
-			height: 100%;
-			width: 2px;
-			top: 0;
-			bottom: 0;
-			cursor: col-resize;
-		}
-
-		display: flex;
-		font-size: 13px;
-		align-items: center;
-		padding: 0 8px;
-		height: 100%;
-		// user-select: none;
-		overflow: hidden;
-		background-color: var(--el-table-header-bg-color);
-		color: var(--el-table-header-text-color);
-		// font-weight: 700;
-
-		&.is-align-center {
-			justify-content: center;
-			text-align: center;
-		}
-		&.is-align-right {
-			justify-content: flex-end;
-			text-align: right;
-		}
-		&.is-sortable {
-			cursor: pointer;
-		}
-		&:hover {
-			.el-icon {
-				display: block;
-			}
-		}
-	}
-
-	.xDataGrid_mask {
-		position: absolute;
-		display: none;
-
-		&.active {
-			display: block;
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-			background-color: transparent;
-			opacity: 0.5;
-			z-index: 1;
-
-			&:hover {
-				cursor: col-resize;
-			}
-
-			.xDataGrid_mask-line {
-				position: absolute;
-				top: 0;
-				width: 1px;
-				border-left: 1px dashed gray;
-				bottom: 0;
-				left: 0;
-			}
-		}
-	}
-}
-
-.el-table-v2 {
-	--el-table-border-color: var(--el-border-color-lighter);
-	--el-table-border: 1px solid var(--el-table-border-color);
-	--el-table-text-color: var(--el-text-color-regular);
-	--el-table-header-text-color: var(--el-text-color-primary);
-	--el-table-row-hover-bg-color: var(--el-fill-color-light);
-	--el-table-current-row-bg-color: var(--ui-primary-light-9);
-	--el-table-header-bg-color: var(--el-border-color-lighter);
-	--el-table-fixed-box-shadow: var(--el-box-shadow-light);
-	--el-table-bg-color: var(--el-fill-color-blank);
-	--el-table-tr-bg-color: var(--el-fill-color-blank);
-	--el-table-expanded-cell-bg-color: var(--el-fill-color-blank);
-	--el-table-fixed-left-column: inset 10px 0 10px -10px rgba(0, 0, 0, 0.15);
-	--el-table-fixed-right-column: inset -10px 0 10px -10px rgba(0, 0, 0, 0.15);
-}
-
-.el-vl__wrapper {
-	position: relative;
-}
-
-.el-vl__wrapper:hover .el-virtual-scrollbar,
-.el-vl__wrapper.always-on .el-virtual-scrollbar {
-	opacity: 1;
-}
-
-.el-vl__window {
-	scrollbar-width: none;
-}
-
-.el-vl__window::-webkit-scrollbar {
-	display: none;
-}
-
-.el-virtual-scrollbar {
-	opacity: 0;
-	transition: opacity 0.34s ease-out;
-}
-
-.el-virtual-scrollbar.always-on {
-	opacity: 1;
-}
-
-.el-vg__wrapper {
-	position: relative;
-}
-
-.el-table-v2 {
-	* {
-		// outline: 1px solid grey;
-	}
-
-	font-size: 14px;
-}
-
-.el-table-v2 * {
-	box-sizing: border-box;
-}
-
-.el-table-v2__root {
-	position: relative;
-}
-
-.el-table-v2__root:hover .el-table-v2__main .el-virtual-scrollbar {
-	opacity: 1;
-}
-
-.el-table-v2__main {
-	display: flex;
-	flex-direction: column-reverse;
-	position: absolute;
-	overflow: hidden;
-	top: 0;
-	background-color: var(--el-bg-color);
-	left: 0;
-}
-
-.el-table-v2__main .el-vl__horizontal,
-.el-table-v2__main .el-vl__vertical {
-	z-index: 2;
-}
-
-.el-table-v2__left {
-	display: flex;
-	flex-direction: column-reverse;
-	position: absolute;
-	overflow: hidden;
-	top: 0;
-	background-color: var(--el-bg-color);
-	left: 0;
-	box-shadow: 2px 0 4px 0 rgba(0, 0, 0, 0.06);
-}
-
-.el-table-v2__left .el-virtual-scrollbar {
-	opacity: 0;
-}
-
-.el-table-v2__left .el-vl__horizontal,
-.el-table-v2__left .el-vl__vertical {
-	z-index: -1;
-}
-
-.el-table-v2__right {
-	display: flex;
-	flex-direction: column-reverse;
-	position: absolute;
-	overflow: hidden;
-	top: 0;
-	background-color: var(--el-bg-color);
-	right: 0;
-	box-shadow: -2px 0 4px 0 rgba(0, 0, 0, 0.06);
-}
-
-.el-table-v2__right .el-virtual-scrollbar {
-	opacity: 0;
-}
-
-.el-table-v2__right .el-vl__horizontal,
-.el-table-v2__right .el-vl__vertical {
-	z-index: -1;
-}
-
-.el-table-v2__header-row {
-	-webkit-padding-end: var(--el-table-scrollbar-size);
-	padding-inline-end: var(--el-table-scrollbar-size);
-}
-
-.el-table-v2__row {
-	-webkit-padding-end: var(--el-table-scrollbar-size);
-	padding-inline-end: var(--el-table-scrollbar-size);
-}
-
-.el-table-v2__header-wrapper {
-	overflow: hidden;
-}
-
-.el-table-v2__header {
-	background-color: var(--el-table-header-bg-color);
-	position: relative;
-	overflow: hidden;
-}
-
-.el-table-v2__footer {
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	overflow: hidden;
-}
-
-.el-table-v2__empty {
-	position: absolute;
-	left: 0;
-}
-
-.el-table-v2__overlay {
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	z-index: 9999;
-}
-
-.el-table-v2__header-row {
-	display: flex;
-	border-bottom: var(--el-table-border);
-}
-
-.el-table-v2__sort-icon {
-	transition:
-		opacity,
-		display var(--el-transition-duration);
-	opacity: 0.6;
-	display: none;
-}
-
-.el-table-v2__sort-icon.is-sorting {
-	display: block;
-	opacity: 1;
-}
-
-.el-table-v2__row {
-	border-bottom: var(--el-table-border);
-	display: flex;
-	align-items: center;
-	transition: background-color var(--el-transition-duration);
-}
-
-.el-table-v2__row.is-hovered {
-	background-color: var(--el-table-row-hover-bg-color);
-}
-
-.el-table-v2__row:hover {
-	background-color: var(--el-table-row-hover-bg-color);
-}
-
-.el-table-v2__row-cell {
-	height: 100%;
-	overflow: hidden;
-	display: flex;
-	align-items: center;
-	padding: 0 8px;
-}
-
-.el-table-v2__row-cell.is-align-center {
-	justify-content: center;
-	text-align: center;
-}
-
-.el-table-v2__row-cell.is-align-right {
-	justify-content: flex-end;
-	text-align: right;
-}
-
-.el-table-v2__expand-icon {
-	margin: 0 4px;
-	cursor: pointer;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-
-.el-table-v2__expand-icon svg {
-	transition: transform var(--el-transition-duration);
-}
-
-.el-table-v2__expand-icon.is-expanded svg {
-	transform: rotate(90deg);
-}
-
-.el-table-v2:not(.is-dynamic) .el-table-v2__cell-text {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-.el-table-v2.is-dynamic .el-table-v2__row {
-	overflow: hidden;
-	align-items: stretch;
-}
-
-.el-table-v2.is-dynamic .el-table-v2__row .el-table-v2__row-cell {
-	word-break: break-all;
-}
-</style>
-
 <script lang="ts">
 export default async function () {
 	const { emptyRender } = await _.$importVue("/common/ui-x/components/data/xTableVir/xTableEmptyRender.vue");
@@ -366,7 +31,7 @@ export default async function () {
 	const { merge_hFnProps } = Vue;
 	var _a;
 
-	isClient && ((_a = window == null ? void 0 : window.navigator) == null ? void 0 : _a.userAgent) && /iP(ad|hone|od)/.test(window.navigator.userAgent);
+	isClient && ((_a = window == null ? false : window.navigator) == null ? false : _a.userAgent) && /iP(ad|hone|od)/.test(window.navigator.userAgent);
 
 	const _global = window;
 	const globalKey = "__vueuse_ssr_handlers__";
@@ -429,13 +94,13 @@ export default async function () {
 	var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
 	var freeSelf = typeof self == "object" && self && self.Object === Object && self;
 	var root = freeGlobal || freeSelf || Function("return this")();
-	var symToStringTag$1 = root.Symbol ? root.Symbol.toStringTag : void 0;
+	var symToStringTag$1 = root.Symbol ? root.Symbol.toStringTag : false;
 
 	function getRawTag(value) {
 		var isOwn = hasOwnProperty.call(value, symToStringTag$1),
 			tag = value[symToStringTag$1];
 		try {
-			value[symToStringTag$1] = void 0;
+			value[symToStringTag$1] = false;
 			var unmasked = true;
 		} catch (e) {}
 		var result = _toString.call(value);
@@ -451,11 +116,11 @@ export default async function () {
 
 	var nullTag = "[object Null]",
 		undefinedTag = "[object Undefined]";
-	var symToStringTag = root.Symbol ? root.Symbol.toStringTag : void 0;
+	var symToStringTag = root.Symbol ? root.Symbol.toStringTag : false;
 
 	function baseGetTag(value) {
 		if (value == null) {
-			return value === void 0 ? undefinedTag : nullTag;
+			return value === false ? undefinedTag : nullTag;
 		}
 		return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : _toString(value);
 	}
@@ -481,8 +146,8 @@ export default async function () {
 	}
 
 	var INFINITY$1 = 1 / 0;
-	var symbolProto = root.Symbol ? root.Symbol.prototype : void 0,
-		symbolToString = symbolProto ? symbolProto.toString : void 0;
+	var symbolProto = root.Symbol ? root.Symbol.prototype : false,
+		symbolToString = symbolProto ? symbolProto.toString : false;
 
 	function baseToString(value) {
 		if (typeof value == "string") {
@@ -603,12 +268,12 @@ export default async function () {
 	}
 
 	function getValue(object, key) {
-		return object == null ? void 0 : object[key];
+		return object == null ? false : object[key];
 	}
 
 	function getNative(object, key) {
 		var value = getValue(object, key);
-		return baseIsNative(value) ? value : void 0;
+		return baseIsNative(value) ? value : false;
 	}
 
 	function eq(value, other) {
@@ -649,14 +314,14 @@ export default async function () {
 		var data = this.__data__;
 		if (nativeCreate$1) {
 			var result = data[key];
-			return result === HASH_UNDEFINED$1 ? void 0 : result;
+			return result === HASH_UNDEFINED$1 ? false : result;
 		}
-		return hasOwnProperty.call(data, key) ? data[key] : void 0;
+		return hasOwnProperty.call(data, key) ? data[key] : false;
 	}
 
 	function hashHas(key) {
 		var data = this.__data__;
-		return nativeCreate$1 ? data[key] !== void 0 : hasOwnProperty.call(data, key);
+		return nativeCreate$1 ? data[key] !== false : hasOwnProperty.call(data, key);
 	}
 
 	var HASH_UNDEFINED = "__lodash_hash_undefined__";
@@ -664,7 +329,7 @@ export default async function () {
 	function hashSet(key, value) {
 		var data = this.__data__;
 		this.size += this.has(key) ? 0 : 1;
-		data[key] = nativeCreate$1 && value === void 0 ? HASH_UNDEFINED : value;
+		data[key] = nativeCreate$1 && value === false ? HASH_UNDEFINED : value;
 		return this;
 	}
 
@@ -721,7 +386,7 @@ export default async function () {
 	function listCacheGet(key) {
 		var data = this.__data__,
 			index = assocIndexOf(data, key);
-		return index < 0 ? void 0 : data[index][1];
+		return index < 0 ? false : data[index][1];
 	}
 
 	function listCacheHas(key) {
@@ -891,12 +556,12 @@ export default async function () {
 		while (object != null && index < length) {
 			object = object[toKey(path[index++])];
 		}
-		return index && index == length ? object : void 0;
+		return index && index == length ? object : false;
 	}
 
 	function get(object, path, defaultValue) {
-		var result = object == null ? void 0 : baseGet(object, path);
-		return result === void 0 ? defaultValue : result;
+		var result = object == null ? false : baseGet(object, path);
+		return result === false ? defaultValue : result;
 	}
 
 	var now = function () {
@@ -932,7 +597,7 @@ export default async function () {
 		function invokeFunc(time) {
 			var args = lastArgs,
 				thisArg = lastThis;
-			lastArgs = lastThis = void 0;
+			lastArgs = lastThis = false;
 			lastInvokeTime = time;
 			result = func.apply(thisArg, args);
 			return result;
@@ -954,7 +619,7 @@ export default async function () {
 		function shouldInvoke(time) {
 			var timeSinceLastCall = time - lastCallTime,
 				timeSinceLastInvoke = time - lastInvokeTime;
-			return lastCallTime === void 0 || timeSinceLastCall >= wait || timeSinceLastCall < 0 || (maxing && timeSinceLastInvoke >= maxWait);
+			return lastCallTime === false || timeSinceLastCall >= wait || timeSinceLastCall < 0 || (maxing && timeSinceLastInvoke >= maxWait);
 		}
 
 		function timerExpired() {
@@ -966,24 +631,24 @@ export default async function () {
 		}
 
 		function trailingEdge(time) {
-			timerId = void 0;
+			timerId = false;
 			if (trailing && lastArgs) {
 				return invokeFunc(time);
 			}
-			lastArgs = lastThis = void 0;
+			lastArgs = lastThis = false;
 			return result;
 		}
 
 		function cancel() {
-			if (timerId !== void 0) {
+			if (timerId !== false) {
 				clearTimeout(timerId);
 			}
 			lastInvokeTime = 0;
-			lastArgs = lastCallTime = lastThis = timerId = void 0;
+			lastArgs = lastCallTime = lastThis = timerId = false;
 		}
 
 		function flush() {
-			return timerId === void 0 ? result : trailingEdge(now$1());
+			return timerId === false ? result : trailingEdge(now$1());
 		}
 
 		function debounced() {
@@ -993,7 +658,7 @@ export default async function () {
 			lastThis = this;
 			lastCallTime = time;
 			if (isInvoking) {
-				if (timerId === void 0) {
+				if (timerId === false) {
 					return leadingEdge(lastCallTime);
 				}
 				if (maxing) {
@@ -1002,7 +667,7 @@ export default async function () {
 					return invokeFunc(lastCallTime);
 				}
 			}
-			if (timerId === void 0) {
+			if (timerId === false) {
 				timerId = setTimeout(timerExpired, wait);
 			}
 			return result;
@@ -1013,7 +678,7 @@ export default async function () {
 		return debounced;
 	}
 
-	!isClient ? void 0 : document.body;
+	!isClient ? false : document.body;
 	/*! Element Plus Icons Vue v2.0.6 */
 	var export_helper_default = (sfc, props) => {
 		let target = sfc.__vccOpts || sfc;
@@ -1516,11 +1181,10 @@ export default async function () {
 		};
 	};
 	const useRow = (props, { mainTableRef, leftTableRef, rightTableRef }) => {
-		const vm = getCurrentInstance();
-		const { emit } = vm;
+		const inject_xTableVir = inject("inject_xTableVir");
 		const isResetting = shallowRef(false);
 		const hoveringRowKey = shallowRef(null);
-		const expandedRowKeys = ref(props.defaultExpandedRowKeys || []);
+		const expandedRowKeys = ref(props.expandedRowKeys || []);
 		const lastRenderedRowIndex = ref(-1);
 		const resetIndex = shallowRef(null);
 		const rowHeights = ref({});
@@ -1537,25 +1201,25 @@ export default async function () {
 			}
 		}
 
-		function onRowHovered({ hovered, rowKey: rowKey2 }) {
-			hoveringRowKey.value = hovered ? rowKey2 : null;
+		function onRowHovered({ hovered, rowKey }) {
+			hoveringRowKey.value = hovered ? rowKey : null;
 		}
 
-		function onRowExpanded({ expanded, rowData, rowIndex, rowKey: rowKey2 }) {
-			const _expandedRowKeys = [...unref(expandedRowKeys)];
-			const currentKeyIndex = _expandedRowKeys.indexOf(rowKey2);
+		function onRowExpanded({ expanded, rowData, rowIndex, rowKey }) {
+			const _expandedRowKeys = [...expandedRowKeys.value];
+			const currentKeyIndex = _expandedRowKeys.indexOf(rowKey);
 			if (expanded) {
-				if (currentKeyIndex === -1) _expandedRowKeys.push(rowKey2);
+				if (currentKeyIndex === -1) _expandedRowKeys.push(rowKey);
 			} else {
 				if (currentKeyIndex > -1) _expandedRowKeys.splice(currentKeyIndex, 1);
 			}
 			expandedRowKeys.value = _expandedRowKeys;
-			emit("update:expandedRowKeys", _expandedRowKeys);
-			props.onRowExpand?.({
+			inject_xTableVir.$emit("update:expandedRowKeys", _expandedRowKeys);
+			inject_xTableVir.onRowExpand?.({
 				expanded,
 				rowData,
 				rowIndex,
-				rowKey: rowKey2
+				rowKey: rowKey
 			});
 			props.onExpandedRowsChange?.(_expandedRowKeys);
 		}
@@ -1572,7 +1236,7 @@ export default async function () {
 			mainTableRef.value?.forceUpdate();
 			leftTableRef.value?.forceUpdate();
 			rightTableRef.value?.forceUpdate();
-			vm.proxy?.$forceUpdate();
+			inject_xTableVir?.$forceUpdate();
 			isResetting.value = false;
 		}, 0);
 
@@ -1629,30 +1293,36 @@ export default async function () {
 	};
 	const useData = (props, { expandedRowKeys, lastRenderedRowIndex, resetAfterIndex }) => {
 		const depthMap = ref({});
+		/* 树形结构 */
 		const flattenedData = computed(() => {
 			const depths = {};
-			const { data: data2, rowKey: rowKey2 } = props;
-			const _expandedRowKeys = unref(expandedRowKeys);
-			if (!_expandedRowKeys || !_expandedRowKeys.length) return data2;
-			const array = [];
-			const keysSet = /* @__PURE__ */ new Set();
-			_expandedRowKeys.forEach(x => keysSet.add(x));
-			let copy = data2.slice();
-			copy.forEach(x => (depths[x[rowKey2]] = 0));
-			while (copy.length > 0) {
-				const item = copy.shift();
-				array.push(item);
-				if (keysSet.has(item[rowKey2]) && Array.isArray(item.children) && item.children.length > 0) {
-					copy = [...item.children, ...copy];
-					item.children.forEach(child => (depths[child[rowKey2]] = depths[item[rowKey2]] + 1));
+			const { data: allRows, rowKey } = props;
+			const _expandedRowKeys = expandedRowKeys.value;
+
+			if (!_.$isArrayFill(_expandedRowKeys)) {
+				/* 如果没有需要展开的数据，直接返回原始数据 */
+				return allRows;
+			} else {
+				const array = [];
+				const keysSet = new Set();
+				_expandedRowKeys.forEach(x => keysSet.add(x));
+				let _AllRows = allRows.slice();
+				_AllRows.forEach(x => (depths[x[rowKey]] = 0));
+				while (_AllRows.length > 0) {
+					const item = _AllRows.shift();
+					array.push(item);
+					if (keysSet.has(item[rowKey]) && Array.isArray(item.children) && item.children.length > 0) {
+						_AllRows = [...item.children, ..._AllRows];
+						item.children.forEach(child => (depths[child[rowKey]] = depths[item[rowKey]] + 1));
+					}
 				}
+				depthMap.value = depths;
+				return array;
 			}
-			depthMap.value = depths;
-			return array;
 		});
 		const data = computed(() => {
-			const { data: data2, expandColumnKey: expandColumnKey2 } = props;
-			return expandColumnKey2 ? unref(flattenedData) : data2;
+			const { data } = props;
+			return _.$isArrayFill(expandedRowKeys.value) ? flattenedData.value : data;
 		});
 		watch(data, (val, prev) => {
 			if (val !== prev) {
@@ -1739,6 +1409,7 @@ export default async function () {
 	};
 
 	function useTable(props) {
+		const inject_xTableVir = inject("inject_xTableVir");
 		const mainTableRef = ref();
 		const leftTableRef = ref();
 		const rightTableRef = ref();
@@ -1760,11 +1431,7 @@ export default async function () {
 		});
 		const { expandedRowKeys, hoveringRowKey, lastRenderedRowIndex, isDynamic, isResetting, rowHeights, resetAfterIndex, onRowExpanded, onRowHeightChange, onRowHovered, onRowsRendered } = useRow(
 			props,
-			{
-				mainTableRef,
-				leftTableRef,
-				rightTableRef
-			}
+			{ mainTableRef, leftTableRef, rightTableRef }
 		);
 		const { data, depthMap } = useData(props, {
 			expandedRowKeys,
@@ -1855,6 +1522,7 @@ export default async function () {
 			onVerticalScroll
 		};
 	}
+
 	const { max, floor } = Math;
 	const ACCESS_SIZER_KEY_MAP = {
 		column: "columnWidth",
@@ -1948,7 +1616,7 @@ export default async function () {
 				const { size, color } = props;
 				if (!size && !color) return {};
 				return {
-					fontSize: _.isUndefined(size) ? void 0 : addUnit(size),
+					fontSize: _.isUndefined(size) ? false : addUnit(size),
 					"--color": color
 				};
 			});
@@ -1991,31 +1659,6 @@ export default async function () {
 					class: props.classV2
 				},
 				[sortOrder === SortOrder.ASC ? h(sort_up_default) : h(sort_down_default)]
-			);
-		}
-	};
-
-	const ExpandIcon = {
-		functional: true,
-		render: (h, props) => {
-			const { expanded, expandable, onExpand, style, size } = props;
-			const expandIconProps = {
-				onClick: expandable ? () => onExpand(!expanded) : void 0,
-				class: props.classV2
-			};
-			return h(
-				ElIcon$1,
-				merge_hFnProps([
-					{},
-					expandIconProps,
-					{
-						attrs: {
-							size: size
-						},
-						style: style
-					}
-				]),
-				[h(arrow_right_default)]
 			);
 		}
 	};
@@ -2088,7 +1731,7 @@ export default async function () {
 				isScrolling,
 				rowProps,
 				rowClass,
-				rowKey: rowKey2,
+				rowKey,
 				rowEventHandlers,
 				ns,
 				onRowHovered,
@@ -2108,7 +1751,7 @@ export default async function () {
 				rowData,
 				rowIndex
 			});
-			const _rowKey = rowData[rowKey2];
+			const _rowKey = rowData[rowKey];
 			const depth = depthMap[_rowKey] || 0;
 			const canExpand = Boolean(expandColumnKey2);
 			const isFixedRow = rowIndex < 0;
@@ -2123,44 +1766,44 @@ export default async function () {
 					[ns.is("customized")]: Boolean($vSlots.row)
 				}
 			];
+
 			const onRowHover = hasFixedColumns ? onRowHovered : () => null;
-			const _rowProps = {
-				...additionalProps,
-				columns: columns2,
-				columnsStyles,
-				class: kls,
-				depth,
-				expandColumnKey: expandColumnKey2,
-				estimatedRowHeight: isFixedRow ? void 0 : estimatedRowHeight,
-				isScrolling,
-				rowIndex,
-				rowData,
-				rowKey: _rowKey,
-				rowEventHandlers,
-				style
-			};
-			return h(
-				"ComponentTableV2Row",
-				merge_hFnProps([
-					_rowProps,
-					{
-						on: {
-							rowHover: onRowHover,
-							rowExpand: onRowExpanded
-						}
+
+			const _rowProps = merge_hFnProps([
+				{
+					...additionalProps,
+					columns: columns2,
+					columnsStyles,
+					class: kls,
+					depth,
+					expandColumnKey: expandColumnKey2,
+					estimatedRowHeight: isFixedRow ? false : estimatedRowHeight,
+					isScrolling,
+					rowIndex,
+					rowData,
+					rowKey: _rowKey,
+					rowEventHandlers,
+					style
+				},
+				{
+					on: {
+						rowHover: onRowHover,
+						rowExpand: onRowExpanded
 					}
-				]),
-				[$vSlots]
-			);
+				}
+			]);
+
+			return h("ComponentTableV2Row", _rowProps, [$vSlots]);
 		}
 	};
+	/* 默认cell render */
 	const CellRenderer = {
 		inheritAttrs: false,
 		functional: true,
 		render: (h, context) => {
 			const { data } = context;
 			const {
-				columns: columns2,
+				columns,
 				column,
 				columnIndex,
 				depth,
@@ -2172,11 +1815,11 @@ export default async function () {
 				expandedRowKeys,
 				ns,
 				cellProps: _cellProps,
-				expandColumnKey: expandColumnKey2,
 				indentSize,
 				iconSize,
-				rowKey: rowKey2,
-				$vSlots: slots
+				rowKey,
+				$vSlots: slots,
+				onRowExpanded
 			} = data;
 
 			const cellStyle = enforceUnit(style);
@@ -2202,15 +1845,15 @@ export default async function () {
 			/* 从rowData获取cell数据，可以使用 xxx.xxx.x的字符串方法 */
 			const cellData = (() => {
 				if (_.isFunction(dataGetter)) {
-					return dataGetter({ columns: columns2, column, columnIndex, rowData, rowIndex });
+					return dataGetter({ columns: columns, column, columnIndex, rowData, rowIndex });
 				} else {
-					return get(rowData, prop || "", null);
+					return get(rowData, prop || "", "--");
 				}
 			})();
 
 			const extraCellProps = tryCall(_cellProps, {
 				cellData,
-				columns: columns2,
+				columns: columns,
 				column,
 				columnIndex,
 				rowIndex,
@@ -2218,7 +1861,7 @@ export default async function () {
 			});
 			const cellProps = {
 				class: ns.e("cell-text"),
-				columns: columns2,
+				columns: columns,
 				column,
 				columnIndex,
 				cellData,
@@ -2228,34 +1871,40 @@ export default async function () {
 			};
 			const Cell = CellComponent(cellProps);
 			const kls = [ns.e("row-cell"), column.class, column.align === Alignment.CENTER && ns.is("align-center"), column.align === Alignment.RIGHT && ns.is("align-right")];
-			const expandable = rowIndex >= 0 && expandColumnKey2 && column.key === expandColumnKey2;
-			const expanded = rowIndex >= 0 && expandedRowKeys.includes(rowData[rowKey2]);
-			let IconOrPlaceholder;
+			/*vir table 树形数据*/
+			/* 如果有xRowChildren就可以展开 */
+			const expandable = _.$isArrayFill(rowData.children);
 			const iconStyle = `margin-inline-start: ${depth * indentSize}px;`;
+			const isShowIcon = column.prop === "COL_EXPAND_ARROW";
+
+			let iconProps = { style: [iconStyle, `width: ${iconSize}px; height: ${iconSize}px;`].join(" ") };
 			if (expandable) {
-				if (_.isPlainObject(expandIconProps)) {
-					IconOrPlaceholder = h(
-						ExpandIcon,
-						merge_hFnProps([
-							{},
-							expandIconProps,
-							{
-								class: [ns.e("expand-icon"), ns.is("expanded", expanded)],
-								attrs: {
-									size: iconSize,
-									expanded: expanded,
-									expandable: true
-								},
-								style: iconStyle
-							}
-						])
-					);
-				} else {
-					IconOrPlaceholder = h("div", {
-						style: [iconStyle, `width: ${iconSize}px; height: ${iconSize}px;`].join(" ")
-					});
-				}
+				const expanded = _.some(expandedRowKeys, key => {
+					return _.$isSame(rowData[rowKey], key);
+				});
+
+				iconProps = merge_hFnProps([
+					iconProps,
+					{
+						class: {
+							[ns.e("expand-icon")]: true,
+							"el-icon el-icon-arrow-right ": isShowIcon,
+							"el-table__expand-icon--expanded": expanded
+						},
+						attrs: {
+							size: iconSize,
+							expanded: expanded,
+							expandable: true
+						},
+						onClick() {
+							isShowIcon && expandable && onRowExpanded({ expanded: !expanded, rowData, rowIndex, rowKey: rowData[rowKey] });
+						}
+					}
+				]);
 			}
+
+			let IconOrPlaceholder = isShowIcon ? h("i", iconProps) : null;
+
 			return h(
 				"div",
 				merge_hFnProps([
@@ -2425,6 +2074,7 @@ export default async function () {
 		name: "xTableVir",
 		props: tableV2Props,
 		setup(props, context) {
+			const vm = this;
 			const { expose } = context;
 			const ns = useNamespace("table-v2");
 			const {
@@ -2465,7 +2115,7 @@ export default async function () {
 				onRowsRendered,
 				onScroll,
 				onVerticalScroll
-			} = useTable(props);
+			} = useTable(props, vm);
 			expose({
 				scrollTo,
 				scrollToLeft,
@@ -2484,7 +2134,7 @@ export default async function () {
 					cache: cache2,
 					cellProps,
 					estimatedRowHeight,
-					expandColumnKey: expandColumnKey2,
+					expandColumnKey,
 					fixedData,
 					headerHeight,
 					headerClass,
@@ -2495,7 +2145,7 @@ export default async function () {
 					rowHeight,
 					rowClass,
 					rowEventHandlers,
-					rowKey: rowKey2,
+					rowKey,
 					rowProps,
 					scrollbarAlwaysOn,
 					indentSize,
@@ -2517,7 +2167,7 @@ export default async function () {
 					headerWidth: unref(headerWidth),
 					height: unref(mainTableHeight),
 					mainTableRef,
-					rowKey: rowKey2,
+					rowKey: rowKey,
 					rowHeight,
 					scrollbarAlwaysOn,
 					scrollbarStartGap: 2,
@@ -2542,7 +2192,7 @@ export default async function () {
 					headerWidth: leftColumnsWidth,
 					headerHeight,
 					height: _fixedTableHeight,
-					rowKey: rowKey2,
+					rowKey: rowKey,
 					scrollbarAlwaysOn,
 					scrollbarStartGap: 2,
 					scrollbarEndGap: vScrollbarSize,
@@ -2566,7 +2216,7 @@ export default async function () {
 					headerWidth: rightColumnsWidthWithScrollbar,
 					headerHeight,
 					height: _fixedTableHeight,
-					rowKey: rowKey2,
+					rowKey: rowKey,
 					scrollbarAlwaysOn,
 					scrollbarStartGap: 2,
 					scrollbarEndGap: vScrollbarSize,
@@ -2581,14 +2231,14 @@ export default async function () {
 					ns,
 					depthMap: unref(depthMap),
 					columnsStyles: columnsStyles.value,
-					expandColumnKey: expandColumnKey2,
+					expandColumnKey,
 					expandedRowKeys: unref(expandedRowKeys),
 					estimatedRowHeight,
 					hasFixedColumns: unref(hasFixedColumns),
 					hoveringRowKey: unref(hoveringRowKey),
 					rowProps,
 					rowClass,
-					rowKey: rowKey2,
+					rowKey: rowKey,
 					rowEventHandlers,
 					onRowHovered,
 					onRowExpanded,
@@ -2596,10 +2246,10 @@ export default async function () {
 				};
 				const tableCellProps = {
 					cellProps,
-					expandColumnKey: expandColumnKey2,
+					expandColumnKey,
 					indentSize,
 					iconSize,
-					rowKey: rowKey2,
+					rowKey: rowKey,
 					expandedRowKeys: unref(expandedRowKeys),
 					ns
 				};
@@ -2645,27 +2295,30 @@ export default async function () {
 						return h(RowRenderer, merge_hFnProps([props, tableRowProps]), [
 							{
 								row: vmTable.$vSlots.row,
-								cell: props3 => {
+								cell: props_cell => {
 									if (vmTable.$vSlots.cell) {
 										return h(
 											CellRenderer,
 											merge_hFnProps([
-												props3,
+												props_cell,
 												tableCellProps,
+
 												{
-													style: columnsStyles.value[props3.column.key]
+													onRowExpanded,
+													style: columnsStyles.value[props_cell.column.key]
 												}
 											]),
-											[vmTable.$vSlots.cell(props3)]
+											[vmTable.$vSlots.cell(props_cell)]
 										);
 									} else {
 										return h(
 											CellRenderer,
 											merge_hFnProps([
-												props3,
+												props_cell,
 												tableCellProps,
 												{
-													style: columnsStyles.value[props3.column.key]
+													onRowExpanded,
+													style: columnsStyles.value[props_cell.column.key]
 												}
 											])
 										);
@@ -2722,7 +2375,14 @@ export default async function () {
 							[{ default: vmTable.$vSlots.empty }]
 						),
 						createEmptyVNode("ComponentOverlay"),
-						h(ComponentOverlay, { vIf: vmTable.$vSlots.overlay, class: ns.e("overlay") }, [{ default: vmTable.$vSlots.overlay }]),
+						h(
+							ComponentOverlay,
+							{
+								vIf: vmTable.$vSlots.overlay,
+								class: ns.e("overlay")
+							},
+							[{ default: vmTable.$vSlots.overlay }]
+						),
 						createEmptyVNode("ComponentOverlay")
 					]
 				);
@@ -2736,7 +2396,8 @@ export default async function () {
 	exports.TableV2SortOrder = SortOrder;
 	exports.tableV2Props = tableV2Props;
 
- */ let curr = {
+ */
+	let curr = {
 		id: 0,
 		x: 0,
 		grow: 0
@@ -2783,6 +2444,11 @@ export default async function () {
 	return defineComponent({
 		inheritAttrs: false,
 		props: ["columns"],
+		provide() {
+			return {
+				inject_xTableVir: this
+			};
+		},
 		setup() {
 			const vm = this;
 			onMounted(() => {
@@ -2889,7 +2555,7 @@ export default async function () {
 				$vSlots: {
 					default: ({ width, height }) => {
 						const xTableVirProps = {
-							staticClass: ["xDataGrid_table", vm.$ELEMENT.size].join(" "),
+							staticClass: ["xDataGrid_table", vm.$xUiConfigs.size].join(" "),
 							attrs: { "data-table": vm._uid },
 							width,
 							height: this.getHeight(height),
@@ -2904,7 +2570,6 @@ export default async function () {
 
 						/* 拖动列宽 */
 						const vDomLine = h("div", { staticClass: "xDataGrid_mask-line" }, []);
-
 						return [h(xTableVir, xTableVirProps), h("div", divProps, [vDomLine])];
 					}
 				}
@@ -2913,3 +2578,341 @@ export default async function () {
 	});
 }
 </script>
+
+<style lang="less">
+.xDataGrid_table {
+	&.small {
+		.el-table-v2__row-cell {
+			font-size: 12px;
+		}
+	}
+}
+
+.xDataGrid {
+	position: relative;
+	//outline: 1px solid red;
+
+	.el-table-v2__header-cell {
+		// outline: 1px solid blue;
+		position: relative;
+
+		&::after {
+			position: absolute;
+			content: " ";
+			right: 0;
+			height: 100%;
+			width: 2px;
+			top: 0;
+			bottom: 0;
+			cursor: col-resize;
+		}
+
+		display: flex;
+		font-size: 13px;
+		align-items: center;
+		padding: 0 8px;
+		height: 100%;
+		// user-select: none;
+		overflow: hidden;
+		background-color: var(--el-table-header-bg-color);
+		color: var(--el-table-header-text-color);
+		// font-weight: 700;
+
+		&.is-align-center {
+			justify-content: center;
+			text-align: center;
+		}
+
+		&.is-align-right {
+			justify-content: flex-end;
+			text-align: right;
+		}
+
+		&.is-sortable {
+			cursor: pointer;
+		}
+
+		&:hover {
+			.el-icon {
+				display: block;
+			}
+		}
+	}
+
+	.xDataGrid_mask {
+		position: absolute;
+		display: none;
+
+		&.active {
+			display: block;
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-color: transparent;
+			opacity: 0.5;
+			z-index: 1;
+
+			&:hover {
+				cursor: col-resize;
+			}
+
+			.xDataGrid_mask-line {
+				position: absolute;
+				top: 0;
+				width: 1px;
+				border-left: 1px dashed gray;
+				bottom: 0;
+				left: 0;
+			}
+		}
+	}
+}
+
+.el-table-v2 {
+	--el-table-border-color: var(--el-border-color-lighter);
+	--el-table-border: 1px solid var(--el-table-border-color);
+	--el-table-text-color: var(--el-text-color-regular);
+	--el-table-header-text-color: var(--el-text-color-primary);
+	--el-table-row-hover-bg-color: var(--el-fill-color-light);
+	--el-table-current-row-bg-color: var(--ui-primary-light-9);
+	--el-table-header-bg-color: var(--el-border-color-lighter);
+	--el-table-fixed-box-shadow: var(--el-box-shadow-light);
+	--el-table-bg-color: var(--el-fill-color-blank);
+	--el-table-tr-bg-color: var(--el-fill-color-blank);
+	--el-table-expanded-cell-bg-color: var(--el-fill-color-blank);
+	--el-table-fixed-left-column: inset 10px 0 10px -10px rgba(0, 0, 0, 0.15);
+	--el-table-fixed-right-column: inset -10px 0 10px -10px rgba(0, 0, 0, 0.15);
+}
+
+.el-vl__wrapper {
+	position: relative;
+}
+
+.el-vl__wrapper:hover .el-virtual-scrollbar,
+.el-vl__wrapper.always-on .el-virtual-scrollbar {
+	opacity: 1;
+}
+
+.el-vl__window {
+	scrollbar-width: none;
+}
+
+.el-vl__window::-webkit-scrollbar {
+	display: none;
+}
+
+.el-virtual-scrollbar {
+	opacity: 0;
+	transition: opacity 0.34s ease-out;
+}
+
+.el-virtual-scrollbar.always-on {
+	opacity: 1;
+}
+
+.el-vg__wrapper {
+	position: relative;
+}
+
+.el-table-v2 {
+	* {
+		// outline: 1px solid grey;
+	}
+
+	font-size: 14px;
+}
+
+.el-table-v2 * {
+	box-sizing: border-box;
+}
+
+.el-table-v2__root {
+	position: relative;
+}
+
+.el-table-v2__root:hover .el-table-v2__main .el-virtual-scrollbar {
+	opacity: 1;
+}
+
+.el-table-v2__main {
+	display: flex;
+	flex-direction: column-reverse;
+	position: absolute;
+	overflow: hidden;
+	top: 0;
+	background-color: var(--el-bg-color);
+	left: 0;
+}
+
+.el-table-v2__main .el-vl__horizontal,
+.el-table-v2__main .el-vl__vertical {
+	z-index: 2;
+}
+
+.el-table-v2__left {
+	display: flex;
+	flex-direction: column-reverse;
+	position: absolute;
+	overflow: hidden;
+	top: 0;
+	background-color: var(--el-bg-color);
+	left: 0;
+	box-shadow: 2px 0 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.el-table-v2__left .el-virtual-scrollbar {
+	opacity: 0;
+}
+
+.el-table-v2__left .el-vl__horizontal,
+.el-table-v2__left .el-vl__vertical {
+	z-index: -1;
+}
+
+.el-table-v2__right {
+	display: flex;
+	flex-direction: column-reverse;
+	position: absolute;
+	overflow: hidden;
+	top: 0;
+	background-color: var(--el-bg-color);
+	right: 0;
+	box-shadow: -2px 0 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.el-table-v2__right .el-virtual-scrollbar {
+	opacity: 0;
+}
+
+.el-table-v2__right .el-vl__horizontal,
+.el-table-v2__right .el-vl__vertical {
+	z-index: -1;
+}
+
+.el-table-v2__header-row {
+	-webkit-padding-end: var(--el-table-scrollbar-size);
+	padding-inline-end: var(--el-table-scrollbar-size);
+}
+
+.el-table-v2__row {
+	-webkit-padding-end: var(--el-table-scrollbar-size);
+	padding-inline-end: var(--el-table-scrollbar-size);
+}
+
+.el-table-v2__header-wrapper {
+	overflow: hidden;
+}
+
+.el-table-v2__header {
+	background-color: var(--el-table-header-bg-color);
+	position: relative;
+	overflow: hidden;
+}
+
+.el-table-v2__footer {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow: hidden;
+}
+
+.el-table-v2__empty {
+	position: absolute;
+	left: 0;
+}
+
+.el-table-v2__overlay {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 9999;
+}
+
+.el-table-v2__header-row {
+	display: flex;
+	border-bottom: var(--el-table-border);
+}
+
+.el-table-v2__sort-icon {
+	transition:
+		opacity,
+		display var(--el-transition-duration);
+	opacity: 0.6;
+	display: none;
+}
+
+.el-table-v2__sort-icon.is-sorting {
+	display: block;
+	opacity: 1;
+}
+
+.el-table-v2__row {
+	border-bottom: var(--el-table-border);
+	display: flex;
+	align-items: center;
+	transition: background-color var(--el-transition-duration);
+}
+
+.el-table-v2__row.is-hovered {
+	background-color: var(--el-table-row-hover-bg-color);
+}
+
+.el-table-v2__row:hover {
+	background-color: var(--el-table-row-hover-bg-color);
+}
+
+.el-table-v2__row-cell {
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	padding: 0 8px;
+}
+
+.el-table-v2__row-cell.is-align-center {
+	justify-content: center;
+	text-align: center;
+}
+
+.el-table-v2__row-cell.is-align-right {
+	justify-content: flex-end;
+	text-align: right;
+}
+
+.el-table-v2__expand-icon {
+	margin: 0 4px;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.el-table-v2__expand-icon svg {
+	transition: transform var(--el-transition-duration);
+}
+
+.el-table-v2__expand-icon.is-expanded svg {
+	transform: rotate(90deg);
+}
+
+.el-table-v2:not(.is-dynamic) .el-table-v2__cell-text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.el-table-v2.is-dynamic .el-table-v2__row {
+	overflow: hidden;
+	align-items: stretch;
+}
+
+.el-table-v2.is-dynamic .el-table-v2__row .el-table-v2__row-cell {
+	word-break: break-all;
+}
+</style>

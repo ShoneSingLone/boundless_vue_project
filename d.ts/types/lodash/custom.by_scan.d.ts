@@ -198,7 +198,6 @@ $loading:    (isLoading?:boolean)=>void;
 	 */
 $confirm:   (options?:any)=>Promise<any> ;
 $delConfirm:any;
-$msgInfo:any;
 /**
 	 * notify 弹窗，成功提示，可复写
 	 * @param {*} title
@@ -207,23 +206,23 @@ $msgInfo:any;
 	 */
 $msgSuccess:   (title:string,options?:any)=>Promise<any> ;
 /**
-	 * notify 弹窗，错误提示，可复写
-	 * @param {*} title
-	 * @param {*} options
-	 * @returns
-	 */
+		 * notify 弹窗，错误提示，可复写
+		 * @param {*} title
+		 * @param {*} options
+		 * @returns
+		 */
 $msgError:   (title:string,options?:any)=>Promise<any> ;
-$privateLayerSuccessThenMountVueComponent:any;
 /**
+		 * @deprecated 推荐使用_.$openModal
 		 * @param {*} title：{stirng}dialog标题
 		 * @param {*} WindowVueCtor:Vue组件,通常用_.$importVue引入
 		 * @param {*} options:{layer的参数，但是一般用不到，有需要可以自己看源码}
 		 * @returns Vue组件实例
 		 * hooks vm.onWindowClose事件
-		 * @example const vm = await _.$openWindow(...)
+		 * @example const vm = await _.$openWindow_deprecated(...)
 		 * vm.onWindowClose = callBackFunction
 		 */
-$openWindow:   (title:string, WindowVueCtor:Vue, options?:object)=>void ;
+$openWindow_deprecated:   (title:string, WindowVueCtor:Vue, options?:object)=>void ;
 /**
 	 *
 	 * @param {*} fnGetValue 执行此函数，直到返回真值
@@ -263,7 +262,7 @@ $setPagination:any;
 	 * @param {*} tableConfigs
 	 * @param {*} param1 如果不是特意保留，每次会清空已选
 	 */
-$setTableData:   (configs:object, payload:{list:any[]; total?:number, selected?:string[], set?:Set<string>}) => void ;
+$setTableData:   (tableConfigs: any, { list, total:number, selected, set: Set }: any)=>void ;
 /**
 	 * TODO: isHide的元素不需要校验
 	 *
@@ -325,6 +324,12 @@ $intToIp4:any;
 $ip4ToInt:any;
 $isIp4InCidr:any;
 $intToBin:any;
-$calculateCidrRange:any
+$calculateCidrRange:any;
+/**
+		 * 创建i18n 函数，可同时存在不同语言options的i18n对象
+		 * @param {*} lang zh-CN,对应i18n文件夹下的文件 
+		 * @returns 
+		*/
+$newI18n:   (options: { lang: "zh-CN" | "en-US" }) => Promise<any>; 
             }
         }

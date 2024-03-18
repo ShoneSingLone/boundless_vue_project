@@ -1,6 +1,6 @@
 <template>
-	<xDialog id="DialogProductServiceList">
-		<div class="flex vertical pt pr pl" style="width: 900px; min-height: 400px">
+	<xDialog id="DialogProductServiceList" style="--xDialog-wrapper-width: 900px">
+		<div class="flex vertical pt pr pl" style="min-height: 400px">
 			<div class="headForWin flex">
 				<xGap f />
 				<xItem :configs="form.name" />
@@ -35,7 +35,7 @@
 		</div>
 		<template #footer>
 			<div class="flex center width100">
-				<xBtn @click="$closeWindow" preset="blue">{{ i18n("关闭") }}</xBtn>
+				<xBtn @click="closeModal" preset="blue">{{ i18n("关闭") }}</xBtn>
 			</div>
 		</template>
 	</xDialog>
@@ -43,7 +43,7 @@
 <script lang="ts">
 export default async function ({ onSelect, onCancel, service_type, icon }) {
 	const { emptyRender } = await _.$importVue("/common/ui-x/components/data/xTableVir/xTableEmptyRender.vue");
-	/* 必要，混入"$closeWindow", "$layerMax", "$layerMin", "$layerRestore" */
+	/* 必要，混入"closeModal", "$layerMax", "$layerMin", "$layerRestore" */
 	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 	return defineComponent({
 		inject: ["APP"],
@@ -101,7 +101,11 @@ export default async function ({ onSelect, onCancel, service_type, icon }) {
 					/* 云硬盘 */
 					evs: "mo_icon-ebs_center_console",
 					/* VPC */
-					vpc: "mo_icon-vpc_center_console",
+					vpc: "mo_icon-vpc",
+					//eip
+					eip: "mo_icon-eip",
+					//共享带宽
+					sbw: "mo_icon-sbw",
 					/* 快照 */
 					snapshot: "mo_icon-snapshot"
 				};
@@ -172,7 +176,7 @@ export default async function ({ onSelect, onCancel, service_type, icon }) {
 			},
 			async onClickOk(serverId) {
 				onSelect && onSelect(serverId);
-				this.$closeWindow();
+				this.closeModal();
 			}
 		}
 	});

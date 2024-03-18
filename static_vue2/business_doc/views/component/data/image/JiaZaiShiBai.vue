@@ -4,7 +4,7 @@
 		<div class="demo-image__error flex">
 			<div class="block">
 				<span class="demonstration">默认</span>
-				<xImg/>
+				<xImg />
 			</div>
 			<div class="block">
 				<span class="demonstration">自定义</span>

@@ -7,6 +7,7 @@ type t_pagination = {
 type t_data = {
 	set?: Set<string>;
 	selected?: any[];
+	expandedRowKeys?: any[];
 	list: any[];
 };
 type t_column = {
@@ -58,6 +59,7 @@ export declare type t_defTableFn = (options: t_tableOptions) => t_tableOptions;
 export interface t_defTable extends t_defTableFn {
 	/** Show a success notification */
 	colSingle(options: t_colMultiple): any;
+	colExpandArrow(options?: t_colOprations): any;
 	colMultiple(options: t_colMultiple): any;
 	colActions(options: t_colOprations): any;
 }

@@ -30,7 +30,7 @@ async function execLog(cmd, options) {
 
 	const log = (content) => {
 		content = iconv.decode(content, "utf-8");
-		console.log("=================================\n", content, "\n=================================");
+		console.log("=================================\n", content,"\n=================================");
 		return content
 			.replace("\r", "")
 			.replace("\n", "");

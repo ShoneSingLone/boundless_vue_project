@@ -1,7 +1,6 @@
 <script lang="ts">
 export default async function () {
 	return [
-		"common/xItem/xItemCheck/xItemCheck",
 		"components/xExcalidraw/xExcalidraw",
 		/* *************** */
 		"components/other/xAlert/xAlert",
@@ -17,12 +16,12 @@ export default async function () {
 		"components/data/xMenuTree/xMenuTree",
 		"components/navigation/xTabs/xTabs",
 		"components/navigation/xTabs/xTabPane",
-		"components/data/xImg/xImg",
 		"components/data/xTag/xTag",
 		"components/data/xDesc/xDesc",
 		"components/data/xDesc/xDescItem",
 		"components/data/xTableVir/xTableVir",
 		"components/data/xVirtualList/xFixedSizeList",
+		"components/data/xPagination/xPagination",
 		"components/data/xTree/xTree",
 		"components/data/xTree/xTreeNode",
 		"components/data/xTree/xNodeContent",
@@ -30,6 +29,8 @@ export default async function () {
 		"components/form/xSelect/xSelect",
 		"components/form/xInputNumber/xInputNumber",
 		"components/form/xCheckbox/xCheckbox",
+		"components/form/xCheckbox/xCheckboxButton",
+		"components/form/xCheckbox/xCheckboxGroup",
 		"components/other/xCard/xCard",
 		"components/other/xBlock/xBlock",
 		"components/other/xAffix/xAffix",
@@ -50,6 +51,8 @@ export default async function () {
 		"components/layout/page/xPageTitle",
 		"components/layout/page/xPageContent",
 		"components/layout/page/xPageFooter",
+		/* *************************** */
+		"directive/xImg/xImg",
 		/* ********************** */
 		"common/xMd",
 		"common/xItemWrapper",
@@ -73,7 +76,7 @@ export default async function () {
 		"common/xInfoCardItem",
 		"common/xInquire",
 		"common/xItem",
-		"common/xItemCheckBox",
+		"common/xItem/xItemCheck/xItemCheck",
 		"common/xItemCheckboxGroup",
 		"common/xItemDatetime",
 		"common/xItemInput",
@@ -85,7 +88,6 @@ export default async function () {
 		"common/xItemSlider",
 		"common/xMenuTreeItem",
 		"common/xOprWithMore",
-		"common/xPagination",
 		"common/xRender",
 		"common/xSearchList",
 		"common/xTable",

@@ -1,5 +1,9 @@
 <script lang="ts">
 export default async function (options = {}) {
+	Vue.prototype.$xUiConfigs = _.merge({
+		size: options.size || "",
+		zIndex: options.zIndex || 2e3
+	});
 	/* @ts-ignore */
 	window._api = window._api || {};
 	/* @ts-ignore */
@@ -12,8 +16,7 @@ export default async function (options = {}) {
 		Promise.all(
 			_.map(
 				[
-					"/common/ui-x/components/data/xImg/xImg.install.vue",
-					"/common/ui-x/components/other/xNotification/xNotification.install.vue",
+					"/common/ui-x/directive/directive.install.vue",
 					"/common/ui-x/directive/xtips/xtips.vue",
 					"/common/ui-x/directive/ripple.vue",
 					"/common/ui-x/directive/xloading.vue",

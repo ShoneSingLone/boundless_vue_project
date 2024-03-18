@@ -430,12 +430,43 @@ export default async function () {
 			},
 			ctyunVpcName(msg = "") {
 				return {
-					name: "",
+					name: "ctyunVpcName",
 					async validator({ val }) {
-						if (!/^[\u4e00-\u9fa5a-zA-Z0-9_-]{2,63}$/.test(val)) {
+						if (/^[a-zA-Z\u4e00-\u9fa5][a-zA-Z0-9_\u4e00-\u9fa5-]*$/.test(val)) {
 							return "";
 						}
 						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
+			},
+			checkLength(msg = "", min = 1, max = 32) {
+				return {
+					name: "checkLength",
+					async validator({ val }) {
+						if (val.length >= min && val.length <= max) {
+							return "";
+						}
+						return msg;
+					},
+					trigger: ["change", "input", "blur"]
+				};
+			},
+			checkDnsList(msg = "") {
+				return {
+					name: "checkDnsList",
+					async validator({ val }) {
+						const dnsList = val.split(",").map(i => i.trim());
+						if (dnsList.length > 2) {
+							return i18n("最多支持两个IP");
+						}
+						//校验是不是合法的IP地址
+						const pass = dnsList.every(i => {
+							return /^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])$/.test(
+								i
+							);
+						});
+						return pass ? "" : msg;
 					},
 					trigger: ["change", "input", "blur"]
 				};

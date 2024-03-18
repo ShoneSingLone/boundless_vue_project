@@ -2,7 +2,7 @@
 var JavaScriptObfuscator = require("javascript-obfuscator");
 var fs = require("fs");
 var path = require("path");
-var target = "common";
+var target = "seed";
 
 var filePath = name => path.resolve(__dirname, `../../static_vue2/common/libs/${name}.js`);
 

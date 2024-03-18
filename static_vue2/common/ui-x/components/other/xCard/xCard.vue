@@ -1,5 +1,5 @@
 <template>
-	<div class="el-card" :class="cptClassName">
+	<div class="el-card xCard flex vertical" :class="cptClassName">
 		<div class="el-card__header" v-if="$slots.header || header">
 			<slot name="header">{{ header }}</slot>
 		</div>
@@ -33,10 +33,16 @@ export default async function () {
 				}
 			},
 			cptBodyClass() {
-				return _.merge({ "el-card__body": true }, this.bodyClass || {});
+				return _.merge({ "el-card__body flex1": true }, this.bodyClass || {});
 			}
 		}
 	});
 }
 </script>
-<style lang="less"></style>
+<style lang="less">
+.xCard {
+	.el-card__body {
+		position: relative;
+	}
+}
+</style>

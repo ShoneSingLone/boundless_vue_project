@@ -1,4 +1,7 @@
 export type t_yapi = {
+i18nTranslate(args?:any):Promise<any>
+i18nUpsertOne(args?:any):Promise<any>
+i18nGetList(args?:any):Promise<any>
 wikiUpsertOne(args?:any):Promise<any>
 saveImgByBase64(args?:any):Promise<any>
 wikiDetail(args?:any):Promise<any>

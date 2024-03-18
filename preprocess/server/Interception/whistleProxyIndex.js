@@ -1,10 +1,28 @@
+// http://wproxy.org/whistle/quickstart.html
+// https://wproxy.org/whistle/rules/reqBody.html
+
+// https://github.com/whistle-plugins/whistle.script
+// https://github.com/whistle-plugins/examples
+
+
+/* rules */
+
+
+// console.811rack36.com/azure script://azureIndex
+// console.811rack36.com/yapi/mock/240 http://192.168.137.1:3001/mock/240
+// console.811rack36.com / static / azure file://D:\ghca\azure-front_sc\sc\src\static\azure
+
+/* rules */
+
+
 const fs = require("fs");
 const path = require("path");
 const YAPI_HOST = "http://locahost:3001/";
-const INDEX_HTML_PREFIX = ``;
-const INDEX_HTML_PATH = ``;
+const INDEX_HTML_PREFIX = `https://console.811rack36.com/azure/?`;
+const INDEX_HTML_PATH = `D://ghca//azure-front_sc//sc//src//static//azure//index.html`;
 
 
+// console.log(path.resolve("./"));
 const MIME = {
 	"css": "text/css",
 	"gif": "image/gif",

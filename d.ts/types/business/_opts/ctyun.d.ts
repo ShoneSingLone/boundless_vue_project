@@ -4,6 +4,7 @@ type t_options = {
 		[prop: string]: any;
 	};
 export type t_ctyun = {
+EcsStatus:t_options[]
 BuyTime:t_options[]
 snapshotTime:t_options[]
 retentionType:t_options[]

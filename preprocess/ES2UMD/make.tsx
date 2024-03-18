@@ -1,3 +1,3 @@
-import { ElAffix } from "element-plus";
+import { ElTreeV2 } from "element-plus";
 
-export { ElAffix as ElAffix };
+export { ElTreeV2 as ElTreeV2 };

@@ -39,4 +39,6 @@ scEnvName(args?:any):object
 			 */
 ctyunEvsName(args?:any):object
 ctyunVpcName(args?:any):object
+checkLength(args?:any):object
+checkDnsList(args?:any):object
 	};

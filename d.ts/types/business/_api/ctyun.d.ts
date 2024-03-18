@@ -59,6 +59,7 @@ restCtyunV10EcsModify(args?:any):Promise<any>
 			 * @param data
 			 */
 resetOrderParametersValidate(args?:any):Promise<any>
+resetLicenseValidate(args?:any):Promise<any>
 /* *********************** */
 restCtyunV10EvsEvsIds(args?:any):Promise<any>
 /**

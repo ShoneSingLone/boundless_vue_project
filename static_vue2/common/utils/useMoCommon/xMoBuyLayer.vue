@@ -25,9 +25,9 @@
 			<slot>
 				<span class="xMoBuyLayer-label mr">{{ i18n("配置费用") }}: </span>
 				<span class="xMoBuyLayer-price-elmt flex middle">
-					<span class="xMoBuyLayer-price-num mr"> $1.00 USD </span>
-					<span class="xMoBuyLayer-price-unit mr">/</span>
-					<span class="xMoBuyLayer-price-unit mr">{{ configs.measureUnit }}</span>
+					<span class="xMoBuyLayer-price-num mr"> {{ cptPrice || "--" }} </span>
+					<span class="xMoBuyLayer-price-unit mr" v-if="cptPrice">/</span>
+					<span class="xMoBuyLayer-price-unit mr" v-if="cptPrice">{{ configs.measureUnit }}</span>
 				</span>
 			</slot>
 		</div>
@@ -58,6 +58,14 @@ export default async function () {
 			return {};
 		},
 		computed: {
+			cptPrice() {
+				const { value, singleValue, measureUnit, currency, symbol } = this.configs;
+
+				if (!singleValue) {
+					return "";
+				}
+				return `${symbol} ${singleValue} ${currency}`;
+			},
 			btnOk() {
 				return {
 					label: i18n("立即申请"),

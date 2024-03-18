@@ -110,15 +110,24 @@ exports.appUseKoaAssets = function (app) {
 
 						$("#app").after(scriptBlockString);
 
-						const APP_NAME = basename.replace(extname, "");
+						let APP_NAME = basename.replace(extname, "");
 
-						const { _URL_PREFIX } = SERVER_CONFIGS[APP_NAME] || {};
+						const businessItem = _.find(pathArray, name => {
+							return /business_(.*)/.test(name);
+						});
+
+						if (APP_NAME === 'index' && businessItem) {
+							const [, name] = String(businessItem).match(/business_(.*)/);
+							APP_NAME = name;
+						}
+
+						const { _URL_PREFIX_4_DEV } = SERVER_CONFIGS[APP_NAME] || {};
 
 						/* 配置 yapi mock 地址 */
-						if (_URL_PREFIX) {
-							$("#app").after(`<script only-use-in-dev-model>window._URL_PREFIX="${_URL_PREFIX}";</script>`);
+						if (_URL_PREFIX_4_DEV) {
+							$("#app").after(`<script only-use-in-dev-model>window._URL_PREFIX_4_DEV="${_URL_PREFIX_4_DEV}";</script>`);
 						}
-						console.log("🚀 middleware.appUseKoaAssets.js handleIndexHtml:", APP_NAME, _URL_PREFIX);
+						console.log("🚀 middleware.appUseKoaAssets.js handleIndexHtml:", APP_NAME, _URL_PREFIX_4_DEV);
 
 						ctx.body = $.html();
 					}

@@ -1,18 +1,40 @@
 <script lang="ts">
-export default async function ({ APP_WEB_PATH }) {
+export default async function ({ _URL_PREFIX_MO }) {
+	let [region, locale, agencyId] = _.$urlSearch(["region", "locale", "agencyId"]);
+
+	let regionChanged = false;
 	(function () {
 		$("html").addClass("mo-common");
-		window.appWebPath = APP_WEB_PATH;
-		const moLang = new URLSearchParams(location.search).get("locale");
+		_.$single.doc.on(
+			"click",
+			".modules-service-list-service-list-drawer-service-content-service-nav-item",
+			_.debounce(async function (event) {
+				if (regionChanged) {
+					window.location.reload();
+				}
+			}, 100)
+		);
+		/* 显示region selector */
+		// setTimeout(() => { $("#mo-cf-modules-region .modules-region-cf-header-region").css("display", ""); }, 1000 * 2);
+		window.appWebPath = _URL_PREFIX_MO;
+		const moLang = locale || $("html").lang || "zh-CN";
 		const i18nMap = {
 			"zh-cn": "zh-CN",
 			"en-us": "en-US"
 		};
 		const xLanguage = i18nMap[moLang] || "en-US";
 		localStorage["X-Language"] = xLanguage;
+		window.I18N_LANGUAGE = xLanguage;
+
 		const domHtml = document.querySelector("html");
 		domHtml.dataset.lang = xLanguage;
 		domHtml.dataset.moLang = moLang;
+	})();
+
+	await (async function () {
+		const i18n = await _.$newI18n({ lang: I18N_LANGUAGE });
+		window.i18n = i18n;
+		Vue.prototype.i18n = i18n;
 	})();
 	/* mo console ui 基座 */
 	/* 需要以script src 的形式引入，才能获取 baseURI = "/static/framework/2.0" */
@@ -32,11 +54,11 @@ export default async function ({ APP_WEB_PATH }) {
 	);
 
 	/* 基础参数 */
-	const [userInfo, appConfigs, regionsData, locale] = await Promise.all([_MoCfContext.getUser(), _MoCfContext.getGlobalConfig(), _MoCfContext.getRegions(), _MoCfContext.getLocale()]);
+	const [userInfo, appConfigs, regionsData, moContextLocale] = await Promise.all([_MoCfContext.getUser(), _MoCfContext.getGlobalConfig(), _MoCfContext.getRegions(), _MoCfContext.getLocale()]);
 	_MoCfContext.userInfo = userInfo;
 	_MoCfContext.appConfigs = appConfigs;
 	_MoCfContext.regionsData = regionsData;
-	_MoCfContext.locale = locale;
+	_MoCfContext.locale = moContextLocale;
 
 	function trigger(type, event) {
 		console.log("🚀 ~ trigger ~ type, event:", type, event);
@@ -80,6 +102,7 @@ export default async function ({ APP_WEB_PATH }) {
 		});
 
 		_MoCfContext.getLinks$()._subscribe(e => {
+			regionChanged = true;
 			trigger("getLinks", e);
 		});
 
@@ -128,41 +151,53 @@ export default async function ({ APP_WEB_PATH }) {
 		callbackFn && callbackFn(isSubPage);
 	}, 600);
 
-	_MoCfContext.queryPrice = async function (params, buyLayerConfigs) {
-		let atomCost = false;
+	_MoCfContext.getOneHourBeginEndTime = function () {
+		const currentTime = dayjs();
+		return {
+			begin_time: _.$dateFormat(currentTime.valueOf(), 2),
+			end_time: _.$dateFormat(currentTime.add(1, "hour").valueOf(), 2)
+		};
+	};
+
+	_MoCfContext.queryPrice = async function (params) {
+		const priceInfo = {
+			value: "",
+			singleValue: "",
+			measureUnit: "",
+			currency: "",
+			symbol: ""
+		};
 		try {
-			const { data, response } = await _MoCfContext._api.priceRate(params);
-			if (response?.data?.length > 0) {
-				const data = response.data;
-				if (!data || data.length === 0) {
-					return;
-				}
-				//EVS采用原子计价
-				atomCost = _.find(data, function (item) {
-					return item.type === "atom";
-				});
-				//计价未开启时，默认总价0.00
-				if (!isNaN(parseFloat(atomCost && atomCost.price))) {
-					buyLayerConfigs.costs[0] = buyLayerConfigs.costs[0] || {};
-					buyLayerConfigs.costs[0].value = parseFloat(atomCost.price).toFixed(2);
-					buyLayerConfigs.costs[0].singleValue = parseFloat(atomCost.price).toFixed(2);
-					buyLayerConfigs.costs[0].measureUnit = _$t("小时").label;
-					buyLayerConfigs.costs[0].currency = atomCost.currency;
-					buyLayerConfigs.costUnit = atomCost.symbol || "";
-					_$configLocale(atomCost.symbol, data[0].currency);
-				} else {
-					buyLayerConfigs.costs[0].value = "0.00";
-					buyLayerConfigs.costs[0].singleValue = "0.00";
-					buyLayerConfigs.costs[0].measureUnit = _$t("小时").label;
-					buyLayerConfigs.costUnit = "";
-				}
+			const res = await _MoCfContext._api.priceRate(params);
+			/*
+begin_time, : ""
+currency, : "CNY"
+end_time, : "20240223183659"
+price, : "0.0"
+symbol, : "¥"
+type, : "spec"
+*/
+
+			//EVS采用原子计价
+			const atomCost = _.find(res, r => r.type === "atom");
+
+			//计价未开启时，默认总价0.00
+			if (!isNaN(parseFloat(atomCost && atomCost.price))) {
+				priceInfo.value = parseFloat(atomCost.price).toFixed(2);
+				priceInfo.singleValue = parseFloat(atomCost.price).toFixed(2);
+				priceInfo.measureUnit = i18n("小时");
+				priceInfo.currency = atomCost.currency;
+				priceInfo.symbol = atomCost.symbol || "";
 			} else {
-				_$layer.confirmError(response?.data?.msg);
+				priceInfo.value = "0.00";
+				priceInfo.singleValue = "0.00";
+				priceInfo.measureUnit = i18n("小时");
+				priceInfo.symbol = "";
 			}
 		} catch (e) {
 			console.error(e);
 		} finally {
-			return atomCost;
+			return priceInfo;
 		}
 	};
 
@@ -178,7 +213,7 @@ export default async function ({ APP_WEB_PATH }) {
 						resolve(serviceId);
 					}
 				});
-				_.$openWindow(i18n("选择服务"), DialogTypeVueSFC, {
+				_.$openWindow_deprecated(i18n("选择服务"), DialogTypeVueSFC, {
 					cancel() {
 						setTimeout(() => {
 							reject("");
@@ -239,11 +274,14 @@ export default async function ({ APP_WEB_PATH }) {
 	};
 
 	_MoCfContext.AjaxRequestInjector = function (reqConfigs) {
-		const [region, locale, agencyId] = _.$urlSearch(["region", "locale", "agencyId"]);
+		let [region, locale, agencyId] = _.$urlSearch(["region", "locale", "agencyId"]);
+		region = encodeURIComponent(region);
 		reqConfigs.headers["x-requested-with"] = "XMLHttpRequest";
 		reqConfigs.headers["x-request-from"] = "Framework";
 		reqConfigs.headers["cftk"] = _MoCfContext.userInfo.cftk;
 		reqConfigs.headers["X-Language"] = locale;
+		// reqConfigs.headers["region"] = _MoCfContext.regionsData.selectRegionId;
+		reqConfigs.headers["Region"] = _MoCfContext.regionsData.selectRegionId;
 		reqConfigs.headers["ProjectName"] = region;
 		reqConfigs.headers["AgencyId"] = (() => {
 			return reqConfigs.headers.AgencyId || agencyId;
@@ -260,16 +298,14 @@ export default async function ({ APP_WEB_PATH }) {
 			moBuyLayerConfigs.isShowBtn = false;
 		}
 		if (!response?.purchases?.[0]) {
-			debugger;
 			return;
 		}
 		return new Promise(async (resolve, reject) => {
-			let content = options.content || "";
-			const title = i18n("跳转");
-			const WindowConfirm = await _.$importVue("/common/ui-x/msg/WindowConfirm.vue", {
-				parent: Vue.forceUpdate.getVM(),
+			const vm = await _.$openModal({
+				title: i18n("跳转"),
+				url: "/common/ui-x/msg/WindowConfirm.vue",
 				content: () => {
-					return h("div", { style: `width:420px;height:220px;`, staticClass: "flex middle center" }, [
+					return h("div", { style: `height:220px;`, staticClass: "flex middle center" }, [
 						h("div", { staticClass: "flex middle center vertical" }, [
 							h("i", {
 								staticClass: "el-message__icon el-icon-success",
@@ -308,7 +344,7 @@ export default async function ({ APP_WEB_PATH }) {
 										label: i18n("返回列表"),
 										onClick() {
 											goBack();
-											vm.$closeWindow();
+											vm.closeModal();
 										}
 									}
 								})
@@ -317,15 +353,16 @@ export default async function ({ APP_WEB_PATH }) {
 					};
 				}
 			});
-			const vm = await _.$openWindow(title, WindowConfirm, { offset: "200px" });
+
 			resolve(vm);
 		});
 	};
 
-	window._URL_PREFIX = APP_WEB_PATH;
+	window._URL_PREFIX_4_DEV = `${window._URL_PREFIX_4_DEV || ""}${_URL_PREFIX_MO}`;
+
 	_MoCfContext._api = {
 		async priceRate(data) {
-			return _.$ajax.get("/goku/rest/price/v3.0/rate", {
+			return _.$ajax.post("/goku/rest/price/v3.0/rate", {
 				data
 			});
 		},

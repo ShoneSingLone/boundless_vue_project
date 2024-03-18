@@ -1,6 +1,5 @@
 {
     "search.exclude": {
-        "**/d.ts": true,
         "**/vscode.definitions": true,
     }
 }

@@ -1,6 +1,6 @@
 import { VNode } from "../vue";
 
-type t_itemType = "xItemInput" | "xItemSelect" | "xItemRadioGroup" | "xItemCheckboxGroup" | "xItemCheckBox" | "xItemSwitch" | "xItemCheck" | (() => VNode);
+type t_itemType = "xItemInput" | "xItemSelect" | "xItemRadioGroup" | "xItemCheckboxGroup" | "xItemCheck" | "xItemSwitch" | "xItemCheck" | (() => VNode);
 export type t_xItemConfigsOptions = {
 	label?: string | Function;
 	/*** xSelect 是否多选 */
@@ -15,6 +15,9 @@ export type t_xItemConfigsOptions = {
 	isNumber?: boolean;
 	/*** xItemRadioGroup 是否使用按钮组 */
 	isButton?: boolean;
+	/* xItemCheck 是否使用组,value为数组 */
+	xItemCheckUse?: "blockCheck";
+	isGroup?: boolean;
 	type?: "textarea";
 	value?: any;
 	itemType?: t_itemType;

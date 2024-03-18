@@ -12,3 +12,5 @@ preprocess/uploadFileToRemote/privateCofnigs.js
 preprocess/uploadFileToRemote/zips
 /privateConfigs_MoTokenDataCofnigs.js
 vscode.workspace/
+pull.bat
+push.bat

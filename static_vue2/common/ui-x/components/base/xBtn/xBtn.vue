@@ -70,17 +70,6 @@ export default async function () {
 				}
 				return "";
 			},
-			cptUseRipple() {
-				if (this.ripple) {
-					return {
-						name: "ripple",
-						value: {
-							duration: 300
-						}
-					};
-				}
-				return {};
-			},
 			_elFormItemSize() {
 				return (this.elFormItem || {}).elFormItemSize;
 			},
@@ -88,7 +77,7 @@ export default async function () {
 				if (this.configs?.size) {
 					return this.configs.size;
 				}
-				return this.size || this._elFormItemSize || (this.$ELEMENT || {}).size;
+				return this.size || this._elFormItemSize || (this.$xUiConfigs || {}).size;
 			},
 			buttonDisabled() {
 				if (this.$options.propsData.hasOwnProperty("disabled") ? this.disabled : (this.elForm || {}).disabled) {
@@ -102,6 +91,7 @@ export default async function () {
 				return false;
 			},
 			cptDisabledTips() {
+				// return h("div", { style: { color: "red" } }, [123]);
 				if (this.cptDisabled) {
 					if (_.isString(this.cptDisabled) || this.cptDisabled.TYPE_IS_VNODE) {
 						return this.cptDisabled;
@@ -167,6 +157,27 @@ export default async function () {
 			}
 		},
 		methods: {
+			getDirectives() {
+				let directives = [];
+				if (this.ripple) {
+					/* ripple 水波纹 */
+					directives.push({
+						name: "ripple",
+						value: {
+							duration: 300
+						}
+					});
+				}
+				if (this.cptDisabledTips) {
+					/* disabled提示 */
+					directives.push({ name: "xtips", value: { content: this.cptDisabledTips, trigger: "hover", placement: "top", style: "--min-width:unset;" } });
+				}
+
+				if (_.$isArrayFill(this.$vnode.data.directives)) {
+					directives.push(...this.$vnode.data.directives);
+				}
+				return directives;
+			},
 			labelRender(h) {
 				return;
 			},
@@ -210,14 +221,7 @@ export default async function () {
 				return h(
 					"button",
 					{
-						attrs: {
-							title: vm.cptDisabledTips
-						},
-						directives: [
-							vm.cptUseRipple,
-							/* 合并props里面的指令 */
-							...(vm.$vnode.data.directives || [])
-						],
+						directives: vm.getDirectives({}),
 						onClick() {
 							vm.handleClick();
 						},

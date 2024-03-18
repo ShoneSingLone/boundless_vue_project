@@ -2,6 +2,7 @@
 <template>
 	<xForm>
 		<xItem :configs="form.xItemCheckboxGroup" />
+		<div>xItemCheckboxGroup{{ form.xItemCheckboxGroup.value }}</div>
 	</xForm>
 </template>
 <script lang="ts">
@@ -11,7 +12,7 @@ export default async function () {
 			return {
 				form: defItems({
 					xItemCheckboxGroup: {
-						value: "",
+						value: [],
 						label: "xItemCheckboxGroup",
 						itemType: "xItemCheckboxGroup",
 						minWidth: 90,

@@ -2,6 +2,7 @@
 	<DocContentOfDemo class="DemoAffix">
 		<xMd :md="md" />
 		<DemoAndCode title="基础用法" path="@/views/xComponent/DemoxItemCheck/DemoxItemCheck/JiChuYongFa.vue" unfold />
+		<DemoAndCode title="xItemCheckUse:blockCheck" path="@/views/xComponent/DemoxItemCheck/DemoxItemCheck/XItemCheckUseBlockCheck.vue" unfold />
 		<xMd :md="apiString" />
 	</DocContentOfDemo>
 </template>

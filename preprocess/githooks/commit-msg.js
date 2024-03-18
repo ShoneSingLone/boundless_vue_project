@@ -11,30 +11,31 @@ const msg = require("fs").readFileSync(msgPath, "utf-8").trim();
 (async () => {
 	/* https://www.jianshu.com/p/b2fec735e7cf */
 	// const msg = await execLog(`git show -s --format=%s`);
-	const commitRE = /^(feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|release|workflow)(\(.+\))?: .{1,500}/;
+	const commitRE = /^(sync|feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|release|workflow)(\(.+\))?: .{1,500}/;
 
 	let isFail = !commitRE.test(msg);
-
 	if (!isFail) {
-		const [, , scope] = String(msg).match(commitRE);
-		const sepcial = ["xUI", "common"];
+		const [, type, scope] = String(msg).match(commitRE);
+		const sepcial = ["xUI", "common", "sync"];
 		const allowBusiness = [...sepcial, ...APP_NAME_ARRAY];
 		const [isNameOk, businessName] = (() => {
+			/* 不需要lint */
+			let jusetCommitOnly = _.some(sepcial, business => {
+				return scope.includes(business) || type === business;
+			});
+
+			if (jusetCommitOnly) {
+				return [true, ""];
+			}
+
 			let businessName = _.find(APP_NAME_ARRAY, business => {
 				return scope.includes(business);
 			});
+
 			if (businessName) {
 				return [true, businessName];
 			}
 
-			/* 不需要lint */
-			let isAllow = _.some(sepcial, business => {
-				return scope.includes(business);
-			});
-
-			if (isAllow) {
-				return [true, ""];
-			}
 			return [false];
 		})();
 
@@ -45,23 +46,25 @@ const msg = require("fs").readFileSync(msgPath, "utf-8").trim();
 		}
 
 		if (businessName) {
-			await execCmd(`pnpm lint ${businessName}`);
-			await execCmd(`git add .`);
+			await execCmd(`npm run updateIndexHtmlVersion ${businessName}`);
+			await execCmd(`npm run lint ${businessName}`);
+			// await execCmd(`git add .`);
 		}
 	}
 
 	if (isFail) {
-		isFail = !/Merge branch/.test(msg);
+		isFail = !/Merge /.test(msg);
 	}
 
 	if (isFail) {
 		console.log(`git commit message 格式错误:（本校验规则在 preprocess/githooks/commit-msg.js 中定义）
-/^(feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|release)(\(.+\))?: .{1,500}/
+/^(sync|feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|release)(\(.+\))?: .{1,500}/
 
 按照如下格式填写:
 	特性(BUSINESS_NAME):描述(1-500个字符)
 `);
 		process.exit(1);
 	}
+	/* 开发测试 禁止commit */
 	// process.exit(1);
 })();

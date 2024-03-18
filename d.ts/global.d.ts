@@ -1,5 +1,4 @@
 import { LoDashStatic as t_lodash } from "./types/lodash/index.d";
-import { t_MoCfContext } from "./types/business/_MoCfContext";
 import { t_api } from "./types/business/_api";
 import { t_opts } from "./types/business/_opts";
 import { t_rules } from "./types/business/_rules";
@@ -16,6 +15,7 @@ import {
 	onBeforeUnmount as t_onBeforeUnmount,
 	ref as t_ref,
 	toRef as t_toRef,
+	WatchEffect as t_WatchEffect,
 	shallowRef as t_shallowRef,
 	computed as t_computed,
 	unref as t_unref,
@@ -26,6 +26,8 @@ import {
 	nextTick as t_nextTick
 } from "./types/vue";
 import { t_defTable } from "./types/xUI/t_tableConfigs";
+
+type t_MoCfContext = {};
 
 declare global {
 	const _MoCfContext: t_MoCfContext;
@@ -83,6 +85,7 @@ declare global {
 	const inject: typeof t_inject;
 	const getCurrentInstance: typeof t_getCurrentInstance;
 	const shallowRef: typeof t_shallowRef;
+	const watchEffect: typeof t_WatchEffect;
 	const unref: typeof t_unref;
 	const computed: typeof t_computed;
 	const defineComponent: typeof t_defineComponent;

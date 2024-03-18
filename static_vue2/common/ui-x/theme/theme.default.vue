@@ -806,8 +806,11 @@ body,
 .width90 {
 	width: 90%;
 }
-.marginAuto {
+.margin-auto {
 	margin: 0 auto;
+}
+.position-relative {
+	position: relative;
 }
 
 /* *************************** */
