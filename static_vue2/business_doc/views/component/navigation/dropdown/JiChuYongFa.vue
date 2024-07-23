@@ -2,7 +2,9 @@
 	<div>
 		<xMd :md="md" />
 		<xDropdown>
-			<span class="xDropdown-link"> 下拉菜单<i class="el-icon-arrow-down el-icon--right"></i> </span>
+			<span class="xDropdown-link">
+				下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+			</span>
 			<xDropdownMenu slot="dropdown">
 				<xDropdownItem>黄金糕</xDropdownItem>
 				<xDropdownItem>狮子头</xDropdownItem>

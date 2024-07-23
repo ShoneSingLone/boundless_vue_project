@@ -8,7 +8,10 @@
 				<xItem :configs="form.COL_可用区" span="full" />
 				<xItem :configs="form.COL_配额指标" span="full" />
 				<xItem :configs="form.COL_当前总配额" span="full" />
-				<xItem :configs="form.COL_已使用配额" span="full" v-if="SpecialType === 'VdcQuota'" />
+				<xItem
+					:configs="form.COL_已使用配额"
+					span="full"
+					v-if="SpecialType === 'VdcQuota'" />
 				<xItem :configs="form.COL_申请后配额" span="full" />
 			</xForm>
 		</xCard>
@@ -20,7 +23,15 @@
 </template>
 
 <script lang="ts">
-export default async function ({ row, onAdd, COL_环境区域, COL_云服务类型Options, state, configsTableDataList, SpecialType }) {
+export default async function ({
+	row,
+	onAdd,
+	COL_环境区域,
+	COL_云服务类型Options,
+	state,
+	configsTableDataList,
+	SpecialType
+}) {
 	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 	const isUpdate = !!row;
 
@@ -37,7 +48,11 @@ export default async function ({ row, onAdd, COL_环境区域, COL_云服务类�
 				isLoading: false,
 				labels: {},
 				form: {
-					COL_环境区域: { value: row?.COL_环境区域 || COL_环境区域, label: i18n("环境区域"), attrs: { readonly: true } },
+					COL_环境区域: {
+						value: row?.COL_环境区域 || COL_环境区域,
+						label: i18n("环境区域"),
+						attrs: { readonly: true }
+					},
 					COL_云服务类型: {
 						value: "",
 						itemType: "xItemSelect",
@@ -45,7 +60,9 @@ export default async function ({ row, onAdd, COL_环境区域, COL_云服务类�
 						options: COL_云服务类型Options,
 						onEmitValue({ val }) {
 							if (val) {
-								vm.labels.COL_云服务类型_label = _.find(this.options, { value: val })?.label;
+								vm.labels.COL_云服务类型_label = _.find(this.options, {
+									value: val
+								})?.label;
 							}
 						},
 						rules: [_rules.required()]
@@ -69,7 +86,10 @@ export default async function ({ row, onAdd, COL_环境区域, COL_云服务类�
 										if (!service_id) {
 											return [];
 										}
-										return _.uniqBy(_.filter(state.allAz, { service_id }), "value");
+										return _.uniqBy(
+											_.filter(state.allAz, { service_id }),
+											"value"
+										);
 									})();
 								},
 								Vue._immediate
@@ -77,7 +97,9 @@ export default async function ({ row, onAdd, COL_环境区域, COL_云服务类�
 						},
 						onEmitValue({ val, index }) {
 							if (val) {
-								vm.labels.COL_可用区_label = _.find(this.options, { value: val }).label;
+								vm.labels.COL_可用区_label = _.find(this.options, {
+									value: val
+								}).label;
 							}
 						}
 					},
@@ -100,7 +122,9 @@ export default async function ({ row, onAdd, COL_环境区域, COL_云服务类�
 											if (_.some([az_id, service_id], i => !i)) {
 												return [];
 											}
-											const COL_配额指标 = isUpdate ? row.COL_配额指标 : vm.cptFormData.COL_配额指标;
+											const COL_配额指标 = isUpdate
+												? row.COL_配额指标
+												: vm.cptFormData.COL_配额指标;
 
 											const selected = _.filter(configsTableDataList, {
 												COL_云服务类型: service_id,
@@ -111,10 +135,15 @@ export default async function ({ row, onAdd, COL_环境区域, COL_云服务类�
 												_.filter(state.allResource, i => {
 													var isSameAz = i.az_id === az_id;
 													var isSameService = i.service_id === service_id;
-													var isCurrentSelected = COL_配额指标 === i.resource_id;
+													var isCurrentSelected =
+														COL_配额指标 === i.resource_id;
 													/*未使用*/
 													var isAble = !selected.includes(i.resource_id);
-													if (isSameAz && isSameService && isCurrentSelected) {
+													if (
+														isSameAz &&
+														isSameService &&
+														isCurrentSelected
+													) {
 														return true;
 													}
 													return isSameAz && isSameService && isAble;
@@ -137,8 +166,16 @@ export default async function ({ row, onAdd, COL_环境区域, COL_云服务类�
 							}
 						}
 					},
-					COL_当前总配额: { value: "", label: i18n("当前总配额"), attrs: { readonly: true } },
-					COL_已使用配额: { value: "", label: i18n("已使用配额"), attrs: { readonly: true } },
+					COL_当前总配额: {
+						value: "",
+						label: i18n("当前总配额"),
+						attrs: { readonly: true }
+					},
+					COL_已使用配额: {
+						value: "",
+						label: i18n("已使用配额"),
+						attrs: { readonly: true }
+					},
 					COL_申请后配额: {
 						value: 0,
 						label: i18n("申请后配额"),
@@ -191,7 +228,11 @@ export default async function ({ row, onAdd, COL_环境区域, COL_云服务类�
 							}
 						],
 						onEmitValue({ val }) {
-							const { COL_云服务类型: service_id, COL_可用区: az_id, COL_配额指标: resource_id } = vm.cptFormData;
+							const {
+								COL_云服务类型: service_id,
+								COL_可用区: az_id,
+								COL_配额指标: resource_id
+							} = vm.cptFormData;
 							const resource = _.find(state.allResource, {
 								service_id,
 								az_id,
@@ -205,7 +246,11 @@ export default async function ({ row, onAdd, COL_环境区域, COL_云服务类�
 						},
 						itemSlots: {
 							afterController() {
-								const { COL_云服务类型: service_id, COL_可用区: az_id, COL_配额指标: resource_id } = vm.cptFormData;
+								const {
+									COL_云服务类型: service_id,
+									COL_可用区: az_id,
+									COL_配额指标: resource_id
+								} = vm.cptFormData;
 								if (!(service_id && az_id && resource_id)) {
 									return null;
 								}
@@ -234,7 +279,7 @@ export default async function ({ row, onAdd, COL_环境区域, COL_云服务类�
 				};
 			},
 			cptFormData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnOk() {
 				const vm = this;
@@ -286,7 +331,14 @@ export default async function ({ row, onAdd, COL_环境区域, COL_云服务类�
 					_.$fillBackData({
 						form: this.form,
 						data: row,
-						order: ["COL_云服务类型", "COL_可用区", "COL_配额指标", "COL_当前总配额", "COL_已使用配额", "COL_申请后配额"]
+						order: [
+							"COL_云服务类型",
+							"COL_可用区",
+							"COL_配额指标",
+							"COL_当前总配额",
+							"COL_已使用配额",
+							"COL_申请后配额"
+						]
 					});
 				}
 			}

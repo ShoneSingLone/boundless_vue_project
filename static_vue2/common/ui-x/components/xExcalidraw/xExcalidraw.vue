@@ -6,7 +6,10 @@
 export default async function () {
 	let { React, ReactDOM } = await _.$importVue("/common/react/useReact.vue");
 	if (!window.ExcalidrawLib) {
-		await _.$appendScript("https://unpkg.com/@excalidraw/excalidraw/dist/excalidraw.development.js", "ExcalidrawLib");
+		await _.$appendScript(
+			"https://unpkg.com/@excalidraw/excalidraw/dist/excalidraw.development.js",
+			"ExcalidrawLib"
+		);
 	}
 	let { ExcalidrawLib } = window;
 	debugger;

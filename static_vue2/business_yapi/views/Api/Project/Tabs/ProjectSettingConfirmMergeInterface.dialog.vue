@@ -1,13 +1,18 @@
 <template>
 	<xDialog id="ProjectSettingConfirmMergeInterfaceDialog">
-		<xAlert title="不保留旧数据，完全使用新数据。数据同步后，可能会造成原本的修改数据丢失" type="warning" />
+		<xAlert
+			title="不保留旧数据，完全使用新数据。数据同步后，可能会造成原本的修改数据丢失"
+			type="warning" />
 		<div class="postman-dataImport-modal flex1">
 			<div class="postman-dataImport-modal-content">
-				<div :key="index" class="postman-dataImport-show-diff" v-for="(item, index) in domainData">
+				<div
+					:key="index"
+					class="postman-dataImport-show-diff"
+					v-for="(item, index) in domainData">
 					<span class="logcontent" v-html="item.content" />
 				</div>
 			</div>
-			<div class="padding">
+			<div class="x-padding">
 				{{ cptTaskNotice }}
 			</div>
 		</div>
@@ -85,7 +90,10 @@ export default async function ({ domainData, originData, dataSync }) {
 					if (_.$isArrayFill(cats)) {
 						try {
 							for (const cat of cats) {
-								const findCat = _.find(vm.inject_project.allCategory, c => c.name === cat.name);
+								const findCat = _.find(
+									vm.inject_project.allCategory,
+									c => c.name === cat.name
+								);
 								if (findCat) {
 									catsObj[cat.name] = findCat;
 									/* TODO:是否需要更新desc */
@@ -139,8 +147,12 @@ export default async function ({ domainData, originData, dataSync }) {
 							let interfaceInfo = Object.assign(api, {
 								project_id: projectId
 							});
-							const category = _.find(vm.inject_project.allCategory, { name: interfaceInfo.catname });
-							const undefinedCategory = _.find(vm.inject_project.allCategory, { title: "公共分类" });
+							const category = _.find(vm.inject_project.allCategory, {
+								name: interfaceInfo.catname
+							});
+							const undefinedCategory = _.find(vm.inject_project.allCategory, {
+								title: "公共分类"
+							});
 							(function () {
 								if (interfaceInfo.catname) {
 									if (category?._id) {

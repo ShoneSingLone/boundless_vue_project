@@ -49,7 +49,7 @@ export default async function ({ onOk, projectData }) {
 				};
 			},
 			cptFormData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnOk() {
 				const vm = this;
@@ -73,7 +73,7 @@ export default async function ({ onOk, projectData }) {
 				let { data } = await _api.yapi.getProjectById(id);
 				data = _.merge({}, data, { name: newProjectName }, { preName: data.name });
 				await _api.yapi.copyProject(data);
-				_.$msgSuccess("项目复制成功");
+				_.$msg("项目复制成功");
 				this.$emit("change");
 			},
 			renderDeleteGroup() {
@@ -103,7 +103,11 @@ export default async function ({ onOk, projectData }) {
 										},
 										[
 											h("div", { staticClass: "card-danger-content" }, [
-												h("p", [i18n("分组一旦删除，将无法恢复数据，请慎重操作！")]),
+												h("p", [
+													i18n(
+														"分组一旦删除，将无法恢复数据，请慎重操作！"
+													)
+												]),
 												h("p", [i18n("只有超级管理员有权限删除分组。")])
 											]),
 											h("div", { staticClass: "flex end" }, [

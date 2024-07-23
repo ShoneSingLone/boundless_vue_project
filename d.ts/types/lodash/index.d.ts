@@ -19,5 +19,17 @@ export as namespace _;
 declare const _: _.LoDashStatic;
 declare namespace _ {
 	// eslint-disable-next-line @typescript-eslint/no-empty-interface -- (This will be augmented)
-	interface LoDashStatic {}
+	interface LoDashStatic {
+		/// <reference path="./common/math.d.ts" />
+		/// <reference path="./common/number.d.ts" />
+		/// <reference path="./common/object.d.ts" />
+		/// <reference path="./common/seq.d.ts" />
+		/// <reference path="./common/string.d.ts" />
+		/// <reference path="./common/util.d.ts" />
+		$loadSFC(arg0: string, arg1: { $parent: any; row: any; getTableData: any }): unknown;
+		$openWindow( /// <reference path="./common/seq.d.ts" />
+			title: string,
+			ServiceConfigWindowUpsert: any
+		): unknown;
+	}
 }

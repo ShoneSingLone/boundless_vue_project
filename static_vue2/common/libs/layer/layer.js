@@ -41,7 +41,9 @@
 
 			//获取节点的style属性值
 			getStyle: function (node, name) {
-				var style = node.currentStyle ? node.currentStyle : window.getComputedStyle(node, null);
+				var style = node.currentStyle
+					? node.currentStyle
+					: window.getComputedStyle(node, null);
 				return style[style.getPropertyValue ? "getPropertyValue" : "getAttribute"](name);
 			},
 
@@ -83,7 +85,9 @@
 						//如果参数来自于初始轮询（即未加载就绪时的），则移除 link 标签状态
 						if (status === STAUTS_NAME) getLinkElem.removeAttribute("lay-status");
 						//如果 link 标签的状态仍为「创建中」，则继续进入轮询，直到状态改变，则执行回调
-						getLinkElem.getAttribute("lay-status") === STAUTS_NAME ? setTimeout(poll, delay) : fn();
+						getLinkElem.getAttribute("lay-status") === STAUTS_NAME
+							? setTimeout(poll, delay)
+							: fn();
 					} else {
 						getLinkElem.setAttribute("lay-status", STAUTS_NAME);
 						setTimeout(function () {
@@ -119,7 +123,9 @@
 
 			if (!options.extend) return this;
 
-			isLayui ? layui.addcss("modules/layer/" + options.extend) : ready.link("theme/" + options.extend);
+			isLayui
+				? layui.addcss("modules/layer/" + options.extend)
+				: ready.link("theme/" + options.extend);
 
 			return this;
 		},
@@ -128,7 +134,11 @@
 		ready: function (callback) {
 			var cssname = "layer",
 				ver = "",
-				path = (isLayui ? "modules/layer/" : "theme/") + "default/layer.css?v=" + layer.v + ver;
+				path =
+					(isLayui ? "modules/layer/" : "theme/") +
+					"default/layer.css?v=" +
+					layer.v +
+					ver;
 			isLayui ? layui.addcss(path, callback, cssname) : ready.link(path, callback, cssname);
 			return this;
 		},
@@ -194,7 +204,10 @@
 							}
 						: (function () {
 								options = options || {};
-								if (options.icon === -1 || (options.icon === undefined && !ready.config.skin)) {
+								if (
+									options.icon === -1 ||
+									(options.icon === undefined && !ready.config.skin)
+								) {
 									options.skin = skin + " " + (options.skin || "layui-layer-hui");
 								}
 								return options;
@@ -255,8 +268,25 @@
 	Class.pt = Class.prototype;
 
 	//缓存常用字符
-	var doms = ["layui-layer", ".layui-layer-title", ".layui-layer-main", ".layui-layer-dialog", "layui-layer-iframe", "layui-layer-content", "layui-layer-btn", "layui-layer-close"];
-	doms.anim = ["layer-anim-00", "layer-anim-01", "layer-anim-02", "layer-anim-03", "layer-anim-04", "layer-anim-05", "layer-anim-06"];
+	var doms = [
+		"layui-layer",
+		".layui-layer-title",
+		".layui-layer-main",
+		".layui-layer-dialog",
+		"layui-layer-iframe",
+		"layui-layer-content",
+		"layui-layer-btn",
+		"layui-layer-close"
+	];
+	doms.anim = [
+		"layer-anim-00",
+		"layer-anim-01",
+		"layer-anim-02",
+		"layer-anim-03",
+		"layer-anim-04",
+		"layer-anim-05",
+		"layer-anim-06"
+	];
 
 	doms.SHADE = "layui-layer-shade";
 	doms.MOVE = "x-layer-move";
@@ -292,7 +322,13 @@
 		var zIndex = config.zIndex + times,
 			titype = typeof config.title === "object";
 		var ismax = config.maxmin && (config.type === 1 || config.type === 2);
-		var titleHTML = config.title ? '<div class="layui-layer-title" style="' + (titype ? config.title[1] : "") + '">' + (titype ? config.title[0] : config.title) + "</div>" : "";
+		var titleHTML = config.title
+			? '<div class="layui-layer-title" style="' +
+				(titype ? config.title[1] : "") +
+				'">' +
+				(titype ? config.title[0] : config.title) +
+				"</div>"
+			: "";
 
 		config.zIndex = zIndex;
 
@@ -314,13 +350,26 @@
 		callback(
 			[
 				//遮罩
-				config.shade ? '<div class="' + doms.SHADE + '" id="' + doms.SHADE + times + '" times="' + times + '" style="' + ("z-index:" + (zIndex - 1) + "; ") + '"></div>' : "",
+				config.shade
+					? '<div class="' +
+						doms.SHADE +
+						'" id="' +
+						doms.SHADE +
+						times +
+						'" times="' +
+						times +
+						'" style="' +
+						("z-index:" + (zIndex - 1) + "; ") +
+						'"></div>'
+					: "",
 
 				//主体
 				'<div class="' +
 					doms[0] +
 					(" layui-layer-" + ready.type[config.type]) +
-					((config.type == 0 || config.type == 2) && !config.shade ? " layui-layer-border" : "") +
+					((config.type == 0 || config.type == 2) && !config.shade
+						? " layui-layer-border"
+						: "") +
 					" " +
 					(config.skin || "") +
 					'" id="' +
@@ -344,14 +393,24 @@
 					(config.type == 0 && config.icon !== -1 ? " layui-layer-padding" : "") +
 					(config.type == 3 ? " layui-layer-loading" + config.icon : "") +
 					'">' +
-					(config.type == 0 && config.icon !== -1 ? '<i class="layui-layer-ico layui-layer-ico' + config.icon + '"></i>' : "") +
+					(config.type == 0 && config.icon !== -1
+						? '<i class="layui-layer-ico layui-layer-ico' + config.icon + '"></i>'
+						: "") +
 					(config.type == 1 && conType ? "" : config.content || "") +
 					"</div>" +
 					'<span class="layui-layer-setwin">' +
 					(function () {
-						var closebtn = ismax ? '<a class="layui-layer-min" href="javascript:;"><cite></cite></a><a class="layui-layer-ico layui-layer-max" href="javascript:;"></a>' : "";
+						var closebtn = ismax
+							? '<a class="layui-layer-min" href="javascript:;"><cite></cite></a><a class="layui-layer-ico layui-layer-max" href="javascript:;"></a>'
+							: "";
 						config.closeBtn &&
-							(closebtn += '<a class="layui-layer-ico ' + doms[7] + " " + doms[7] + (config.title ? config.closeBtn : config.type == 4 ? "1" : "2") + '" href="javascript:;"></a>');
+							(closebtn +=
+								'<a class="layui-layer-ico ' +
+								doms[7] +
+								" " +
+								doms[7] +
+								(config.title ? config.closeBtn : config.type == 4 ? "1" : "2") +
+								'" href="javascript:;"></a>');
 						return closebtn;
 					})() +
 					"</span>" +
@@ -360,9 +419,24 @@
 								var button = "";
 								typeof config.btn === "string" && (config.btn = [config.btn]);
 								for (var i = 0, len = config.btn.length; i < len; i++) {
-									button += '<a class="' + doms[6] + "" + i + '">' + config.btn[i] + "</a>";
+									button +=
+										'<a class="' +
+										doms[6] +
+										"" +
+										i +
+										'">' +
+										config.btn[i] +
+										"</a>";
 								}
-								return '<div class="' + doms[6] + " layui-layer-btn-" + (config.btnAlign || "") + '">' + button + "</div>";
+								return (
+									'<div class="' +
+									doms[6] +
+									" layui-layer-btn-" +
+									(config.btnAlign || "") +
+									'">' +
+									button +
+									"</div>"
+								);
 							})()
 						: "") +
 					(config.resize ? '<span class="x-layer-resize"></span>' : "") +
@@ -408,7 +482,9 @@
 				layer.closeAll("dialog");
 				break;
 			case 2:
-				var content = (config.content = conType ? config.content : [config.content || "", "auto"]);
+				var content = (config.content = conType
+					? config.content
+					: [config.content || "", "auto"]);
 				config.content =
 					'<iframe scrolling="' +
 					(config.content[1] || "auto") +
@@ -454,7 +530,11 @@
 								})()
 							: (function () {
 									if (!content.parents("." + doms[0])[0]) {
-										content.data("display", content.css("display")).show().addClass("layui-layer-wrap").wrap(html[1]);
+										content
+											.data("display", content.css("display"))
+											.show()
+											.addClass("layui-layer-wrap")
+											.wrap(html[1]);
 										$("#" + doms[0] + times)
 											.find("." + doms[5])
 											.before(titleHTML);
@@ -498,7 +578,8 @@
 		if (config.fixed) {
 			win.on("resize", function () {
 				that.offset();
-				(/^\d+%$/.test(config.area[0]) || /^\d+%$/.test(config.area[1])) && that.auto(times);
+				(/^\d+%$/.test(config.area[0]) || /^\d+%$/.test(config.area[1])) &&
+					that.auto(times);
 				config.type == 4 && that.tips();
 			});
 		}
@@ -512,9 +593,14 @@
 		//为兼容jQuery3.0的css动画影响元素尺寸计算
 		if (doms.anim[config.anim]) {
 			var animClass = "layer-anim " + doms.anim[config.anim];
-			that.layero.addClass(animClass).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function () {
-				$(this).removeClass(animClass);
-			});
+			that.layero
+				.addClass(animClass)
+				.one(
+					"webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend",
+					function () {
+						$(this).removeClass(animClass);
+					}
+				);
 		}
 
 		//记录关闭动画
@@ -542,7 +628,9 @@
 			btnHeight = layero.find("." + doms[6]).outerHeight() || 0,
 			setHeight = function (elem) {
 				elem = layero.find(elem);
-				elem.height(area[1] - titHeight - btnHeight - 2 * (parseFloat(elem.css("padding-top")) | 0));
+				elem.height(
+					area[1] - titHeight - btnHeight - 2 * (parseFloat(elem.css("padding-top")) | 0)
+				);
 			};
 
 		switch (config.type) {
@@ -620,8 +708,12 @@
 		}
 
 		if (!config.fixed) {
-			that.offsetTop = /%$/.test(that.offsetTop) ? (win.height() * parseFloat(that.offsetTop)) / 100 : parseFloat(that.offsetTop);
-			that.offsetLeft = /%$/.test(that.offsetLeft) ? (win.width() * parseFloat(that.offsetLeft)) / 100 : parseFloat(that.offsetLeft);
+			that.offsetTop = /%$/.test(that.offsetTop)
+				? (win.height() * parseFloat(that.offsetTop)) / 100
+				: parseFloat(that.offsetTop);
+			that.offsetLeft = /%$/.test(that.offsetLeft)
+				? (win.width() * parseFloat(that.offsetLeft)) / 100
+				: parseFloat(that.offsetLeft);
 			that.offsetTop += win.scrollTop();
 			that.offsetLeft += win.scrollLeft();
 		}
@@ -668,25 +760,37 @@
 				//上
 				goal.autoLeft();
 				goal.tipTop = goal.top - layArea[1] - 10;
-				tipsG.removeClass("layui-layer-TipsB").addClass("layui-layer-TipsT").css("border-right-color", config.tips[1]);
+				tipsG
+					.removeClass("layui-layer-TipsB")
+					.addClass("layui-layer-TipsT")
+					.css("border-right-color", config.tips[1]);
 			},
 			function () {
 				//右
 				goal.tipLeft = goal.left + goal.width + 10;
 				goal.tipTop = goal.top;
-				tipsG.removeClass("layui-layer-TipsL").addClass("layui-layer-TipsR").css("border-bottom-color", config.tips[1]);
+				tipsG
+					.removeClass("layui-layer-TipsL")
+					.addClass("layui-layer-TipsR")
+					.css("border-bottom-color", config.tips[1]);
 			},
 			function () {
 				//下
 				goal.autoLeft();
 				goal.tipTop = goal.top + goal.height + 10;
-				tipsG.removeClass("layui-layer-TipsT").addClass("layui-layer-TipsB").css("border-right-color", config.tips[1]);
+				tipsG
+					.removeClass("layui-layer-TipsT")
+					.addClass("layui-layer-TipsB")
+					.css("border-right-color", config.tips[1]);
 			},
 			function () {
 				//左
 				goal.tipLeft = goal.left - layArea[0] - 10;
 				goal.tipTop = goal.top;
-				tipsG.removeClass("layui-layer-TipsR").addClass("layui-layer-TipsL").css("border-bottom-color", config.tips[1]);
+				tipsG
+					.removeClass("layui-layer-TipsR")
+					.addClass("layui-layer-TipsL")
+					.css("border-bottom-color", config.tips[1]);
 			}
 		];
 		goal.where[guide - 1]();
@@ -697,7 +801,8 @@
 		} else if (guide === 2) {
 			win.width() - (goal.left + goal.width + layArea[0] + 8 * 2) > 0 || goal.where[3]();
 		} else if (guide === 3) {
-			goal.top - win.scrollTop() + goal.height + layArea[1] + 8 * 2 - win.height() > 0 && goal.where[0]();
+			goal.top - win.scrollTop() + goal.height + layArea[1] + 8 * 2 - win.height() > 0 &&
+				goal.where[0]();
 		} else if (guide === 4) {
 			layArea[0] + 8 * 2 - goal.left > 0 && goal.where[1]();
 		}
@@ -730,7 +835,10 @@
 			e.preventDefault();
 			if (config.move) {
 				dict.moveStart = true;
-				dict.offset = [e.clientX - parseFloat(layero.css("left")), e.clientY - parseFloat(layero.css("top"))];
+				dict.offset = [
+					e.clientX - parseFloat(layero.css("left")),
+					e.clientY - parseFloat(layero.css("top"))
+				];
 				ready.moveElem.css("cursor", "move").show();
 			}
 		});
@@ -831,7 +939,9 @@
 						layer.close(that.index);
 					}
 				} else {
-					var close = config["btn" + (index + 1)] && config["btn" + (index + 1)](that.index, layero);
+					var close =
+						config["btn" + (index + 1)] &&
+						config["btn" + (index + 1)](that.index, layero);
 					close === false || layer.close(that.index);
 				}
 			});
@@ -879,7 +989,9 @@
 		$.each($("select"), function (index, value) {
 			var sthis = $(this);
 			if (!sthis.parents("." + doms[0])[0]) {
-				sthis.attr("layer") == 1 && $("." + doms[0]).length < 1 && sthis.removeAttr("layer").show();
+				sthis.attr("layer") == 1 &&
+					$("." + doms[0]).length < 1 &&
+					sthis.removeAttr("layer").show();
 			}
 			sthis = null;
 		});
@@ -915,7 +1027,12 @@
 
 	//记录宽高坐标，用于还原
 	ready.record = function (layero) {
-		var area = [layero.width(), layero.height(), layero.position().top, layero.position().left + parseFloat(layero.css("margin-left"))];
+		var area = [
+			layero.width(),
+			layero.height(),
+			layero.position().top,
+			layero.position().left + parseFloat(layero.css("margin-left"))
+		];
 		layero.find(".layui-layer-max").addClass("layui-layer-maxmin");
 		layero.attr({ area: area });
 	};
@@ -1001,7 +1118,12 @@
 			});
 		} else {
 			contElem.css({
-				height: parseFloat(options.height) - titHeight - btnHeight - parseFloat(contElem.css("padding-top")) - parseFloat(contElem.css("padding-bottom"))
+				height:
+					parseFloat(options.height) -
+					titHeight -
+					btnHeight -
+					parseFloat(contElem.css("padding-top")) -
+					parseFloat(contElem.css("padding-bottom"))
 			});
 		}
 	};
@@ -1177,7 +1299,8 @@
 		$.each(domsElem, function (_index) {
 			var othis = $(this);
 			var is = type ? othis.attr("type") === type : 1;
-			is && layer.close(othis.attr("times"), _index === domsElem.length - 1 ? callback : null);
+			is &&
+				layer.close(othis.attr("times"), _index === domsElem.length - 1 ? callback : null);
 			is = null;
 		});
 		if (domsElem.length === 0) typeof callback === "function" && callback();
@@ -1211,7 +1334,11 @@
 				options.formType == 2
 					? '<textarea class="layui-layer-input"' + style + "></textarea>"
 					: (function () {
-							return '<input type="' + (options.formType == 1 ? "password" : "text") + '" class="layui-layer-input">';
+							return (
+								'<input type="' +
+								(options.formType == 1 ? "password" : "text") +
+								'" class="layui-layer-input">'
+							);
 						})();
 
 		var success = options.success;
@@ -1236,7 +1363,13 @@
 						if (value === "") {
 							prompt.focus();
 						} else if (value.length > (options.maxlength || 500)) {
-							layer.tips("&#x6700;&#x591A;&#x8F93;&#x5165;" + (options.maxlength || 500) + "&#x4E2A;&#x5B57;&#x6570;", prompt, { tips: 1 });
+							layer.tips(
+								"&#x6700;&#x591A;&#x8F93;&#x5165;" +
+									(options.maxlength || 500) +
+									"&#x4E2A;&#x5B57;&#x6570;",
+								prompt,
+								{ tips: 1 }
+							);
 						} else {
 							yes && yes(value, index, prompt);
 						}
@@ -1282,9 +1415,17 @@
 								ii = 1,
 								str = "";
 							if (len > 0) {
-								str = '<li class="layui-layer-tabli ' + THIS + '">' + (tab[0].content || "no content") + "</li>";
+								str =
+									'<li class="layui-layer-tabli ' +
+									THIS +
+									'">' +
+									(tab[0].content || "no content") +
+									"</li>";
 								for (; ii < len; ii++) {
-									str += '<li class="layui-layer-tabli">' + (tab[ii].content || "no  content") + "</li>";
+									str +=
+										'<li class="layui-layer-tabli">' +
+										(tab[ii].content || "no  content") +
+										"</li>";
 								}
 							}
 							return str;
@@ -1484,7 +1625,10 @@
 								var winarea = [$(window).width() - 100, $(window).height() - 100];
 
 								//如果 实际图片的宽或者高比 屏幕大（那么进行缩放）
-								if (!options.full && (imgarea[0] > winarea[0] || imgarea[1] > winarea[1])) {
+								if (
+									!options.full &&
+									(imgarea[0] > winarea[0] || imgarea[1] > winarea[1])
+								) {
 									var wh = [imgarea[0] / winarea[0], imgarea[1] / winarea[1]]; //取宽度缩放比例、高度缩放比例
 									if (wh[0] > wh[1]) {
 										//取缩放比例最大的进行缩放
@@ -1556,13 +1700,16 @@
 			},
 			function () {
 				layer.close(dict.loadi);
-				layer.msg("&#x5F53;&#x524D;&#x56FE;&#x7247;&#x5730;&#x5740;&#x5F02;&#x5E38;<br>&#x662F;&#x5426;&#x7EE7;&#x7EED;&#x67E5;&#x770B;&#x4E0B;&#x4E00;&#x5F20;&#xFF1F;", {
-					time: 30000,
-					btn: ["&#x4E0B;&#x4E00;&#x5F20;", "&#x4E0D;&#x770B;&#x4E86;"],
-					yes: function () {
-						data.length > 1 && dict.imgnext(true, true);
+				layer.msg(
+					"&#x5F53;&#x524D;&#x56FE;&#x7247;&#x5730;&#x5740;&#x5F02;&#x5E38;<br>&#x662F;&#x5426;&#x7EE7;&#x7EED;&#x67E5;&#x770B;&#x4E0B;&#x4E00;&#x5F20;&#xFF1F;",
+					{
+						time: 30000,
+						btn: ["&#x4E0B;&#x4E00;&#x5F20;", "&#x4E0D;&#x770B;&#x4E86;"],
+						yes: function () {
+							data.length > 1 && dict.imgnext(true, true);
+						}
 					}
-				});
+				);
 			}
 		);
 	};

@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view">
+	<div class="x-page-view">
 		<xPageTitle title="标题使用i18n的key" />
 		<xPageContent>
 			<xTablebar :configs="configsTable">
@@ -166,7 +166,7 @@ export default async function () {
 								{
 									label: i18n("delete"),
 									onClick({ row }) {
-										_.$delConfirm({
+										_.$confirm_important({
 											content: `${i18n("msgSureDelete")}${i18n("QOS规格")}${row.name}?`
 										}).then(async () => {
 											try {
@@ -176,7 +176,9 @@ export default async function () {
 														ids: [{ id: row.id, name: row.name }]
 													}
 												});
-												_.$msgSuccess(i18n("msgDeleteTaskDeliveredSuccess"));
+												_.$msgSuccess(
+													i18n("msgDeleteTaskDeliveredSuccess")
+												);
 												vm.getTableData({ current: 0 });
 											} catch (e) {
 												_.$msgError(e.message);
@@ -198,13 +200,18 @@ export default async function () {
 										}).then(async () => {
 											try {
 												_.$loading(true);
-												await _.$ajax.post(`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`, {
-													data: {
-														status: "1",
-														id: row.id
+												await _.$ajax.post(
+													`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`,
+													{
+														data: {
+															status: "1",
+															id: row.id
+														}
 													}
-												});
-												_.$msgSuccess(i18n("msgSetUnavailableStatusSuccess"));
+												);
+												_.$msgSuccess(
+													i18n("msgSetUnavailableStatusSuccess")
+												);
 												vm.getTableData({ current: 0 });
 											} catch (e) {
 												_.$msgError(e.message);
@@ -226,13 +233,18 @@ export default async function () {
 										}).then(async () => {
 											try {
 												_.$loading(true);
-												await _.$ajax.post(`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`, {
-													data: {
-														status: "0",
-														id: row.id
+												await _.$ajax.post(
+													`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`,
+													{
+														data: {
+															status: "0",
+															id: row.id
+														}
 													}
-												});
-												_.$msgSuccess(i18n("msgSetUnavailableStatusSuccess"));
+												);
+												_.$msgSuccess(
+													i18n("msgSetUnavailableStatusSuccess")
+												);
 												vm.getTableData({ current: 0 });
 											} catch (e) {
 												_.$msgError(e.message);
@@ -256,7 +268,7 @@ export default async function () {
 		},
 		computed: {
 			searchParams() {
-				return _.$pickValueFromConfigs(this.c_search);
+				return _.$pickFormValues(this.c_search);
 			}
 		}
 	};

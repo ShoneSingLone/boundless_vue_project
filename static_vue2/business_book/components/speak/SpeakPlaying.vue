@@ -1,6 +1,11 @@
 <template>
 	<div class="playing-item-wrapper">
-		<div class="playing-item" :style="item" v-for="(item, index) in styles" :key="index" ref="playingItem"></div>
+		<div
+			class="playing-item"
+			:style="item"
+			v-for="(item, index) in styles"
+			:key="index"
+			ref="playingItem"></div>
 	</div>
 </template>
 

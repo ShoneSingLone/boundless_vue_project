@@ -9,7 +9,9 @@
 			<div class="block">
 				<span class="demonstration">自定义</span>
 				<xImg :src="src">
-					<div slot="placeholder" class="image-slot">加载中<span class="dot">...</span></div>
+					<div slot="placeholder" class="image-slot">
+						加载中<span class="dot">...</span>
+					</div>
 				</xImg>
 			</div>
 		</div>

@@ -1,5 +1,6 @@
 /*node makeLanguageFile.js */
 module.exports = {
+	info: ["信息", "info"],
 	Operation: ["操作", "Operation"],
 	sun: ["星期天", "Sun"],
 	mon: ["星期一", "Mon"],
@@ -130,5 +131,10 @@ module.exports = {
 		empty: {
 			description: ["暂无数据", "No Data"]
 		}
-	}
+	},
+	/* ************ */
+	ruleMsgWordLessThan: ["字数应少于{size}", "Word count should be less than {size}"],
+	__success: ["{action} 成功!", "{action} successfully!"],
+	__failed: ["{action} 失败!", "{action} failed!"],
+
 };

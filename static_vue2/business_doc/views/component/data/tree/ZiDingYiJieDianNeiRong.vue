@@ -1,7 +1,7 @@
 <style lang="less">
 #xTreeZiDingYiJieDianNeiRong {
 	.prefix {
-		color: var(--ui-primary);
+		color: var(--el-color-primary);
 		margin-right: 10px;
 		&.is-leaf {
 			color: var(--el-color-success);
@@ -49,7 +49,12 @@ export default async function () {
 							"is-leaf": node.isLeaf
 						}
 					},
-					[node.isLeaf ? h("span", { staticClass: "mr" }, ["leaf"]) : h("xIcon", { icon: "tips", staticClass: "mr" }), node.label]
+					[
+						node.isLeaf
+							? h("span", { staticClass: "mr" }, ["leaf"])
+							: h("xIcon", { icon: "tips", staticClass: "mr" }),
+						node.label
+					]
 				);
 			}
 		}

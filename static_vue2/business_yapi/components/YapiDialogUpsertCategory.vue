@@ -46,7 +46,12 @@ export default async function ({ categoryInfo, project_id, getInterfaceList, all
 							}
 						]
 					},
-					desc: { value: "", label: i18n("备注"), rules: [_rules.required()], type: "textarea" }
+					desc: {
+						value: "",
+						label: i18n("备注"),
+						rules: [_rules.required()],
+						type: "textarea"
+					}
 				}
 			};
 		},
@@ -57,7 +62,7 @@ export default async function ({ categoryInfo, project_id, getInterfaceList, all
 				};
 			},
 			cptFormData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnOk() {
 				const vm = this;
@@ -77,7 +82,7 @@ export default async function ({ categoryInfo, project_id, getInterfaceList, all
 		methods: {
 			init() {
 				if (isUpdate) {
-					_.$setValToForm(this.form, categoryInfo);
+					_.$setFormValues(this.form, categoryInfo);
 				}
 			},
 			async upsertOne() {
@@ -99,7 +104,7 @@ export default async function ({ categoryInfo, project_id, getInterfaceList, all
 					}
 					await getInterfaceList();
 					this.closeModal();
-					_.$msgSuccess(isUpdate ? "修改分类成功" : "添加分类成功");
+					_.$msg(isUpdate ? "修改分类成功" : "添加分类成功");
 				} catch (error) {
 					if (error.message) {
 						_.$msgError(error.message);

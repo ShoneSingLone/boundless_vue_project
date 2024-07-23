@@ -1,5 +1,6 @@
 <script lang="ts">
-export default async function () {
+export default async function ({ PRIVATE_GLOBAL }) {
+	var _xUtils = {};
 	const DEFAULT_DYNAMIC_LIST_ITEM_SIZE = 50;
 	const ITEM_RENDER_EVT = "itemRendered";
 	const SCROLL_EVT = "scroll";
@@ -61,8 +62,12 @@ export default async function () {
 						}
 						if (validator) valid || (valid = validator(val));
 						if (!valid && allowedValues.length > 0) {
-							const allowValuesText = [...new Set(allowedValues)].map(value => JSON.stringify(value)).join(", ");
-							warn(`Invalid prop: validation failed${key ? ` for prop "${key}"` : ""}. Expected one of [${allowValuesText}], got value ${JSON.stringify(val)}.`);
+							const allowValuesText = [...new Set(allowedValues)]
+								.map(value => JSON.stringify(value))
+								.join(", ");
+							warn(
+								`Invalid prop: validation failed${key ? ` for prop "${key}"` : ""}. Expected one of [${allowValuesText}], got value ${JSON.stringify(val)}.`
+							);
 						}
 						return valid;
 					}
@@ -89,13 +94,16 @@ export default async function () {
 	}
 
 	const buildProps = props => {
-		return fromPairs(Object.entries(props).map(([key, option]) => [key, buildProp(option, key)]));
+		return fromPairs(
+			Object.entries(props).map(([key, option]) => [key, buildProp(option, key)])
+		);
 	};
 	const definePropType = val => val;
 	const defaultNamespace = "el";
 	const namespaceContextKey = Symbol("namespaceContextKey");
 	const useGetDerivedNamespace = (namespaceOverrides = "") => {
-		const derivedNamespace = namespaceOverrides || inject(namespaceContextKey, ref(defaultNamespace));
+		const derivedNamespace =
+			namespaceOverrides || inject(namespaceContextKey, ref(defaultNamespace));
 		const namespace = computed(() => {
 			return unref(derivedNamespace) || defaultNamespace;
 		});
@@ -141,10 +149,16 @@ export default async function () {
 		const b = (blockSuffix = "") => _bem(namespace.value, block, blockSuffix, "", "");
 		const e = element => (element ? _bem(namespace.value, block, "", element, "") : "");
 		const m = modifier => (modifier ? _bem(namespace.value, block, "", "", modifier) : "");
-		const be = (blockSuffix, element) => (blockSuffix && element ? _bem(namespace.value, block, blockSuffix, element, "") : "");
-		const em = (element, modifier) => (element && modifier ? _bem(namespace.value, block, "", element, modifier) : "");
-		const bm = (blockSuffix, modifier) => (blockSuffix && modifier ? _bem(namespace.value, block, blockSuffix, "", modifier) : "");
-		const bem = (blockSuffix, element, modifier) => (blockSuffix && element && modifier ? _bem(namespace.value, block, blockSuffix, element, modifier) : "");
+		const be = (blockSuffix, element) =>
+			blockSuffix && element ? _bem(namespace.value, block, blockSuffix, element, "") : "";
+		const em = (element, modifier) =>
+			element && modifier ? _bem(namespace.value, block, "", element, modifier) : "";
+		const bm = (blockSuffix, modifier) =>
+			blockSuffix && modifier ? _bem(namespace.value, block, blockSuffix, "", modifier) : "";
+		const bem = (blockSuffix, element, modifier) =>
+			blockSuffix && element && modifier
+				? _bem(namespace.value, block, blockSuffix, element, modifier)
+				: "";
 		const is = (name, ...args) => {
 			const state = args.length >= 1 ? args[0] : true;
 			return name && state ? `${statePrefix}${name}` : "";
@@ -291,6 +305,7 @@ export default async function () {
 			type: Function
 		}
 	});
+
 	const virtualizedListProps = buildProps({
 		cache,
 		estimatedItemSize,
@@ -300,6 +315,7 @@ export default async function () {
 		itemSize,
 		...virtualizedProps
 	});
+
 	const scrollbarSize = {
 		type: Number,
 		default: 6
@@ -570,7 +586,13 @@ export default async function () {
 		const doMeasure = (isInit = false) => {
 			const $rowRef = unref(rowRef);
 			if (!$rowRef) return;
-			const { columns: columns2, onRowHeightChange, rowKey: rowKey2, rowIndex, style } = props;
+			const {
+				columns: columns2,
+				onRowHeightChange,
+				rowKey: rowKey2,
+				rowIndex,
+				style
+			} = props;
 			const { height } = $rowRef.getBoundingClientRect();
 			measured.value = true;
 			nextTick(() => {
@@ -677,7 +699,10 @@ export default async function () {
 			emits: [ITEM_RENDER_EVT, SCROLL_EVT],
 			components: {
 				/* 循环引用 => 异步加载 */
-				ComponentVirtualScrollBar: () => _.$importVue("/common/ui-x/components/data/xTableVir/ComponentVirtualScrollBar.vue")
+				ComponentVirtualScrollBar: () =>
+					_.$importVue(
+						"/common/ui-x/components/data/xTableVir/ComponentVirtualScrollBar.vue"
+					)
 			},
 			setup(props, { emit, expose, slots }) {
 				const ns = useNamespace("vl");
@@ -706,11 +731,27 @@ export default async function () {
 					if (totalColumn === 0 || totalRow === 0) {
 						return [0, 0, 0, 0];
 					}
-					const startIndex = getColumnStartIndexForOffset(props, scrollLeft, unref(cache2));
-					const stopIndex = getColumnStopIndexForStartIndex(props, startIndex, scrollLeft, unref(cache2));
-					const cacheBackward = !isScrolling || xAxisScrollDir === BACKWARD ? Math.max(1, columnCache) : 1;
-					const cacheForward = !isScrolling || xAxisScrollDir === FORWARD ? Math.max(1, columnCache) : 1;
-					return [Math.max(0, startIndex - cacheBackward), Math.max(0, Math.min(totalColumn - 1, stopIndex + cacheForward)), startIndex, stopIndex];
+					const startIndex = getColumnStartIndexForOffset(
+						props,
+						scrollLeft,
+						unref(cache2)
+					);
+					const stopIndex = getColumnStopIndexForStartIndex(
+						props,
+						startIndex,
+						scrollLeft,
+						unref(cache2)
+					);
+					const cacheBackward =
+						!isScrolling || xAxisScrollDir === BACKWARD ? Math.max(1, columnCache) : 1;
+					const cacheForward =
+						!isScrolling || xAxisScrollDir === FORWARD ? Math.max(1, columnCache) : 1;
+					return [
+						Math.max(0, startIndex - cacheBackward),
+						Math.max(0, Math.min(totalColumn - 1, stopIndex + cacheForward)),
+						startIndex,
+						stopIndex
+					];
 				});
 				const rowsToRender = computed(() => {
 					const { totalColumn, totalRow, rowCache } = props;
@@ -719,13 +760,29 @@ export default async function () {
 						return [0, 0, 0, 0];
 					}
 					const startIndex = getRowStartIndexForOffset(props, scrollTop, unref(cache2));
-					const stopIndex = getRowStopIndexForStartIndex(props, startIndex, scrollTop, unref(cache2));
-					const cacheBackward = !isScrolling || yAxisScrollDir === BACKWARD ? Math.max(1, rowCache) : 1;
-					const cacheForward = !isScrolling || yAxisScrollDir === FORWARD ? Math.max(1, rowCache) : 1;
-					return [Math.max(0, startIndex - cacheBackward), Math.max(0, Math.min(totalRow - 1, stopIndex + cacheForward)), startIndex, stopIndex];
+					const stopIndex = getRowStopIndexForStartIndex(
+						props,
+						startIndex,
+						scrollTop,
+						unref(cache2)
+					);
+					const cacheBackward =
+						!isScrolling || yAxisScrollDir === BACKWARD ? Math.max(1, rowCache) : 1;
+					const cacheForward =
+						!isScrolling || yAxisScrollDir === FORWARD ? Math.max(1, rowCache) : 1;
+					return [
+						Math.max(0, startIndex - cacheBackward),
+						Math.max(0, Math.min(totalRow - 1, stopIndex + cacheForward)),
+						startIndex,
+						stopIndex
+					];
 				});
-				const estimatedTotalHeight = computed(() => getEstimatedTotalHeight(props, unref(cache2)));
-				const estimatedTotalWidth = computed(() => getEstimatedTotalWidth(props, unref(cache2)));
+				const estimatedTotalHeight = computed(() =>
+					getEstimatedTotalHeight(props, unref(cache2))
+				);
+				const estimatedTotalWidth = computed(() =>
+					getEstimatedTotalWidth(props, unref(cache2))
+				);
 				const windowStyle = computed(() => [
 					{
 						position: "relative",
@@ -752,8 +809,14 @@ export default async function () {
 				const emitEvents = () => {
 					const { totalColumn, totalRow } = props;
 					if (totalColumn > 0 && totalRow > 0) {
-						const [columnCacheStart, columnCacheEnd, columnVisibleStart, columnVisibleEnd] = unref(columnsToRender);
-						const [rowCacheStart, rowCacheEnd, rowVisibleStart, rowVisibleEnd] = unref(rowsToRender);
+						const [
+							columnCacheStart,
+							columnCacheEnd,
+							columnVisibleStart,
+							columnVisibleEnd
+						] = unref(columnsToRender);
+						const [rowCacheStart, rowCacheEnd, rowVisibleStart, rowVisibleEnd] =
+							unref(rowsToRender);
 						emit(ITEM_RENDER_EVT, {
 							columnCacheStart,
 							columnCacheEnd,
@@ -765,7 +828,13 @@ export default async function () {
 							rowVisibleEnd
 						});
 					}
-					const { scrollLeft, scrollTop, updateRequested, xAxisScrollDir, yAxisScrollDir } = unref(states);
+					const {
+						scrollLeft,
+						scrollTop,
+						updateRequested,
+						xAxisScrollDir,
+						yAxisScrollDir
+					} = unref(states);
 					emit(SCROLL_EVT, {
 						xAxisScrollDir,
 						scrollLeft,
@@ -775,7 +844,14 @@ export default async function () {
 					});
 				};
 				const onScroll = e => {
-					const { clientHeight, clientWidth, scrollHeight, scrollLeft, scrollTop, scrollWidth } = e.currentTarget;
+					const {
+						clientHeight,
+						clientWidth,
+						scrollHeight,
+						scrollLeft,
+						scrollTop,
+						scrollWidth
+					} = e.currentTarget;
 					const _states = unref(states);
 					if (_states.scrollTop === scrollTop && _states.scrollLeft === scrollLeft) {
 						return;
@@ -821,9 +897,17 @@ export default async function () {
 				const { onWheel } = useGridWheel(
 					{
 						atXStartEdge: computed(() => states.value.scrollLeft <= 0),
-						atXEndEdge: computed(() => states.value.scrollLeft >= estimatedTotalWidth.value - unref(parsedWidth)),
+						atXEndEdge: computed(
+							() =>
+								states.value.scrollLeft >=
+								estimatedTotalWidth.value - unref(parsedWidth)
+						),
 						atYStartEdge: computed(() => states.value.scrollTop <= 0),
-						atYEndEdge: computed(() => states.value.scrollTop >= estimatedTotalHeight.value - unref(parsedHeight))
+						atYEndEdge: computed(
+							() =>
+								states.value.scrollTop >=
+								estimatedTotalHeight.value - unref(parsedHeight)
+						)
 					},
 					(x, y) => {
 						hScrollbar.value?.onMouseUp?.();
@@ -831,12 +915,21 @@ export default async function () {
 						const width = unref(parsedWidth);
 						const height = unref(parsedHeight);
 						scrollTo({
-							scrollLeft: Math.min(states.value.scrollLeft + x, estimatedTotalWidth.value - width),
-							scrollTop: Math.min(states.value.scrollTop + y, estimatedTotalHeight.value - height)
+							scrollLeft: Math.min(
+								states.value.scrollLeft + x,
+								estimatedTotalWidth.value - width
+							),
+							scrollTop: Math.min(
+								states.value.scrollTop + y,
+								estimatedTotalHeight.value - height
+							)
 						});
 					}
 				);
-				const scrollTo = ({ scrollLeft = states.value.scrollLeft, scrollTop = states.value.scrollTop }) => {
+				const scrollTo = ({
+					scrollLeft = states.value.scrollLeft,
+					scrollTop = states.value.scrollTop
+				}) => {
 					scrollLeft = Math.max(scrollLeft, 0);
 					scrollTop = Math.max(scrollTop, 0);
 					const _states = unref(states);
@@ -864,13 +957,31 @@ export default async function () {
 					const estimatedHeight = getEstimatedTotalHeight(props, _cache);
 					const estimatedWidth = getEstimatedTotalWidth(props, _cache);
 					scrollTo({
-						scrollLeft: getColumnOffset(props, columnIdx, alignment, _states.scrollLeft, _cache, estimatedWidth > props.width ? scrollBarWidth2 : 0),
-						scrollTop: getRowOffset(props, rowIndex, alignment, _states.scrollTop, _cache, estimatedHeight > props.height ? scrollBarWidth2 : 0)
+						scrollLeft: getColumnOffset(
+							props,
+							columnIdx,
+							alignment,
+							_states.scrollLeft,
+							_cache,
+							estimatedWidth > props.width ? scrollBarWidth2 : 0
+						),
+						scrollTop: getRowOffset(
+							props,
+							rowIndex,
+							alignment,
+							_states.scrollTop,
+							_cache,
+							estimatedHeight > props.height ? scrollBarWidth2 : 0
+						)
 					});
 				};
 				const getItemStyle = (rowIndex, columnIndex) => {
 					const { columnWidth, direction: direction2, rowHeight } = props;
-					const itemStyleCache = getItemStyleCache.value(clearCache && columnWidth, clearCache && rowHeight, clearCache && direction2);
+					const itemStyleCache = getItemStyleCache.value(
+						clearCache && columnWidth,
+						clearCache && rowHeight,
+						clearCache && direction2
+					);
 					const key = `${rowIndex},${columnIndex}`;
 					if (hasOwn(itemStyleCache, key)) {
 						return itemStyleCache[key];
@@ -928,7 +1039,8 @@ export default async function () {
 								}
 								default: {
 									const { clientWidth, scrollWidth } = windowElement;
-									windowElement.scrollLeft = scrollWidth - clientWidth - scrollLeft;
+									windowElement.scrollLeft =
+										scrollWidth - clientWidth - scrollLeft;
 									break;
 								}
 							}
@@ -951,7 +1063,13 @@ export default async function () {
 					resetAfter
 				});
 				const renderScrollbars = () => {
-					const { scrollbarAlwaysOn, scrollbarStartGap, scrollbarEndGap, totalColumn, totalRow } = props;
+					const {
+						scrollbarAlwaysOn,
+						scrollbarStartGap,
+						scrollbarEndGap,
+						totalColumn,
+						totalRow
+					} = props;
 					const width = unref(parsedWidth);
 					const height = unref(parsedHeight);
 					const estimatedWidth = unref(estimatedTotalWidth);
@@ -1008,7 +1126,9 @@ export default async function () {
 											data,
 											rowIndex: row
 										}),
-										isScrolling: useIsScrolling ? unref(states).isScrolling : void 0,
+										isScrolling: useIsScrolling
+											? unref(states).isScrolling
+											: void 0,
 										style: getItemStyle(row, column),
 										rowIndex: row
 									};
@@ -1105,7 +1225,8 @@ export default async function () {
 				x = y;
 				y = 0;
 			}
-			if (hasReachedEdge(xOffset, yOffset) && hasReachedEdge(xOffset + x, yOffset + y)) return;
+			if (hasReachedEdge(xOffset, yOffset) && hasReachedEdge(xOffset + x, yOffset + y))
+				return;
 			xOffset += x;
 			yOffset += y;
 			e.preventDefault();
@@ -1224,7 +1345,8 @@ export default async function () {
 		});
 		return style;
 	};
-	const componentToSlot = ComponentLike => (isVNode(ComponentLike) ? props => h(ComponentLike, props) : ComponentLike);
+	const componentToSlot = ComponentLike =>
+		isVNode(ComponentLike) ? props => h(ComponentLike, props) : ComponentLike;
 
 	function castArray() {
 		if (!arguments.length) {
@@ -1414,7 +1536,9 @@ export default async function () {
 		onMounted(() => {
 			resizerStopper = useResizeObserver(sizer, ([entry]) => {
 				const { width, height } = entry.contentRect;
-				const { paddingLeft, paddingRight, paddingTop, paddingBottom } = getComputedStyle(entry.target);
+				const { paddingLeft, paddingRight, paddingTop, paddingBottom } = getComputedStyle(
+					entry.target
+				);
 				const left = Number.parseInt(paddingLeft) || 0;
 				const right = Number.parseInt(paddingRight) || 0;
 				const top = Number.parseInt(paddingTop) || 0;
@@ -1459,10 +1583,13 @@ export default async function () {
 	var __propIsEnum$f = Object.prototype.propertyIsEnumerable;
 	var __objRest = (source, exclude) => {
 		var target = {};
-		for (var prop in source) if (hasOwnProperty.call(source, prop) && exclude.indexOf(prop) < 0) target[prop] = source[prop];
+		for (var prop in source)
+			if (hasOwnProperty.call(source, prop) && exclude.indexOf(prop) < 0)
+				target[prop] = source[prop];
 		if (source != null && __getOwnPropSymbols$f)
 			for (var prop of __getOwnPropSymbols$f(source)) {
-				if (exclude.indexOf(prop) < 0 && __propIsEnum$f.call(source, prop)) target[prop] = source[prop];
+				if (exclude.indexOf(prop) < 0 && __propIsEnum$f.call(source, prop))
+					target[prop] = source[prop];
 			}
 		return target;
 	};
@@ -1478,256 +1605,475 @@ export default async function () {
 		throw new ElementPlusError(`[${scope}] ${m}`);
 	}
 
-	/*****************************************/
-	window._useXui = {
-		virtualizedListProps,
-		useGetDerivedNamespace,
-		globalConfigs: {},
-		resolveUnref,
-		identity,
-		tryOnScopeDispose,
-		tryOnMounted,
-		unrefElement,
-		useEventListener,
-		useSupported,
-		autoResizerProps,
-		tableV2HeaderRowProps,
-		useResizeObserver,
-		useAutoResize,
-		useTableRow,
-		isEqual,
-		areInputsEqual,
-		memoizeOne,
-		getScrollDir,
-		isRTL,
-		rAF,
-		cAF,
-		isClient,
-		castArray,
-		sumReducer,
-		sum,
-		tryCall,
-		enforceUnit,
-		componentToSlot,
-		TableV2InjectionKey,
-		useTableGrid,
-		useGridWheel,
-		useCache,
-		useNamespace,
-		isStringNumber,
-		addUnit,
-		createGrid,
-		noop,
-		ScrollbarDirKey,
-		renderThumbStyle,
-		/* **************** */
-		definePropType,
-		buildProp,
-		buildProps,
-		columns,
-		virtualizedScrollbarProps,
-		virtualizedGridProps,
-		tableV2HeaderProps,
-		tableV2GridProps,
-		tableV2Props,
-		/* ************** */
-		ITEM_RENDER_EVT,
-		SCROLLBAR_MIN_SIZE,
-		DEFAULT_DYNAMIC_LIST_ITEM_SIZE,
-		SCROLL_EVT,
-		FORWARD,
-		BACKWARD,
-		AUTO_ALIGNMENT,
-		SMART_ALIGNMENT,
-		START_ALIGNMENT,
-		CENTERED_ALIGNMENT,
-		END_ALIGNMENT,
-		HORIZONTAL,
-		VERTICAL,
-		BAR_MAP,
-		RTL,
-		RTL_OFFSET_NAG,
-		RTL_OFFSET_POS_ASC,
-		RTL_OFFSET_POS_DESC,
-		getStyle(element, styleName) {
-			var _a2;
-			if (!isClient || !element || !styleName) return "";
-			let key = Vue.camelize(styleName);
-			if (key === "float") key = "cssFloat";
+	var ARIA_UTILS = (() => {
+		var aria = aria || {};
+
+		aria.Utils = aria.Utils || {};
+
+		/**
+		 * @desc Set focus on descendant nodes until the first focusable element is
+		 *       found.
+		 * @param element
+		 *          DOM node for which to find the first focusable descendant.
+		 * @returns
+		 *  true if a focusable element is found and focus is set.
+		 */
+		aria.Utils.focusFirstDescendant = function (element) {
+			for (var i = 0; i < element.childNodes.length; i++) {
+				var child = element.childNodes[i];
+				if (aria.Utils.attemptFocus(child) || aria.Utils.focusFirstDescendant(child)) {
+					return true;
+				}
+			}
+			return false;
+		};
+
+		/**
+		 * @desc Find the last descendant node that is focusable.
+		 * @param element
+		 *          DOM node for which to find the last focusable descendant.
+		 * @returns
+		 *  true if a focusable element is found and focus is set.
+		 */
+
+		aria.Utils.focusLastDescendant = function (element) {
+			for (var i = element.childNodes.length - 1; i >= 0; i--) {
+				var child = element.childNodes[i];
+				if (aria.Utils.attemptFocus(child) || aria.Utils.focusLastDescendant(child)) {
+					return true;
+				}
+			}
+			return false;
+		};
+
+		/**
+		 * @desc Set Attempt to set focus on the current node.
+		 * @param element
+		 *          The node to attempt to focus on.
+		 * @returns
+		 *  true if element is focused.
+		 */
+		aria.Utils.attemptFocus = function (element) {
+			if (!aria.Utils.isFocusable(element)) {
+				return false;
+			}
+			aria.Utils.IgnoreUtilFocusChanges = true;
 			try {
-				const style = element.style[key];
-				if (style) return style;
-				const computed = (_a2 = document.defaultView) == null ? void 0 : _a2.getComputedStyle(element, "");
-				return computed ? computed[key] : "";
-			} catch (e) {
-				return element.style[key];
-			}
-		},
-		isScroll(el, isVertical) {
-			if (!isClient) return false;
-			const key = {
-				undefined: "overflow",
-				true: "overflow-y",
-				false: "overflow-x"
-			}[String(isVertical)];
-			const overflow = _useXui.getStyle(el, key);
-			return ["scroll", "auto", "overlay"].some(s => overflow.includes(s));
-		},
-		getScrollContainer(el, isVertical) {
-			if (!isClient) return;
-			let parent = el;
-			while (parent) {
-				if ([window, document, document.documentElement].includes(parent)) return window;
-				if (_useXui.isScroll(parent, isVertical)) return parent;
-				parent = parent.parentNode;
-			}
-			return parent;
-		},
-		throwError,
-		useElementBounding(target, options = {}) {
-			const { reset = true, windowResize = true, windowScroll = true, immediate = true } = options;
-			const height = Vue.ref(0);
-			const bottom = Vue.ref(0);
-			const left = Vue.ref(0);
-			const right = Vue.ref(0);
-			const top = Vue.ref(0);
-			const width = Vue.ref(0);
-			const x = Vue.ref(0);
-			const y = Vue.ref(0);
+				element.focus();
+			} catch (e) {}
+			aria.Utils.IgnoreUtilFocusChanges = false;
+			return document.activeElement === element;
+		};
 
-			function update() {
-				const el = unrefElement(target);
-				if (!el) {
-					if (reset) {
-						height.value = 0;
-						bottom.value = 0;
-						left.value = 0;
-						right.value = 0;
-						top.value = 0;
-						width.value = 0;
-						x.value = 0;
-						y.value = 0;
-					}
-					return;
-				}
-				const rect = el.getBoundingClientRect();
-				height.value = rect.height;
-				bottom.value = rect.bottom;
-				left.value = rect.left;
-				right.value = rect.right;
-				top.value = rect.top;
-				width.value = rect.width;
-				x.value = rect.x;
-				y.value = rect.y;
+		aria.Utils.isFocusable = function (element) {
+			if (
+				element.tabIndex > 0 ||
+				(element.tabIndex === 0 && element.getAttribute("tabIndex") !== null)
+			) {
+				return true;
 			}
 
-			useResizeObserver(target, update);
-			Vue.watch(
-				() => unrefElement(target),
-				ele => !ele && update()
-			);
-			if (windowScroll) useEventListener("scroll", update, { capture: true, passive: true });
-			if (windowResize) useEventListener("resize", update, { passive: true });
-			tryOnMounted(() => {
-				if (immediate) update();
-			});
-			return {
-				height,
-				bottom,
-				left,
-				right,
-				top,
-				width,
-				x,
-				y,
-				update
-			};
-		},
-		useWindowSize(options = {}) {
-			const { initialWidth = Infinity, initialHeight = Infinity, listenOrientation = true, includeScrollbar = true } = options;
-			const width = Vue.ref(initialWidth);
-			const height = Vue.ref(initialHeight);
-			const update = () => {
-				if (defaultWindow) {
-					if (includeScrollbar) {
-						width.value = defaultWindow.innerWidth;
-						height.value = defaultWindow.innerHeight;
-					} else {
-						width.value = defaultWindow.document.documentElement.clientWidth;
-						height.value = defaultWindow.document.documentElement.clientHeight;
-					}
+			if (element.disabled) {
+				return false;
+			}
+
+			switch (element.nodeName) {
+				case "A":
+					return !!element.href && element.rel !== "ignore";
+				case "INPUT":
+					return element.type !== "hidden" && element.type !== "file";
+				case "BUTTON":
+				case "SELECT":
+				case "TEXTAREA":
+					return true;
+				default:
+					return false;
+			}
+		};
+
+		/**
+		 * 触发一个事件
+		 * mouseenter, mouseleave, mouseover, keyup, change, click 等
+		 * @param  {Element} elm
+		 * @param  {String} name
+		 * @param  {*} opts
+		 */
+		aria.Utils.triggerEvent = function (elm, name, ...opts) {
+			let eventName;
+
+			if (/^mouse|click/.test(name)) {
+				eventName = "MouseEvents";
+			} else if (/^key/.test(name)) {
+				eventName = "KeyboardEvent";
+			} else {
+				eventName = "HTMLEvents";
+			}
+			const evt = document.createEvent(eventName);
+
+			evt.initEvent(name, ...opts);
+			elm.dispatchEvent ? elm.dispatchEvent(evt) : elm.fireEvent("on" + name, evt);
+
+			return elm;
+		};
+
+		aria.Utils.keys = {
+			tab: 9,
+			enter: 13,
+			space: 32,
+			left: 37,
+			up: 38,
+			right: 39,
+			down: 40,
+			esc: 27
+		};
+
+		return aria.Utils;
+	})();
+
+	/*****************************************/
+	(function () {
+		_xUtils = {
+			RepeatClick: {
+				bind(el, binding, vnode) {
+					let interval = null;
+					let startTime;
+					const maxIntervals = _.$isMac() ? 100 : 200;
+					const handler = () => vnode.context[binding.expression].apply();
+					const clear = () => {
+						if (Date.now() - startTime < maxIntervals) {
+							handler();
+						}
+						clearInterval(interval);
+						interval = null;
+					};
+
+					$(el).on("mousedown", e => {
+						if (e.button !== 0) return;
+						startTime = Date.now();
+						$(document).one("mouseup", clear);
+						clearInterval(interval);
+						interval = setInterval(handler, maxIntervals);
+					});
 				}
-			};
-			update();
-			tryOnMounted(update);
-			useEventListener("resize", update, { passive: true });
-			if (listenOrientation) useEventListener("orientationchange", update, { passive: true });
-			return { width, height };
-		},
-		normalizeComponent(scriptExports, render, staticRenderFns, functionalTemplate, injectStyles, scopeId, moduleIdentifier, shadowMode) {
-			var options = typeof scriptExports === "function" ? scriptExports.options : scriptExports;
-			if (render) {
-				options.render = render;
-				options.staticRenderFns = staticRenderFns;
-				options._compiled = true;
-			}
-			if (functionalTemplate) {
-				options.functional = true;
-			}
-			if (scopeId) {
-				options._scopeId = "data-v-" + scopeId;
-			}
-			var hook;
-			if (moduleIdentifier) {
-				hook = function (context) {
-					context = context || (this.$vnode && this.$vnode.ssrContext) || (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext);
-					if (!context && typeof __VUE_SSR_CONTEXT__ !== "undefined") {
-						context = __VUE_SSR_CONTEXT__;
+			},
+			ARIA_UTILS,
+			on: (el, eventName, handler) => {
+				$(el).on(eventName, handler);
+			},
+			off: (el, eventName, handler) => {
+				$(el).off(eventName, handler);
+			},
+			addClass: (el, className) => {
+				$(el).addClass(className);
+			},
+			hasClass: (el, className) => {
+				$(el).hasClass(className);
+			},
+			removeClass: (el, className) => {
+				$(el).removeClass(className);
+			},
+			virtualizedListProps,
+			useGetDerivedNamespace,
+			globalConfigs: {},
+			resolveUnref,
+			identity,
+			tryOnScopeDispose,
+			tryOnMounted,
+			unrefElement,
+			useEventListener,
+			useSupported,
+			autoResizerProps,
+			tableV2HeaderRowProps,
+			useResizeObserver,
+			useAutoResize,
+			useTableRow,
+			isEqual,
+			areInputsEqual,
+			memoizeOne,
+			getScrollDir,
+			isRTL,
+			rAF,
+			cAF,
+			isClient,
+			castArray,
+			sumReducer,
+			sum,
+			tryCall,
+			enforceUnit,
+			componentToSlot,
+			TableV2InjectionKey,
+			useTableGrid,
+			useGridWheel,
+			useCache,
+			useNamespace,
+			isStringNumber,
+			addUnit,
+			createGrid,
+			noop,
+			ScrollbarDirKey,
+			renderThumbStyle,
+			/* **************** */
+			definePropType,
+			buildProp,
+			buildProps,
+			columns,
+			virtualizedScrollbarProps,
+			virtualizedGridProps,
+			tableV2HeaderProps,
+			tableV2GridProps,
+			tableV2Props,
+			/* ************** */
+			ITEM_RENDER_EVT,
+			SCROLLBAR_MIN_SIZE,
+			DEFAULT_DYNAMIC_LIST_ITEM_SIZE,
+			SCROLL_EVT,
+			FORWARD,
+			BACKWARD,
+			AUTO_ALIGNMENT,
+			SMART_ALIGNMENT,
+			START_ALIGNMENT,
+			CENTERED_ALIGNMENT,
+			END_ALIGNMENT,
+			HORIZONTAL,
+			VERTICAL,
+			BAR_MAP,
+			RTL,
+			RTL_OFFSET_NAG,
+			RTL_OFFSET_POS_ASC,
+			RTL_OFFSET_POS_DESC,
+			getStyle(element, styleName) {
+				var _a2;
+				if (!isClient || !element || !styleName) return "";
+				let key = Vue.camelize(styleName);
+				if (key === "float") key = "cssFloat";
+				try {
+					const style = element.style[key];
+					if (style) return style;
+					const computed =
+						(_a2 = document.defaultView) == null
+							? void 0
+							: _a2.getComputedStyle(element, "");
+					return computed ? computed[key] : "";
+				} catch (e) {
+					return element.style[key];
+				}
+			},
+			isScroll(el, isVertical) {
+				if (!isClient) return false;
+				const key = {
+					undefined: "overflow",
+					true: "overflow-y",
+					false: "overflow-x"
+				}[String(isVertical)];
+				const overflow = _xUtils.getStyle(el, key);
+				return ["scroll", "auto", "overlay"].some(s => overflow.includes(s));
+			},
+			getScrollContainer(el, isVertical) {
+				if (!isClient) return;
+				let parent = el;
+				while (parent) {
+					if ([window, document, document.documentElement].includes(parent))
+						return window;
+					if (_xUtils.isScroll(parent, isVertical)) return parent;
+					parent = parent.parentNode;
+				}
+				return parent;
+			},
+			throwError,
+			useElementBounding(target, options = {}) {
+				const {
+					reset = true,
+					windowResize = true,
+					windowScroll = true,
+					immediate = true
+				} = options;
+				const height = Vue.ref(0);
+				const bottom = Vue.ref(0);
+				const left = Vue.ref(0);
+				const right = Vue.ref(0);
+				const top = Vue.ref(0);
+				const width = Vue.ref(0);
+				const x = Vue.ref(0);
+				const y = Vue.ref(0);
+
+				function update() {
+					const el = unrefElement(target);
+					if (!el) {
+						if (reset) {
+							height.value = 0;
+							bottom.value = 0;
+							left.value = 0;
+							right.value = 0;
+							top.value = 0;
+							width.value = 0;
+							x.value = 0;
+							y.value = 0;
+						}
+						return;
 					}
-					if (injectStyles) {
-						injectStyles.call(this, context);
-					}
-					if (context && context._registeredComponents) {
-						context._registeredComponents.add(moduleIdentifier);
+					const rect = el.getBoundingClientRect();
+					height.value = rect.height;
+					bottom.value = rect.bottom;
+					left.value = rect.left;
+					right.value = rect.right;
+					top.value = rect.top;
+					width.value = rect.width;
+					x.value = rect.x;
+					y.value = rect.y;
+				}
+
+				useResizeObserver(target, update);
+				Vue.watch(
+					() => unrefElement(target),
+					ele => !ele && update()
+				);
+				if (windowScroll)
+					useEventListener("scroll", update, { capture: true, passive: true });
+				if (windowResize) useEventListener("resize", update, { passive: true });
+				tryOnMounted(() => {
+					if (immediate) update();
+				});
+				return {
+					height,
+					bottom,
+					left,
+					right,
+					top,
+					width,
+					x,
+					y,
+					update
+				};
+			},
+			useWindowSize(options = {}) {
+				const {
+					initialWidth = Infinity,
+					initialHeight = Infinity,
+					listenOrientation = true,
+					includeScrollbar = true
+				} = options;
+				const width = Vue.ref(initialWidth);
+				const height = Vue.ref(initialHeight);
+				const update = () => {
+					if (defaultWindow) {
+						if (includeScrollbar) {
+							width.value = defaultWindow.innerWidth;
+							height.value = defaultWindow.innerHeight;
+						} else {
+							width.value = defaultWindow.document.documentElement.clientWidth;
+							height.value = defaultWindow.document.documentElement.clientHeight;
+						}
 					}
 				};
-				options._ssrRegister = hook;
-			} else if (injectStyles) {
-				hook = shadowMode
-					? function () {
-							injectStyles.call(this, (options.functional ? this.parent : this).$root.$options.shadowRoot);
-						}
-					: injectStyles;
-			}
-			if (hook) {
-				if (options.functional) {
-					options._injectStyles = hook;
-					var originalRender = options.render;
-					options.render = function renderWithStyleInjection(h, context) {
-						hook.call(context);
-						return originalRender(h, context);
-					};
-				} else {
-					var existing = options.beforeCreate;
-					options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+				update();
+				tryOnMounted(update);
+				useEventListener("resize", update, { passive: true });
+				if (listenOrientation)
+					useEventListener("orientationchange", update, { passive: true });
+				return { width, height };
+			},
+			normalizeComponent(
+				scriptExports,
+				render,
+				staticRenderFns,
+				functionalTemplate,
+				injectStyles,
+				scopeId,
+				moduleIdentifier,
+				shadowMode
+			) {
+				var options =
+					typeof scriptExports === "function" ? scriptExports.options : scriptExports;
+				if (render) {
+					options.render = render;
+					options.staticRenderFns = staticRenderFns;
+					options._compiled = true;
 				}
+				if (functionalTemplate) {
+					options.functional = true;
+				}
+				if (scopeId) {
+					options._scopeId = "data-v-" + scopeId;
+				}
+				var hook;
+				if (moduleIdentifier) {
+					hook = function (context) {
+						context =
+							context ||
+							(this.$vnode && this.$vnode.ssrContext) ||
+							(this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext);
+						if (!context && typeof __VUE_SSR_CONTEXT__ !== "undefined") {
+							context = __VUE_SSR_CONTEXT__;
+						}
+						if (injectStyles) {
+							injectStyles.call(this, context);
+						}
+						if (context && context._registeredComponents) {
+							context._registeredComponents.add(moduleIdentifier);
+						}
+					};
+					options._ssrRegister = hook;
+				} else if (injectStyles) {
+					hook = shadowMode
+						? function () {
+								injectStyles.call(
+									this,
+									(options.functional ? this.parent : this).$root.$options
+										.shadowRoot
+								);
+							}
+						: injectStyles;
+				}
+				if (hook) {
+					if (options.functional) {
+						options._injectStyles = hook;
+						var originalRender = options.render;
+						options.render = function renderWithStyleInjection(h, context) {
+							hook.call(context);
+							return originalRender(h, context);
+						};
+					} else {
+						var existing = options.beforeCreate;
+						options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+					}
+				}
+				return {
+					exports: scriptExports,
+					options
+				};
 			}
-			return {
-				exports: scriptExports,
-				options
-			};
-		},
-		render: {
-			/* linkrender.linkrender.linkrender */
+		};
+		PRIVATE_GLOBAL._xUtils = _xUtils;
+	})();
+	/*****************************************/
+
+	(function () {
+		/* @ts-ignore */
+		PRIVATE_GLOBAL._jsxFns = {
+			/* _jsxFns_jsxFns_jsxFns */
+			xTipsHover({ msg, placement }) {
+				placement = placement || "right-start";
+				return {
+					name: "xtips",
+					value: {
+						content() {
+							return h("span", {}, msg);
+						},
+						trigger: "hover",
+						placement
+					}
+				};
+			},
 			OptionsToLabel(value, options) {
 				let item = { label: value, type: "" };
 				item =
 					_.find(options, item => {
 						return _.$isSame(item.value, value);
 					}) || item;
-
 				if (item.type) {
 					return h("xTag", { type: item.type }, [item.label]);
+				} else if (item.listClass) {
+					return h("xTag", { type: item.listClass }, [item.label]);
 				}
 				return h("div", {}, [item.label]);
 			},
@@ -1737,18 +2083,27 @@ export default async function () {
 			ActionAndMore(props) {
 				return h("xColActionAndMore", props);
 			},
+			TipsDelete(tipsString) {
+				return h("div", [
+					h("span", {
+						staticClass: "el-icon-warning",
+						style: "color:var(--ti-base-color-error-3)"
+					}),
+					h("span", { staticClass: "ml4" }, [tipsString])
+				]);
+			},
 			Link(props) {
 				return h(
 					"a",
-					{
+					_.merge({}, props, {
 						props,
 						attrs: props,
 						class: "el-button el-button--text el-button--small ellipsis cell-link text-align-left"
-					},
+					}),
 					[props.label]
 				);
 			}
-		}
-	};
+		};
+	})();
 }
 </script>

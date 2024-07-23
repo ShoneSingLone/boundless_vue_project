@@ -1,8 +1,17 @@
 <script lang="ts">
 export default async function () {
-	if (!Vue._yapi_utils) {
-		Vue._yapi_utils = {
-			RequestCode: function RequestCode({ basepath, title, projectId, groupId, interfaceId, path, method, camelCase }) {
+	if (!Vue._common_utils) {
+		Vue._common_utils = {
+			RequestCode: function RequestCode({
+				basepath,
+				title,
+				projectId,
+				groupId,
+				interfaceId,
+				path,
+				method,
+				camelCase
+			}) {
 				basepath = basepath || "";
 				return `
 \`\`\`js
@@ -165,7 +174,8 @@ async ${camelCase(path)}({params,data}) {
 						content: diffArray(old.req_headers, current.req_headers)
 					});
 
-					let oldValue = current.req_body_type === "form" ? old.req_body_form : old.req_body_other;
+					let oldValue =
+						current.req_body_type === "form" ? old.req_body_form : old.req_body_other;
 					if (current.req_body_type !== old.req_body_type) {
 						diffView.push({
 							title: "Request Type",
@@ -217,6 +227,6 @@ async ${camelCase(path)}({params,data}) {
 			}
 		};
 	}
-	return Vue._yapi_utils;
+	return Vue._common_utils;
 }
 </script>

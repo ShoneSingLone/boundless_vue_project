@@ -1,11 +1,16 @@
 <template>
 	<xDropdown trigger="click" :hide-on-click="false">
 		<div class="loader-wrapper">
-			<xIcon icon="icon_table_filter" style="width: 24px; height: 24px; color: var(--ui-base-color-5)" class="pointer ml4" />
+			<xIcon
+				icon="icon_table_filter"
+				style="width: 24px; height: 24px; color: var(--ui-base-color-5)"
+				class="pointer ml4" />
 		</div>
 		<xDropdownMenu slot="dropdown">
 			<xDropdownItem v-for="item in cptColumnsForShow" :key="item.label">
-				<xCheckbox :value="isShow(item)" @change="$event => setIsShow(item, $event)">{{ item.label }}</xCheckbox>
+				<xCheckbox :value="isShow(item)" @change="$event => setIsShow(item, $event)">{{
+					item.label
+				}}</xCheckbox>
 			</xDropdownItem>
 		</xDropdownMenu>
 	</xDropdown>

@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view">
+	<div class="x-page-view">
 		<xPageContent>
 			<div style="height: 40%; overflow: auto">
 				<xTableDiv :configs="configs" :data="configs.data.list" />

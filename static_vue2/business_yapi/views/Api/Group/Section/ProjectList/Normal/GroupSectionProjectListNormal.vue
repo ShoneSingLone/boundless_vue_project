@@ -23,7 +23,12 @@ export default async function () {
 								"card-header-border-left": true
 							}
 						},
-						[this.GroupSection.genProjectCard(this.APP.groupProjectList, this.GroupSection.canAddProject)]
+						[
+							this.GroupSection.genProjectCard(
+								this.APP.groupProjectList,
+								this.GroupSection.canAddProject
+							)
+						]
 					);
 				}
 				return null;

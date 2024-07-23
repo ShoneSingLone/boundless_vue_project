@@ -2,10 +2,25 @@
 	<div>
 		<xMd :md="md" />
 		<xSelect v-model="value1" multiple placeholder="请选择">
-			<xOption v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </xOption>
+			<xOption
+				v-for="item in options"
+				:key="item.value"
+				:label="item.label"
+				:value="item.value">
+			</xOption>
 		</xSelect>
-		<xSelect v-model="value2" multiple collapse-tags style="margin-left: 20px" placeholder="请选择">
-			<xOption v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </xOption>
+		<xSelect
+			v-model="value2"
+			multiple
+			collapse-tags
+			style="margin-left: 20px"
+			placeholder="请选择">
+			<xOption
+				v-for="item in options"
+				:key="item.value"
+				:label="item.label"
+				:value="item.value">
+			</xOption>
 		</xSelect>
 	</div>
 </template>

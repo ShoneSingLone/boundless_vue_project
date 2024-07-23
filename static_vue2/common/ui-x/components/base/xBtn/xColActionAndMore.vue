@@ -1,11 +1,23 @@
 <template>
 	<div class="xColActionAndMore" ref="xColActionAndMore">
-		<xBtn :preset="preset" v-for="(btnConfigs, index) in btnArray" :key="index" :configs="btnConfigs" />
+		<xBtn
+			:preset="preset"
+			v-for="(btnConfigs, index) in btnArray"
+			:key="index"
+			:configs="btnConfigs" />
 		<xDropdown v-if="isShowMoreBtn" trigger="click" @visible-change="handleVisibleChange">
-			<xBtn :preset="preset"> {{ i18n("更多") }}<i class="el-icon-arrow-down el-icon--right"></i> </xBtn>
+			<xBtn :preset="preset">
+				{{ i18n("更多") }}<i class="el-icon-arrow-down el-icon--right"></i>
+			</xBtn>
 			<xDropdownMenu slot="dropdown" ref="ElDropdownMenu">
-				<div class="xColActionAndMore-dropdown flex vertical start middle" ref="xColActionAndMoreDropdown">
-					<xBtn :preset="preset" v-for="(btnConfigs, index) in btnArrayMore" :key="index" :configs="btnConfigs" />
+				<div
+					class="xColActionAndMore-dropdown flex vertical start middle"
+					ref="xColActionAndMoreDropdown">
+					<xBtn
+						:preset="preset"
+						v-for="(btnConfigs, index) in btnArrayMore"
+						:key="index"
+						:configs="btnConfigs" />
 				</div>
 			</xDropdownMenu>
 		</xDropdown>

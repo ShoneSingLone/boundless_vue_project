@@ -1,7 +1,10 @@
 <template>
 	<DocContentOfDemo>
-		<DemoAndCode title="基础用法" path="@/views/component/data/xExcalidraw/JiChuYongFa.vue" unfold />
-		<xMd :md="apiString" />
+		<DemoAndCode
+			title="基础用法"
+			path="@/views/component/data/xExcalidraw/JiChuYongFa.vue"
+			unfold />
+		<xMd :md="apiString" data-role="api" />
 	</DocContentOfDemo>
 </template>
 

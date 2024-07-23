@@ -1,7 +1,17 @@
 <template>
-	<div class="shelf-item" :class="{ 'shelf-item-shadow': data.type === 1 || data.type === 2 }" @click="onItemClick">
-		<component :is="oneOfComponent" :data="data" class="shelf-item-comp" :class="{ 'is-edit': isEditMode && data.type == 2 }"></component>
-		<div class="icon-selected" :class="{ 'is-selected': data.selected }" v-show="isEditMode && data.type === 1"></div>
+	<div
+		class="shelf-item"
+		:class="{ 'shelf-item-shadow': data.type === 1 || data.type === 2 }"
+		@click="onItemClick">
+		<component
+			:is="oneOfComponent"
+			:data="data"
+			class="shelf-item-comp"
+			:class="{ 'is-edit': isEditMode && data.type == 2 }"></component>
+		<div
+			class="icon-selected"
+			:class="{ 'is-selected': data.selected }"
+			v-show="isEditMode && data.type === 1"></div>
 	</div>
 </template>
 
@@ -44,10 +54,16 @@ export default async function () {
 			onItemClick() {
 				if (this.isEditMode) {
 					this.data.selected = !this.data.selected;
-					if (this.data.selected && this.shelfSelected.indexOf(this.data) === -1 && this.data.type === 1) {
+					if (
+						this.data.selected &&
+						this.shelfSelected.indexOf(this.data) === -1 &&
+						this.data.type === 1
+					) {
 						this.shelfSelected.push(this.data);
 					} else if (!this.data.selected) {
-						this.setShelfSelected(this.shelfSelected.filter(item => item.id !== this.data.id));
+						this.setShelfSelected(
+							this.shelfSelected.filter(item => item.id !== this.data.id)
+						);
 					}
 				} else {
 					if (this.data.type === 1) {

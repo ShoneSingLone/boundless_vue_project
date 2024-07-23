@@ -1,12 +1,19 @@
 <template>
 	<div class="shelf-footer" v-show="isEditMode">
-		<div class="shelf-footer-tab-wrapper" v-for="item in tabs" :key="item.index" @click="onTabClick(item)" :class="{ 'is-selected': isSelected }">
+		<div
+			class="shelf-footer-tab-wrapper"
+			v-for="item in tabs"
+			:key="item.index"
+			@click="onTabClick(item)"
+			:class="{ 'is-selected': isSelected }">
 			<div class="shelf-footer-tab">
 				<div class="icon-private tab-icon" v-if="item.index === 1 && !isPrivate"></div>
 				<div class="icon-private-see tab-icon" v-if="item.index === 1 && isPrivate"></div>
 
 				<div class="icon-download tab-icon" v-if="item.index === 2 && !isDownload"></div>
-				<div class="icon-download-remove tab-icon" v-if="item.index === 2 && isDownload"></div>
+				<div
+					class="icon-download-remove tab-icon"
+					v-if="item.index === 2 && isDownload"></div>
 
 				<div class="icon-move tab-icon" v-if="item.index === 3"></div>
 				<div class="icon-shelf tab-icon" v-if="item.index === 4"></div>
@@ -110,8 +117,13 @@ export default async function () {
 						},
 						reject,
 						progressEvent => {
-							const progress = Math.floor((progressEvent.loaded / progressEvent.total) * 100) + "%";
-							const text = this.$t("shelf.progressDownload").replace("$1", `${book.fileName}.epub(${progress})`);
+							const progress =
+								Math.floor((progressEvent.loaded / progressEvent.total) * 100) +
+								"%";
+							const text = this.$t("shelf.progressDownload").replace(
+								"$1",
+								`${book.fileName}.epub(${progress})`
+							);
 							toast.updateText(text);
 						}
 					);
@@ -161,7 +173,9 @@ export default async function () {
 			},
 			showPrivate() {
 				this.popupMenu = this.popup({
-					title: this.isPrivate ? this.$t("shelf.closePrivateTitle") : this.$t("shelf.setPrivateTitle"),
+					title: this.isPrivate
+						? this.$t("shelf.closePrivateTitle")
+						: this.$t("shelf.setPrivateTitle"),
 					btn: [
 						{
 							text: this.isPrivate ? this.$t("shelf.close") : this.$t("shelf.open"),
@@ -180,7 +194,9 @@ export default async function () {
 			},
 			showDownload() {
 				this.popupMenu = this.popup({
-					title: this.isDownload ? this.$t("shelf.removeDownloadTitle") : this.$t("shelf.setDownloadTitle"),
+					title: this.isDownload
+						? this.$t("shelf.removeDownloadTitle")
+						: this.$t("shelf.setDownloadTitle"),
 					btn: [
 						{
 							text: this.isDownload ? this.$t("shelf.delete") : this.$t("shelf.open"),
@@ -200,9 +216,15 @@ export default async function () {
 			showRemove() {
 				let title;
 				if (this.shelfSelected.length === 1) {
-					title = this.$t("shelf.removeBookTitle").replace("$1", `《${this.shelfSelected[0].title}》`);
+					title = this.$t("shelf.removeBookTitle").replace(
+						"$1",
+						`《${this.shelfSelected[0].title}》`
+					);
 				} else {
-					title = this.$t("shelf.removeBookTitle").replace("$1", this.$t("shelf.selectedBooks"));
+					title = this.$t("shelf.removeBookTitle").replace(
+						"$1",
+						this.$t("shelf.selectedBooks")
+					);
 				}
 
 				this.popupMenu = this.popup({

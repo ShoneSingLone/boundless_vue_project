@@ -20,7 +20,7 @@ export interface CloseEventHandler {
 /** Options used in Message */
 export interface ElMessageOptions {
 	/** Message text */
-	message: string | VNode;
+	message: string | (() => any);
 
 	/** Message type */
 	type?: MessageType;
@@ -87,4 +87,42 @@ declare module "vue/types/vue" {
 		/** Used to show feedback after an activity. The difference with Notification is that the latter is often used to show a system level passive notification. */
 		$message: ElMessage;
 	}
+}
+
+export declare type ElMessageFn = {
+	(options: ElMessageOptions): ElMessageComponent;
+} & {
+	closeAll: () => void;
+};
+
+export interface Message extends ElMessageFn {
+	/** Show an info message */
+	(text: string): Promise<ElMessageComponent>;
+
+	/** Show message */
+	(options: ElMessageOptions): Promise<ElMessageComponent>;
+
+	/** Show a success message */
+	success(text: string): Promise<ElMessageComponent>;
+
+	/** Show a success message with options */
+	success(options: ElMessageOptions): Promise<ElMessageComponent>;
+
+	/** Show a warning message */
+	warning(text: string): Promise<ElMessageComponent>;
+
+	/** Show a warning message with options */
+	warning(options: ElMessageOptions): Promise<ElMessageComponent>;
+
+	/** Show an info message */
+	info(text: string): Promise<ElMessageComponent>;
+
+	/** Show an info message with options */
+	info(options: ElMessageOptions): Promise<ElMessageComponent>;
+
+	/** Show an error message */
+	error(text: string): Promise<ElMessageComponent>;
+
+	/** Show an error message with options */
+	error(options: ElMessageOptions): Promise<ElMessageComponent>;
 }

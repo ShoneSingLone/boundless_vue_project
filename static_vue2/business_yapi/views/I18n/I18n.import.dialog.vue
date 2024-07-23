@@ -80,7 +80,7 @@ export default async function ({ refreshTableData, listData }) {
 				};
 			},
 			cptFormData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnSelectFile() {
 				const vm = this;

@@ -1,13 +1,28 @@
 <template>
 	<DocContentOfDemo class="icon-demo">
-		<DemoAndCode title="基础用法" path="@/views/component/navigation/tabs/JiChuYongFa.vue" unfold />
-		<DemoAndCode title="选项卡样式" path="@/views/component/navigation/tabs/XuanXiangKaYangShi.vue" unfold />
+		<DemoAndCode
+			title="基础用法"
+			path="@/views/component/navigation/tabs/JiChuYongFa.vue"
+			unfold />
+		<DemoAndCode
+			title="选项卡样式"
+			path="@/views/component/navigation/tabs/XuanXiangKaYangShi.vue"
+			unfold />
 		<DemoAndCode title="卡片化" path="@/views/component/navigation/tabs/KaPianHua.vue" unfold />
 		<DemoAndCode title="位置" path="@/views/component/navigation/tabs/WeiZhi.vue" unfold />
-		<DemoAndCode title="自定义标签页" path="@/views/component/navigation/tabs/ZiDingYiBiaoQianYe.vue" unfold />
-		<DemoAndCode title="动态增减标签页" path="@/views/component/navigation/tabs/DongTaiZengJianBiaoQianYe.vue" unfold />
-		<DemoAndCode title="自定义增加标签页触发器" path="@/views/component/navigation/tabs/ZiDingYiZengJiaBiaoQianYeChuFaQi.vue" unfold />
-		<xMd :md="apiString" />
+		<DemoAndCode
+			title="自定义标签页"
+			path="@/views/component/navigation/tabs/ZiDingYiBiaoQianYe.vue"
+			unfold />
+		<DemoAndCode
+			title="动态增减标签页"
+			path="@/views/component/navigation/tabs/DongTaiZengJianBiaoQianYe.vue"
+			unfold />
+		<DemoAndCode
+			title="自定义增加标签页触发器"
+			path="@/views/component/navigation/tabs/ZiDingYiZengJiaBiaoQianYeChuFaQi.vue"
+			unfold />
+		<xMd :md="apiString" data-role="api" />
 	</DocContentOfDemo>
 </template>
 

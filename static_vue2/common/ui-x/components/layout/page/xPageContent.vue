@@ -2,7 +2,7 @@
 .heightAuto {
 	height: auto !important;
 }
-.page-view {
+.x-page-view {
 	display: flex;
 	flex-flow: column nowrap;
 	height: 100%;
@@ -85,7 +85,7 @@
 				<slot name="footer" />
 			</footer>
 		</div>
-		<div class="xPageContentAffix padding" v-if="$slots.affix"><slot name="affix" /></div>
+		<div class="xPageContentAffix x-padding" v-if="$slots.affix"><slot name="affix" /></div>
 	</div>
 </template>
 

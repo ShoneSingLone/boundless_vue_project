@@ -1,10 +1,17 @@
 <template>
-	<div class="page-view flex1 height100 flex">
+	<div class="x-page-view flex1 height100 flex">
 		<xBlock header="数据导入" class="flex1">
 			<xForm col="1">
 				<xItem :configs="form.curImportType" />
 				<xItem :configs="form.dataSync" />
-				<xItem :configs="form.importBy" span="full" style="--xItem-controller-flex: unset; --xItem-controller-width: 250px; --xItem-layout-justify-content: flex-start" />
+				<xItem
+					:configs="form.importBy"
+					span="full"
+					style="
+						--xItem-controller-flex: unset;
+						--xItem-controller-width: 100%;
+						--xItem-layout-justify-content: flex-start;
+					" />
 			</xForm>
 		</xBlock>
 		<xBlock header="数据导出" class="flex1">
@@ -19,14 +26,15 @@
 export default async function () {
 	const { useTabName } = await _.$importVue("/common/utils/hooks.vue");
 	return {
-		name: "CtyunecsEvsList",
+		name: "ProjectSettingPanelDataImportExportVue",
 		inject: ["APP", "inject_project"],
 		data() {
 			const vm = this;
 			return {
 				form: defItems({
 					swaggerURL: {
-						placeholder: "GET 请求URL地址，返回JSON数据，如：http://127.0.0.1:8080/api/swagger.json",
+						placeholder:
+							"GET 请求URL地址，返回JSON数据，如：http://127.0.0.1:8080/api/swagger.json",
 						value: "http://localhost:3001/api/swagger-doc",
 						rules: [
 							{
@@ -53,12 +61,22 @@ export default async function () {
 						minWidth: 100,
 						tips() {
 							return h("div", [
-								h("div", {}, [h("xTag", { class: "mr" }, ["普通模式"]), h("span", {}, ["不导入已存在的接口"])]),
+								h("div", {}, [
+									h("xTag", { class: "mr" }, ["普通模式"]),
+									h("span", {}, ["不导入已存在的接口"])
+								]),
 								h("div", {}, [
 									h("xTag", { class: "mr mt" }, ["智能合并"]),
-									h("span", {}, ["已存在的接口，将合并返回数据的 response，适用于导入了 swagger 数据，保留对数据结构的改动 "])
+									h("span", {}, [
+										"已存在的接口，将合并返回数据的 response，适用于导入了 swagger 数据，保留对数据结构的改动 "
+									])
 								]),
-								h("div", {}, [h("xTag", { class: "mr mt" }, ["完全覆盖"]), h("span", {}, ["不保留旧数据，完全使用新数据，适用于接口定义完全交给后端定义"])])
+								h("div", {}, [
+									h("xTag", { class: "mr mt" }, ["完全覆盖"]),
+									h("span", {}, [
+										"不保留旧数据，完全使用新数据，适用于接口定义完全交给后端定义"
+									])
+								])
 							]);
 						},
 						options: [
@@ -81,7 +99,7 @@ export default async function () {
 								const xBtn = h("xBtn", xBtnProps);
 
 								if (vm.cptIsImportFile) {
-									return xBtn;
+									return h("div", [xBtn]);
 								} else {
 									const xItemProps = {
 										class: "ml",
@@ -91,7 +109,10 @@ export default async function () {
 											vm._importByVm = xItem;
 										}
 									};
-									return h("div", { class: "flex middle" }, [h("xItem", xItemProps), xBtn]);
+									return h("div", { class: "flex middle" }, [
+										h("xItem", xItemProps),
+										xBtn
+									]);
 								}
 							}
 						}
@@ -142,7 +163,7 @@ export default async function () {
 				};
 			},
 			cptParams() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			}
 		},
 		methods: {

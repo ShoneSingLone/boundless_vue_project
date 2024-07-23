@@ -1,5 +1,5 @@
 <template>
-	<span class="el-breadcrumb__item">
+	<span class="el-breadcrumb__item" v-on="$listeners">
 		<span :class="['el-breadcrumb__inner', to ? 'is-link' : '']" ref="link" role="link">
 			<slot></slot>
 		</span>
@@ -21,10 +21,10 @@ export default async function () {
 				separatorClass: ""
 			};
 		},
-		inject: ["elBreadcrumb"],
+		inject: ["xBreadcrumb"],
 		mounted() {
-			this.separator = this.elBreadcrumb.separator;
-			this.separatorClass = this.elBreadcrumb.separatorClass;
+			this.separator = this.xBreadcrumb.separator;
+			this.separatorClass = this.xBreadcrumb.separatorClass;
 			const link = this.$refs.link;
 			link.setAttribute("role", "link");
 			link.addEventListener("click", _ => {

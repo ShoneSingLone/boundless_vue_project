@@ -2,9 +2,27 @@
 .GroupAside {
 	background-color: white;
 	.wiki-tree-wrapper {
-		height: 1px;
-		overflow: auto;
-		position: relative;
+		.aside-tree-item {
+			width: 1px;
+		}
+		.is-current {
+			.el-tree-node__content {
+				color: var(--el-color-primary);
+				background: #ecf5ff;
+				border-color: #b3d8ff;
+			}
+		}
+
+		.el-tree-node__content {
+			.xIcon._add {
+				display: none;
+			}
+			&:hover {
+				.xIcon._add {
+					display: block;
+				}
+			}
+		}
 	}
 }
 </style>
@@ -15,13 +33,21 @@
 			<div class="group-operate flex start middle mb10 left-tree box-shadow">
 				<xItem :configs="configsSearch" class="flex1" />
 				<xGap l="10" />
-				<div class="pointer" v-xtips="{ content: '新增', placement: 'right', style: '--min-width:unset;', trigger: 'hover' }" @click="addNewWiki">
-					<!-- 添加分组 -->
-					<xIcon icon="_add" class="icon-opreation_click" />
-				</div>
+				<xIcon icon="currentLocation" class="icon-opreation_click pointer" />
+				<!-- 添加分组 -->
+				<xIcon
+					icon="_add"
+					class="icon-opreation_click pointer ml10"
+					@click="addNewWiki()" />
 			</div>
-			<div class="flex1 wiki-tree-wrapper" ref="refTreeScroll">
-				<xTree :data="inject_note.treeData" :contentRender="nodeRender" :props="treeProps" :filter-method="treeFilterMethod" ref="refTree" :dragAndDrop="handleDragAndDrop" />
+			<div class="flex1-overflow-auto wiki-tree-wrapper" ref="refTreeScroll">
+				<xTree
+					ref="refTree"
+					:contentRender="treeContentRender"
+					:data="cptMenuTree"
+					:expandedKeys.sync="inject_note.expandedKeys"
+					:props="treeProps"
+					:dragAndDrop="handleDragAndDrop" />
 			</div>
 		</div>
 		<div class="resize_bar" icon="scroll" v-xmove="resizeOptions" />
@@ -43,12 +69,32 @@ export default async function () {
 		return orderArray;
 	};
 
+	const getParents = (id, allNodeObject, parents = []) => {
+		const self = allNodeObject[id];
+		if (self) {
+			parents.push(self);
+			if (self.p_id) {
+				return getParents(self.p_id, allNodeObject, parents);
+			}
+		}
+		return parents;
+	};
+
 	/* 分组信息 */
 	return defineComponent({
 		inject: ["APP", "inject_note"],
-		mounted() {},
+		mounted() {
+			this.initExpandedKeys();
+		},
 		setup(props) {
-			const { stateStyle, resizeOptions } = useXmove(props);
+			const { stateStyle, resizeOptions } = (() => {
+				if (this.APP.isMobile) {
+					return { stateStyle: {}, resizeOptions: {} };
+				} else {
+					return useXmove(props);
+				}
+			})();
+
 			return {
 				stateStyle,
 				resizeOptions,
@@ -59,10 +105,38 @@ export default async function () {
 				}
 			};
 		},
+		computed: {
+			cptMenuTree() {
+				if (this.configsSearch.value) {
+					let newTree = [];
+					_.$traverse(this.inject_note.treeData, node => {
+						const isOk = new RegExp(this.configsSearch.value, "i").test(node.title);
+						if (isOk) {
+							newTree.push(node);
+						}
+					});
+					return newTree;
+				}
+
+				return this.inject_note.treeData;
+			}
+		},
+		watch: {
+			"inject_note.currentWiki": {
+				handler(wiki) {
+					if (wiki?._id) {
+						this.$refs.refTree?.setCurrentKey?.(wiki._id);
+					}
+				},
+				immediate: true
+			}
+		},
 		data() {
 			const vm = this;
 			const onQueryChanged = _.debounce(query => {
-				vm.$refs.refTree.filter(query);
+				if (vm.$refs.refTree?.filter) {
+					vm.$refs.refTree.filter(query);
+				}
 			}, 1000);
 			return {
 				configsSearch: defItem({
@@ -78,6 +152,28 @@ export default async function () {
 			};
 		},
 		methods: {
+			async initExpandedKeys() {
+				let id = await _.$ensure(() => this.inject_note?.currentWiki?._id);
+				const ALL_NODE_MAP = new Map();
+				_.$traverse(this.inject_note.treeData, node => {
+					ALL_NODE_MAP.set(node._id, node);
+				});
+				const expandedKeys = [];
+				let node;
+				while ((node = ALL_NODE_MAP.get(id))) {
+					if (node._id) {
+						expandedKeys.push(node._id);
+					}
+					if (node.p_id > -1) {
+						if (id === node.p_id) {
+							break;
+						}
+						id = node.p_id;
+					}
+				}
+				this.inject_note.expandedKeys = expandedKeys;
+			},
+			scrollToLocation() {},
 			async handleDragAndDrop({ drag, drop, type: dropType }) {
 				const { inject_note } = this;
 				const dragItem = { ...drag.data };
@@ -87,18 +183,22 @@ export default async function () {
 				}
 				const menuOrderArray = getTreeOrder(inject_note.treeData);
 				const dragIndex = menuOrderArray.indexOf(dragItem._id);
+				/* drag不能放在drap的子级 */
+				/* 获取drop的所有父级 */
+				const parents = getParents(dropItem._id, inject_note.allWiki);
+				/* drag不在drop的祖级上 */
+				if (_.find(parents, parent => parent._id === dragItem._id)) {
+					_.$msgError("不能把父级拖到子级上");
+					return;
+				}
 				if (dropType === "inner") {
 					dragItem.p_id = dropItem._id;
-				}
-
-				if (dropType === "after") {
+				} else if (dropType === "after") {
 					dragItem.p_id = dropItem.p_id;
 					menuOrderArray.splice(dragIndex, 1);
 					const dropIndex = menuOrderArray.indexOf(dropItem._id);
 					menuOrderArray.splice(dropIndex + 1, 0, dragItem._id);
-				}
-
-				if (dropType === "before") {
+				} else if (dropType === "before") {
 					dragItem.p_id = dropItem.p_id;
 					menuOrderArray.splice(dragIndex, 1);
 					let dropIndex = menuOrderArray.indexOf(dropItem._id);
@@ -108,11 +208,12 @@ export default async function () {
 						menuOrderArray.splice(dropIndex - 1, 0, dragItem._id);
 					}
 				}
+
 				try {
 					await _api.yapi.wikiUpsertOne(dragItem);
 					await _api.yapi.wikiResetMenuOrder({
 						order: menuOrderArray,
-						belong_type: inject_note.belongType,
+						belong_type: inject_note.cptBelongType,
 						belong_id: (() => {
 							// const { group_id, project_id } = cptRouter.value.query;
 							// const s_map = {
@@ -123,33 +224,32 @@ export default async function () {
 						})()
 					});
 					await inject_note.updateWikiMenuList();
-					_.$msgSuccess(i18n("更新成功"));
+					_.$msg(i18n("更新成功"));
 				} catch (error) {
 					_.$msgError(error.message);
 				}
 			},
-			treeFilterMethod(query, node) {
-				return new RegExp(query, "i").test(node.title);
-			},
-			async addNewWiki(node) {
+			async addNewWiki(payload) {
+				const { node } = payload || {};
+
 				return _.$openModal({
-					title: i18n("添加文档"),
-					url: "@/views/Note/Note.dialog.insert.vue",
 					parent: this,
-					parentDocId: node?._id,
+					title: "新增",
+					url: "@/views/Note/Note.dialog.insert.vue",
+					parentDocId: node?._id || "",
 					belong_type: this.inject_note.cptBelongType,
 					belong_id: this.inject_note.cptBelongId
 				});
 			},
 			/* 菜单 */
-			nodeRender({ node, data, injectRootTree }) {
+			treeContentRender({ node, data, injectRootTree }) {
 				const vm = this;
 
 				const vNodeTitleLabel = h(
 					"div",
 					{
-						staticClass: "node-name pointer",
-						onClick() {
+						staticClass: "node-name pointer flex1 ellipsis",
+						onClick(...args) {
 							vm.inject_note.setCurrentWiki(data);
 						}
 					},
@@ -161,8 +261,10 @@ export default async function () {
 					{
 						staticClass: "ml",
 						icon: "_add",
-						onClick() {
-							vm.addNewWiki(data);
+						onClick(event) {
+							event.stopPropagation();
+							event.preventDefault();
+							vm.addNewWiki({ node: data });
 						}
 					},
 					[data.title]
@@ -176,7 +278,7 @@ export default async function () {
 							"data-wiki-id": data._id
 						}
 					},
-					[vNodeTitleLabel, vNodeGap, vNodeIconAddSubwiki]
+					[vNodeTitleLabel, vNodeIconAddSubwiki]
 				);
 			}
 		}

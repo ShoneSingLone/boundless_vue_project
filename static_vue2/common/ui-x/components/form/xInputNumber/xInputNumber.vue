@@ -8,10 +8,22 @@
 			{ 'is-without-controls': !controls },
 			{ 'is-controls-right': controlsAtRight }
 		]">
-		<span class="el-input-number__decrease" role="button" v-if="controls" @click="decrease" :class="{ 'is-disabled': minDisabled }" @keydown.enter="decrease">
+		<span
+			class="el-input-number__decrease"
+			role="button"
+			v-if="controls"
+			@click="decrease"
+			:class="{ 'is-disabled': minDisabled }"
+			@keydown.enter="decrease">
 			<i :class="cptDecreaseClass"></i>
 		</span>
-		<span class="el-input-number__increase" role="button" v-if="controls" @click="increase" :class="{ 'is-disabled': maxDisabled }" @keydown.enter="increase">
+		<span
+			class="el-input-number__increase"
+			role="button"
+			v-if="controls"
+			@click="increase"
+			:class="{ 'is-disabled': maxDisabled }"
+			@keydown.enter="increase">
 			<i :class="cptIncreaseClass"></i>
 		</span>
 		<xInput
@@ -35,7 +47,7 @@
 </template>
 
 <script lang="ts">
-export default async function () {
+export default async function ({ PRIVATE_GLOBAL }) {
 	const { useFocus } = await _.$importVue("/common/utils/hooks.vue");
 
 	return defineComponent({
@@ -110,7 +122,9 @@ export default async function () {
 						if (this.stepStrictly) {
 							const stepPrecision = this.getPrecision(this.step);
 							const precisionFactor = Math.pow(10, stepPrecision);
-							newVal = (Math.round(newVal / this.step) * precisionFactor * this.step) / precisionFactor;
+							newVal =
+								(Math.round(newVal / this.step) * precisionFactor * this.step) /
+								precisionFactor;
 						}
 
 						if (this.precision !== undefined) {
@@ -143,7 +157,9 @@ export default async function () {
 				const stepPrecision = getPrecision(step);
 				if (precision !== undefined) {
 					if (stepPrecision > precision) {
-						console.warn("[Element Warn][InputNumber]precision should not be less than the decimal places of step");
+						console.warn(
+							"[Element Warn][InputNumber]precision should not be less than the decimal places of step"
+						);
 					}
 					return precision;
 				} else {
@@ -157,7 +173,7 @@ export default async function () {
 				return (this.elFormItem || {}).elFormItemSize;
 			},
 			inputNumberSize() {
-				return this.size || this._elFormItemSize || (this.$xUiConfigs || {}).size;
+				return this.size || this._elFormItemSize || PRIVATE_GLOBAL.x_ui_size;
 			},
 			inputNumberDisabled() {
 				return this.disabled || !!(this.elForm || {}).disabled;
@@ -173,7 +189,9 @@ export default async function () {
 					if (this.stepStrictly) {
 						const stepPrecision = this.getPrecision(this.step);
 						const precisionFactor = Math.pow(10, stepPrecision);
-						currentValue = (Math.round(currentValue / this.step) * precisionFactor * this.step) / precisionFactor;
+						currentValue =
+							(Math.round(currentValue / this.step) * precisionFactor * this.step) /
+							precisionFactor;
 					}
 
 					if (this.precision !== undefined) {
@@ -187,7 +205,9 @@ export default async function () {
 		methods: {
 			toPrecision(num, precision) {
 				if (precision === undefined) precision = this.numPrecision;
-				return parseFloat(Math.round(num * Math.pow(10, precision)) / Math.pow(10, precision));
+				return parseFloat(
+					Math.round(num * Math.pow(10, precision)) / Math.pow(10, precision)
+				);
 			},
 			getPrecision(value) {
 				if (value === undefined) return 0;
@@ -204,14 +224,18 @@ export default async function () {
 
 				const precisionFactor = Math.pow(10, this.numPrecision);
 				// Solve the accuracy problem of JS decimal calculation by converting the value to integer.
-				return this.toPrecision((precisionFactor * val + precisionFactor * step) / precisionFactor);
+				return this.toPrecision(
+					(precisionFactor * val + precisionFactor * step) / precisionFactor
+				);
 			},
 			_decrease(val, step) {
 				if (typeof val !== "number" && val !== undefined) return this.currentValue;
 
 				const precisionFactor = Math.pow(10, this.numPrecision);
 
-				return this.toPrecision((precisionFactor * val - precisionFactor * step) / precisionFactor);
+				return this.toPrecision(
+					(precisionFactor * val - precisionFactor * step) / precisionFactor
+				);
 			},
 			increase() {
 				if (this.inputNumberDisabled || this.maxDisabled) return;

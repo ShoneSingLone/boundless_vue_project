@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view">
+	<div class="x-page-view">
 		<xPageTitle>
 			<template #title>
 				<span class="mr">{{ i18n("国际化字段列表") }}</span>
@@ -8,7 +8,9 @@
 			</template>
 		</xPageTitle>
 		<xPageContent>
-			<xTablebar :configs="configsTable" style="--xItem-wrapper-width: 300px; --xItem-label-width: 80px">
+			<xTablebar
+				:configs="configsTable"
+				style="--xItem-wrapper-width: 300px; --xItem-label-width: 80px">
 				<template #left>
 					<xBtnArray :configs="oprBtnArray" />
 				</template>
@@ -17,7 +19,7 @@
 				<xItem :configs="searchForm.enUs" />
 				<xGap r="16" />
 			</xTablebar>
-			<div class="page-content-middle mt8">
+			<div class="x-page-content-middle mt8">
 				<xTableVir :columns="configsTable.columns" :data="configsTable.data.list" />
 			</div>
 		</xPageContent>
@@ -169,7 +171,7 @@ export default async function () {
 			const vm = this;
 
 			vm.setTableDataList = _.debounce(function () {
-				const filterForm = _.$pickValueFromConfigs(vm.searchForm);
+				const filterForm = _.$pickFormValues(vm.searchForm);
 				let listForShow = _.cloneDeep(vm.tableDataList);
 				let paramKeys = Object.keys(filterForm);
 				let prop;
@@ -178,7 +180,10 @@ export default async function () {
 					if (_.$isInput(search)) {
 						listForShow = _.filter(listForShow, i => {
 							search = _.trim(search);
-							return new RegExp(search, "i").test(i[prop]) || new RegExp(search, "i").test(i[prop]);
+							return (
+								new RegExp(search, "i").test(i[prop]) ||
+								new RegExp(search, "i").test(i[prop])
+							);
 						});
 					}
 				}
@@ -279,7 +284,7 @@ export default async function () {
 						defTable.colActions({
 							width: 80,
 							cellRenderer({ rowData }) {
-								return _useXui.render.ActionAndMore({
+								return _jsxFns.ActionAndMore({
 									col: 3,
 									children: [
 										{

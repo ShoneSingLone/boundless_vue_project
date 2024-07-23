@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view">
+	<div class="x-page-view">
 		<xCard class="mt10" :header="i18n('xxxxxxxx')">
 			<form ref="form">
 				<xItem :configs="configs" v-for="(configs, prop) in form" :key="prop" />

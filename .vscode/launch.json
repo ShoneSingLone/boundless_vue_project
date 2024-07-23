@@ -7,6 +7,15 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "watch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/preprocess/server/server.watcher.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "server",
             "skipFiles": [
                 "<node_internals>/**"

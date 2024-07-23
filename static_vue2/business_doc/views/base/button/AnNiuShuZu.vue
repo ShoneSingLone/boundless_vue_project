@@ -9,7 +9,8 @@ export default async function () {
 	return defineComponent({
 		data() {
 			return {
-				mdTitle: "以数组的方式配置多个按钮，常用于列表顶端左侧的操作按钮。\n\n>不同于xBtnGrpup，本组件不支持按钮组的嵌套。",
+				mdTitle:
+					"以数组的方式配置多个按钮，常用于列表顶端左侧的操作按钮。\n\n>不同于xBtnGrpup，本组件不支持按钮组的嵌套。",
 				oprBtnArray: [
 					{
 						label: i18n("正常"),

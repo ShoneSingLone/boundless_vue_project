@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view view-icon">
+	<div class="x-page-view view-icon">
 		<xDev>
 			<template #first>first</template>
 			<template #params="props">params:{{ props.title }}</template>

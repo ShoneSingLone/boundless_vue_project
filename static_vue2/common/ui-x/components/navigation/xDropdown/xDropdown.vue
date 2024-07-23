@@ -1,6 +1,8 @@
 <script lang="ts">
-export default async function () {
-	const [Clickoutside] = await Promise.all([_.$importVue("/common/ui-x/directive/clickoutside.vue")]);
+export default async function ({ PRIVATE_GLOBAL }) {
+	const [Clickoutside] = await Promise.all([
+		_.$importVue("/common/ui-x/directive/clickoutside.vue")
+	]);
 
 	return defineComponent({
 		name: "xDropdown",
@@ -66,7 +68,7 @@ export default async function () {
 
 		computed: {
 			dropdownSize() {
-				return this.size || (this.$xUiConfigs || {}).size;
+				return this.size || PRIVATE_GLOBAL.x_ui_size;
 			}
 		},
 
@@ -198,11 +200,22 @@ export default async function () {
 					// 自定义
 					this.triggerElm.setAttribute("role", "button");
 					this.triggerElm.setAttribute("tabindex", this.tabindex);
-					this.triggerElm.setAttribute("class", (this.triggerElm.getAttribute("class") || "") + " el-dropdown-selfdefine"); // 控制
+					this.triggerElm.setAttribute(
+						"class",
+						(this.triggerElm.getAttribute("class") || "") + " el-dropdown-selfdefine"
+					); // 控制
 				}
 			},
 			async initEvent() {
-				let { trigger, show, hide, handleClick, splitButton, handleTriggerKeyDown, handleItemKeyDown } = this;
+				let {
+					trigger,
+					show,
+					hide,
+					handleClick,
+					splitButton,
+					handleTriggerKeyDown,
+					handleItemKeyDown
+				} = this;
 
 				/* 保证触发元素存在 */
 				this.triggerElm = await _.$ensure(() => {
@@ -271,7 +284,7 @@ export default async function () {
 
 			let triggerElm = null;
 			if (splitButton) {
-				triggerElm = h("xBtnGroup", [
+				triggerElm = h("xBtnGroup", { staticClass: "xDropdown" }, [
 					h(
 						"xBtn",
 						{
@@ -315,7 +328,7 @@ export default async function () {
 			return h(
 				"div",
 				{
-					staticClass: "el-dropdown",
+					staticClass: "el-dropdown xBtnGroup",
 					directives: [
 						{
 							name: "clickoutside",
@@ -332,4 +345,14 @@ export default async function () {
 	});
 }
 </script>
-<style lang="less"></style>
+<style lang="less">
+.el-button-group.xDropdown {
+	display: inline-flex;
+	align-items: center;
+	.xBtn {
+		&.el-button.el-button--primary.el-button--medium {
+			height: 37px;
+		}
+	}
+}
+</style>

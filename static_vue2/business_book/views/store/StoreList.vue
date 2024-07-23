@@ -2,7 +2,12 @@
 	<div class="book-list-wrapper">
 		<detail-title :title="title" :showShelf="true" @back="back" ref="title"></detail-title>
 		<scroll class="book-list-scroll-wrapper" :top="42" @onScroll="onScroll" ref="scroll">
-			<featured :data="value" :titleText="titleText ? titleText : getCategoryText(key)" :btnText="''" v-for="(value, key, index) in list" :key="index"></featured>
+			<featured
+				:data="value"
+				:titleText="titleText ? titleText : getCategoryText(key)"
+				:btnText="''"
+				v-for="(value, key, index) in list"
+				:key="index"></featured>
 		</scroll>
 	</div>
 </template>
@@ -71,7 +76,9 @@ export default async function () {
 						this.list[key] = data;
 					} else if (keyword) {
 						Object.keys(this.list).filter(key => {
-							this.list[key] = this.list[key].filter(book => book.fileName.indexOf(keyword) >= 0);
+							this.list[key] = this.list[key].filter(
+								book => book.fileName.indexOf(keyword) >= 0
+							);
 							return this.list[key].length > 0;
 						});
 					}

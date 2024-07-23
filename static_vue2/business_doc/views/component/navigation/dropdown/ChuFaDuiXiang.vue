@@ -2,7 +2,9 @@
 	<div>
 		<xMd :md="md" />
 		<xDropdown>
-			<xBtn preset="primary"> 更多菜单<i class="el-icon-arrow-down el-icon--right"></i> </xBtn>
+			<xBtn preset="primary">
+				更多菜单<i class="el-icon-arrow-down el-icon--right"></i>
+			</xBtn>
 			<xDropdownMenu slot="dropdown">
 				<xDropdownItem>黄金糕</xDropdownItem>
 				<xDropdownItem>狮子头</xDropdownItem>

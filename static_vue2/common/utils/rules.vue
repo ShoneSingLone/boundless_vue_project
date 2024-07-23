@@ -4,6 +4,23 @@ export default async function () {
 
 	if (!window._rules) {
 		window._rules = {
+			mobilePhone() {
+				return {
+					name: "mobilePhone",
+					async validator({ val }) {
+						if (!_.$isInput(val)) {
+							return;
+						}
+						var urlRegex = _reg.phoneRe();
+						if (urlRegex.test(val)) {
+							return "";
+						} else {
+							return i18n("请输入正确的手机号码");
+						}
+					},
+					trigger: ["change", "blur"]
+				};
+			},
 			serviceName() {
 				return {
 					name: "serviceName",
@@ -11,7 +28,8 @@ export default async function () {
 						if (!_.$isInput(val)) {
 							return;
 						}
-						const errorTips = "以小写字母开头,由小写字母，数字，中划线(-)组成，63个字符之内,且不能以中划线(-)结尾。";
+						const errorTips =
+							"以小写字母开头,由小写字母，数字，中划线(-)组成，63个字符之内,且不能以中划线(-)结尾。";
 
 						var urlRegex = _reg.serviceName();
 						if (urlRegex.test(val)) {
@@ -152,6 +170,9 @@ export default async function () {
 				return {
 					name: "email",
 					async validator({ val }) {
+						if (!val) {
+							return "";
+						}
 						var urlRegex = _reg.email();
 						if (!urlRegex.test(val)) {
 							return i18n("请输入Email");
@@ -160,13 +181,19 @@ export default async function () {
 					}
 				};
 			},
+			/**
+			 * 最多可输入{size}字符，
+			 * @param size number
+			 * @returns
+			 */
 			lessThan: size => {
 				return {
 					name: "lessThan",
 					async validator({ val }) {
 						let msg = "";
+
 						if (String(val).length > size) {
-							msg = i18n("ruleWordLessThan", { size });
+							msg = i18n("ruleMsgWordLessThan", { size });
 						}
 						/* 返回提示信息即error */
 						/* 返回""为success */
@@ -203,7 +230,8 @@ export default async function () {
 					name: "ipV4",
 					async validator({ val }) {
 						let msg = "";
-						const reg = /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\b/;
+						const reg =
+							/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\b/;
 						if (!reg.test(val)) {
 							msg = i18n("msgEnterTheCorrectIPv4Address");
 						}
@@ -331,7 +359,6 @@ export default async function () {
 						for (let key of rowArray) {
 							record.push(rows[key]);
 						}
-						debugger;
 						if (_.every(record, i => !i)) {
 							/* 都没填 */
 							return "";
@@ -408,65 +435,6 @@ export default async function () {
 							return "";
 						}
 						return msg;
-					},
-					trigger: ["change", "input", "blur"]
-				};
-			},
-			/**
-			 * 天翼云evs名字正则
-			 * @param msg
-			 */
-			ctyunEvsName(msg = "") {
-				return {
-					name: "",
-					async validator({ val }) {
-						if (!/^[\u4e00-\u9fa5]{2,63}$/.test(val)) {
-							return "";
-						}
-						return msg;
-					},
-					trigger: ["change", "input", "blur"]
-				};
-			},
-			ctyunVpcName(msg = "") {
-				return {
-					name: "ctyunVpcName",
-					async validator({ val }) {
-						if (/^[a-zA-Z\u4e00-\u9fa5][a-zA-Z0-9_\u4e00-\u9fa5-]*$/.test(val)) {
-							return "";
-						}
-						return msg;
-					},
-					trigger: ["change", "input", "blur"]
-				};
-			},
-			checkLength(msg = "", min = 1, max = 32) {
-				return {
-					name: "checkLength",
-					async validator({ val }) {
-						if (val.length >= min && val.length <= max) {
-							return "";
-						}
-						return msg;
-					},
-					trigger: ["change", "input", "blur"]
-				};
-			},
-			checkDnsList(msg = "") {
-				return {
-					name: "checkDnsList",
-					async validator({ val }) {
-						const dnsList = val.split(",").map(i => i.trim());
-						if (dnsList.length > 2) {
-							return i18n("最多支持两个IP");
-						}
-						//校验是不是合法的IP地址
-						const pass = dnsList.every(i => {
-							return /^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])$/.test(
-								i
-							);
-						});
-						return pass ? "" : msg;
 					},
 					trigger: ["change", "input", "blur"]
 				};

@@ -1,6 +1,6 @@
 <script lang="ts">
 export default async function () {
-	const { tableV2HeaderRowProps } = _useXui;
+	const { tableV2HeaderRowProps } = _xUtils;
 
 	return defineComponent({
 		name: "ComponentTableV2HeaderRow",

@@ -1,5 +1,5 @@
 <template>
-	<div class="YapiItemMonaco mt" ref="refMonacoContainer" />
+	<div class="YapiItemMonaco mt x-loading" ref="refMonacoContainer" />
 </template>
 
 <script lang="ts">
@@ -13,7 +13,10 @@ export default async function () {
 		async mounted() {
 			const vm = this;
 			const container = this.$refs.refMonacoContainer;
-			const require = await _.$appendScript("//repo.bfw.wiki/bfwrepo/js/monaco-editor/loader.js", "require");
+			const require = await _.$appendScript(
+				"//repo.bfw.wiki/bfwrepo/js/monaco-editor/loader.js",
+				"require"
+			);
 			require.config({ paths: { vs: "//repo.bfw.wiki/bfwrepo/js/monaco-editor" } });
 			require(["vs/editor/editor.main"], function () {
 				const { monaco } = window;
@@ -31,6 +34,8 @@ export default async function () {
 				vm.$nextTick(() => {
 					vm.raw$editor.getAction("editor.action.formatDocument").run();
 					vm.raw$editor.onDidChangeModelContent(vm.syncData);
+
+					$(vm.$refs.refMonacoContainer).removeClass("x-loading");
 				});
 			});
 		},
@@ -38,10 +43,11 @@ export default async function () {
 			syncData() {
 				try {
 					const newCode = this.raw$editor.getValue();
-					if (this.mixin_value && !newCode) {
-						this.raw$editor.setValue(this.mixin_value);
-					} else if (newCode !== this.mixin_value) {
+
+					if (newCode !== this.mixin_value) {
 						this.mixin_value = newCode;
+					} else if (this.mixin_value && !newCode) {
+						this.raw$editor.setValue(this.mixin_value);
 					}
 				} catch (error) {
 					console.error(error);

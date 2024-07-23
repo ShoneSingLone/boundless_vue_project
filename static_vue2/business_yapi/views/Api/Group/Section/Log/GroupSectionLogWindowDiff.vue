@@ -2,7 +2,11 @@
 	<xDialog>
 		<div class="flex vertical flex1" id="ViewApiModify">
 			<div class="padding20">
-				<xAlert title="注： 绿色代表新增内容，红色代表删除内容" type="info" closable class="width100" />
+				<xAlert
+					title="注： 绿色代表新增内容，红色代表删除内容"
+					type="info"
+					closable
+					class="width100" />
 			</div>
 			<div class="project-interface-change-content flex1 padding20">
 				<xRender :render="renderContentItem" />
@@ -30,7 +34,10 @@ export default async function ({ diffView }) {
 						if (!item.content) {
 							return null;
 						}
-						return h("div", { class: "item-content" }, [h("h3", { class: "title" }, [item.title]), h("div", { domProps: { innerHTML: item.content } })]);
+						return h("div", { class: "item-content" }, [
+							h("h3", { class: "title" }, [item.title]),
+							h("div", { domProps: { innerHTML: item.content } })
+						]);
 					});
 				}
 			}

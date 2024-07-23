@@ -5,7 +5,12 @@
 			<xMd :md="md" />
 		</div>
 		<xCard style="height: 500px; width: 500px">
-			<xTree :data="data" :props="props" show-checkbox :checkedKeys.sync="checkedKeys" :expandedKeys.sync="expandedKeys" />
+			<xTree
+				:data="data"
+				:props="props"
+				show-checkbox
+				:checkedKeys.sync="checkedKeys"
+				:expandedKeys.sync="expandedKeys" />
 		</xCard>
 	</xForm>
 </template>

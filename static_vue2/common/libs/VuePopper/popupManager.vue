@@ -1,19 +1,21 @@
 <script lang="ts">
-export default async function () {
-	if (!Vue._PopupManager) {
+export default async function ({ PRIVATE_GLOBAL }) {
+	let { _PopupManager } = PRIVATE_GLOBAL;
+
+	if (!_PopupManager) {
 		let hasModal = false;
 		let hasInitZIndex = false;
 		let zIndex;
 
 		const getModal = function () {
 			if (Vue.prototype.$isServer) return;
-			let modalDom = Vue._PopupManager.modalDom;
+			let modalDom = _PopupManager.modalDom;
 			if (modalDom) {
 				hasModal = true;
 			} else {
 				hasModal = false;
 				modalDom = document.createElement("div");
-				Vue._PopupManager.modalDom = modalDom;
+				_PopupManager.modalDom = modalDom;
 
 				modalDom.addEventListener("touchmove", function (event) {
 					event.preventDefault();
@@ -21,7 +23,7 @@ export default async function () {
 				});
 
 				modalDom.addEventListener("click", function () {
-					Vue._PopupManager.doOnModalClick && Vue._PopupManager.doOnModalClick();
+					_PopupManager.doOnModalClick && _PopupManager.doOnModalClick();
 				});
 			}
 
@@ -30,7 +32,7 @@ export default async function () {
 
 		const instances = {};
 
-		Vue._PopupManager = {
+		_PopupManager = {
 			modalFade: true,
 
 			getInstance: function (id) {
@@ -51,16 +53,16 @@ export default async function () {
 			},
 
 			nextZIndex: function () {
-				return Vue._PopupManager.zIndex++;
+				return _PopupManager.zIndex++;
 			},
 
 			modalStack: [],
 
 			doOnModalClick: function () {
-				const topItem = Vue._PopupManager.modalStack[Vue._PopupManager.modalStack.length - 1];
+				const topItem = _PopupManager.modalStack[_PopupManager.modalStack.length - 1];
 				if (!topItem) return;
 
-				const instance = Vue._PopupManager.getInstance(topItem.id);
+				const instance = _PopupManager.getInstance(topItem.id);
 				if (instance && instance.closeOnClickModal) {
 					instance.close();
 				}
@@ -145,7 +147,7 @@ export default async function () {
 						if (modalStack.length === 0) {
 							if (modalDom.parentNode) modalDom.parentNode.removeChild(modalDom);
 							modalDom.style.display = "none";
-							Vue._PopupManager.modalDom = undefined;
+							_PopupManager.modalDom = undefined;
 						}
 						$modalDom.removeClass("v-modal-leave");
 					}, 200);
@@ -153,11 +155,11 @@ export default async function () {
 			}
 		};
 
-		Object.defineProperty(Vue._PopupManager, "zIndex", {
+		Object.defineProperty(_PopupManager, "zIndex", {
 			configurable: true,
 			get() {
 				if (!hasInitZIndex) {
-					zIndex = zIndex || (Vue.prototype.$xUiConfigs || {}).zIndex || 2000;
+					zIndex = zIndex || PRIVATE_GLOBAL.x_ui_z_index || 2000;
 					hasInitZIndex = true;
 				}
 				return zIndex;
@@ -169,10 +171,10 @@ export default async function () {
 
 		const getTopPopup = function () {
 			if (Vue.prototype.$isServer) return;
-			if (Vue._PopupManager.modalStack.length > 0) {
-				const topPopup = Vue._PopupManager.modalStack[Vue._PopupManager.modalStack.length - 1];
+			if (_PopupManager.modalStack.length > 0) {
+				const topPopup = _PopupManager.modalStack[_PopupManager.modalStack.length - 1];
 				if (!topPopup) return;
-				const instance = Vue._PopupManager.getInstance(topPopup.id);
+				const instance = _PopupManager.getInstance(topPopup.id);
 
 				return instance;
 			}
@@ -185,12 +187,18 @@ export default async function () {
 					const topPopup = getTopPopup();
 
 					if (topPopup && topPopup.closeOnPressEscape) {
-						topPopup.handleClose ? topPopup.handleClose() : topPopup.handleAction ? topPopup.handleAction("cancel") : topPopup.close();
+						topPopup.handleClose
+							? topPopup.handleClose()
+							: topPopup.handleAction
+								? topPopup.handleAction("cancel")
+								: topPopup.close();
 					}
 				}
 			});
 		}
+		PRIVATE_GLOBAL._PopupManager = _PopupManager;
 	}
-	return Vue._PopupManager;
+
+	return _PopupManager;
 }
 </script>

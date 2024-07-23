@@ -1,5 +1,5 @@
 <template>
-	<div class="el-breadcrumb flex middle" aria-label="Breadcrumb" role="navigation">
+	<div class="el-breadcrumb inline flex middle" aria-label="Breadcrumb" role="navigation">
 		<slot>
 			<xRender :render="renderBreadcrumbItem" />
 		</slot>
@@ -9,7 +9,7 @@
 <script lang="ts">
 export default async function () {
 	return {
-		name: "ElBreadcrumb",
+		name: "xBreadcrumb",
 		props: {
 			items: {
 				type: [Array, Boolean],
@@ -22,11 +22,12 @@ export default async function () {
 			separatorClass: {
 				type: String,
 				default: ""
-			}
+			},
+			itemRender: Function
 		},
 		provide() {
 			return {
-				elBreadcrumb: this
+				xBreadcrumb: this
 			};
 		},
 		mounted() {
@@ -53,6 +54,28 @@ export default async function () {
 			}
 		},
 		methods: {
+			defaultRender(target, item, index) {
+				const isLastItem = index === this.items.length - 1;
+
+				const itemProps = {
+					class: ["x-breadcrumb__item", isLastItem ? "is-last" : ""],
+					role: "link"
+				};
+				const innerProps = {
+					class: ["x-breadcrumb__inner", item.href && !isLastItem ? "is-link" : ""],
+					role: "link"
+				};
+				const linkProps = { attrs: isLastItem ? null : { href: item.href } };
+
+				target.push(
+					h("span", itemProps, [h("span", innerProps, [h("a", linkProps, [item.label])])])
+				);
+
+				if (!isLastItem) {
+					target.push(this.cptSeparator);
+				}
+				return target;
+			},
 			renderBreadcrumbItem() {
 				if (!_.$isArrayFill(this.items)) {
 					return null;
@@ -60,24 +83,10 @@ export default async function () {
 				return _.reduce(
 					this.items,
 					(target, item, index) => {
-						const isLastItem = index === this.items.length - 1;
-
-						const itemProps = {
-							class: ["x-breadcrumb__item", isLastItem ? "is-last" : ""],
-							role: "link"
-						};
-						const innerProps = {
-							class: ["x-breadcrumb__inner", item.href && !isLastItem ? "is-link" : ""],
-							role: "link"
-						};
-						const linkProps = { attrs: isLastItem ? null : { href: item.href } };
-
-						target.push(h("span", itemProps, [h("span", innerProps, [h("a", linkProps, [item.label])])]));
-
-						if (!isLastItem) {
-							target.push(this.cptSeparator);
+						if (this.itemRender) {
+							return this.itemRender({ target, item, index, items: this.items });
 						}
-						return target;
+						return this.defaultRender(target, item, index);
 					},
 					[]
 				);
@@ -103,7 +112,7 @@ export default async function () {
 	&.is-link {
 		a {
 			&:hover {
-				color: var(--ui-primary);
+				color: var(--el-color-primary);
 				cursor: pointer;
 			}
 		}

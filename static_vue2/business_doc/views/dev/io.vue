@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view view-icon">
+	<div class="x-page-view view-icon">
 		<div class="flex1">
 			<div>
 				<xBtn class="js-btn" @click="onEmit_All">onEmit_All</xBtn>

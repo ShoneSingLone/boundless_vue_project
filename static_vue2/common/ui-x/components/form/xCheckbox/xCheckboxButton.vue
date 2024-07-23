@@ -1,7 +1,12 @@
 <template>
 	<label
 		class="el-checkbox-button"
-		:class="[size ? 'el-checkbox-button--' + size : '', { 'is-disabled': isDisabled }, { 'is-checked': isChecked }, { 'is-focus': focus }]"
+		:class="[
+			size ? 'el-checkbox-button--' + size : '',
+			{ 'is-disabled': isDisabled },
+			{ 'is-checked': isChecked },
+			{ 'is-focus': focus }
+		]"
 		role="checkbox"
 		:aria-checked="isChecked"
 		:aria-disabled="isDisabled">
@@ -29,7 +34,10 @@
 			@focus="focus = true"
 			@blur="focus = false" />
 
-		<span class="el-checkbox-button__inner" v-if="$slots.default || label" :style="isChecked ? activeStyle : null">
+		<span
+			class="el-checkbox-button__inner"
+			v-if="$slots.default || label"
+			:style="isChecked ? activeStyle : null">
 			<slot>{{ label }}</slot>
 		</span>
 	</label>
@@ -67,17 +75,26 @@ export default async function () {
 		computed: {
 			model: {
 				get() {
-					return this._checkboxGroup ? this.store : this.value !== undefined ? this.value : this.selfModel;
+					return this._checkboxGroup
+						? this.store
+						: this.value !== undefined
+							? this.value
+							: this.selfModel;
 				},
 
 				set(val) {
 					if (this._checkboxGroup) {
 						this.isLimitExceeded = false;
-						this._checkboxGroup.min !== undefined && val.length < this._checkboxGroup.min && (this.isLimitExceeded = true);
+						this._checkboxGroup.min !== undefined &&
+							val.length < this._checkboxGroup.min &&
+							(this.isLimitExceeded = true);
 
-						this._checkboxGroup.max !== undefined && val.length > this._checkboxGroup.max && (this.isLimitExceeded = true);
+						this._checkboxGroup.max !== undefined &&
+							val.length > this._checkboxGroup.max &&
+							(this.isLimitExceeded = true);
 
-						this.isLimitExceeded === false && this.dispatch("ElCheckboxGroup", "input", [val]);
+						this.isLimitExceeded === false &&
+							this.dispatch("ElCheckboxGroup", "input", [val]);
 					} else if (this.value !== undefined) {
 						this.$emit("input", val);
 					} else {
@@ -126,17 +143,29 @@ export default async function () {
 			},
 
 			size() {
-				return this._checkboxGroup.checkboxGroupSize || this._elFormItemSize || (this.$ELEMENT || {}).size;
+				return (
+					this._checkboxGroup.checkboxGroupSize ||
+					this._elFormItemSize ||
+					(this.$ELEMENT || {}).size
+				);
 			},
 
 			/* used to make the isDisabled judgment under max/min props */
 			isLimitDisabled() {
 				const { max, min } = this._checkboxGroup;
-				return (!!(max || min) && this.model.length >= max && !this.isChecked) || (this.model.length <= min && this.isChecked);
+				return (
+					(!!(max || min) && this.model.length >= max && !this.isChecked) ||
+					(this.model.length <= min && this.isChecked)
+				);
 			},
 
 			isDisabled() {
-				return this._checkboxGroup ? this._checkboxGroup.disabled || this.disabled || (this.elForm || {}).disabled || this.isLimitDisabled : this.disabled || (this.elForm || {}).disabled;
+				return this._checkboxGroup
+					? this._checkboxGroup.disabled ||
+							this.disabled ||
+							(this.elForm || {}).disabled ||
+							this.isLimitDisabled
+					: this.disabled || (this.elForm || {}).disabled;
 			}
 		},
 		methods: {

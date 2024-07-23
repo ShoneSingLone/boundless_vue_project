@@ -4,7 +4,7 @@
 }
 </style>
 <template>
-	<section class="page-view flex1" id="NoteSection">
+	<section class="x-page-view flex1 flash-when" id="NoteSection">
 		<xPageContent>
 			<div class="flex mb10 middle" style="height: 48px">
 				<xRender :render="vDomTitle" class="flex1" />
@@ -13,7 +13,10 @@
 				<xBtn :configs="btnCancel" />
 			</div>
 			<!--      <div class="flex1-overflow-auto" style="width: 50vw;">{{ inject_note.cptCurrentWiki }}</div>-->
-			<TuiEditor :value="inject_note.cptCurrentWiki" :asRender="!isShowEditor" @change="onMarkdownChange" />
+			<TuiEditor
+				:value="inject_note.cptCurrentWiki"
+				:asRender="!inject_note.isShowEditor"
+				@change="onMarkdownChange" />
 		</xPageContent>
 	</section>
 </template>
@@ -27,7 +30,6 @@ export default async function () {
 				markdown: "",
 				title: "",
 				editingWikiTitle: "",
-				isShowEditor: false,
 				form: defItems({
 					titleConfigs: {
 						placeholder: "文档名称",
@@ -38,19 +40,31 @@ export default async function () {
 				})
 			};
 		},
+		watch: {
+			"inject_note.cptCurrentWiki"() {
+				const vm = this;
+				vm.markdown = vm.inject_note.cptCurrentWiki?.markdown || "";
+				vm.title = vm.inject_note.cptCurrentWiki?.title || "";
+			}
+		},
 		computed: {
 			btnSave() {
 				const vm = this;
 				return {
-					label: vm.isShowEditor ? "保存" : "修改",
+					label: vm.inject_note.isShowEditor ? "保存" : "修改",
 					preset: "blue",
+					disabled() {
+						if (!vm.inject_note.cptCurrentWiki._id) {
+							return "当前无可编辑文档";
+						}
+					},
 					async onClick() {
-						if (vm.isShowEditor) {
+						if (vm.inject_note.isShowEditor) {
 							await vm.save();
 						} else {
 							vm.editingWikiTitle = vm.inject_note.cptCurrentWiki?.title || "";
 						}
-						vm.isShowEditor = !vm.isShowEditor;
+						vm.inject_note.isShowEditor = !vm.inject_note.isShowEditor;
 					}
 				};
 			},
@@ -59,10 +73,13 @@ export default async function () {
 				return {
 					label: "取消",
 					isHide() {
-						return !vm.isShowEditor;
+						return !vm.inject_note.isShowEditor;
 					},
-					onClick() {
-						vm.isShowEditor = false;
+					async onClick() {
+						vm.inject_note.isShowEditor = false;
+						vm.inject_note.currentWiki = {};
+						await vm.inject_note.updateWikiMenuList();
+						await vm.inject_note.updateCurrentWiki();
 					}
 				};
 			}
@@ -87,7 +104,7 @@ export default async function () {
 					vm.inject_note.currentWiki = {};
 					await vm.inject_note.updateWikiMenuList();
 					await vm.inject_note.updateCurrentWiki();
-					_.$msgSuccess("保存成功");
+					_.$msg("保存成功");
 				} catch (error) {
 					console.error(error);
 				} finally {
@@ -96,7 +113,7 @@ export default async function () {
 			},
 			vDomTitle() {
 				const vm = this;
-				if (vm.isShowEditor) {
+				if (vm.inject_note.isShowEditor) {
 					const itemProps = {
 						style: "flex1",
 						configs: vm.form.titleConfigs,
@@ -107,7 +124,6 @@ export default async function () {
 					return h(
 						"span",
 						{
-							class: "ml",
 							style: "font-weight:700;font-size:18px;"
 						},
 						[vm.inject_note.cptCurrentWiki.title]

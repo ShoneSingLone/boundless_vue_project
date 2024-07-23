@@ -2,7 +2,12 @@
 	<div>
 		<xMd :md="md" class="mb" />
 		<div>
-			<xCheckbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</xCheckbox>
+			<xCheckbox
+				:indeterminate="isIndeterminate"
+				v-model="checkAll"
+				@change="handleCheckAllChange"
+				>全选</xCheckbox
+			>
 			<div style="margin: 15px 0"></div>
 			<xCheckboxGroup v-model="checkedCities" @change="handleCheckedCitiesChange">
 				<xCheckbox v-for="city in cities" :label="city" :key="city">{{ city }}</xCheckbox>

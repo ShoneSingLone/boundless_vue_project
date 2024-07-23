@@ -10,8 +10,9 @@
 
 > TODO:也可以独立打包，有空实现一个rollup插件
 
-## 跳转插件
+## 插件
 - >[boundless-vue-helper](https://marketplace.visualstudio.com/items?itemName=ShoneSingLone.boundless-vue-helper)
+- >[jsx=>h](https://babeljs.io/repl#?browsers=defaults%2C%20not%20ie%2011%2C%20not%20ie_mob%2011&build=&builtIns=false&corejs=3.21&spec=false&loose=false&code_lz=DwDwkgxg9gdgBAS2jAvAIgPowKYgC4DOsA5mnAPQB8QA&debug=false&forceAllTransforms=false&modules=false&shippedProposals=false&circleciRepo=&evaluate=false&fileSize=false&timeTravel=false&sourceType=module&lineWrap=true&presets=env%2Creact%2Cstage-2&prettier=false&targets=&version=7.24.3&externalPlugins=&assumptions=%7B%7D)
 
 ## 山寨（zei）王UI
 
@@ -85,3 +86,4 @@ window.APP_ENTRY_NAME 默认entry 其他的也可以
 - [dbgate](https://github.com/dbgate/dbgate)
 - [focalboard](https://www.focalboard.com/)
 - [trilium](https://github.com/zadam/trilium)
+- [ClickOutside的实现](https://mp.weixin.qq.com/s/M-VunCPLgDEMnK1qv8X8jw)

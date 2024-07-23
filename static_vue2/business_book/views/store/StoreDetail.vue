@@ -39,8 +39,16 @@
 						<span class="loading-text">{{ $t("detail.loading") }}</span>
 					</div>
 					<div class="book-detail-content-item-wrapper">
-						<div class="book-detail-content-item" v-for="(item, index) in flatNavigation" :key="index" @click="read(item)">
-							<div class="book-detail-content-navigation-text" :class="{ 'is-sub': item.deep > 1 }" :style="itemStyle(item)" v-if="item.label">
+						<div
+							class="book-detail-content-item"
+							v-for="(item, index) in flatNavigation"
+							:key="index"
+							@click="read(item)">
+							<div
+								class="book-detail-content-navigation-text"
+								:class="{ 'is-sub': item.deep > 1 }"
+								:style="itemStyle(item)"
+								v-if="item.label">
 								{{ item.label }}
 							</div>
 						</div>

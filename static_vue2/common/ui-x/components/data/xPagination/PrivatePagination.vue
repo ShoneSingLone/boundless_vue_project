@@ -49,16 +49,16 @@ export default async function () {
 		render(h) {
 			const layout = this.layout;
 			if (!layout) return null;
-			if (this.hideOnSinglePage && (!this.internalPageCount || this.internalPageCount === 1)) return null;
+			if (this.hideOnSinglePage && (!this.internalPageCount || this.internalPageCount === 1))
+				return null;
+
 			let template = h("div", {
 				class: [
-					"el-pagination",
-					{
-						"is-background": this.background,
-						"el-pagination--small": this.small
-					}
+					"el-pagination flex middle center",
+					{ "is-background": this.background, "el-pagination--small": this.small }
 				]
 			});
+
 			const TEMPLATE_MAP = {
 				prev: h("prev", {}),
 				jumper: h("jumper", {}),
@@ -108,7 +108,8 @@ export default async function () {
 						{
 							type: "button",
 							class: "btn-prev",
-							disabled: this.$parent.disabled || this.$parent.internalCurrentPage <= 1,
+							disabled:
+								this.$parent.disabled || this.$parent.internalCurrentPage <= 1,
 							onClick: this.$parent.prev
 						},
 						[
@@ -128,7 +129,11 @@ export default async function () {
 						{
 							type: "button",
 							class: "btn-next",
-							disabled: this.$parent.disabled || this.$parent.internalCurrentPage === this.$parent.internalPageCount || this.$parent.internalPageCount === 0,
+							disabled:
+								this.$parent.disabled ||
+								this.$parent.internalCurrentPage ===
+									this.$parent.internalPageCount ||
+								this.$parent.internalPageCount === 0,
 							onClick: this.$parent.next
 						},
 						[
@@ -151,7 +156,10 @@ export default async function () {
 						handler(newVal, oldVal) {
 							if (_.$isSame(newVal, oldVal)) return;
 							if (Array.isArray(newVal)) {
-								this.$parent.internalPageSize = newVal.indexOf(this.$parent.pageSize) > -1 ? this.$parent.pageSize : this.pageSizes[0];
+								this.$parent.internalPageSize =
+									newVal.indexOf(this.$parent.pageSize) > -1
+										? this.$parent.pageSize
+										: this.pageSizes[0];
 							}
 						}
 					}
@@ -226,7 +234,7 @@ export default async function () {
 					return h(
 						"span",
 						{
-							class: "el-pagination__jump"
+							class: "el-pagination__jump flex middle center"
 						},
 						[
 							i18n("el.pagination.goto"),
@@ -234,7 +242,10 @@ export default async function () {
 								class: "el-pagination__editor is-in-pagination",
 								min: 1,
 								max: this.$parent.internalPageCount,
-								value: this.userInput !== null ? this.userInput : this.$parent.internalCurrentPage,
+								value:
+									this.userInput !== null
+										? this.userInput
+										: this.$parent.internalCurrentPage,
 								type: "number",
 								disabled: this.$parent.disabled,
 								nativeOnKeyup: this.handleKeyup,
@@ -248,14 +259,15 @@ export default async function () {
 			},
 			Total: {
 				render(h) {
-					return typeof this.$parent.total === "number"
-						? h("span", {
-								class: "el-pagination__total",
-								children: i18n("el.pagination.total", {
-									total: this.$parent.total
-								})
+					if (_.isNumber(this.$parent.total)) {
+						return h("span", {
+							class: "el-pagination__total",
+							children: i18n("el.pagination.total", {
+								total: this.$parent.total
 							})
-						: "";
+						});
+					}
+					return null;
 				}
 			},
 			Pager: () => _.$importVue("/common/ui-x/components/data/xPagination/Pager.vue")
@@ -302,7 +314,10 @@ export default async function () {
 			},
 			emitChange() {
 				this.$nextTick(() => {
-					if (this.internalCurrentPage !== this.lastEmittedPage || this.userChangePageSize) {
+					if (
+						this.internalCurrentPage !== this.lastEmittedPage ||
+						this.userChangePageSize
+					) {
 						this.$emit("current-change", this.internalCurrentPage);
 						this.lastEmittedPage = this.internalCurrentPage;
 						this.userChangePageSize = false;

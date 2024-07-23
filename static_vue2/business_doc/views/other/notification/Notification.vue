@@ -2,16 +2,31 @@
 	<DocContentOfDemo>
 		<xMd :md="md1" />
 		<DemoAndCode title="基础用法" path="@/views/other/notification/JiChuYongFa.vue" unfold />
-		<DemoAndCode title="带有倾向性" path="@/views/other/notification/DaiYouQingXiangXing.vue" unfold />
-		<DemoAndCode title="自定义弹出位置" path="@/views/other/notification/ZiDingYiDanChuWeiZhi.vue" unfold />
+		<DemoAndCode
+			title="带有倾向性"
+			path="@/views/other/notification/DaiYouQingXiangXing.vue"
+			unfold />
+		<DemoAndCode
+			title="自定义弹出位置"
+			path="@/views/other/notification/ZiDingYiDanChuWeiZhi.vue"
+			unfold />
 		<DemoAndCode title="带有偏移" path="@/views/other/notification/DaiYouPianYi.vue" unfold />
-		<DemoAndCode title="使用 HTML 片段" path="@/views/other/notification/ShiYongHtmlPianDuan.vue" unfold />
-		<DemoAndCode title="隐藏关闭按钮" path="@/views/other/notification/YinCangGuanBiAnNiu.vue" unfold />
-		<xMd :md="apiString" />
+		<DemoAndCode
+			title="使用 HTML 片段"
+			path="@/views/other/notification/ShiYongHtmlPianDuan.vue"
+			unfold />
+		<DemoAndCode
+			title="隐藏关闭按钮"
+			path="@/views/other/notification/YinCangGuanBiAnNiu.vue"
+			unfold />
+		<xMd :md="apiString" data-role="api" />
 
 		<p>
-			/* const DialogTypeVueSFC = await _.$importVue("/common/utils/useMoCommon/MoMulDeleteConfirmTableDialog.vue", { parent: vm, tableConfigs: defTable({ data: { list:
-			Array.from(vm.configsTable.data.set) }, columns: vm.configsTable.columns }), onEnsure({ dialogVm }) {} }); _.$openWindow_deprecated(i18n("删除密钥对"), DialogTypeVueSFC); */
+			/* const DialogTypeVueSFC = await
+			_.$importVue("/common/utils/useMoCommon/MoMulDeleteConfirmTableDialog.vue", { parent:
+			vm, tableConfigs: defTable({ data: { list: Array.from(vm.configsTable.data.set) },
+			columns: vm.configsTable.columns }), onEnsure({ dialogVm }) {} });
+			_.$openWindow_deprecated(i18n("删除密钥对"), DialogTypeVueSFC); */
 		</p>
 	</DocContentOfDemo>
 </template>

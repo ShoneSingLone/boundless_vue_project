@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view view-icon">
+	<div class="x-page-view view-icon">
 		<xPageContent>
 			<xMd :md="description" />
 			<DemoAndCode title="基本用法" path="@/views/use/ViewIcon/base.vue" />

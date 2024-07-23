@@ -1,12 +1,19 @@
 <script lang="ts">
 export default async function () {
-	const { addResizeListener, removeResizeListener } = await _.$importVue("/common/utils/utils.vue");
-	const scrollbarWidth = await _.$importVue("/common/ui-x/components/other/xScrollbar/scrollbarWidth.vue");
+	const { addResizeListener, removeResizeListener } =
+		await _.$importVue("/common/utils/utils.vue");
+	const scrollbarWidth = await _.$importVue(
+		"/common/ui-x/components/other/xScrollbar/scrollbarWidth.vue"
+	);
 
 	return defineComponent({
 		name: "xScrollbar",
 		components: { Bar: () => _.$importVue("/common/ui-x/components/other/xScrollbar/Bar.vue") },
 		props: {
+			vertical: {
+				type: Boolean,
+				default: true
+			},
 			native: Boolean,
 			wrapStyle: {},
 			wrapClass: {},
@@ -62,7 +69,11 @@ export default async function () {
 				this.tag,
 				{
 					ref: "wrap",
-					class: [this.wrapClass, "el-scrollbar__wrap", gutter ? "" : "el-scrollbar__wrap--hidden-default"],
+					class: [
+						this.wrapClass,
+						"el-scrollbar__wrap",
+						gutter ? "" : "el-scrollbar__wrap--hidden-default"
+					],
 					style,
 					onScroll: this.handleScroll
 				},
@@ -77,7 +88,7 @@ export default async function () {
 					/* horizon */
 					h("Bar", { size: this.sizeWidth, move: this.moveX }),
 					/* vertical */
-					h("Bar", { vertical: true, size: this.sizeHeight, move: this.moveY })
+					h("Bar", { vertical: this.vertical, size: this.sizeHeight, move: this.moveY })
 				];
 			} else {
 				nodes = [

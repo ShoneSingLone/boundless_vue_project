@@ -12,11 +12,20 @@
 		<DemoAndCode title="基础用法" path="@/views/other/alert/JiChuYongFa.vue" unfold />
 		<DemoAndCode title="带有 icon" path="@/views/other/alert/DaiYouIcon.vue" unfold />
 		<DemoAndCode title="主题" path="@/views/other/alert/ZhuTi.vue" unfold />
-		<DemoAndCode title="自定义关闭按钮" path="@/views/other/alert/ZiDingYiGuanBiAnNiu.vue" unfold />
+		<DemoAndCode
+			title="自定义关闭按钮"
+			path="@/views/other/alert/ZiDingYiGuanBiAnNiu.vue"
+			unfold />
 		<DemoAndCode title="文字居中" path="@/views/other/alert/WenZiJuZhong.vue" unfold />
-		<DemoAndCode title="带有辅助性文字介绍" path="@/views/other/alert/DaiYouFuZhuXingWenZiJieShao.vue" unfold />
-		<DemoAndCode title="带有 icon 和辅助性文字介绍" path="@/views/other/alert/DaiYouIconHeFuZhuXingWenZiJieShao.vue" unfold />
-		<xMd :md="apiString" />
+		<DemoAndCode
+			title="带有辅助性文字介绍"
+			path="@/views/other/alert/DaiYouFuZhuXingWenZiJieShao.vue"
+			unfold />
+		<DemoAndCode
+			title="带有 icon 和辅助性文字介绍"
+			path="@/views/other/alert/DaiYouIconHeFuZhuXingWenZiJieShao.vue"
+			unfold />
+		<xMd :md="apiString" data-role="api" />
 	</DocContentOfDemo>
 </template>
 

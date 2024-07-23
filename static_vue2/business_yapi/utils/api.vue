@@ -3,7 +3,7 @@ export default async function () {
 	if (!window._api.yapi) {
 		(function () {
 			_.$ajax.requestInjector = function (req) {
-				req.url = Vue._yapi_utils.appendToken(req.url);
+				req.url = Vue._common_utils.appendToken(req.url);
 				return req;
 			};
 			_.$ajax.responseInjector = function (response) {
@@ -12,7 +12,7 @@ export default async function () {
 					_.$msgError("登录过期，请重新登录");
 					_.$yapiRouter.push("/login");
 				} else if (response.errcode === 10001) {
-					_.$message.error("登录已失效，请重新登录");
+					_.$msg.error("登录已失效，请重新登录");
 					_.$router.push("/login");
 				}
 
@@ -79,6 +79,53 @@ export default async function () {
 				getSwaggerDataByUrl(data) {
 					return _.$ajax.post("/api/project/swagger_url", {
 						data
+					});
+				},
+				resourceLs(data) {
+					return _.$ajax.post("/api/resource/ls", {
+						data
+					});
+				},
+				resourceCloudDiskCheckChunks(data) {
+					return _.$ajax.post("/api/resource/cloud_disk_check_chunks", {
+						data
+					});
+				},
+				resourceCloudDiskRename(data) {
+					return _.$ajax.put("/api/resource/cloud_disk_rename", {
+						data
+					});
+				},
+				resourceCloudDiskDir(data) {
+					return _.$ajax.post("/api/resource/cloud_disk_dir", {
+						data
+					});
+				},
+				resourceCloudDiskMoveDir(data) {
+					return _.$ajax.post("/api/resource/cloud_disk_move_dir", {
+						data
+					});
+				},
+				resourceCloudDiskGetDirs(data) {
+					return _.$ajax.get("/api/resource/cloud_disk_get_dirs", {
+						data
+					});
+				},
+				resourceCloudDiskFileList(data) {
+					return _.$ajax.get("/api/resource/cloud_disk_file_list", {
+						data
+					});
+				},
+				audioDetail(data) {
+					return _.$ajax.get("/api/audio/detail", {
+						data
+					});
+				},
+				resourceCloudDiskShardUpload({ formData, callback }) {
+					return _.$ajax.upload({
+						url: "/api/resource/cloud_disk_shard_upload",
+						formData,
+						callback
 					});
 				},
 				apiInterfaceListMenu(project_id) {

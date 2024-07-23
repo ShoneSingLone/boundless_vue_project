@@ -1,7 +1,14 @@
 <template>
 	<div class="ebook-reader">
 		<div id="read"></div>
-		<div class="ebook-reader-mask" @click="onMaskClick" @touchmove="move" @touchend="moveEnd" @mousedown.left="onMouseEnter" @mousemove.left="onMouseMove" @mouseup.left="onMouseEnd"></div>
+		<div
+			class="ebook-reader-mask"
+			@click="onMaskClick"
+			@touchmove="move"
+			@touchend="moveEnd"
+			@mousedown.left="onMouseEnter"
+			@mousemove.left="onMouseMove"
+			@mouseup.left="onMouseEnd"></div>
 	</div>
 </template>
 

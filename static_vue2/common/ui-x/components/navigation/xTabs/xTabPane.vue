@@ -1,5 +1,12 @@
 <template>
-	<div class="el-tab-pane" v-if="!lazy || loaded || active" v-show="active" role="tabpanel" :aria-hidden="!active" :id="cptId" :aria-labelledby="cptLabeledby">
+	<div
+		class="el-tab-pane"
+		v-if="!lazy || loaded || active"
+		v-show="active"
+		role="tabpanel"
+		:aria-hidden="!active"
+		:id="cptId"
+		:aria-labelledby="cptLabeledby">
 		<slot></slot>
 	</div>
 </template>

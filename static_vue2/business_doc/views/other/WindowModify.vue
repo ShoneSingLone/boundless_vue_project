@@ -79,7 +79,7 @@ export default async function (payload) {
 				};
 			},
 			cpt_formData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnOk() {
 				const vm = this;

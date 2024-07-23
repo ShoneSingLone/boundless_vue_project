@@ -1,7 +1,7 @@
 <template>
 	<div class="flex middle">
 		<xDropdown class="flex middle">
-			<div>
+			<div style="--xItem-wrapper-width: 32px">
 				<xItem :configs="cptAvatar" />
 			</div>
 			<xDropdownMenu slot="dropdown">
@@ -34,13 +34,12 @@ export default async function () {
 		inject: ["APP"],
 		computed: {
 			privateNoteHref() {
-				return _.$aHashLink("/note", { private: this.APP.user._id });
+				return _.$aHashLink("/note", { privateId: this.APP.user._id });
 			},
 			cptAvatar() {
 				return {
 					itemType: "YapiItemAvatar",
-					value: this.APP.user._id,
-					style: "width:100px",
+					value: this.APP.user._id || "",
 					disabled: true
 				};
 			}

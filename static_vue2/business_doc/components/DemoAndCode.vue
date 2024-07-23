@@ -46,16 +46,19 @@ export default async function () {
 				this.isLoading = false;
 			},
 			async getBussinessComponent() {
-				this.BussinessComponentSourceCode = await _.$sourceCodeSFC({ resolvedURL: _.$resolvePath(this.path) });
+				this.BussinessComponentSourceCode = await _.$sourceCodeSFC({
+					resolvedURL: _.$resolvePath(this.path)
+				});
 				this.rerun();
 			},
 			async showSourceCodeDialog() {
-				const WindowImageModify = await _.$importVue("@/components/WindowSourceCode.vue", {
+				_.$openModal({
+					title: i18n("SourceCode"),
+					url: "@/components/WindowSourceCode.vue",
 					parent: this,
 					code: this.BussinessComponentSourceCode,
 					componentPath: this.path
 				});
-				_.$openWindow_deprecated(i18n("SourceCode"), WindowImageModify);
 			}
 		},
 		render() {
@@ -72,11 +75,13 @@ export default async function () {
 			};
 			const vm = this;
 			return h("xBlock", {
-				staticClass: "padding margin16",
+				staticClass: "x-padding margin16",
 				style: vm.styleContainer,
 				$vSlots: {
 					default() {
-						return h(vm.BussinessComponent, { vIf: vm.BussinessComponent && !vm.isFold });
+						return h(vm.BussinessComponent, {
+							vIf: vm.BussinessComponent && !vm.isFold
+						});
 					},
 					header() {
 						return h(

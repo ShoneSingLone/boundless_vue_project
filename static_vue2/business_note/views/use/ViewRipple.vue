@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view view-ripple">
+	<div class="x-page-view view-ripple">
 		<xPageContent>
 			<ul class="demo-ripple">
 				<li

@@ -1,18 +1,18 @@
 <template>
 	<div class="card-JiChuYongFa">
 		<xMd :md="mdTitle" />
-		<el-row>
+		<xRow>
 			<xBtn>默认按钮</xBtn>
 			<xBtn size="medium">中等按钮</xBtn>
 			<xBtn size="small">小型按钮</xBtn>
 			<xBtn size="mini">超小按钮</xBtn>
-		</el-row>
-		<el-row>
+		</xRow>
+		<xRow>
 			<xBtn :ripple="false" round>默认按钮</xBtn>
 			<xBtn :ripple="false" size="medium" round>中等按钮</xBtn>
 			<xBtn :ripple="false" size="small" round>小型按钮</xBtn>
 			<xBtn :ripple="false" size="mini" round>超小按钮</xBtn>
-		</el-row>
+		</xRow>
 	</div>
 </template>
 <script lang="ts">

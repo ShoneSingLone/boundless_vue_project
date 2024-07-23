@@ -1,11 +1,12 @@
-const { fs, path, VueLoader, _n, APP_NAME_ARRAY } = require("../preprocess.utils");
+const { APP_NAME_ARRAY } = require("../preprocess.utils");
 const [action, APP_NAME] = process.argv.slice(2);
 const makeApi = require("./api");
 const makeOpts = require("./opts");
 const makeReg = require("./reg");
 const makeRules = require("./rules");
 const makeComponents = require("./components");
-const makeGlobalLodash = require("./globalLodash");
+const makeGlobalLodash = require("./scanLodashDefine");
+const scanAdminConsoleDefine = require('./scanAdminConsoleDefine');
 if (action === "api") {
 	makeApi({ APP_NAME });
 } else if (action === "opts") {
@@ -18,6 +19,8 @@ if (action === "api") {
 	makeComponents();
 } else if (action === "_") {
 	makeGlobalLodash();
+} else if (action === "admin") {
+	scanAdminConsoleDefine();
 } else {
 	console.log("makeApi");
 	makeApi({ APP_NAME_ARRAY });
@@ -31,4 +34,6 @@ if (action === "api") {
 	makeComponents();
 	console.log("makeGlobalLodash");
 	makeGlobalLodash();
+	console.log("后台管理控制台");
+	scanAdminConsoleDefine();
 }

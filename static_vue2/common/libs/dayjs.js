@@ -1,5 +1,9 @@
 !(function (t, n) {
-	"object" == typeof exports && "undefined" != typeof module ? (module.exports = n()) : "function" == typeof define && define.amd ? define(n) : (t.dayjs = n());
+	"object" == typeof exports && "undefined" != typeof module
+		? (module.exports = n())
+		: "function" == typeof define && define.amd
+			? define(n)
+			: (t.dayjs = n());
 })(this, function () {
 	"use strict";
 	var t = "millisecond",
@@ -62,7 +66,9 @@
 		$ = {
 			name: "en",
 			weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),
-			months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_")
+			months: "January_February_March_April_May_June_July_August_September_October_November_December".split(
+				"_"
+			)
 		},
 		l = "en",
 		m = {};
@@ -108,8 +114,26 @@
 						var r = n.match(h);
 						if (r)
 							return e
-								? new Date(Date.UTC(r[1], r[2] - 1, r[3] || 1, r[4] || 0, r[5] || 0, r[6] || 0, r[7] || 0))
-								: new Date(r[1], r[2] - 1, r[3] || 1, r[4] || 0, r[5] || 0, r[6] || 0, r[7] || 0);
+								? new Date(
+										Date.UTC(
+											r[1],
+											r[2] - 1,
+											r[3] || 1,
+											r[4] || 0,
+											r[5] || 0,
+											r[6] || 0,
+											r[7] || 0
+										)
+									)
+								: new Date(
+										r[1],
+										r[2] - 1,
+										r[3] || 1,
+										r[4] || 0,
+										r[5] || 0,
+										r[6] || 0,
+										r[7] || 0
+									);
 					}
 					return new Date(n);
 				})(t)),
@@ -184,7 +208,14 @@
 						return f ? e : e.endOf(i);
 					},
 					$ = function (t, n) {
-						return D.w(h.toDate()[t].apply(h.toDate(), (f ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(n)), h);
+						return D.w(
+							h
+								.toDate()
+								[
+									t
+								].apply(h.toDate(), (f ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(n)),
+							h
+						);
 					},
 					l = this.$W,
 					m = this.$M,
@@ -232,7 +263,9 @@
 					$ = f === i ? this.$D + (o - this.$W) : o;
 				if (f === u || f === a) {
 					var l = this.clone().set("date", 1);
-					l.$d[d]($), l.init(), (this.$d = l.set("date", Math.min(this.$D, l.daysInMonth())).toDate());
+					l.$d[d]($),
+						l.init(),
+						(this.$d = l.set("date", Math.min(this.$D, l.daysInMonth())).toDate());
 				} else d && this.$d[d]($);
 				return this.init(), this;
 			}),
@@ -327,7 +360,16 @@
 					y = D.m(this, $);
 				return (
 					(y =
-						((c = {}), (c[a] = y / 12), (c[u] = y), (c[o] = y / 3), (c[s] = (m - l) / 6048e5), (c[i] = (m - l) / 864e5), (c[r] = m / 36e5), (c[e] = m / 6e4), (c[n] = m / 1e3), c)[d] || m),
+						((c = {}),
+						(c[a] = y / 12),
+						(c[u] = y),
+						(c[o] = y / 3),
+						(c[s] = (m - l) / 6048e5),
+						(c[i] = (m - l) / 864e5),
+						(c[r] = m / 36e5),
+						(c[e] = m / 6e4),
+						(c[n] = m / 1e3),
+						c)[d] || m),
 					f ? y : D.a(y)
 				);
 			}),

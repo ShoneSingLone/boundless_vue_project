@@ -1,19 +1,26 @@
-<style lang="less"></style>
+<style lang="less">
+.YapiNoteAddTips {
+	padding: 0;
+	.xDialog-body {
+		padding-top: 0;
+	}
+}
+</style>
 <template>
-	<xDialog style="--xDialog-wrapper-width: 400px; --xItem-label-width: 34px">
-		<xForm ref="form" col="1">
+	<xDialog style="--xItem-label-width: 38px; width: 400px">
+		<xForm ref="form" col="1" class="no-gap">
 			<xItem :configs="form.title" span="full" />
 		</xForm>
 		<template #footer>
 			<xBtn :configs="btnOk" />
-			<xBtn @click="closeModal">{{ i18n("取消") }}</xBtn>
+			<xBtn :configs="btnCancel" />
 		</template>
 	</xDialog>
 </template>
 <script lang="ts">
-export default async function ({ parentDocId, belong_type, belong_id }) {
-	/* 必要，混入"closeModal", "layerMax", "layerMin", "layerRestore" */
+export default async function ({ parentDocId, belong_type, belong_id, hide }) {
 	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
+
 	return defineComponent({
 		inject: ["APP", "inject_note"],
 		props: useDialogProps(),
@@ -33,11 +40,8 @@ export default async function ({ parentDocId, belong_type, belong_id }) {
 			pid() {
 				return parentDocId || 0;
 			},
-			belong_type() {
-				return this.propOptions.belong_type || "all";
-			},
 			cptFormData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnOk() {
 				const vm = this;
@@ -45,30 +49,39 @@ export default async function ({ parentDocId, belong_type, belong_id }) {
 					label: i18n("确定"),
 					preset: "blue",
 					onClick: async () => {
-						const [atLeastOne] = await _.$validateForm(this.$el);
+						const [atLeastOne] = await _.$validateForm(vm.$el);
 						if (atLeastOne) {
 							return;
 						}
 						_.$loading(true);
 						try {
 							const params = {
-								title: this.form.title.value,
+								title: vm.form.title.value,
 								type: Vue._yapi_var.ARTICLE,
-								p_id: this.pid,
-								belong_type,
-								belong_id
+								p_id: vm.pid,
+								belong_type: belong_type || "all",
+								belong_id: belong_id
 							};
 							const res = await _api.yapi.wikiUpsertOne(params);
 							if (!res.errcode) {
-								await this.inject_note.updateWikiMenuList();
-								await this.inject_note.setCurrentWiki(res.data.msg);
-								this.closeModal();
+								await vm.inject_note.updateWikiMenuList();
+								await vm.inject_note.setCurrentWiki(res.data.msg);
+								vm.closeModal();
 							}
 						} catch (error) {
-							_.$msgError("修改失败");
+							_.$msgError(error);
 						} finally {
 							_.$loading(false);
 						}
+					}
+				};
+			},
+			btnCancel() {
+				const vm = this;
+				return {
+					label: i18n("取消"),
+					async onClick() {
+						vm.closeModal();
 					}
 				};
 			}

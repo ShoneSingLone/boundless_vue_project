@@ -53,9 +53,13 @@ export default async function () {
 			},
 			cptType() {
 				if (this.item.type === "array") {
-					return h("div", { class: "YapiApiRequestBodyPreviewer-prop-name mr" }, [`${this.item.items.type}[]`]);
+					return h("div", { class: "YapiApiRequestBodyPreviewer-prop-name mr" }, [
+						`${this.item.items.type}[]`
+					]);
 				}
-				return h("div", { class: "YapiApiRequestBodyPreviewer-prop-name mr" }, [this.item.type]);
+				return h("div", { class: "YapiApiRequestBodyPreviewer-prop-name mr" }, [
+					this.item.type
+				]);
 			}
 		},
 		render() {
@@ -68,7 +72,11 @@ export default async function () {
 					})
 				]);
 			}
-			return h("div", { class: "flex middle" }, [this.cptTitle, this.cptType, this.item.description]);
+			return h("div", { class: "flex middle" }, [
+				this.cptTitle,
+				this.cptType,
+				this.item.description
+			]);
 		}
 	});
 }

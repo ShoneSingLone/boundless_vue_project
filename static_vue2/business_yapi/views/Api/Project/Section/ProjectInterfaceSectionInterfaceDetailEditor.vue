@@ -7,17 +7,25 @@
 <template>
 	<div v-if="isShow" id="ProjectInterfaceSectionInterfaceDetailEditor" class="flex1">
 		<xBlock header="基本信息">
-			<xForm col="3" style="--xdesc-item-width: 140px">
+			<xForm col="3" style="--xItem-label-width: 140px">
 				<xItem :configs="form.title" v-model="formData.title" span="full" />
 				<xItem :configs="form.path" v-model="formData.path" span="full" />
+				<xItem :configs="form.pathParams" v-model="formData.req_params" span="full" />
 				<xItem :configs="form.isProxy" v-model="formData.isProxy" />
 				<xItem :configs="form.witchEnv" v-model="formData.witchEnv" />
 				<xItem :configs="form.res_body_type" v-model="formData.res_body_type" span="full" />
-				<xItem :configs="form.resBackupJson" v-model="formData.resBackupJson" span="full" style="--YapiItemMonaco-height: 300px" />
+				<xItem
+					:configs="form.resBackupJson"
+					v-model="formData.resBackupJson"
+					span="full"
+					style="--YapiItemMonaco-height: 300px" />
 			</xForm>
 		</xBlock>
 		<xGap t />
-		<xBtn :configs="btnUpdate" />
+		<div class="flex middle">
+			<xGap f />
+			<xBtn :configs="btnUpdate" />
+		</div>
 	</div>
 </template>
 <script lang="ts">
@@ -60,6 +68,7 @@ export default async function () {
 						label: i18n("接口路径"),
 						rules: [_rules.required()],
 						tips: "path第一位必需为 /, 只允许由 字母数字-/_:.! 组成",
+
 						$vSlots: {
 							prepend() {
 								return h("xItem", {
@@ -73,6 +82,55 @@ export default async function () {
 									style: `--xItem-wrapper-width:106px`
 								});
 							}
+						}
+					},
+					pathParams: {
+						label: i18n("路径参数"),
+						value: [],
+						isHide() {
+							return !_.$isArrayFill(this.value);
+						},
+						itemType: "YapiItemPathParams",
+						once() {
+							vm.$watch(
+								"formData.path",
+								val => {
+									let queue = [];
+									let insertParams = name => {
+										if (!name) return;
+										let findExist = _.find(vm.formData.req_params, {
+											name: name
+										});
+										if (findExist) {
+											queue.push(findExist);
+										} else {
+											queue.push({ name: name, desc: "" });
+										}
+									};
+									/* /:id */
+									if (val && val.indexOf(":") !== -1) {
+										let paths = val.split("/"),
+											name,
+											i;
+										for (i = 1; i < paths.length; i++) {
+											if (paths[i][0] === ":") {
+												name = paths[i].substr(1);
+												insertParams(name);
+											}
+										}
+									}
+
+									/* /{id} */
+									if (val && val.length > 3) {
+										val.replace(/\{(.+?)\}/g, function (str, match) {
+											insertParams(match);
+										});
+									}
+
+									this.value = queue;
+								},
+								{ immediate: true }
+							);
 						}
 					},
 					uid: { label: i18n("uid") },
@@ -97,7 +155,10 @@ export default async function () {
 							{ label: "raw", value: "raw" }
 						]
 					},
-					resBackupJson: { label: i18n("备份数据"), itemType: "YapiItemMonaco" }
+					resBackupJson: {
+						label: i18n("备份数据"),
+						itemType: "YapiItemMonaco"
+					}
 				})
 			};
 		},
@@ -126,7 +187,7 @@ export default async function () {
 						this.inject_project.getInterfaceList();
 						this.inject_interface_section_interface_detail.updateInterface();
 					}
-					_.$msgSuccess("修改成功");
+					_.$msg("修改成功");
 				} catch (error) {
 					_.$msgError("修改失败");
 				} finally {

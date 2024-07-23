@@ -34,7 +34,7 @@ export default async function () {
 				};
 			},
 			cpt_formData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnOk() {
 				const vm = this;

@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view">
+	<div class="x-page-view">
 		<xPageContent>
 			<xTableVir :columns="columns" :data="data" />
 		</xPageContent>

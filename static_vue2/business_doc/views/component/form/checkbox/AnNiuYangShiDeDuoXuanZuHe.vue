@@ -4,22 +4,34 @@
 		<div class="">
 			<div class="mt">
 				<xCheckboxGroup v-model="checkboxGroup1">
-					<xCheckbox-button v-for="city in cities" :label="city" :key="city">{{ city }}</xCheckbox-button>
+					<xCheckbox-button v-for="city in cities" :label="city" :key="city">{{
+						city
+					}}</xCheckbox-button>
 				</xCheckboxGroup>
 			</div>
 			<div style="margin-top: 20px">
 				<xCheckboxGroup v-model="checkboxGroup2" size="medium">
-					<xCheckbox-button v-for="city in cities" :label="city" :key="city">{{ city }}</xCheckbox-button>
+					<xCheckbox-button v-for="city in cities" :label="city" :key="city">{{
+						city
+					}}</xCheckbox-button>
 				</xCheckboxGroup>
 			</div>
 			<div style="margin-top: 20px">
 				<xCheckboxGroup v-model="checkboxGroup3" size="small">
-					<xCheckbox-button v-for="city in cities" :label="city" :disabled="city === '北京'" :key="city">{{ city }}</xCheckbox-button>
+					<xCheckbox-button
+						v-for="city in cities"
+						:label="city"
+						:disabled="city === '北京'"
+						:key="city"
+						>{{ city }}</xCheckbox-button
+					>
 				</xCheckboxGroup>
 			</div>
 			<div style="margin-top: 20px">
 				<xCheckboxGroup v-model="checkboxGroup4" size="mini" disabled>
-					<xCheckbox-button v-for="city in cities" :label="city" :key="city">{{ city }}</xCheckbox-button>
+					<xCheckbox-button v-for="city in cities" :label="city" :key="city">{{
+						city
+					}}</xCheckbox-button>
 				</xCheckboxGroup>
 			</div>
 		</div>

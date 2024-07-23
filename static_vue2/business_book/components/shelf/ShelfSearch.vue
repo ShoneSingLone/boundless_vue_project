@@ -1,14 +1,24 @@
 <template>
-	<div class="shelf-search-wrapper" :class="{ 'search-top': ifInputClicked, 'hide-shadow': ifHideShadow }">
+	<div
+		class="shelf-search-wrapper"
+		:class="{ 'search-top': ifInputClicked, 'hide-shadow': ifHideShadow }">
 		<div class="shelf-search" :class="{ 'search-top': ifInputClicked }">
 			<div class="search-wrapper">
 				<div class="icon-search-wrapper">
 					<span class="icon-search icon"></span>
 				</div>
 				<div class="search-input-wrapper">
-					<input type="text" class="search-input" :placeholder="$t('shelf.search')" @click="onSearchClick" v-model="searchText" />
+					<input
+						type="text"
+						class="search-input"
+						:placeholder="$t('shelf.search')"
+						@click="onSearchClick"
+						v-model="searchText" />
 				</div>
-				<div class="icon-clear-wrapper" v-show="searchText.length > 0" @click="clearSearchText">
+				<div
+					class="icon-clear-wrapper"
+					v-show="searchText.length > 0"
+					@click="clearSearchText">
 					<span class="icon-close-circle-fill"></span>
 				</div>
 			</div>
@@ -22,8 +32,16 @@
 		</div>
 		<transition name="hot-search-move">
 			<div class="shelf-search-tab-wrapper" v-show="ifInputClicked">
-				<div class="shelf-search-tab-item" v-for="item in tabs" :key="item.id" @click="onTabClick(item.id)">
-					<span class="shelf-search-tab-text" :class="{ 'is-selected': item.id === selectedTab }">{{ item.text }} </span>
+				<div
+					class="shelf-search-tab-item"
+					v-for="item in tabs"
+					:key="item.id"
+					@click="onTabClick(item.id)">
+					<span
+						class="shelf-search-tab-text"
+						:class="{ 'is-selected': item.id === selectedTab }"
+						>{{ item.text }}
+					</span>
 				</div>
 			</div>
 		</transition>

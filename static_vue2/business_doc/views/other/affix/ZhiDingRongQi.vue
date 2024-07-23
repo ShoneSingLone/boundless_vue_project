@@ -3,7 +3,7 @@
 	text-align: center;
 	height: 400px;
 	border-radius: 4px;
-	background: var(--ui-primary-light-9);
+	background: var(--el-color-primary-light-9);
 }
 </style>
 <template>

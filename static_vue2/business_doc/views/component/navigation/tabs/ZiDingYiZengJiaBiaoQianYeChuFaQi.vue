@@ -4,7 +4,11 @@
 			<xBtn size="small" @click="addTab(editableTabsValue)"> add tab </xBtn>
 		</div>
 		<xTabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
-			<xTabPane v-for="(item, index) in editableTabs" :key="item.name" :label="item.title" :name="item.name">
+			<xTabPane
+				v-for="(item, index) in editableTabs"
+				:key="item.name"
+				:label="item.title"
+				:name="item.name">
 				{{ item.content }}
 			</xTabPane>
 		</xTabs>

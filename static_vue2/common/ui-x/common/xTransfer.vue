@@ -1,13 +1,32 @@
 <template>
 	<xDialog>
-		<div class="flex xTransfer center" v-if="slotSearchForm" :is="slotSearchForm" ref="slotSearchForm" :vm="vm"></div>
+		<div
+			class="flex xTransfer center"
+			v-if="slotSearchForm"
+			:is="slotSearchForm"
+			ref="slotSearchForm"
+			:vm="vm"></div>
 		<div class="flex">
-			<xSearchList class="flex1" :items="originItems" v-model="originValue" :title="originTitle" :on-query="queryOrigin" ref="origin" :slotSearchForm="slotSearchFormOrigin" />
-			<div class="flex vertical middle center padding">
+			<xSearchList
+				class="flex1"
+				:items="originItems"
+				v-model="originValue"
+				:title="originTitle"
+				:on-query="queryOrigin"
+				ref="origin"
+				:slotSearchForm="slotSearchFormOrigin" />
+			<div class="flex vertical middle center x-padding">
 				<xBtn :configs="btnLeft" />
 				<xBtn :configs="btnRight" />
 			</div>
-			<xSearchList class="flex1" :items="targetItems" v-model="targetValue" :title="targetTitle" :on-query="queryTarget" ref="target" :slotSearchForm="slotSearchFormTarget" />
+			<xSearchList
+				class="flex1"
+				:items="targetItems"
+				v-model="targetValue"
+				:title="targetTitle"
+				:on-query="queryTarget"
+				ref="target"
+				:slotSearchForm="slotSearchFormTarget" />
 		</div>
 	</xDialog>
 </template>
@@ -18,7 +37,8 @@ export default async function () {
 		props: ["configs"],
 		async mounted() {
 			await _.$ensure(() => this.$refs.origin && this.$refs.target);
-			this.configs.mounted && this.configs.mounted(this, this.$refs.origin, this.$refs.target);
+			this.configs.mounted &&
+				this.configs.mounted(this, this.$refs.origin, this.$refs.target);
 		},
 		data() {
 			const vm = this;

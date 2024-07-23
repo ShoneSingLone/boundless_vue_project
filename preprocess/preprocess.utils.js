@@ -18,19 +18,21 @@ const APP_NAME_ARRAY = DIRS_ARRAY.reduce((target, dirname) => {
 exports.APP_NAME_ARRAY = APP_NAME_ARRAY;
 
 
-function log(data) {
-	data = stdDecode(data);
-	console.log(data);
-	return data;
+function log(message, options = {}) {
+	message = stdDecode(message);
+	console.log(message);
+	if (options.log) {
+		options.log(message);
+	}
+	return message;
 }
 exports.log = log;
 
 
 async function execLog(cmd, options) {
-
 	const log = (content) => {
 		content = iconv.decode(content, "utf-8");
-		console.log("=================================\n", content,"\n=================================");
+		console.log("=================================\n", content, "\n=================================");
 		return content
 			.replace("\r", "")
 			.replace("\n", "");
@@ -51,10 +53,11 @@ function execCmd(cmd, options) {
 	let startTime = Date.now();
 	return new Promise((resolve, reject) => {
 		const result = exec(cmd, { maxBuffer: 1024 * 2000, encoding: "gbk" });
-		result.stdout.on("data", log);
-		result.stderr.on("data", log);
+		result.stdout.on("data", msg => log(msg, options));
+		result.stderr.on("data", msg => log(msg, options));
 		result.on("close", code => {
-			console.log(`🚀 exec ${cmd} spend time ${(Date.now() - startTime) / 1000}s`);
+			const msg = `\n${cmd}\n=spend time ${(Date.now() - startTime) / 1000}s`;
+			log(msg, options);
 			resolve();
 		});
 	});

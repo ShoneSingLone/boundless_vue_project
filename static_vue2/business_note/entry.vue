@@ -10,7 +10,11 @@ export default async function () {
 	]);
 
 	/* app entry  */
-	const [VueRouter, routes, App] = await Promise.all([_.$importVue("/common/libs/VueRouter.vue"), _.$importVue("@/router/routes.vue"), _.$importVue("@/layout/AppLayout.vue")]);
+	const [VueRouter, routes, App] = await Promise.all([
+		_.$importVue("/common/libs/VueRouter.vue"),
+		_.$importVue("@/router/routes.vue"),
+		_.$importVue("@/layout/AppLayout.vue")
+	]);
 
 	const router = new VueRouter({ routes });
 	return new Vue({

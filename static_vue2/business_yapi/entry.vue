@@ -1,14 +1,6 @@
 <script lang="ts">
 export default async function () {
-	await Promise.all([
-		_.$importVue("/common/ui-x/useXui.vue"),
-		_.$importVue("/common/ui-element/useElementUI.vue", {
-			size: "small",
-			I18N_LANGUAGE: window.I18N_LANGUAGE
-		})
-	]);
-
-	await _.$importVue("@/yapi.defaul.style.vue");
+	// window._CURENT_IS_MOBILE = /Mobile/gi.test(window.navigator.userAgent)
 	/*anxin应用用到的组件*/
 	_.each(
 		{
@@ -18,34 +10,45 @@ export default async function () {
 			YapiItemProxyEnv: "@/components/YapiItemProxyEnv.vue",
 			YapiItemAvatar: "@/components/YapiItemAvatar.vue",
 			YapiItemUac: "@/components/YapiItemUac.vue",
+			YapiItemPathParams: "@/components/YapiItemPathParams.vue",
 			YapiProjectCard: "@/components/YapiProjectCard.vue",
 			YapiPlaceholderView: "@/components/YapiPlaceholderView.vue"
 		},
 		(componentURL, name) => Vue.component(name, () => _.$importVue(componentURL))
 	);
 
-	/* app entry  */
-	const [VueRouter, routes] = await _.$importVue([
-		"/common/libs/VueRouter.vue",
-		"@/router/routes.vue",
-		/*常量*/
-		"@/utils/var.vue",
-		/*接口*/
-		"@/utils/api.vue",
-		"@/utils/opts.vue",
-		/*校验规则*/
-		"/common/utils/rules.vue",
-		/*枚举选项*/
-		"@/utils/utils.vue"
-		/*工具函数*/
-		// "@/utils/helper.vue",
-		/*复用组件*/
-		// "@/utils/reuse.vue"
-		/*通用下拉项*/
+	const [, [VueRouter, routes]] = await Promise.all([
+		Promise.all([
+			_.$importVue("/common/ui-x/useXui.vue"),
+			_.$importVue("/common/ui-element/useElementUI.NoJS.vue", {
+				size: "small",
+				I18N_LANGUAGE: window.I18N_LANGUAGE
+			})
+		]),
+		_.$importVue([
+			"/common/libs/VueRouter.vue",
+			"@/router/routes.vue",
+			/*常量*/
+			"@/utils/var.vue",
+			/*接口*/
+			"@/utils/api.vue",
+			/*校验规则*/
+			"/common/utils/rules.vue",
+			/*枚举选项*/
+			"@/utils/utils.vue",
+			/*工具函数*/
+			// "@/utils/helper.vue",
+			/*复用组件*/
+			// "@/utils/reuse.vue"
+			/*通用下拉项*/
+			"@/utils/opts.vue",
+			/* 项目独有样式 */
+			"@/yapi.defaul.style.vue"
+		])
 	]);
 
+	/* app entry  */
 	const router = new VueRouter({ routes });
-
 	const LOADING_STATUS = 0;
 	const GUEST_STATUS = 1;
 	const MEMBER_STATUS = 2;
@@ -80,11 +83,12 @@ export default async function () {
 						if (!vm.user.isLogin) {
 							const { data: userInfo } = await _api.yapi.userStatus();
 							vm._setUser(userInfo);
-							const { data: allUser } = await _api.yapi.userSearch({});
-							vm.allUser = allUser;
 						}
 
 						if (vm.user.isLogin) {
+							const { data: allUser } = await _api.yapi.userSearch({});
+							vm.allUser = allUser;
+
 							/* TODO: 跳转到首页 或者note应用*/
 							if (vm.$route.path === "/note") {
 								return;
@@ -102,12 +106,10 @@ export default async function () {
 						/* 未登录，跳转登录界面 */
 						vm.$router.push("/login");
 					} finally {
-						setTimeout(() => {
-							$("body").removeClass("x-loading");
-						}, 1000);
+						$("body").removeClass("x-loading");
 					}
 				},
-				1000
+				10
 			);
 
 			return {
@@ -223,7 +225,7 @@ export default async function () {
 							type: ""
 						});
 						this.$router.push("/login");
-						_.$msgSuccess(i18n("退出成功! "));
+						_.$msg(i18n("退出成功! "));
 					}
 				} catch (error) {
 					_.$msgError(error);
@@ -241,13 +243,22 @@ export default async function () {
 				this.groupProjectList = groupProjectList;
 			},
 			async updateGroupMemberList() {
-				const { data: groupMemberList } = await _api.yapi.groupGetMemberListBy(this.cptGroupId);
+				const { data: groupMemberList } = await _api.yapi.groupGetMemberListBy(
+					this.cptGroupId
+				);
 				this.groupMemberList = groupMemberList;
 			}
 		},
 		computed: {
-			cptGroupId() {
-				return this.$route.query.groupId;
+			cptGroupId: {
+				get() {
+					const { path, query } = this.$route;
+
+					if (!query.groupId && path === '/api/group"') {
+						this.updateGroupList();
+					}
+					return this.$route.query.groupId;
+				}
 			},
 			cptCurrentGroup() {
 				if (this.cptGroupId && this.groupList.length) {
@@ -259,8 +270,10 @@ export default async function () {
 				return this.$route.query.projectId;
 			},
 			cptProject() {
-				if (this.cptProjectId && this.groupProjectList.length) {
-					const projectItem = _.find(this.groupProjectList, { _id: Number(this.cptProjectId) });
+				if (this.cptProjectId && this.groupProjectList?.length) {
+					const projectItem = _.find(this.groupProjectList, {
+						_id: Number(this.cptProjectId)
+					});
 					return projectItem;
 				}
 				return false;
@@ -294,3 +307,20 @@ export default async function () {
 	return rootApp;
 }
 </script>
+
+<style lang="less">
+:root {
+	// --xItem-wrapper-width: 240px;
+}
+
+.flash-when {
+	transition:
+		opacity,
+		transform 0.3s ease-in-out;
+
+	&.loading {
+		opacity: 0.3;
+		transform: scale(0.99);
+	}
+}
+</style>

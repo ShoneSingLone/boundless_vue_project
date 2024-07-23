@@ -18,8 +18,10 @@
 </template>
 <script lang="ts">
 export default async function () {
-	const PopupManager = await _.$importVue("/common/libs/VuePopper/popupManager.vue");
-	const PopperJS = await _.$appendScript("/common/libs/VuePopper/popper.js", "Popper");
+	const [PopupManager, PopperJS] = await Promise.all([
+		_.$importVue("/common/libs/VuePopper/popupManager.vue"),
+		_.$appendScript("/common/libs/VuePopper/popper.js", "Popper")
+	]);
 
 	return defineComponent({
 		name: "xPopover",
@@ -36,11 +38,13 @@ export default async function () {
 				}
 				val ? this.$emit("show") : this.$emit("hide");
 				val ? this.updatePopper() : this.destroyPopper();
-				this.$parent.onPopoverChange[this.refId](val);
+				if (this.$parent.onPopoverChange) {
+					this.$parent.onPopoverChange[this.refId](val);
+				}
 			}
 		},
 		setup(props) {
-			const { useResizeObserver } = _useXui;
+			const { useResizeObserver } = _xUtils;
 
 			let resizerStopper;
 			this.popperJsUpdate = _.debounce(() => {
@@ -114,10 +118,22 @@ export default async function () {
 				return this.options.tabindex || 0;
 			},
 			$reference() {
-				return this.options.$reference;
+				if (this.options.$reference) {
+					return this.options.$reference;
+				}
+				if (this.$refs.wrapper && $(this.$refs.wrapper)) {
+					return $(this.$refs.wrapper);
+				}
+				if (this.$refs.refRender && $(this.$refs.refRender)) {
+					return $(this.$refs.refRender);
+				}
+
+				return {};
 			},
 			transformOrigin() {
-				return hasOwn(this.options, "transformOrigin") ? this.options.transformOrigin : true;
+				return hasOwn(this.options, "transformOrigin")
+					? this.options.transformOrigin
+					: true;
 			},
 			placement() {
 				return this.options.placement || "bottom";
@@ -148,7 +164,8 @@ export default async function () {
 				);
 			}
 		},
-		mounted() {
+		async mounted() {
+			await _.$ensure(() => this.$reference.addClass);
 			// 可访问性
 			this.$reference
 				.addClass("el-popover__reference")
@@ -173,12 +190,17 @@ export default async function () {
 				this.$reference.on("click", this.doToggle);
 				_.$single.doc.on("click", this.handleDocumentClick);
 			} else if (this.trigger === "hover") {
-				this.$reference.on("mouseenter", this.handleMouseEnter).on("mouseleave", this.handleMouseLeave);
-
-				this.$popper.on("mouseenter", this.handleMouseEnter).on("mouseleave", this.handleMouseLeave);
+				this.$reference
+					.on("mouseenter", this.handleMouseEnter)
+					.on("mouseleave", this.handleMouseLeave);
+				this.$popper
+					.on("mouseenter", this.handleMouseEnter)
+					.on("mouseleave", this.handleMouseLeave);
 			} else if (this.trigger === "focus") {
 				if (this.tabindex < 0) {
-					console.warn("[Element Warn][Popover]a negative taindex means that the element cannot be focused by tab key");
+					console.warn(
+						"[Element Warn][Popover]a negative taindex means that the element cannot be focused by tab key"
+					);
 				}
 
 				if (this.$reference.find("input, textarea").length) {
@@ -197,7 +219,8 @@ export default async function () {
 		methods: {
 			createPopper() {
 				const options = this.popperOptions;
-				const popper = (this.popperElm = this.popperElm || this.popper || this.$refs.popper);
+				const popper = (this.popperElm =
+					this.popperElm || this.popper || this.$refs.popper);
 				let reference = this.$reference[0];
 
 				if (!popper || !reference) return;
@@ -259,7 +282,11 @@ export default async function () {
 				let placement = this.popperJS._popper.getAttribute("x-placement").split("-")[0];
 				let origin = placementMap[placement];
 				this.popperJS._popper.style.transformOrigin =
-					typeof this.transformOrigin === "string" ? this.transformOrigin : ["top", "bottom"].indexOf(placement) > -1 ? `center ${origin}` : `${origin} center`;
+					typeof this.transformOrigin === "string"
+						? this.transformOrigin
+						: ["top", "bottom"].indexOf(placement) > -1
+							? `center ${origin}`
+							: `${origin} center`;
 			},
 
 			appendArrow(element) {
@@ -323,6 +350,7 @@ export default async function () {
 				}
 			},
 			handleMouseLeave() {
+				console.log("handleMouseLeave");
 				clearTimeout(this._timer);
 				if (this.closeDelay) {
 					this._timer = setTimeout(() => {
@@ -336,7 +364,15 @@ export default async function () {
 				let reference = this.$reference[0];
 				const popper = this.popper || this.$refs.popper;
 
-				if (!this.$el || !reference || this.$el.contains(e.target) || reference.contains(e.target) || !popper || popper.contains(e.target)) return;
+				if (
+					!this.$el ||
+					!reference ||
+					this.$el.contains(e.target) ||
+					reference.contains(e.target) ||
+					!popper ||
+					popper.contains(e.target)
+				)
+					return;
 				this.showPopper = false;
 			},
 			handleAfterEnter() {

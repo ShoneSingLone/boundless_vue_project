@@ -3,11 +3,18 @@
 		<DemoAndCode title="基础用法" path="@/views/component/data/tree/JiChuYongFa.vue" />
 		<DemoAndCode title="可选择" path="@/views/component/data/tree/KeXuanZe.vue" />
 		<DemoAndCode title="禁用复选框" path="@/views/component/data/tree/JinYongFuXuanKuang.vue" />
-		<DemoAndCode title="默认扩展和默认选中" path="@/views/component/data/tree/MoRenKuoZhanHeMoRenXuanZhong.vue" />
-		<DemoAndCode title="自定义节点内容" path="@/views/component/data/tree/ZiDingYiJieDianNeiRong.vue" />
+		<DemoAndCode
+			title="默认扩展和默认选中"
+			path="@/views/component/data/tree/MoRenKuoZhanHeMoRenXuanZhong.vue" />
+		<DemoAndCode
+			title="自定义节点内容"
+			path="@/views/component/data/tree/ZiDingYiJieDianNeiRong.vue" />
 		<DemoAndCode title="节点过滤" path="@/views/component/data/tree/JieDianGuoLv.vue" />
-		<DemoAndCode title="可拖拽节点" path="@/views/component/data/tree/KeTuoZhuaiJieDian.vue" unfold />
-		<xMd :md="apiString" />
+		<DemoAndCode
+			title="可拖拽节点"
+			path="@/views/component/data/tree/KeTuoZhuaiJieDian.vue"
+			unfold />
+		<xMd :md="apiString" data-role="api" />
 	</DocContentOfDemo>
 </template>
 
@@ -37,7 +44,7 @@ export default async function () {
 | check-strictly        | whether checked state of a node not affects its father and child nodes when \`show-checkbox\` is \`true\`                                        | boolean               | false   |
 | checked-keys  		| array of keys of initially checked nodes                                                                                                     | array                 | —       |
 | current-node-key      | key of initially selected node                                                                                                               | string / number       | —       |
-| filter-method         | this function will be executed on each node when use filter method. if return \`false\`, tree node will be hidden.                             | Function(value, data) | —       |
+| filterHandler         | this function will be executed on each node when use filter method. if return \`false\`, tree node will be hidden.                             | Function(value, data) | —       |
 | indent                | horizontal indentation of nodes in adjacent levels in pixels                                                                                 | number                | 16      |
 | icon                  | custom tree node icon                                                                                                                        | \`string \| Component\` | -       |
 | item-size ^(2.2.33)   | custom tree node height                                                                                                                      | number                | 26      |
@@ -98,12 +105,21 @@ export default async function () {
 				return Array.from({ length: minNodesNumber })
 					.fill(deep)
 					.map(() => {
-						const childrenNumber = deep === maxDeep ? 0 : Math.round(Math.random() * maxChildren);
+						const childrenNumber =
+							deep === maxDeep ? 0 : Math.round(Math.random() * maxChildren);
 						const nodeKey = vm.getKey(key, ++id);
 						return {
 							id: nodeKey,
 							label: nodeKey,
-							children: childrenNumber ? vm.createData(maxDeep, maxChildren, childrenNumber, deep + 1, nodeKey) : undefined
+							children: childrenNumber
+								? vm.createData(
+										maxDeep,
+										maxChildren,
+										childrenNumber,
+										deep + 1,
+										nodeKey
+									)
+								: undefined
 						};
 					});
 			}

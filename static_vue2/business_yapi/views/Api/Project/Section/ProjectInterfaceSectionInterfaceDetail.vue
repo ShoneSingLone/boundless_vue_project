@@ -1,11 +1,13 @@
 <template>
-	<div class="page-view flex1" id="ProjectSetting">
+	<div class="x-page-view flex1" id="ProjectSetting">
 		<xTabs v-model="cptProjectInterfaceTab">
 			<xTabPane label="预览" name="1"> </xTabPane>
 			<xTabPane label="编辑" name="2"> </xTabPane>
 		</xTabs>
 		<ProjectInterfaceSectionInterfaceDetailPreview v-if="cptProjectInterfaceTab === '1'" />
-		<ProjectInterfaceSectionInterfaceDetailEditor v-if="cptProjectInterfaceTab === '2' && detailInfo" :detailInfo="detailInfo" />
+		<ProjectInterfaceSectionInterfaceDetailEditor
+			v-if="cptProjectInterfaceTab === '2' && detailInfo"
+			:detailInfo="detailInfo" />
 	</div>
 </template>
 
@@ -21,11 +23,21 @@ export default async function () {
 			};
 		},
 		components: {
-			ProjectInterfaceSectionInterfaceDetailPreview: () => _.$importVue("@/views/Api/Project/Section/ProjectInterfaceSectionInterfaceDetailPreview.vue"),
-			ProjectInterfaceSectionInterfaceDetailEditor: () => _.$importVue("@/views/Api/Project/Section/ProjectInterfaceSectionInterfaceDetailEditor.vue")
+			ProjectInterfaceSectionInterfaceDetailPreview: () =>
+				_.$importVue(
+					"@/views/Api/Project/Section/ProjectInterfaceSectionInterfaceDetailPreview.vue"
+				),
+			ProjectInterfaceSectionInterfaceDetailEditor: () =>
+				_.$importVue(
+					"@/views/Api/Project/Section/ProjectInterfaceSectionInterfaceDetailEditor.vue"
+				)
 		},
 		setup() {
-			const cptProjectInterfaceTab = useTabName({ vm: this, propName: "project_interface_tab", defaultName: "1" });
+			const cptProjectInterfaceTab = useTabName({
+				vm: this,
+				propName: "project_interface_tab",
+				defaultName: "1"
+			});
 			return {
 				cptProjectInterfaceTab
 			};
@@ -42,8 +54,21 @@ export default async function () {
 		},
 		methods: {
 			async updateInterface() {
-				let { data: detailInfo } = await _api.yapi.interface_get_by_id({ id: this.APP.cptInterfaceId });
-				this.detailInfo = detailInfo;
+				_.$loading(true);
+				$(".flash-when").addClass("loading");
+				try {
+					let { data: detailInfo } = await _api.yapi.interface_get_by_id({
+						id: this.APP.cptInterfaceId
+					});
+					this.detailInfo = detailInfo;
+				} catch (error) {
+					_.$msgError(error);
+				} finally {
+					_.$loading(false);
+					setTimeout(() => {
+						$(".flash-when").removeClass("loading");
+					}, 300);
+				}
 			}
 		},
 		watch: {

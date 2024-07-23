@@ -1,7 +1,7 @@
 <script lang="ts">
 export default async function () {
 	if (!Vue._itemMixins) {
-		const EVENT_ARRAY = ["change", "blur", "input", "focus"];
+		const EVENT_ARRAY = ["change", "blur", "input", "focus", "keyup", "keydown"];
 		var HIDDEN_STYLE =
 			"\n  height:0 !important;\n  visibility:hidden !important;\n  overflow:hidden !important;\n  position:absolute !important;\n  z-index:-1000 !important;\n  top:0 !important;\n  right:0 !important\n";
 		var CONTEXT_STYLE = [
@@ -26,8 +26,12 @@ export default async function () {
 		function calculateNodeStyling(targetElement) {
 			var style = window.getComputedStyle(targetElement);
 			var boxSizing = style.getPropertyValue("box-sizing");
-			var paddingSize = parseFloat(style.getPropertyValue("padding-bottom")) + parseFloat(style.getPropertyValue("padding-top"));
-			var borderSize = parseFloat(style.getPropertyValue("border-bottom-width")) + parseFloat(style.getPropertyValue("border-top-width"));
+			var paddingSize =
+				parseFloat(style.getPropertyValue("padding-bottom")) +
+				parseFloat(style.getPropertyValue("padding-top"));
+			var borderSize =
+				parseFloat(style.getPropertyValue("border-bottom-width")) +
+				parseFloat(style.getPropertyValue("border-top-width"));
 			var contextStyle = CONTEXT_STYLE.map(function (name) {
 				return name + ":" + style.getPropertyValue(name);
 			}).join(";");
@@ -115,13 +119,36 @@ export default async function () {
 					}
 				});
 
+				const cptLabel = computed(() => {
+					if (_.isFunction(vm.configs?.label)) {
+						return vm.configs.label.call(vm.configs, { xBtn: vm });
+					}
+					if (_.isString(vm.configs?.label)) {
+						return vm.configs.label;
+					}
+					return "";
+				});
+
+				const cptChildren = computed(() => {
+					if (_.isFunction(vm.$vSlots?.default)) {
+						return h("span", vm.$vSlots.default());
+					}
+					if (vm.$vSlots?.TYPE_IS_VNODE) {
+						return vm.$vSlots;
+					}
+					return cptLabel.value;
+				});
+
 				return {
 					cptIsHide,
 					cptIsLoading,
 					cptPlaceholder,
-					cptDisabled
+					cptDisabled,
+					cptLabel,
+					cptChildren
 				};
 			},
+
 			useCellArgs({ vm, itemType, cellConfigs }) {
 				const innerComponentConfigs = reactive({
 					...cellConfigs,

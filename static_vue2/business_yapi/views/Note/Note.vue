@@ -1,7 +1,23 @@
 <template>
-	<section id="ViewNote">
-		<NoteAside />
-		<NoteSection />
+	<section id="ViewNote" :class="cptNoteClass">
+		<AppHeader v-if="cptIsShowAppHeaderComponent" />
+		<div v-if="APP.isMobile" class="flex1-overflow-auto flex vertical">
+			<xAdvancedSearch
+				mountTo="#MobileMenu"
+				v-model="isCollapse"
+				:label="false"
+				:mountProps="cptMountProps"
+				:style="cptToggleStyle">
+				<xGap t />
+				<NoteAside class="width100 flex1 height100" />
+			</xAdvancedSearch>
+			<div id="MobileMenu"></div>
+			<NoteSection style="width: 100%; height: 1px" v-show="isCollapse" />
+		</div>
+		<div v-else class="flex1-overflow-auto flex">
+			<NoteAside v-show="!isShowEditor" />
+			<NoteSection />
+		</div>
 	</section>
 </template>
 <script lang="ts">
@@ -9,11 +25,20 @@ export default async function () {
 	return defineComponent({
 		inject: ["APP"],
 		components: {
+			AppHeader: () => _.$importVue("@/views/Api/Header/ApiHeader.vue"),
 			NoteAside: () => _.$importVue("@/views/Note/NoteAside.vue"),
 			NoteSection: () => _.$importVue("@/views/Note/NoteSection.vue")
 		},
 		async mounted() {
-			document.title = "Y-API-文档";
+			(() => {
+				const TITLE_MAP = {
+					private: "个人可见",
+					all: "所有人可见"
+				};
+				const title = TITLE_MAP[this.cptBelongType];
+				title && (document.title = `文档-${title}`);
+			})();
+
 			await this.updateWikiMenuList();
 			await this.updateCurrentWiki();
 		},
@@ -26,20 +51,34 @@ export default async function () {
 		data() {
 			const vm = this;
 			vm.updateCurrentWiki = _.debounce(async function updateCurrentWiki(callback = false) {
-				if (!_.$isInput(vm.$route.query.wiki)) {
-					return;
-				}
-				const res = await _api.yapi.wikiDetail({ _id: vm.$route.query.wiki });
-				if (!res.errcode) {
-					vm.currentWiki = res.data;
-					callback && callback();
+				_.$loading(true);
+				$(".flash-when").addClass("loading");
+				try {
+					if (!_.$isInput(vm.$route.query.wiki)) {
+						return;
+					}
+					const res = await _api.yapi.wikiDetail({ _id: vm.$route.query.wiki });
+					if (!res.errcode) {
+						vm.currentWiki = res.data;
+						callback && callback();
+					}
+				} catch (error) {
+					console.error(error);
+					_.$msgError(error);
+				} finally {
+					_.$loading(false);
+					setTimeout(() => {
+						$(".flash-when").removeClass("loading");
+					}, 300);
 				}
 			}, 300);
 
 			return {
+				isCollapse: true,
 				treeData: [],
 				currentWiki: {},
-				belongType: "all"
+				expandedKeys: [],
+				isShowEditor: false
 			};
 		},
 		methods: {
@@ -53,10 +92,36 @@ export default async function () {
 				});
 			},
 			async updateWikiMenuList() {
-				let payload = { belong_type: "all" };
-				const { data } = await _api.yapi.wikiMenu(payload);
-				const { list, orderArray } = data;
-				this.treeData = this.buildTree(list, orderArray);
+				_.$loading(true);
+				try {
+					let payload = { belong_type: this.cptBelongType, belong_id: this.cptBelongId };
+					const { data } = await _api.yapi.wikiMenu(payload);
+					const { list, orderArray } = data;
+					this.treeData = this.buildTree(list, orderArray);
+
+					(() => {
+						const wikiId = this.$route.query.wiki;
+
+						if (wikiId) {
+							const wiki = this.allWiki[wikiId];
+							if (wiki) {
+								this.APP.routerUpsertQuery({ wiki: wikiId });
+								return;
+							}
+						}
+
+						if (this.treeData[0]) {
+							this.APP.routerUpsertQuery({ wiki: this.treeData[0]._id });
+							return;
+						}
+
+						this.APP.routerUpsertQuery({ wiki: "" });
+					})();
+				} catch (error) {
+					console.error(error);
+				} finally {
+					_.$loading(false);
+				}
 			},
 			buildTree(dataArray, orderArray) {
 				console.time("buildTree");
@@ -80,6 +145,7 @@ export default async function () {
 						parent.children.push(item);
 					}
 				});
+				window.allWiki = this.allWiki;
 
 				let tree = _.filter(this.allWiki, item => item.p_id === 0);
 				if (_.$isArrayFill(orderArray)) {
@@ -106,18 +172,44 @@ export default async function () {
 			}
 		},
 		computed: {
+			cptToggleStyle() {
+				return {
+					position: "absolute",
+					zIndex: 1,
+					margin: "8px"
+				};
+			},
+			cptMountProps() {
+				return {
+					class: "flex1 flex vertical",
+					style: {
+						height: "1px"
+					}
+				};
+			},
+			cptNoteClass() {
+				return { "is-show-header": this.cptIsShowAppHeaderComponent };
+			},
+			cptIsShowAppHeaderComponent() {
+				return ["private", "all"].includes(this.cptBelongType);
+			},
 			cptBelongType() {
-				const { private: self, group, project } = this.$route.query;
-				if (self) return "private";
-				if (group) return "group";
-				if (project) return "project";
+				const { privateId, projectId, groupId } = this.$route.query;
+				/* 有优先级和权重，顺序不可变 */
+				if (privateId) return "private";
+				if (projectId) return "project";
+				if (groupId) return "group";
 				return "all";
 			},
 			cptBelongId() {
-				if (this.cptBelongType !== "all") {
-					return this.$route.query[this.cptBelongType];
-				}
-				return 0;
+				const { privateId, projectId, groupId } = this.$route.query;
+				const variable_map = {
+					private: privateId,
+					project: projectId,
+					group: groupId,
+					all: "BELONG_ALL"
+				};
+				return variable_map[this.cptBelongType];
 			},
 			cptCurrentWiki() {
 				return {
@@ -141,5 +233,8 @@ export default async function () {
 	width: 100%;
 	display: flex;
 	flex-flow: row nowrap;
+	&.is-show-header {
+		flex-flow: column nowrap;
+	}
 }
 </style>

@@ -1,9 +1,15 @@
 <template>
 	<transition name="hot-search-move">
 		<scroll class="hot-search-wrapper" :top="52" @onScroll="onScroll" ref="scroll">
-			<hot-search :label="$t('home.hotSearch')" :btn="$t('home.change')" :hotSearch="searchList.hotSearch"></hot-search>
+			<hot-search
+				:label="$t('home.hotSearch')"
+				:btn="$t('home.change')"
+				:hotSearch="searchList.hotSearch"></hot-search>
 			<div class="line"></div>
-			<hot-search :label="$t('home.historySearch')" :btn="$t('home.clear')" :hotSearch="searchList.historySearch"></hot-search>
+			<hot-search
+				:label="$t('home.historySearch')"
+				:btn="$t('home.clear')"
+				:hotSearch="searchList.historySearch"></hot-search>
 		</scroll>
 	</transition>
 </template>

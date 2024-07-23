@@ -22,21 +22,30 @@
 				</div>
 			</xForm>
 		</xBlock>
-		<div class="flex center middle mt"><xBtn :configs="btnSave" /></div>
+		<div class="flex middle mt">
+			<xGap f />
+			<xBtn :configs="btnSave" />
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
 export default async function () {
-	const { useTabName } = await _.$importVue("/common/utils/hooks.vue");
-	const { useProjectForm } = await _.$importVue("@/views/Api/Group/Section/ProjectList/GroupSectionProjectListAddProject.vue");
+	const [{ useTabName }, { useProjectForm }] = await _.$importVue([
+		"/common/utils/hooks.vue",
+		"@/views/Api/Group/Section/ProjectList/GroupSectionProjectListAddProject.vue"
+	]);
 
 	return {
-		name: "CtyunecsEvsList",
+		name: "ProjectSettingPanelCommonVue",
 		inject: ["APP", "inject_project"],
 		components: {},
 		setup() {
-			const cptProjectSettingTab = useTabName({ vm: this, propName: "project_setting_tab", defaultName: "1" });
+			const cptProjectSettingTab = useTabName({
+				vm: this,
+				propName: "project_setting_tab",
+				defaultName: "1"
+			});
 			return {
 				cptProjectSettingTab
 			};
@@ -45,10 +54,12 @@ export default async function () {
 			const vm = this;
 			const { group_id, name, basepath, desc, project_type } = useProjectForm(vm);
 			const p = vm.APP.cptProject;
+			group_id.value = vm.APP.cptGroupId;
+
 			return {
 				form: defItems({
 					img: {
-						value: p._id,
+						value: p._id || "",
 						usedBy: "project",
 						itemType: "YapiItemAvatar",
 						label: i18n("头像")
@@ -78,7 +89,9 @@ export default async function () {
 						label: "代理服务器地址",
 						tips: () =>
 							h("div", [
-								h("div", ["如果请求需要使用VPN，则需要有一台开启VPN的PC作为代理机。"]),
+								h("div", [
+									"如果请求需要使用VPN，则需要有一台开启VPN的PC作为代理机。"
+								]),
 								h("div", [
 									"利用",
 									h(
@@ -129,28 +142,40 @@ export default async function () {
 						_.$confirm({
 							title: "请慎重操作！",
 							content: () => {
-								return h("xAlert", { type: "error", showIcon: true, closable: false }, [
-									h("div", { class: "flex vertical" }, [
-										h(
-											"div",
-											{
-												class: "card-danger-content"
-											},
-											[h("p", ["此操作非常危险,会删除该项目下面所有接口"]), h("p", ["项目一旦删除，将无法恢复数据"]), h("p", ["只有组长和管理员有权限删除项目。"])]
-										)
-									])
-								]);
+								return h(
+									"xAlert",
+									{ type: "error", showIcon: true, closable: false },
+									[
+										h("div", { class: "flex vertical" }, [
+											h(
+												"div",
+												{
+													class: "card-danger-content"
+												},
+												[
+													h("p", [
+														"此操作非常危险,会删除该项目下面所有接口"
+													]),
+													h("p", ["项目一旦删除，将无法恢复数据"]),
+													h("p", ["只有组长和管理员有权限删除项目。"])
+												]
+											)
+										])
+									]
+								);
 							}
 						}).then(async () => {
 							try {
-								const res = await _api.yapi.project_del({ id: vm.APP.cptProjectId });
+								const res = await _api.yapi.project_del({
+									id: vm.APP.cptProjectId
+								});
 								if (res.errcode === 0) {
 									await vm.APP.updateGroupList();
 									vm.$router.push({
 										path: "/api/group",
 										query: _.pick(vm.$route.query, ["groupId"])
 									});
-									_.$msgSuccess("删除成功");
+									_.$msg("删除成功");
 								} else {
 									throw new Error(res.message);
 								}
@@ -171,13 +196,14 @@ export default async function () {
 				return {
 					label: i18n("管理转发环境"),
 					onClick: async () => {
-						const DialogTypeVueSFC = await _.$importVue("@/components/YapiItemProxyEnvManager.vue", {
-							parent: this
-						});
-						const vm = _.$openWindow_deprecated(i18n("管理转发环境"), DialogTypeVueSFC, {
-							maxmin: true,
-							fullscreen: false
-						});
+						_.$openModal(
+							{
+								title: i18n("管理转发环境"),
+								url: "@/components/YapiItemProxyEnvManager.vue",
+								parent: this
+							},
+							{ fullscreen: true }
+						);
 					}
 				};
 			},
@@ -195,7 +221,7 @@ export default async function () {
 				};
 			},
 			cptParams() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			}
 		},
 		methods: {
@@ -207,7 +233,7 @@ export default async function () {
 					};
 					await _api.yapi.project_update(dataForm);
 					this.APP.updateGroupProjectList();
-					_.$msgSuccess("更新成功");
+					_.$msg("更新成功");
 				} catch (error) {
 					_.$msgError(error);
 				}

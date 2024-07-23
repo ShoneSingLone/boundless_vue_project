@@ -1,10 +1,23 @@
 <template>
 	<div class="margin16 DongTaiBianJiBiaoQian">
 		<xMd :md="'动态编辑标签可以通过点击标签关闭按钮后触发的 `close` 事件来实现'" />
-		<xTag :key="tag" v-for="tag in dynamicTags" closable :disable-transitions="false" @close="handleClose(tag)">
+		<xTag
+			:key="tag"
+			v-for="tag in dynamicTags"
+			closable
+			:disable-transitions="false"
+			@close="handleClose(tag)">
 			{{ tag }}
 		</xTag>
-		<xInput class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm"> </xInput>
+		<xInput
+			class="input-new-tag"
+			v-if="inputVisible"
+			v-model="inputValue"
+			ref="saveTagInput"
+			size="small"
+			@keyup.enter.native="handleInputConfirm"
+			@blur="handleInputConfirm">
+		</xInput>
 		<xBtn v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</xBtn>
 	</div>
 </template>

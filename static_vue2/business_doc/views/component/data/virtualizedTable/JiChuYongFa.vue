@@ -1,7 +1,11 @@
 <template>
 	<div class="margin16">
 		<xMd :md="'让我们演示虚拟化表的性能，4 000行渲染一个基本示例。'" />
-		<xTableVir :columns="configsTable.columns" :data="configsTable.data.list" :height="400" fixed />
+		<xTableVir
+			:columns="configsTable.columns"
+			:data="configsTable.data.list"
+			:height="400"
+			fixed />
 	</div>
 </template>
 <script lang="ts">
@@ -38,7 +42,7 @@ export default async function () {
 						defTable.colActions({
 							width: 120,
 							cellRenderer({ rowData }) {
-								return _useXui.render.ActionAndMore({
+								return _jsxFns.ActionAndMore({
 									col: 3,
 									children: [
 										/* { label: i18n("快速添加规则") }, { label: i18n("添加规则") }, */

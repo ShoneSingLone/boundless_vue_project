@@ -6,6 +6,10 @@
 		flex-flow: column nowrap;
 		flex: 1;
 		width: 1px;
+
+		.markdown-wrapper {
+			margin-bottom: var(--ui-one);
+		}
 	}
 }
 </style>
@@ -17,7 +21,11 @@
 		<xAffix :offset="100">
 			<xCard :style="xCardStyle" v-xloading="isLoading">
 				<ul>
-					<li v-for="(item, index) in contents" :key="index" class="mb pointer" @click="scrollTo(item)">
+					<li
+						v-for="(item, index) in contents"
+						:key="index"
+						class="mb pointer"
+						@click="scrollTo(item)">
 						<xTag>
 							{{ item[0] }}
 						</xTag>
@@ -32,7 +40,7 @@ export default async function () {
 	return defineComponent({
 		setup(props) {
 			return {
-				ns: _useXui.useNamespace("DocContentOfDemo"),
+				ns: _xUtils.useNamespace("DocContentOfDemo"),
 				xCardStyle: `min-width: 200px;
 margin: var(--ui-one);
 max-height:calc(100vh - 200px);
@@ -45,7 +53,11 @@ overflow:auto;`
 				const contents = _.map($(vm.$el).find("[data-path]"), el => {
 					return [$(el).text(), el];
 				});
-				vm.contents = contents;
+
+				const api = _.map($(vm.$el).find("[data-role=api]"), el => {
+					return ["API", el];
+				});
+				vm.contents = contents.concat(api);
 			}, 200);
 			return {
 				isLoading: true,

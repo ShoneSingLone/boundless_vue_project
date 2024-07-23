@@ -62,18 +62,19 @@ export default async function () {
 		let frameHandle;
 		let offset = 0;
 		const hasReachedEdge = offset2 => {
-			const edgeReached = (offset2 < 0 && atStartEdge.value) || (offset2 > 0 && atEndEdge.value);
+			const edgeReached =
+				(offset2 < 0 && atStartEdge.value) || (offset2 > 0 && atEndEdge.value);
 			return edgeReached;
 		};
 		const onWheel = e => {
-			_useXui.cAF(frameHandle);
+			_xUtils.cAF(frameHandle);
 			const newOffset = e[LayoutKeys[layout2.value]];
 			if (hasReachedEdge(offset) && hasReachedEdge(offset + newOffset)) return;
 			offset += newOffset;
 			if (!_.$isFirefox()) {
 				e.preventDefault();
 			}
-			frameHandle = _useXui.rAF(() => {
+			frameHandle = _xUtils.rAF(() => {
 				onWheelDelta(offset);
 				offset = 0;
 			});
@@ -84,21 +85,35 @@ export default async function () {
 		};
 	};
 
-	const createList = ({ name, getOffset, getItemSize, getItemOffset, getEstimatedTotalSize, getStartIndexForOffset, getStopIndexForStartIndex, initCache, clearCache, validateProps }) => {
+	const createList = ({
+		name,
+		getOffset,
+		getItemSize,
+		getItemOffset,
+		getEstimatedTotalSize,
+		getStartIndexForOffset,
+		getStopIndexForStartIndex,
+		initCache,
+		clearCache,
+		validateProps
+	}) => {
 		return defineComponent({
 			name: name || "ElVirtualList",
-			props: _useXui.virtualizedListProps,
+			props: _xUtils.virtualizedListProps,
 			emits: [ITEM_RENDER_EVT, SCROLL_EVT],
 			components: {
 				/* 循环引用 => 异步加载 */
-				ComponentVirtualScrollBar: () => _.$importVue("/common/ui-x/components/data/xTableVir/ComponentVirtualScrollBar.vue")
+				ComponentVirtualScrollBar: () =>
+					_.$importVue(
+						"/common/ui-x/components/data/xTableVir/ComponentVirtualScrollBar.vue"
+					)
 			},
 			setup(props, { emit, expose }) {
 				validateProps(props);
 				const instance = getCurrentInstance();
-				const ns_vl = _useXui.useNamespace("vl");
+				const ns_vl = _xUtils.useNamespace("vl");
 				const dynamicSizeCache = ref(initCache(props, instance));
-				const getItemStyleCache = _useXui.useCache();
+				const getItemStyleCache = _xUtils.useCache();
 				const windowRef = ref();
 				const innerRef = ref();
 				const scrollbarRef = ref();
@@ -117,13 +132,31 @@ export default async function () {
 					if (total2 === 0) {
 						return [0, 0, 0, 0];
 					}
-					const startIndex = getStartIndexForOffset(props, scrollOffset, unref(dynamicSizeCache));
-					const stopIndex = getStopIndexForStartIndex(props, startIndex, scrollOffset, unref(dynamicSizeCache));
-					const cacheBackward = !isScrolling || scrollDir === BACKWARD ? Math.max(1, cache2) : 1;
-					const cacheForward = !isScrolling || scrollDir === FORWARD ? Math.max(1, cache2) : 1;
-					return [Math.max(0, startIndex - cacheBackward), Math.max(0, Math.min(total2 - 1, stopIndex + cacheForward)), startIndex, stopIndex];
+					const startIndex = getStartIndexForOffset(
+						props,
+						scrollOffset,
+						unref(dynamicSizeCache)
+					);
+					const stopIndex = getStopIndexForStartIndex(
+						props,
+						startIndex,
+						scrollOffset,
+						unref(dynamicSizeCache)
+					);
+					const cacheBackward =
+						!isScrolling || scrollDir === BACKWARD ? Math.max(1, cache2) : 1;
+					const cacheForward =
+						!isScrolling || scrollDir === FORWARD ? Math.max(1, cache2) : 1;
+					return [
+						Math.max(0, startIndex - cacheBackward),
+						Math.max(0, Math.min(total2 - 1, stopIndex + cacheForward)),
+						startIndex,
+						stopIndex
+					];
 				});
-				const estimatedTotalSize = computed(() => getEstimatedTotalSize(props, unref(dynamicSizeCache)));
+				const estimatedTotalSize = computed(() =>
+					getEstimatedTotalSize(props, unref(dynamicSizeCache))
+				);
 				const _isHorizontal = computed(() => isHorizontal(props.layout));
 				const windowStyle = computed(() => [
 					{
@@ -148,23 +181,33 @@ export default async function () {
 						width: horizontal ? `${size}px` : "100%"
 					};
 				});
-				const clientSize = computed(() => (_isHorizontal.value ? props.width : props.height));
+				const clientSize = computed(() =>
+					_isHorizontal.value ? props.width : props.height
+				);
 				const { onWheel } = useWheel(
 					{
 						atStartEdge: computed(() => states.value.scrollOffset <= 0),
-						atEndEdge: computed(() => states.value.scrollOffset >= estimatedTotalSize.value),
+						atEndEdge: computed(
+							() => states.value.scrollOffset >= estimatedTotalSize.value
+						),
 						layout: computed(() => props.layout)
 					},
 					offset => {
 						var _a2, _b;
 						(_b = (_a2 = scrollbarRef.value).onMouseUp) == null ? void 0 : _b.call(_a2);
-						scrollTo(Math.min(states.value.scrollOffset + offset, estimatedTotalSize.value - clientSize.value));
+						scrollTo(
+							Math.min(
+								states.value.scrollOffset + offset,
+								estimatedTotalSize.value - clientSize.value
+							)
+						);
 					}
 				);
 				const emitEvents = () => {
 					const { total: total2 } = props;
 					if (total2 > 0) {
-						const [cacheStart, cacheEnd, visibleStart, visibleEnd] = unref(itemsToRender);
+						const [cacheStart, cacheEnd, visibleStart, visibleEnd] =
+							unref(itemsToRender);
 						emit(ITEM_RENDER_EVT, cacheStart, cacheEnd, visibleStart, visibleEnd);
 					}
 					const { scrollDir, scrollOffset, updateRequested } = unref(states);
@@ -176,7 +219,10 @@ export default async function () {
 					if (_states.scrollOffset === scrollTop) {
 						return;
 					}
-					const scrollOffset = Math.max(0, Math.min(scrollTop, scrollHeight - clientHeight));
+					const scrollOffset = Math.max(
+						0,
+						Math.min(scrollTop, scrollHeight - clientHeight)
+					);
 					states.value = {
 						..._states,
 						isScrolling: true,
@@ -221,7 +267,8 @@ export default async function () {
 					emitEvents();
 				};
 				const onScrollbarScroll = (distanceToGo, totalSteps) => {
-					const offset = ((estimatedTotalSize.value - clientSize.value) / totalSteps) * distanceToGo;
+					const offset =
+						((estimatedTotalSize.value - clientSize.value) / totalSteps) * distanceToGo;
 					scrollTo(Math.min(estimatedTotalSize.value - clientSize.value, offset));
 				};
 				const scrollTo = offset => {
@@ -240,11 +287,17 @@ export default async function () {
 				const scrollToItem = (idx, alignment = AUTO_ALIGNMENT) => {
 					const { scrollOffset } = unref(states);
 					idx = Math.max(0, Math.min(idx, props.total - 1));
-					scrollTo(getOffset(props, idx, alignment, scrollOffset, unref(dynamicSizeCache)));
+					scrollTo(
+						getOffset(props, idx, alignment, scrollOffset, unref(dynamicSizeCache))
+					);
 				};
 				const getItemStyle = idx => {
 					const { direction: direction2, itemSize: itemSize2, layout: layout2 } = props;
-					const itemStyleCache = getItemStyleCache.value(clearCache && itemSize2, clearCache && layout2, clearCache && direction2);
+					const itemStyleCache = getItemStyleCache.value(
+						clearCache && itemSize2,
+						clearCache && layout2,
+						clearCache && direction2
+					);
 					let style;
 					if (hasOwn(itemStyleCache, String(idx))) {
 						style = itemStyleCache[idx];
@@ -308,7 +361,8 @@ export default async function () {
 									}
 									default: {
 										const { clientWidth, scrollWidth } = windowElement;
-										windowElement.scrollLeft = scrollWidth - clientWidth - scrollOffset;
+										windowElement.scrollLeft =
+											scrollWidth - clientWidth - scrollOffset;
 										break;
 									}
 								}

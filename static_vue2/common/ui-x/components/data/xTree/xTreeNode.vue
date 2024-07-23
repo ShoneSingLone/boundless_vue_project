@@ -1,5 +1,11 @@
 <style lang="less">
 .xTreeNode {
+	&.is-current {
+		.el-tree-node__content {
+			background-color: var(--xTreeNode-bg-current, var(--el-color-primary));
+			color: var(--xTreeNode-text-color-current, white);
+		}
+	}
 	&.dragged {
 		opacity: 0.3;
 		transition: all 0.3s ease-in-out;
@@ -8,7 +14,7 @@
 		position: absolute;
 		z-index: 1;
 		display: none;
-		background-color: var(--ui-primary);
+		background-color: var(--el-color-primary);
 		&.top {
 			height: 2px;
 			left: 0;
@@ -91,11 +97,22 @@
 		<div :class="ns.be('node', 'content')" :style="cptStyle">
 			<div
 				v-if="icon"
-				:class="[ns.is('leaf', !!node?.isLeaf), ns.is('hidden', hiddenExpandIcon), { expanded: !node?.isLeaf && expanded }, ns.be('node', 'expand-icon')]"
+				:class="[
+					ns.is('leaf', !!node?.isLeaf),
+					ns.is('hidden', hiddenExpandIcon),
+					{ expanded: !node?.isLeaf && expanded },
+					ns.be('node', 'expand-icon')
+				]"
 				@click.stop="handleExpandIconClick">
 				<xRender :render="icon" />
 			</div>
-			<xCheckbox v-if="showCheckbox" :value="checked" :indeterminate="indeterminate" :disabled="disabled" @change="handleCheckChange" @click.stop />
+			<xCheckbox
+				v-if="showCheckbox"
+				:value="checked"
+				:indeterminate="indeterminate"
+				:disabled="disabled"
+				@change="handleCheckChange"
+				@click.stop />
 			<xNodeContent :node="node" />
 		</div>
 		<div class="indicator top" />
@@ -106,11 +123,13 @@
 </template>
 <script lang="ts">
 export default async function () {
-	const { itemSize, ON_NODE_CONTEXTMENU } = await _.$importVue("/common/ui-x/components/data/xTree/composables.vue");
+	const { itemSize, ON_NODE_CONTEXTMENU } = await _.$importVue(
+		"/common/ui-x/components/data/xTree/composables.vue"
+	);
 
 	return defineComponent({
 		name: "xTreeNode",
-		props: _useXui.buildProps({
+		props: _xUtils.buildProps({
 			node: {
 				type: Object,
 				default: () => ({
@@ -154,7 +173,7 @@ export default async function () {
 			const vm = this;
 			/* @ts-ignore */
 			const injectRootTree = this.injectRootTree;
-			const ns = _useXui.useNamespace("tree");
+			const ns = _xUtils.useNamespace("tree");
 			const indent = computed(() => {
 				return injectRootTree.props?.indent || 16;
 			});
@@ -171,7 +190,8 @@ export default async function () {
 				vm.$emit("check", props.node, value);
 			};
 			const handleContextMenu = event => {
-				if (injectRootTree?.vnode?.props?.["onNodeContextmenu"]) {
+				const handlerName = _.camelCase(ON_NODE_CONTEXTMENU);
+				if (injectRootTree.$listeners[handlerName]) {
 					event.stopPropagation();
 					event.preventDefault();
 				}
@@ -189,20 +209,29 @@ export default async function () {
 		},
 		computed: {
 			cptDraggable() {
-				return this.injectRootTree?.dragAndDrop;
+				return !!this.injectRootTree?.dragAndDrop;
 			},
 			cptTreeNodeClass() {
-				const { dropType, ns, expanded, current, disabled, checked, injectRootTree, node } = this;
-				return [
+				const { dropType, ns, expanded, current, disabled, checked, injectRootTree, node } =
+					this;
+
+				const classArray = [
 					"xTreeNode",
-					(injectRootTree.drag === node?.key && "dragged") || "",
-					(injectRootTree.drop === node?.key && dropType) || "",
 					ns.b("node"),
 					ns.is("expanded", expanded),
 					ns.is("current", current),
 					ns.is("focusable", !disabled),
 					ns.is("checked", !disabled && checked)
 				];
+
+				if (this.cptDraggable) {
+					return _.concat(classArray, [
+						(injectRootTree.drag === node?.key && "dragged") || "",
+						(injectRootTree.drop === node?.key && dropType) || ""
+					]);
+				} else {
+					return classArray;
+				}
 			},
 			cptStyle() {
 				return {
@@ -253,19 +282,30 @@ export default async function () {
 				// console.log("🚀 ~ onDrag ~ event:", event);
 			},
 			onDragstart(event) {
+				if (!this.cptDraggable) {
+					return;
+				}
+
 				// 保存被拖动元素的引用
 				this.injectRootTree.drag = this.node?.key;
 				// 设置为半透明
-				event.target.classList.add("dragging");
+				// event.target.classList.add("dragging");
 				// console.log("🚀 ~ onDragstart ~ event:", event);
 			},
 			onDragend(event) {
+				if (!this.cptDraggable) {
+					return;
+				}
+
 				// 拖动结束，重置透明度
 				this.reset();
 				// console.log("🚀 ~ onDragend ~ event:", event);
 			},
 			/* 在放置目标上触发的事件 */
 			onDragover(event) {
+				if (!this.cptDraggable) {
+					return;
+				}
 				// 阻止默认行为以允许放置
 				this.injectRootTree.drop = this.node?.key;
 				event.preventDefault();
@@ -282,7 +322,7 @@ export default async function () {
 					} else {
 						return "inner";
 					}
-				 */
+					*/
 
 					if (offsetX < onepice) {
 						return "before";
@@ -304,6 +344,9 @@ export default async function () {
 				// console.log("🚀 ~ onDragleave ~ event:", event);
 			},
 			onDrop(event) {
+				if (!this.cptDraggable) {
+					return;
+				}
 				/* onDrop=>onDragend */
 				// 阻止默认行为（会作为某些元素的链接打开）
 				event.preventDefault();

@@ -5,7 +5,8 @@
 			属性方式：
 			<xInput placeholder="请选择日期" suffix-icon="el-icon-date" v-model="input1"> </xInput>
 			<xGap l="8" />
-			<xInput placeholder="请输入内容" prefix-icon="el-icon-search" v-model="input2"> </xInput>
+			<xInput placeholder="请输入内容" prefix-icon="el-icon-search" v-model="input2">
+			</xInput>
 		</div>
 		<div class="demo-input-suffix flex middle mt8">
 			slot 方式：

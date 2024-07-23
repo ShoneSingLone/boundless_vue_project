@@ -29,9 +29,9 @@
 
 	[role="treeitem"] {
 		&.el-tree-node.treeitem-is-active {
-			background-color: var(--ui-primary-light-7) !important;
+			background-color: var(--el-color-primary-light-7) !important;
 			&:hover {
-				background-color: var(--ui-primary-light-7) !important;
+				background-color: var(--el-color-primary-light-7) !important;
 			}
 		}
 	}

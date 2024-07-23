@@ -1,26 +1,31 @@
 
     module.exports = {
+    "401": [
+        "static_vue2\\business_admin_normal\\views\\error\\401.vue"
+    ],
+    "404": [
+        "static_vue2\\business_admin_normal\\views\\error\\404.vue"
+    ],
     "utils": [
         "static_vue2\\common\\utils\\utils.vue",
         "static_vue2\\business_yapi\\utils\\utils.vue",
         "static_vue2\\business_book\\utils\\utils.vue",
-        "static_vue2\\business_ait\\utils\\utils.vue"
+        "static_vue2\\business_admin_normal\\utils\\utils.vue"
     ],
-    "useMoCommon": [
-        "static_vue2\\common\\utils\\useMoCommon.vue"
+    "tools": [
+        "static_vue2\\common\\utils\\useAdmin\\tools.vue"
     ],
-    "xMoCurrentConfigurations": [
-        "static_vue2\\common\\utils\\useMoCommon\\xMoCurrentConfigurations.vue"
+    "tagsView": [
+        "static_vue2\\common\\utils\\useAdmin\\store\\tagsView.vue"
     ],
-    "xMoBuyLayer": [
-        "static_vue2\\common\\utils\\useMoCommon\\xMoBuyLayer.vue"
+    "permission": [
+        "static_vue2\\common\\utils\\useAdmin\\store\\permission.vue"
     ],
-    "MoMulDeleteConfirmTableDialog": [
-        "static_vue2\\common\\utils\\useMoCommon\\MoMulDeleteConfirmTableDialog.vue"
+    "auth": [
+        "static_vue2\\common\\utils\\useAdmin\\auth.vue"
     ],
     "rules": [
-        "static_vue2\\common\\utils\\rules.vue",
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\routerList\\rules.vue"
+        "static_vue2\\common\\utils\\rules.vue"
     ],
     "regexp": [
         "static_vue2\\common\\utils\\regexp.vue"
@@ -31,7 +36,7 @@
     "hooks": [
         "static_vue2\\common\\utils\\hooks.vue",
         "static_vue2\\business_yapi\\utils\\hooks.vue",
-        "static_vue2\\business_ait\\utils\\hooks.vue"
+        "static_vue2\\business_admin_normal\\utils\\hooks.vue"
     ],
     "handler": [
         "static_vue2\\common\\utils\\handler.vue"
@@ -54,11 +59,17 @@
     "ConfirmSuccess": [
         "static_vue2\\common\\ui-x\\msg\\ConfirmSuccess.vue"
     ],
+    "xTooltip": [
+        "static_vue2\\common\\ui-x\\directive\\xTooltip\\xTooltip.vue"
+    ],
     "xtipsDefaultPopover": [
         "static_vue2\\common\\ui-x\\directive\\xtips\\xtipsDefaultPopover.vue"
     ],
     "xtips": [
         "static_vue2\\common\\ui-x\\directive\\xtips\\xtips.vue"
+    ],
+    "xPopover": [
+        "static_vue2\\common\\ui-x\\directive\\xtips\\xPopover.vue"
     ],
     "xNotification": [
         "static_vue2\\common\\ui-x\\directive\\xNotification\\xNotification.vue"
@@ -69,6 +80,9 @@
     "xModal": [
         "static_vue2\\common\\ui-x\\directive\\xModal\\xModal.vue"
     ],
+    "xMessage": [
+        "static_vue2\\common\\ui-x\\directive\\xMessage\\xMessage.vue"
+    ],
     "xloading": [
         "static_vue2\\common\\ui-x\\directive\\xloading.vue"
     ],
@@ -77,6 +91,9 @@
     ],
     "ImageViewer": [
         "static_vue2\\common\\ui-x\\directive\\xImg\\ImageViewer.vue"
+    ],
+    "xDrawer": [
+        "static_vue2\\common\\ui-x\\directive\\xDrawer\\xDrawer.vue"
     ],
     "ripple": [
         "static_vue2\\common\\ui-x\\directive\\ripple.vue",
@@ -95,12 +112,16 @@
         "static_vue2\\common\\ui-x\\components\\xExcalidraw\\xExcalidraw.vue"
     ],
     "TableCellItem": [
-        "static_vue2\\common\\ui-x\\components\\TableCell\\TableCellItem.vue",
-        "static_vue2\\business_mo_rancher_sc\\components\\TableCell\\components\\TableCellItem.vue",
-        "static_vue2\\business_moRancher\\components\\TableCell\\components\\TableCellItem.vue"
+        "static_vue2\\common\\ui-x\\components\\TableCell\\TableCellItem.vue"
     ],
     "TableCell": [
         "static_vue2\\common\\ui-x\\components\\TableCell\\TableCell.vue"
+    ],
+    "xTimelineItem": [
+        "static_vue2\\common\\ui-x\\components\\other\\xTimeline\\xTimelineItem.vue"
+    ],
+    "xTimeline": [
+        "static_vue2\\common\\ui-x\\components\\other\\xTimeline\\xTimeline.vue"
     ],
     "xScrollbar": [
         "static_vue2\\common\\ui-x\\components\\other\\xScrollbar\\xScrollbar.vue"
@@ -111,11 +132,26 @@
     "Bar": [
         "static_vue2\\common\\ui-x\\components\\other\\xScrollbar\\Bar.vue"
     ],
+    "xDivider": [
+        "static_vue2\\common\\ui-x\\components\\other\\xDivider\\xDivider.vue"
+    ],
+    "xCollapseItem": [
+        "static_vue2\\common\\ui-x\\components\\other\\xCollapse\\xCollapseItem.vue"
+    ],
+    "xCollapse": [
+        "static_vue2\\common\\ui-x\\components\\other\\xCollapse\\xCollapse.vue"
+    ],
     "xCard": [
         "static_vue2\\common\\ui-x\\components\\other\\xCard\\xCard.vue"
     ],
+    "xCalendar": [
+        "static_vue2\\common\\ui-x\\components\\other\\xCalendar\\xCalendar.vue"
+    ],
     "xBlock": [
         "static_vue2\\common\\ui-x\\components\\other\\xBlock\\xBlock.vue"
+    ],
+    "xAvatar": [
+        "static_vue2\\common\\ui-x\\components\\other\\xAvatar\\xAvatar.vue"
     ],
     "xAlertTiny": [
         "static_vue2\\common\\ui-x\\components\\other\\xAlert\\xAlertTiny.vue"
@@ -141,6 +177,36 @@
     "xTabBar": [
         "static_vue2\\common\\ui-x\\components\\navigation\\xTabs\\xTabBar.vue"
     ],
+    "xMobileTabBar": [
+        "static_vue2\\common\\ui-x\\components\\navigation\\xTabs\\mobile\\xMobileTabBar.vue"
+    ],
+    "xMobileTab": [
+        "static_vue2\\common\\ui-x\\components\\navigation\\xTabs\\mobile\\xMobileTab.vue"
+    ],
+    "xSteps": [
+        "static_vue2\\common\\ui-x\\components\\navigation\\xSteps\\xSteps.vue"
+    ],
+    "xStep": [
+        "static_vue2\\common\\ui-x\\components\\navigation\\xSteps\\xStep.vue"
+    ],
+    "xPageHeader": [
+        "static_vue2\\common\\ui-x\\components\\navigation\\xPageHeader\\xPageHeader.vue"
+    ],
+    "xSubMenu": [
+        "static_vue2\\common\\ui-x\\components\\navigation\\xMenu\\xSubMenu.vue"
+    ],
+    "xMenuMixin": [
+        "static_vue2\\common\\ui-x\\components\\navigation\\xMenu\\xMenuMixin.vue"
+    ],
+    "xMenuItemGroup": [
+        "static_vue2\\common\\ui-x\\components\\navigation\\xMenu\\xMenuItemGroup.vue"
+    ],
+    "xMenuItem": [
+        "static_vue2\\common\\ui-x\\components\\navigation\\xMenu\\xMenuItem.vue"
+    ],
+    "xMenu": [
+        "static_vue2\\common\\ui-x\\components\\navigation\\xMenu\\xMenu.vue"
+    ],
     "xDropdownMenu": [
         "static_vue2\\common\\ui-x\\components\\navigation\\xDropdown\\xDropdownMenu.vue"
     ],
@@ -165,6 +231,18 @@
     "xPageContent": [
         "static_vue2\\common\\ui-x\\components\\layout\\page\\xPageContent.vue"
     ],
+    "xToggleText": [
+        "static_vue2\\common\\ui-x\\components\\form\\xToggleEditor\\xToggleText\\xToggleText.vue"
+    ],
+    "xSwitch": [
+        "static_vue2\\common\\ui-x\\components\\form\\xSwitch\\xSwitch.vue"
+    ],
+    "xSliderButton": [
+        "static_vue2\\common\\ui-x\\components\\form\\xSlider\\xSliderButton.vue"
+    ],
+    "xSlider": [
+        "static_vue2\\common\\ui-x\\components\\form\\xSlider\\xSlider.vue"
+    ],
     "xSelectDropdown": [
         "static_vue2\\common\\ui-x\\components\\form\\xSelect\\xSelectDropdown.vue"
     ],
@@ -180,11 +258,68 @@
     "navigationMixin": [
         "static_vue2\\common\\ui-x\\components\\form\\xSelect\\navigationMixin.vue"
     ],
+    "xRadioGroup": [
+        "static_vue2\\common\\ui-x\\components\\form\\xRadio\\xRadioGroup.vue"
+    ],
+    "xRadioButton": [
+        "static_vue2\\common\\ui-x\\components\\form\\xRadio\\xRadioButton.vue"
+    ],
+    "xRadio": [
+        "static_vue2\\common\\ui-x\\components\\form\\xRadio\\xRadio.vue"
+    ],
+    "xIpAddress": [
+        "static_vue2\\common\\ui-x\\components\\form\\xIpAddress\\xIpAddress.vue"
+    ],
     "xInputNumber": [
         "static_vue2\\common\\ui-x\\components\\form\\xInputNumber\\xInputNumber.vue"
     ],
     "xInput": [
         "static_vue2\\common\\ui-x\\components\\form\\xInput\\xInput.vue"
+    ],
+    "xTimeSelect": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\xTimeSelect.vue"
+    ],
+    "xTimePicker": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\xTimePicker.vue"
+    ],
+    "xDatePicker": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\xDatePicker.vue"
+    ],
+    "PanelTimeSelect": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\panel\\PanelTimeSelect.vue"
+    ],
+    "PanelTimeRange": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\panel\\PanelTimeRange.vue"
+    ],
+    "PanelTime": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\panel\\PanelTime.vue"
+    ],
+    "PanelMonthRange": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\panel\\PanelMonthRange.vue"
+    ],
+    "PanelDateRange": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\panel\\PanelDateRange.vue"
+    ],
+    "PanelDate": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\panel\\PanelDate.vue"
+    ],
+    "dateUtils": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\dateUtils.vue"
+    ],
+    "BasicYearTable": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\basic\\BasicYearTable.vue"
+    ],
+    "BasicTimeSpinner": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\basic\\BasicTimeSpinner.vue"
+    ],
+    "BasicMonthTable": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\basic\\BasicMonthTable.vue"
+    ],
+    "BasicDateTable": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\basic\\BasicDateTable.vue"
+    ],
+    "BasicDatePicker": [
+        "static_vue2\\common\\ui-x\\components\\form\\xDatePicker\\basic\\BasicDatePicker.vue"
     ],
     "xCheckboxGroup": [
         "static_vue2\\common\\ui-x\\components\\form\\xCheckbox\\xCheckboxGroup.vue"
@@ -194,6 +329,27 @@
     ],
     "xCheckbox": [
         "static_vue2\\common\\ui-x\\components\\form\\xCheckbox\\xCheckbox.vue"
+    ],
+    "xCascaderPanel": [
+        "static_vue2\\common\\ui-x\\components\\form\\xCascader\\xCascaderPanel\\xCascaderPanel.vue"
+    ],
+    "xCascaderNode": [
+        "static_vue2\\common\\ui-x\\components\\form\\xCascader\\xCascaderPanel\\xCascaderNode.vue"
+    ],
+    "xCascaderMenu": [
+        "static_vue2\\common\\ui-x\\components\\form\\xCascader\\xCascaderPanel\\xCascaderMenu.vue"
+    ],
+    "xCascader": [
+        "static_vue2\\common\\ui-x\\components\\form\\xCascader\\xCascader.vue"
+    ],
+    "xAutocompleteSuggestions": [
+        "static_vue2\\common\\ui-x\\components\\form\\xAutocomplete\\xAutocompleteSuggestions.vue"
+    ],
+    "xAutocomplete": [
+        "static_vue2\\common\\ui-x\\components\\form\\xAutocomplete\\xAutocomplete.vue"
+    ],
+    "xAdvancedSearch": [
+        "static_vue2\\common\\ui-x\\components\\form\\xAdvancedSearch\\xAdvancedSearch.vue"
     ],
     "xFixedSizeList": [
         "static_vue2\\common\\ui-x\\components\\data\\xVirtualList\\xFixedSizeList.vue"
@@ -206,6 +362,9 @@
     ],
     "xDynamicSizeGrid": [
         "static_vue2\\common\\ui-x\\components\\data\\xVirtualList\\xDynamicSizeGrid.vue"
+    ],
+    "xBuildList": [
+        "static_vue2\\common\\ui-x\\components\\data\\xVirtualList\\xBuildList.vue"
     ],
     "xValidatorTips": [
         "static_vue2\\common\\ui-x\\components\\data\\xValidatorTips\\xValidatorTips.vue"
@@ -255,9 +414,11 @@
     "ComponentFixedSizeGrid": [
         "static_vue2\\common\\ui-x\\components\\data\\xTableVir\\ComponentFixedSizeGrid.vue"
     ],
+    "ComponentDynamicSizeGrid": [
+        "static_vue2\\common\\ui-x\\components\\data\\xTableVir\\ComponentDynamicSizeGrid.vue"
+    ],
     "xPagination": [
-        "static_vue2\\common\\ui-x\\components\\data\\xPagination\\xPagination.vue",
-        "static_vue2\\common\\ui-x\\common\\xPagination.vue"
+        "static_vue2\\common\\ui-x\\components\\data\\xPagination\\xPagination.vue"
     ],
     "PrivatePagination": [
         "static_vue2\\common\\ui-x\\components\\data\\xPagination\\PrivatePagination.vue"
@@ -268,8 +429,8 @@
     "xMenuTree": [
         "static_vue2\\common\\ui-x\\components\\data\\xMenuTree\\xMenuTree.vue"
     ],
-    "xDescItem": [
-        "static_vue2\\common\\ui-x\\components\\data\\xDesc\\xDescItem.vue"
+    "xItemDesc": [
+        "static_vue2\\common\\ui-x\\components\\data\\xDesc\\xItemDesc.vue"
     ],
     "xDesc": [
         "static_vue2\\common\\ui-x\\components\\data\\xDesc\\xDesc.vue"
@@ -295,6 +456,12 @@
     ],
     "xBtn": [
         "static_vue2\\common\\ui-x\\components\\base\\xBtn\\xBtn.vue"
+    ],
+    "xRow": [
+        "static_vue2\\common\\ui-x\\components\\base\\layout\\xRow.vue"
+    ],
+    "xCol": [
+        "static_vue2\\common\\ui-x\\components\\base\\layout\\xCol.vue"
     ],
     "xUIcomponetUtils": [
         "static_vue2\\common\\ui-x\\common\\xUIcomponetUtils.vue"
@@ -335,53 +502,50 @@
     "xMd": [
         "static_vue2\\common\\ui-x\\common\\xMd.vue"
     ],
-    "xItemWrapper": [
-        "static_vue2\\common\\ui-x\\common\\xItemWrapper.vue"
-    ],
     "xItemSwitch": [
-        "static_vue2\\common\\ui-x\\common\\xItemSwitch.vue"
+        "static_vue2\\common\\ui-x\\common\\xItem\\xItemSwitch.vue"
     ],
     "xItemSlider": [
-        "static_vue2\\common\\ui-x\\common\\xItemSlider.vue"
+        "static_vue2\\common\\ui-x\\common\\xItem\\xItemSlider.vue"
     ],
     "xItemSelect": [
-        "static_vue2\\common\\ui-x\\common\\xItemSelect.vue"
+        "static_vue2\\common\\ui-x\\common\\xItem\\xItemSelect.vue"
     ],
     "xItemRadioGroup": [
-        "static_vue2\\common\\ui-x\\common\\xItemRadioGroup.vue"
+        "static_vue2\\common\\ui-x\\common\\xItem\\xItemRadioGroup.vue"
     ],
     "xItemNameUrl": [
-        "static_vue2\\common\\ui-x\\common\\xItemNameUrl.vue"
+        "static_vue2\\common\\ui-x\\common\\xItem\\xItemNameUrl.vue"
     ],
-    "xItemIpPart": [
-        "static_vue2\\common\\ui-x\\common\\xItemIpPart.vue"
+    "xItemIpAddress": [
+        "static_vue2\\common\\ui-x\\common\\xItem\\xItemIpAddress.vue"
     ],
     "xItemInput": [
-        "static_vue2\\common\\ui-x\\common\\xItemInput.vue"
+        "static_vue2\\common\\ui-x\\common\\xItem\\xItemInput.vue"
     ],
     "xItemDatetime": [
-        "static_vue2\\common\\ui-x\\common\\xItemDatetime.vue"
+        "static_vue2\\common\\ui-x\\common\\xItem\\xItemDatetime.vue"
+    ],
+    "xItemCidr": [
+        "static_vue2\\common\\ui-x\\common\\xItem\\xItemCidr.vue"
     ],
     "xItemCheckboxGroup": [
-        "static_vue2\\common\\ui-x\\common\\xItemCheckboxGroup.vue"
-    ],
-    "xItemCheckBox": [
-        "static_vue2\\common\\ui-x\\common\\xItemCheckBox.vue"
-    ],
-    "xItem": [
-        "static_vue2\\common\\ui-x\\common\\xItem.vue"
-    ],
-    "xItem.ReadonlyAsRender": [
-        "static_vue2\\common\\ui-x\\common\\xItem.ReadonlyAsRender.vue"
-    ],
-    "xItem.NormalRender": [
-        "static_vue2\\common\\ui-x\\common\\xItem.NormalRender.vue"
-    ],
-    "xItem.ItemAsWrapper": [
-        "static_vue2\\common\\ui-x\\common\\xItem.ItemAsWrapper.vue"
+        "static_vue2\\common\\ui-x\\common\\xItem\\xItemCheckboxGroup.vue"
     ],
     "xItemCheck": [
-        "static_vue2\\common\\ui-x\\common\\xItem\\xItemCheck\\xItemCheck.vue"
+        "static_vue2\\common\\ui-x\\common\\xItem\\xItemCheck.vue"
+    ],
+    "xItem": [
+        "static_vue2\\common\\ui-x\\common\\xItem\\xItem.vue"
+    ],
+    "xItemReadonlyAsRender": [
+        "static_vue2\\common\\ui-x\\common\\xItem\\controllerRender\\xItemReadonlyAsRender.vue"
+    ],
+    "xItemNormalRender": [
+        "static_vue2\\common\\ui-x\\common\\xItem\\controllerRender\\xItemNormalRender.vue"
+    ],
+    "xItemItemAsWrapper": [
+        "static_vue2\\common\\ui-x\\common\\xItem\\controllerRender\\xItemItemAsWrapper.vue"
     ],
     "xInquire": [
         "static_vue2\\common\\ui-x\\common\\xInquire.vue"
@@ -402,8 +566,7 @@
         "static_vue2\\common\\ui-x\\common\\xFragment.vue"
     ],
     "xForm": [
-        "static_vue2\\common\\ui-x\\common\\xForm.vue",
-        "static_vue2\\business_doc\\views\\xComponent\\xForm.vue"
+        "static_vue2\\common\\ui-x\\common\\xForm.vue"
     ],
     "xDialog": [
         "static_vue2\\common\\ui-x\\common\\xDialog.vue"
@@ -441,11 +604,17 @@
     "xCellDate": [
         "static_vue2\\common\\ui-x\\common\\xCellDate.vue"
     ],
+    "xCellCheckbox": [
+        "static_vue2\\common\\ui-x\\common\\xCellCheckbox.vue"
+    ],
     "xCellBtnGroup": [
         "static_vue2\\common\\ui-x\\common\\xCellBtnGroup.vue"
     ],
     "xAutoResizer": [
         "static_vue2\\common\\ui-x\\common\\xAutoResizer.vue"
+    ],
+    "xAppLayoutHeaderOcOprs": [
+        "static_vue2\\common\\ui-x\\common\\xAppLayoutHeaderOcOprs.vue"
     ],
     "ItemMixins": [
         "static_vue2\\common\\ui-x\\common\\ItemMixins.vue"
@@ -459,14 +628,11 @@
     "useElementUI.NoJS": [
         "static_vue2\\common\\ui-element\\useElementUI.NoJS.vue"
     ],
-    "elButton": [
-        "static_vue2\\common\\ui-element\\components\\elButton.vue"
+    "todo": [
+        "static_vue2\\common\\todo.vue"
     ],
     "useReact": [
         "static_vue2\\common\\react\\useReact.vue"
-    ],
-    "DialogProductServiceList": [
-        "static_vue2\\common\\mo\\components\\DialogProductServiceList.vue"
     ],
     "WebStorageCache": [
         "static_vue2\\common\\libs\\WebStorageCache.vue"
@@ -486,6 +652,9 @@
     "popup": [
         "static_vue2\\common\\libs\\VuePopper\\popup.vue"
     ],
+    "socket.io": [
+        "static_vue2\\common\\libs\\socket.io.vue"
+    ],
     "Nprogress": [
         "static_vue2\\common\\libs\\Nprogress.vue"
     ],
@@ -498,127 +667,104 @@
     "highlight": [
         "static_vue2\\common\\libs\\highlight.vue"
     ],
-    "ZlMobileDetail": [
-        "static_vue2\\business_zhong_liang\\views\\ZlMobileDetail.vue"
+    "options": [
+        "static_vue2\\common\\admin\\options.vue"
     ],
-    "ZlDetailTable": [
-        "static_vue2\\business_zhong_liang\\views\\ZlMobileDetail\\ZlDetailTable.vue"
+    "AdminMenuTree": [
+        "static_vue2\\common\\admin\\components\\AdminMenuTree.vue"
     ],
-    "userIdWorkIdList": [
-        "static_vue2\\business_zhong_liang\\views\\Log\\userIdWorkIdList.vue"
+    "AdminMenuPermissionTree": [
+        "static_vue2\\common\\admin\\components\\AdminMenuPermissionTree.vue"
     ],
-    "ToDoListAbnormal": [
-        "static_vue2\\business_zhong_liang\\views\\Log\\ToDoListAbnormal.vue"
+    "AdminMenuCascader": [
+        "static_vue2\\common\\admin\\components\\AdminMenuCascader.vue"
     ],
-    "ToDoList": [
-        "static_vue2\\business_zhong_liang\\views\\Log\\ToDoList.vue"
+    "AdminIconSelector": [
+        "static_vue2\\common\\admin\\components\\AdminIconSelector\\AdminIconSelector.vue"
     ],
-    "LogList": [
-        "static_vue2\\business_zhong_liang\\views\\Log\\LogList.vue"
+    "AdminDeptCascader": [
+        "static_vue2\\common\\admin\\components\\AdminDeptCascader.vue"
     ],
-    "opts": [
-        "static_vue2\\business_zhong_liang\\utils\\opts.vue",
-        "static_vue2\\business_yapi\\utils\\opts.vue",
-        "static_vue2\\business_mo_rancher_sc\\utils\\opts.vue",
-        "static_vue2\\business_mo_ctyun\\utils\\opts.vue",
-        "static_vue2\\business_doc\\utils\\opts.vue",
-        "static_vue2\\business_a_init_element-ui\\utils\\opts.vue",
-        "static_vue2\\business_anxin\\utils\\opts.vue",
-        "static_vue2\\business_ait\\utils\\opts.vue"
-    ],
-    "api": [
-        "static_vue2\\business_zhong_liang\\utils\\api.vue",
-        "static_vue2\\business_yapi\\utils\\api.vue",
-        "static_vue2\\business_mo_rancher_sc\\utils\\api.vue",
-        "static_vue2\\business_mo_ctyun\\utils\\api.vue",
-        "static_vue2\\business_moRancher\\utils\\api.vue",
-        "static_vue2\\business_doc\\utils\\api.vue",
-        "static_vue2\\business_a_init_element-ui\\utils\\api.vue",
-        "static_vue2\\business_anxin\\utils\\api.vue",
-        "static_vue2\\business_ait\\utils\\api.vue"
-    ],
-    "routes": [
-        "static_vue2\\business_zhong_liang\\router\\routes.vue",
-        "static_vue2\\business_yapi\\router\\routes.vue",
-        "static_vue2\\business_note\\router\\routes.vue",
-        "static_vue2\\business_mo_rancher_sc\\router\\routes.vue",
-        "static_vue2\\business_mo_ctyun\\router\\routes.vue",
-        "static_vue2\\business_moRancher\\router\\routes.vue",
-        "static_vue2\\business_jh\\router\\routes.vue",
-        "static_vue2\\business_doc\\router\\routes.vue",
-        "static_vue2\\business_a_init_element-ui\\router\\routes.vue",
-        "static_vue2\\business_anxin\\router\\routes.vue",
-        "static_vue2\\business_ait\\router\\routes.vue"
-    ],
-    "MenuArray": [
-        "static_vue2\\business_zhong_liang\\router\\MenuArray.vue",
-        "static_vue2\\business_yapi\\router\\MenuArray.vue",
-        "static_vue2\\business_note\\router\\MenuArray.vue",
-        "static_vue2\\business_mo_rancher_sc\\router\\MenuArray.vue",
-        "static_vue2\\business_mo_ctyun\\router\\MenuArray.vue",
-        "static_vue2\\business_moRancher\\router\\MenuArray.vue",
-        "static_vue2\\business_doc\\router\\MenuArray.vue",
-        "static_vue2\\business_a_init_element-ui\\router\\MenuArray.vue",
-        "static_vue2\\business_anxin\\router\\MenuArray.vue",
-        "static_vue2\\business_ait\\router\\MenuArray.vue"
-    ],
-    "AppLayoutLeft": [
-        "static_vue2\\business_zhong_liang\\layout\\AppLayoutLeft.vue",
-        "static_vue2\\business_note\\layout\\AppLayoutLeft.vue",
-        "static_vue2\\business_mo_rancher_sc\\layout\\AppLayoutLeft.vue",
-        "static_vue2\\business_mo_ctyun\\layout\\AppLayoutLeft.vue",
-        "static_vue2\\business_moRancher\\layout\\AppLayoutLeft.vue",
-        "static_vue2\\business_doc\\layout\\AppLayoutLeft.vue",
-        "static_vue2\\business_a_init_element-ui\\layout\\AppLayoutLeft.vue",
-        "static_vue2\\business_anxin\\layout\\AppLayoutLeft.vue",
-        "static_vue2\\business_ait\\layout\\AppLayoutLeft.vue"
-    ],
-    "AppLayoutHeader": [
-        "static_vue2\\business_zhong_liang\\layout\\AppLayoutHeader.vue",
-        "static_vue2\\business_note\\layout\\AppLayoutHeader.vue",
-        "static_vue2\\business_mo_rancher_sc\\layout\\AppLayoutHeader.vue",
-        "static_vue2\\business_mo_ctyun\\layout\\AppLayoutHeader.vue",
-        "static_vue2\\business_moRancher\\layout\\AppLayoutHeader.vue",
-        "static_vue2\\business_jh\\layout\\AppLayoutHeader.vue",
-        "static_vue2\\business_doc\\layout\\AppLayoutHeader.vue",
-        "static_vue2\\business_a_init_element-ui\\layout\\AppLayoutHeader.vue",
-        "static_vue2\\business_anxin\\layout\\AppLayoutHeader.vue",
-        "static_vue2\\business_ait\\layout\\AppLayoutHeader.vue"
-    ],
-    "AppLayout": [
-        "static_vue2\\business_zhong_liang\\layout\\AppLayout.vue",
-        "static_vue2\\business_note\\layout\\AppLayout.vue",
-        "static_vue2\\business_mo_rancher_sc\\layout\\AppLayout.vue",
-        "static_vue2\\business_mo_ctyun\\layout\\AppLayout.vue",
-        "static_vue2\\business_moRancher\\layout\\AppLayout.vue",
-        "static_vue2\\business_jh\\layout\\AppLayout.vue",
-        "static_vue2\\business_doc\\layout\\AppLayout.vue",
-        "static_vue2\\business_a_init_element-ui\\layout\\AppLayout.vue",
-        "static_vue2\\business_anxin\\layout\\AppLayout.vue",
-        "static_vue2\\business_ait\\layout\\AppLayout.vue"
-    ],
-    "entry.zlMobile": [
-        "static_vue2\\business_zhong_liang\\entry.zlMobile.vue"
-    ],
-    "entry": [
-        "static_vue2\\business_zhong_liang\\entry.vue",
-        "static_vue2\\business_yapi\\entry.vue",
-        "static_vue2\\business_note\\entry.vue",
-        "static_vue2\\business_mo_rancher_sc\\entry.vue",
-        "static_vue2\\business_mo_ctyun\\entry.vue",
-        "static_vue2\\business_moRancher\\entry.vue",
-        "static_vue2\\business_jh\\entry.vue",
-        "static_vue2\\business_doc\\entry.vue",
-        "static_vue2\\business_book\\entry.vue",
-        "static_vue2\\business_a_init_element-ui\\entry.vue",
-        "static_vue2\\business_anxin\\entry.vue",
-        "static_vue2\\business_ait\\entry.vue"
+    "AdminDepartmentTree": [
+        "static_vue2\\common\\admin\\components\\AdminDepartmentTree.vue"
     ],
     "yapi.defaul.style": [
         "static_vue2\\business_yapi\\yapi.defaul.style.vue"
     ],
     "UserProfile.Dialog": [
         "static_vue2\\business_yapi\\views\\User\\UserProfile.Dialog.vue"
+    ],
+    "ViewRtcPeerConnectionCanvas": [
+        "static_vue2\\business_yapi\\views\\Rtc\\ViewRtcPeerConnectionCanvas.vue"
+    ],
+    "ViewRtcPeerConnection": [
+        "static_vue2\\business_yapi\\views\\Rtc\\ViewRtcPeerConnection.vue"
+    ],
+    "ViewRtcDemo": [
+        "static_vue2\\business_yapi\\views\\Rtc\\ViewRtcDemo.vue"
+    ],
+    "ViewRtcDataChannelFile": [
+        "static_vue2\\business_yapi\\views\\Rtc\\ViewRtcDataChannelFile.vue"
+    ],
+    "ViewRtcDataChannel": [
+        "static_vue2\\business_yapi\\views\\Rtc\\ViewRtcDataChannel.vue"
+    ],
+    "ViewRtc": [
+        "static_vue2\\business_yapi\\views\\Rtc\\ViewRtc.vue"
+    ],
+    "Rtc_Copy": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\Rtc_Copy.vue"
+    ],
+    "RtcWebRemoteVideo": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcWebRemoteVideo.vue"
+    ],
+    "RtcWebP2PClient": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcWebP2PClient.vue"
+    ],
+    "RtcWebP2PClient.P2PVideoCall": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcWebP2PClient.P2PVideoCall.vue"
+    ],
+    "RtcWebLocalVideo": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcWebLocalVideo.vue"
+    ],
+    "RtcScreenSharing": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcScreenSharing.vue"
+    ],
+    "RtcScreenSharing copy": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcScreenSharing copy.vue"
+    ],
+    "RtcRecordVideo": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcRecordVideo.vue"
+    ],
+    "RtcRecordScreen": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcRecordScreen.vue"
+    ],
+    "RtcRecordCanvas": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcRecordCanvas.vue"
+    ],
+    "RtcRecordAudio": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcRecordAudio.vue"
+    ],
+    "RtcPeerConnectionCanvas": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcPeerConnectionCanvas.vue"
+    ],
+    "RtcMicrophone": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcMicrophone.vue"
+    ],
+    "RtcMediaStreamAPI": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcMediaStreamAPI.vue"
+    ],
+    "RtcCaptureVideo": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcCaptureVideo.vue"
+    ],
+    "RtcCaptureCanvas": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcCaptureCanvas.vue"
+    ],
+    "RtcCamera": [
+        "static_vue2\\business_yapi\\views\\Rtc\\RtcComponents\\RtcCamera.vue"
+    ],
+    "reuseRtc": [
+        "static_vue2\\business_yapi\\views\\Rtc\\reuse\\reuseRtc.vue"
     ],
     "NoteSection": [
         "static_vue2\\business_yapi\\views\\Note\\NoteSection.vue"
@@ -633,19 +779,20 @@
         "static_vue2\\business_yapi\\views\\Note\\Note.dialog.insert.vue"
     ],
     "RegForm": [
-        "static_vue2\\business_yapi\\views\\Login\\RegForm.vue"
+        "static_vue2\\business_yapi\\views\\Login\\RegForm.vue",
+        "static_vue2\\business_admin_normal\\views\\Login\\RegForm.vue"
     ],
     "LoginWrap": [
         "static_vue2\\business_yapi\\views\\Login\\LoginWrap.vue",
-        "static_vue2\\business_ait\\views\\Login\\LoginWrap.vue"
+        "static_vue2\\business_admin_normal\\views\\Login\\LoginWrap.vue"
     ],
     "LoginForm": [
         "static_vue2\\business_yapi\\views\\Login\\LoginForm.vue",
-        "static_vue2\\business_ait\\views\\Login\\LoginForm.vue"
+        "static_vue2\\business_admin_normal\\views\\Login\\LoginForm.vue"
     ],
     "Login": [
         "static_vue2\\business_yapi\\views\\Login\\Login.vue",
-        "static_vue2\\business_ait\\views\\Login\\Login.vue"
+        "static_vue2\\business_admin_normal\\views\\Login\\Login.vue"
     ],
     "I18n": [
         "static_vue2\\business_yapi\\views\\I18n\\I18n.vue"
@@ -658,6 +805,69 @@
     ],
     "I18n.import.dialog": [
         "static_vue2\\business_yapi\\views\\I18n\\I18n.import.dialog.vue"
+    ],
+    "I18n.BaiduAppKey.dialog": [
+        "static_vue2\\business_yapi\\views\\I18n\\I18n.BaiduAppKey.dialog.vue"
+    ],
+    "ViewHoppscotch": [
+        "static_vue2\\business_yapi\\views\\hoppscotch\\ViewHoppscotch.vue"
+    ],
+    "HoppSmartSpinner": [
+        "static_vue2\\business_yapi\\views\\hoppscotch\\components\\HoppSmartSpinner.vue"
+    ],
+    "ViewExplore": [
+        "static_vue2\\business_yapi\\views\\explore\\ViewExplore.vue"
+    ],
+    "VideoPlayer.dialog": [
+        "static_vue2\\business_yapi\\views\\explore\\execTools\\video\\VideoPlayer.dialog.vue"
+    ],
+    "MusicPlayerVolume": [
+        "static_vue2\\business_yapi\\views\\explore\\execTools\\music\\MusicPlayerVolume.vue"
+    ],
+    "MusicPlayerOpration": [
+        "static_vue2\\business_yapi\\views\\explore\\execTools\\music\\MusicPlayerOpration.vue"
+    ],
+    "MusicPlayerModel": [
+        "static_vue2\\business_yapi\\views\\explore\\execTools\\music\\MusicPlayerModel.vue"
+    ],
+    "MusicPlayerAudio": [
+        "static_vue2\\business_yapi\\views\\explore\\execTools\\music\\MusicPlayerAudio.vue"
+    ],
+    "CloudDiskTransferDetail": [
+        "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskTransferDetail.vue"
+    ],
+    "CloudDiskTransfer": [
+        "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskTransfer.vue"
+    ],
+    "CloudDiskResourceItem": [
+        "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskResourceItem.vue"
+    ],
+    "CloudDiskResourceAudioItem": [
+        "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskResourceAudioItem.vue"
+    ],
+    "CloudDiskResource": [
+        "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskResource.vue"
+    ],
+    "CloudDiskResource.upsert.dialog": [
+        "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskResource.upsert.dialog.vue"
+    ],
+    "CloudDiskResource.move.dialog": [
+        "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskResource.move.dialog.vue"
+    ],
+    "CloudDiskMine": [
+        "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskMine.vue"
+    ],
+    "CloudDiskMine.useMusic": [
+        "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskMine.useMusic.vue"
+    ],
+    "CloudDiskMine copy": [
+        "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskMine copy.vue"
+    ],
+    "CloudDiskLayout": [
+        "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskLayout.vue"
+    ],
+    "CloudDiskHeader": [
+        "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskHeader.vue"
     ],
     "ProjectTabs": [
         "static_vue2\\business_yapi\\views\\Api\\Project\\Tabs\\ProjectTabs.vue"
@@ -698,6 +908,9 @@
     "ProjectInterfaceSectionInterfaceDetail": [
         "static_vue2\\business_yapi\\views\\Api\\Project\\Section\\ProjectInterfaceSectionInterfaceDetail.vue"
     ],
+    "ProjectInterfaceSectionInterfaceCopyTo.dialog": [
+        "static_vue2\\business_yapi\\views\\Api\\Project\\Section\\ProjectInterfaceSectionInterfaceCopyTo.dialog.vue"
+    ],
     "ProjectInterfaceSection": [
         "static_vue2\\business_yapi\\views\\Api\\Project\\Section\\ProjectInterfaceSection.vue"
     ],
@@ -709,6 +922,9 @@
     ],
     "ApiHeader": [
         "static_vue2\\business_yapi\\views\\Api\\Header\\ApiHeader.vue"
+    ],
+    "GroupSectionWiki": [
+        "static_vue2\\business_yapi\\views\\Api\\Group\\Section\\Wiki\\GroupSectionWiki.vue"
     ],
     "GroupSectionProjectListPrivate": [
         "static_vue2\\business_yapi\\views\\Api\\Group\\Section\\ProjectList\\Private\\GroupSectionProjectListPrivate.vue"
@@ -751,11 +967,44 @@
     ],
     "var": [
         "static_vue2\\business_yapi\\utils\\var.vue",
-        "static_vue2\\business_anxin\\utils\\var.vue",
-        "static_vue2\\business_ait\\utils\\var.vue"
+        "static_vue2\\business_admin_normal\\utils\\var.vue"
+    ],
+    "opts": [
+        "static_vue2\\business_yapi\\utils\\opts.vue",
+        "static_vue2\\business_doc\\utils\\opts.vue",
+        "static_vue2\\business_admin_normal\\utils\\opts.vue"
+    ],
+    "api": [
+        "static_vue2\\business_yapi\\utils\\api.vue",
+        "static_vue2\\business_doc\\utils\\api.vue",
+        "static_vue2\\business_admin_normal\\utils\\api.vue"
+    ],
+    "routes": [
+        "static_vue2\\business_yapi\\router\\routes.vue",
+        "static_vue2\\business_yapi\\router\\cloudDisk\\routes.vue",
+        "static_vue2\\business_note\\router\\routes.vue",
+        "static_vue2\\business_doc\\router\\routes.vue",
+        "static_vue2\\business_admin_normal\\router\\routes.vue"
+    ],
+    "MenuArray": [
+        "static_vue2\\business_yapi\\router\\MenuArray.vue",
+        "static_vue2\\business_note\\router\\MenuArray.vue",
+        "static_vue2\\business_doc\\router\\MenuArray.vue",
+        "static_vue2\\business_admin_normal\\router\\MenuArray.vue"
     ],
     "AppLayoutLevel": [
-        "static_vue2\\business_yapi\\layout\\AppLayoutLevel.vue"
+        "static_vue2\\business_yapi\\layout\\AppLayoutLevel.vue",
+        "static_vue2\\business_admin_normal\\layout\\AppLayoutLevel.vue"
+    ],
+    "entry": [
+        "static_vue2\\business_yapi\\entry.vue",
+        "static_vue2\\business_note\\entry.vue",
+        "static_vue2\\business_doc\\entry.vue",
+        "static_vue2\\business_book\\entry.vue",
+        "static_vue2\\business_admin_normal\\entry.vue"
+    ],
+    "entry.cloud.disk": [
+        "static_vue2\\business_yapi\\entry.cloud.disk.vue"
     ],
     "YapiToolUserBar": [
         "static_vue2\\business_yapi\\components\\YapiToolUserBar.vue"
@@ -777,6 +1026,9 @@
     ],
     "YapiItemProxyEnv": [
         "static_vue2\\business_yapi\\components\\YapiItemProxyEnv.vue"
+    ],
+    "YapiItemPathParams": [
+        "static_vue2\\business_yapi\\components\\YapiItemPathParams.vue"
     ],
     "YapiItemMonaco": [
         "static_vue2\\business_yapi\\components\\YapiItemMonaco.vue"
@@ -804,6 +1056,9 @@
     ],
     "MkitTheme": [
         "static_vue2\\business_yapi\\components\\TuiEditor\\MkitTheme.vue"
+    ],
+    "deploy.dialog": [
+        "static_vue2\\business_yapi\\components\\deploy\\deploy.dialog.vue"
     ],
     "viewItemInput": [
         "static_vue2\\business_note\\views\\viewItem\\viewItemInput.vue"
@@ -853,553 +1108,66 @@
     "ViewDev": [
         "static_vue2\\business_note\\views\\dev\\ViewDev.vue"
     ],
-    "ViewsRancherDetail": [
-        "static_vue2\\business_mo_rancher_sc\\views\\rancher\\ViewsRancherDetail.vue"
+    "AppLayoutLeft": [
+        "static_vue2\\business_note\\layout\\AppLayoutLeft.vue",
+        "static_vue2\\business_doc\\layout\\AppLayoutLeft.vue"
     ],
-    "rancher": [
-        "static_vue2\\business_mo_rancher_sc\\views\\rancher\\rancher.vue"
+    "AppLayoutHeader": [
+        "static_vue2\\business_note\\layout\\AppLayoutHeader.vue",
+        "static_vue2\\business_doc\\layout\\AppLayoutHeader.vue"
     ],
-    "handleSetWorkLoadHooks": [
-        "static_vue2\\business_mo_rancher_sc\\views\\rancher\\handleSetWorkLoadHooks.vue"
+    "AppLayout": [
+        "static_vue2\\business_note\\layout\\AppLayout.vue",
+        "static_vue2\\business_doc\\layout\\AppLayout.vue"
     ],
-    "deployRancher": [
-        "static_vue2\\business_mo_rancher_sc\\views\\rancher\\deployRancher.vue"
+    "DemoxItemCidr": [
+        "static_vue2\\business_doc\\views\\xComponent\\DemoxItemCidr\\DemoxItemCidr.vue"
     ],
-    "ViewsPVCList": [
-        "static_vue2\\business_mo_rancher_sc\\views\\pvc\\ViewsPVCList.vue",
-        "static_vue2\\business_moRancher\\views\\pvc\\ViewsPVCList.vue"
+    "DemoxItemCheckboxGroup": [
+        "static_vue2\\business_doc\\views\\xComponent\\DemoxItemCheckboxGroup.vue"
     ],
-    "ViewsPVCDetail": [
-        "static_vue2\\business_mo_rancher_sc\\views\\pvc\\ViewsPVCDetail.vue"
+    "DemoxItemCheck": [
+        "static_vue2\\business_doc\\views\\xComponent\\DemoxItemCheck\\DemoxItemCheck.vue"
     ],
-    "ViewsPVCApply": [
-        "static_vue2\\business_mo_rancher_sc\\views\\pvc\\ViewsPVCApply.vue"
-    ],
-    "handleSetColumns": [
-        "static_vue2\\business_mo_rancher_sc\\views\\pvc\\handleSetColumns.vue",
-        "static_vue2\\business_moRancher\\views\\pvc\\handleSetColumns.vue"
-    ],
-    "WorkloadConfig": [
-        "static_vue2\\business_mo_rancher_sc\\views\\component\\rancher\\WorkloadConfig.vue"
-    ],
-    "VolumesItem": [
-        "static_vue2\\business_mo_rancher_sc\\views\\component\\rancher\\VolumesItem.vue"
-    ],
-    "Volumes": [
-        "static_vue2\\business_mo_rancher_sc\\views\\component\\rancher\\Volumes.vue"
-    ],
-    "Scheduler": [
-        "static_vue2\\business_mo_rancher_sc\\views\\component\\rancher\\Scheduler.vue"
-    ],
-    "Readiness": [
-        "static_vue2\\business_mo_rancher_sc\\views\\component\\rancher\\Readiness.vue"
-    ],
-    "Network": [
-        "static_vue2\\business_mo_rancher_sc\\views\\component\\rancher\\Network.vue"
-    ],
-    "Label": [
-        "static_vue2\\business_mo_rancher_sc\\views\\component\\rancher\\Label.vue"
-    ],
-    "Job": [
-        "static_vue2\\business_mo_rancher_sc\\views\\component\\rancher\\Job.vue"
-    ],
-    "Environment": [
-        "static_vue2\\business_mo_rancher_sc\\views\\component\\rancher\\Environment.vue"
-    ],
-    "EntrypointAndCommand": [
-        "static_vue2\\business_mo_rancher_sc\\views\\component\\rancher\\EntrypointAndCommand.vue"
-    ],
-    "creatPVC": [
-        "static_vue2\\business_mo_rancher_sc\\views\\component\\rancher\\creatPVC.vue"
-    ],
-    "Config": [
-        "static_vue2\\business_mo_rancher_sc\\views\\component\\rancher\\Config.vue"
-    ],
-    "index": [
-        "static_vue2\\business_mo_rancher_sc\\components\\TableCell\\components\\index.vue",
-        "static_vue2\\business_moRancher\\components\\TableCell\\components\\index.vue",
-        "static_vue2\\business_jh\\views\\index.vue",
-        "static_vue2\\business_book\\views\\store\\index.vue",
-        "static_vue2\\business_book\\views\\ebook\\index.vue",
-        "static_vue2\\business_book\\mock\\index.vue",
-        "static_vue2\\business_book\\lang\\index.vue",
-        "static_vue2\\business_ait\\views\\index.vue"
-    ],
-    "CtyunErrorCenter": [
-        "static_vue2\\business_mo_ctyun\\views\\CtyunErrorCenter.vue"
-    ],
-    "CtyunecsDev": [
-        "static_vue2\\business_mo_ctyun\\views\\CtyunecsDev.vue"
-    ],
-    "CtyunecsVpcDetailSubnetModify.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\vpc\\detail\\CtyunecsVpcDetailSubnetModify.dialog.vue"
-    ],
-    "CtyunecsVpcDetailSubnet": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\vpc\\detail\\CtyunecsVpcDetailSubnet.vue"
-    ],
-    "CtyunecsVpcDetailRouterView": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\vpc\\detail\\CtyunecsVpcDetailRouterView.vue"
-    ],
-    "CtyunecsVpcDetailCreatSubnet.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\vpc\\detail\\CtyunecsVpcDetailCreatSubnet.dialog.vue"
-    ],
-    "CtyunecsVpcDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\vpc\\detail\\CtyunecsVpcDetail.vue"
-    ],
-    "CtyunecsVpcModify.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\vpc\\CtyunecsVpcModify.dialog.vue"
-    ],
-    "CtyunecsVpcList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\vpc\\CtyunecsVpcList.vue"
-    ],
-    "CtyunecsVpcApply": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\vpc\\CtyunecsVpcApply.vue"
-    ],
-    "UsedIpView": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\subnet\\detail\\UsedIpView.vue"
-    ],
-    "CtyunecsNetDetailVirtualIpBindEip.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\subnet\\detail\\CtyunecsNetDetailVirtualIpBindEip.dialog.vue"
-    ],
-    "CtyunecsNetDetailVirtualIpBindEcs.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\subnet\\detail\\CtyunecsNetDetailVirtualIpBindEcs.dialog.vue"
-    ],
-    "CtyunecsNetDetailVirtualIp": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\subnet\\detail\\CtyunecsNetDetailVirtualIp.vue"
-    ],
-    "CtyunecsNetDetailRouteTable": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\subnet\\detail\\CtyunecsNetDetailRouteTable.vue"
-    ],
-    "CtyunecsNetDetailRouteTable.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\subnet\\detail\\CtyunecsNetDetailRouteTable.dialog.vue"
-    ],
-    "CtyunecsNetDetailEcs": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\subnet\\detail\\CtyunecsNetDetailEcs.vue"
-    ],
-    "CtyunecsNetDetailApplyVirtualIp.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\subnet\\detail\\CtyunecsNetDetailApplyVirtualIp.dialog.vue"
-    ],
-    "CtyunecsNetDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\subnet\\detail\\CtyunecsNetDetail.vue"
-    ],
-    "CtyunecsNetListOpenIpv6.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\subnet\\CtyunecsNetListOpenIpv6.dialog.vue"
-    ],
-    "CtyunecsNetListApply.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\subnet\\CtyunecsNetListApply.dialog.vue"
-    ],
-    "CtyunecsNetList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\subnet\\CtyunecsNetList.vue"
-    ],
-    "CtyunecsSnapshotEcsList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\snapshot\\ecs\\CtyunecsSnapshotEcsList.vue"
-    ],
-    "CtyunecsSnapshotEcsList.dialog.UpsertSnapshot": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\snapshot\\ecs\\CtyunecsSnapshotEcsList.dialog.UpsertSnapshot.vue"
-    ],
-    "CtyunecsSnapshotEcsList.dialog.UpsertPolicy": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\snapshot\\ecs\\CtyunecsSnapshotEcsList.dialog.UpsertPolicy.vue"
-    ],
-    "CtyunecsSnapshotEcsList.dialog.recoveryData": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\snapshot\\ecs\\CtyunecsSnapshotEcsList.dialog.recoveryData.vue"
-    ],
-    "CtyunecsSnapshotEcsDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\snapshot\\ecs\\CtyunecsSnapshotEcsDetail.vue"
-    ],
-    "CtyunecsSnapshotEcsDetail.Policy": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\snapshot\\ecs\\CtyunecsSnapshotEcsDetail.Policy.vue"
-    ],
-    "CtyunecsAccessSecurityGroupRules.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sec\\CtyunecsAccessSecurityGroupRules.dialog.vue"
-    ],
-    "CtyunecsAccessSecSelectCloudServer.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sec\\CtyunecsAccessSecSelectCloudServer.dialog.vue"
-    ],
-    "CtyunecsAccessSecModify.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sec\\CtyunecsAccessSecModify.dialog.vue"
-    ],
-    "CtyunecsAccessSecList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sec\\CtyunecsAccessSecList.vue"
-    ],
-    "CtyunecsAccessSecDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sec\\CtyunecsAccessSecDetail.vue"
-    ],
-    "CtyunecsAccessSecCreateOrApply": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sec\\CtyunecsAccessSecCreateOrApply.vue"
-    ],
-    "ctyunecsSbwModifiy.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sbw\\ctyunecsSbwModifiy.dialog.vue"
-    ],
-    "ctyunecsSbwListRenewal.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sbw\\ctyunecsSbwListRenewal.dialog.vue"
-    ],
-    "ctyunecsSbwListDetailEip": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sbw\\ctyunecsSbwListDetailEip.vue"
-    ],
-    "ctyunecsSbwListDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sbw\\ctyunecsSbwListDetail.vue"
-    ],
-    "ctyunecsSbwListApply": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sbw\\ctyunecsSbwListApply.vue"
-    ],
-    "ctyunecsSbwList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sbw\\ctyunecsSbwList.vue"
-    ],
-    "ctyunecsSbwBindEip.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sbw\\ctyunecsSbwBindEip.dialog.vue"
-    ],
-    "ctyunecsSbwBindEcs.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\sbw\\ctyunecsSbwBindEcs.dialog.vue"
-    ],
-    "SubnetView": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\routerList\\SubnetView.vue"
-    ],
-    "SubnetView.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\routerList\\SubnetView.dialog.vue"
-    ],
-    "routeTable.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\routerList\\routeTable.dialog.vue"
-    ],
-    "routerListDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\routerList\\routerListDetail.vue"
-    ],
-    "routerListApply.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\routerList\\routerListApply.dialog.vue"
-    ],
-    "routerList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\routerList\\routerList.vue"
-    ],
-    "CtyunecsVpcDetailCreateRouterView.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\routerList\\CtyunecsVpcDetailCreateRouterView.dialog.vue"
-    ],
-    "CtyunecsKeypairKeypairListImport.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\keypair\\CtyunecsKeypairKeypairListImport.dialog.vue"
-    ],
-    "CtyunecsKeypairKeypairListCreateSuccessDownload.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\keypair\\CtyunecsKeypairKeypairListCreateSuccessDownload.dialog.vue"
-    ],
-    "CtyunecsKeypairKeypairListCreate.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\keypair\\CtyunecsKeypairKeypairListCreate.dialog.vue"
-    ],
-    "CtyunecsKeypairKeypairList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\keypair\\CtyunecsKeypairKeypairList.vue"
-    ],
-    "CtyunecsGroupGroupListCreate.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\group\\CtyunecsGroupGroupListCreate.dialog.vue"
-    ],
-    "CtyunecsGroupGroupList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\group\\CtyunecsGroupGroupList.vue"
-    ],
-    "CtyunecsGroupGroupDetailSelectCloudServer.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\group\\CtyunecsGroupGroupDetailSelectCloudServer.dialog.vue"
-    ],
-    "CtyunecsGroupGroupDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\group\\CtyunecsGroupGroupDetail.vue"
-    ],
-    "evsSnapshotRollback.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evsSnapshot\\evsSnapshotRollback.dialog.vue"
-    ],
-    "evsSnapshotList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evsSnapshot\\evsSnapshotList.vue"
-    ],
-    "evsSnapshotDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evsSnapshot\\evsSnapshotDetail.vue"
-    ],
-    "evsSnapshotApply": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evsSnapshot\\evsSnapshotApply.vue"
-    ],
-    "ebsSnapshotList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evsSnapshot\\ebsSnapshotList.vue"
-    ],
-    "EvsAttachVolume.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evs\\EvsAttachVolume.dialog.vue"
-    ],
-    "ebsDetailAttach": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evs\\ebsDetailAttach.vue"
-    ],
-    "CtyunecsEvsModify.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evs\\CtyunecsEvsModify.dialog.vue"
-    ],
-    "CtyunecsEvsList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evs\\CtyunecsEvsList.vue"
-    ],
-    "CtyunecsEvsDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evs\\CtyunecsEvsDetail.vue"
-    ],
-    "CtyunecsEvsApplySnapshot.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evs\\CtyunecsEvsApplySnapshot.dialog.vue"
-    ],
-    "CtyunecsEvsApply": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\evs\\CtyunecsEvsApply.vue"
-    ],
-    "eipBindResourceDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\eip\\eipBindResourceDetail.vue"
-    ],
-    "ctyunecsEipListRenewalEip.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\eip\\ctyunecsEipListRenewalEip.dialog.vue"
-    ],
-    "ctyunecsEipListModifiy.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\eip\\ctyunecsEipListModifiy.dialog.vue"
-    ],
-    "ctyunecsEipListDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\eip\\ctyunecsEipListDetail.vue"
-    ],
-    "ctyunecsEipListBindEip.dialog": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\eip\\ctyunecsEipListBindEip.dialog.vue"
-    ],
-    "ctyunecsEipListApply": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\eip\\ctyunecsEipListApply.vue"
-    ],
-    "ctyunecsEipList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\eip\\ctyunecsEipList.vue"
-    ],
-    "CtyunecsEcsList": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsList.vue"
-    ],
-    "CtyunecsEcsList.dialog.modify.ShoutdownEcs": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsList.dialog.modify.ShoutdownEcs.vue"
-    ],
-    "CtyunecsEcsList.dialog.modify.reinstall": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsList.dialog.modify.reinstall.vue"
-    ],
-    "CtyunecsEcsList.dialog.modify.RebootEcs": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsList.dialog.modify.RebootEcs.vue"
-    ],
-    "CtyunecsEcsList.dialog.modify.pwd": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsList.dialog.modify.pwd.vue"
-    ],
-    "CtyunecsEcsList.dialog.modify.mountDisk": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsList.dialog.modify.mountDisk.vue"
-    ],
-    "CtyunecsEcsList.dialog.modify.keyPair": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsList.dialog.modify.keyPair.vue"
-    ],
-    "CtyunecsEcsList.dialog.modify.flavor": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsList.dialog.modify.flavor.vue"
-    ],
-    "CtyunecsEcsList.dialog.modify.ecsName": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsList.dialog.modify.ecsName.vue"
-    ],
-    "CtyunecsEcsList.dialog.modify.BootEcs": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsList.dialog.modify.BootEcs.vue"
-    ],
-    "CtyunecsEcsList.dialog.modify.bindEIP": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsList.dialog.modify.bindEIP.vue"
-    ],
-    "CtyunecsEcsList.dialog.modify.AddSubnetCard": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsList.dialog.modify.AddSubnetCard.vue"
-    ],
-    "CtyunecsEcsDetail": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsDetail.vue"
-    ],
-    "CtyunecsEcsDetail.reuse": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsDetail.reuse.vue"
-    ],
-    "CtyunecsEcsCreateOrApply": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\ecs\\CtyunecsEcsCreateOrApply.vue"
-    ],
-    "CtyunecsAccessAcl": [
-        "static_vue2\\business_mo_ctyun\\views\\ctyunecs\\acl\\CtyunecsAccessAcl.vue"
-    ],
-    "helper": [
-        "static_vue2\\business_mo_ctyun\\utils\\helper.vue",
-        "static_vue2\\business_anxin\\utils\\helper.vue"
-    ],
-    "MenuArrayByVpc": [
-        "static_vue2\\business_mo_ctyun\\router\\MenuArrayByVpc.vue"
-    ],
-    "AppEntry": [
-        "static_vue2\\business_mo_ctyun\\layout\\AppEntry.vue"
-    ],
-    "CtyunItemVpc": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemVpc.vue"
-    ],
-    "CtyunItemStorage": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemStorage\\CtyunItemStorage.vue"
-    ],
-    "CtyunItemSnapshotTime": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemSnapshotTime.vue"
-    ],
-    "CtyunItemSnapshotRetention": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemSnapshotRetention.vue"
-    ],
-    "CtyunItemSnapshotCycle": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemSnapshotCycle.vue"
-    ],
-    "CtyunItemSGroup": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemSGroup\\CtyunItemSGroup.vue"
-    ],
-    "CtyunItemSGroup.dialog": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemSGroup\\CtyunItemSGroup.dialog.vue"
-    ],
-    "CtyunItemRegionId": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemRegionId.vue"
-    ],
-    "CtyunItemProjectID": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemProjectID.vue"
-    ],
-    "CtyunItemNetCardExport": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemNetCard\\CtyunItemNetCardExport.vue"
-    ],
-    "CtyunItemNetCard": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemNetCard\\CtyunItemNetCard.vue"
-    ],
-    "CtyunItemIpAddress": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemIpAddress\\CtyunItemIpAddress.vue"
-    ],
-    "CtyunItemImage": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemImage\\CtyunItemImage.vue"
-    ],
-    "CtyunItemHostGroup": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemHostGroup\\CtyunItemHostGroup.vue"
-    ],
-    "CtyunItemHostGroup.dialog": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemHostGroup\\CtyunItemHostGroup.dialog.vue"
-    ],
-    "CtyunItemFlavor": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemFlavor\\CtyunItemFlavor.vue"
-    ],
-    "CtyunItemFlavor.dialog": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemFlavor\\CtyunItemFlavor.dialog.vue"
-    ],
-    "CtyunItemEip": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemEip\\CtyunItemEip.vue"
-    ],
-    "CtyunItemCreatePassword": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemCreatePassword\\CtyunItemCreatePassword.vue"
-    ],
-    "CtyunItemBandwidthID": [
-        "static_vue2\\business_mo_ctyun\\components\\CtyunItemBandwidthID.vue"
-    ],
-    "ViewStorageClassManagementList": [
-        "static_vue2\\business_moRancher\\views\\storageClassManagement\\ViewStorageClassManagementList.vue"
-    ],
-    "ViewStorageClassManagementDetail": [
-        "static_vue2\\business_moRancher\\views\\storageClassManagement\\ViewStorageClassManagementDetail.vue"
-    ],
-    "ViewStorageClassManagementApply": [
-        "static_vue2\\business_moRancher\\views\\storageClassManagement\\ViewStorageClassManagementApply.vue"
-    ],
-    "ViewRancherList": [
-        "static_vue2\\business_moRancher\\views\\rancher\\ViewRancherList.vue"
-    ],
-    "ViewPvManagementList": [
-        "static_vue2\\business_moRancher\\views\\pvManagement\\ViewPvManagementList.vue"
-    ],
-    "ViewPvManagementDetail": [
-        "static_vue2\\business_moRancher\\views\\pvManagement\\ViewPvManagementDetail.vue"
-    ],
-    "ViewPvManagementApply": [
-        "static_vue2\\business_moRancher\\views\\pvManagement\\ViewPvManagementApply.vue"
-    ],
-    "ViewProjectManagementList": [
-        "static_vue2\\business_moRancher\\views\\projectManagement\\ViewProjectManagementList.vue"
-    ],
-    "ViewProjectManagementApply": [
-        "static_vue2\\business_moRancher\\views\\projectManagement\\ViewProjectManagementApply.vue"
-    ],
-    "ViewNameSpaceManagementList": [
-        "static_vue2\\business_moRancher\\views\\nameSpaceManagement\\ViewNameSpaceManagementList.vue"
-    ],
-    "ViewNameSpaceManagementApply": [
-        "static_vue2\\business_moRancher\\views\\nameSpaceManagement\\ViewNameSpaceManagementApply.vue"
-    ],
-    "ViewHostManagementUpdate": [
-        "static_vue2\\business_moRancher\\views\\hostManagement\\ViewHostManagementUpdate.vue"
-    ],
-    "ViewHostManagementList": [
-        "static_vue2\\business_moRancher\\views\\hostManagement\\ViewHostManagementList.vue"
-    ],
-    "ViewHostManagementDetail": [
-        "static_vue2\\business_moRancher\\views\\hostManagement\\ViewHostManagementDetail.vue"
-    ],
-    "ViewEndpointConfigurationList": [
-        "static_vue2\\business_moRancher\\views\\endpointConfiguration\\ViewEndpointConfigurationList.vue"
-    ],
-    "ViewEndpointConfigurationApply": [
-        "static_vue2\\business_moRancher\\views\\endpointConfiguration\\ViewEndpointConfigurationApply.vue"
-    ],
-    "ViewClusteRecover": [
-        "static_vue2\\business_moRancher\\views\\cluster\\ViewClusteRecover.vue"
-    ],
-    "ViewClusteListUpdate": [
-        "static_vue2\\business_moRancher\\views\\cluster\\ViewClusteListUpdate.vue"
-    ],
-    "ViewClusteListApply": [
-        "static_vue2\\business_moRancher\\views\\cluster\\ViewClusteListApply.vue"
-    ],
-    "ViewClusteList": [
-        "static_vue2\\business_moRancher\\views\\cluster\\ViewClusteList.vue"
-    ],
-    "ViewClusteAzBind": [
-        "static_vue2\\business_moRancher\\views\\cluster\\ViewClusteAzBind.vue"
-    ],
-    "ViewAvailabilityZoneList": [
-        "static_vue2\\business_moRancher\\views\\availabilityZone\\ViewAvailabilityZoneList.vue"
-    ],
-    "ViewAvailabilityZoneApply": [
-        "static_vue2\\business_moRancher\\views\\availabilityZone\\ViewAvailabilityZoneApply.vue"
-    ],
-    "clusterOptionsUpdate": [
-        "static_vue2\\business_moRancher\\components\\clusterOptionsUpdate.vue"
-    ],
-    "clusterOptionsByMirrorUpdate": [
-        "static_vue2\\business_moRancher\\components\\clusterOptionsByMirrorUpdate.vue"
-    ],
-    "clusterOptionsByMirror": [
-        "static_vue2\\business_moRancher\\components\\clusterOptionsByMirror.vue"
-    ],
-    "clusterOptionsByKubernetesUpdate": [
-        "static_vue2\\business_moRancher\\components\\clusterOptionsByKubernetesUpdate.vue"
-    ],
-    "clusterOptionsByKubernetes": [
-        "static_vue2\\business_moRancher\\components\\clusterOptionsByKubernetes.vue"
-    ],
-    "clusterOptionsByHighUpdate": [
-        "static_vue2\\business_moRancher\\components\\clusterOptionsByHighUpdate.vue"
-    ],
-    "clusterOptionsByHigh": [
-        "static_vue2\\business_moRancher\\components\\clusterOptionsByHigh.vue"
-    ],
-    "clusterOptionsByAddressUpdate": [
-        "static_vue2\\business_moRancher\\components\\clusterOptionsByAddressUpdate.vue"
-    ],
-    "clusterOptionsByAddress": [
-        "static_vue2\\business_moRancher\\components\\clusterOptionsByAddress.vue"
-    ],
-    "clusterOptions": [
-        "static_vue2\\business_moRancher\\components\\clusterOptions.vue"
-    ],
-    "clusterHostCommand": [
-        "static_vue2\\business_moRancher\\components\\clusterHostCommand.vue"
-    ],
-    "clusterBaseInfoUpdate": [
-        "static_vue2\\business_moRancher\\components\\clusterBaseInfoUpdate.vue"
-    ],
-    "clusterBaseInfo": [
-        "static_vue2\\business_moRancher\\components\\clusterBaseInfo.vue"
-    ],
-    "xItemDemo": [
-        "static_vue2\\business_doc\\views\\xComponent\\xItemDemo.vue"
+    "XItemCheckUseBlockCheck": [
+        "static_vue2\\business_doc\\views\\xComponent\\DemoxItemCheck\\DemoxItemCheck\\XItemCheckUseBlockCheck.vue"
     ],
     "JiChuYongFa": [
-        "static_vue2\\business_doc\\views\\xComponent\\xItem\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\xComponent\\DemoxItemCheck\\DemoxItemCheck\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\xComponent\\DemoxItem\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\xComponent\\DemoxForm\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\other\\xItemWrapper\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\other\\tooltip\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\other\\timeline\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\other\\popover\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\other\\notification\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\other\\move\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\other\\message\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\other\\layer\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\other\\drawer\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\other\\divider\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\other\\dialog\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\other\\collapse\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\other\\calendar\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\other\\alert\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\other\\affix\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\directive\\directive\\ripple\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\navigation\\tabs\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\component\\navigation\\step\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\component\\navigation\\pageheader\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\navigation\\dropdown\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\navigation\\breadcrumb\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\switch\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\slider\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\form\\select\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\radio\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\ipAddress\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\form\\inputNumber\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\form\\input\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\DatePicker\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\form\\checkbox\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\cascader\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\advancedSearch\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\xExcalidraw\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\virtualizedTable\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\tree\\JiChuYongFa.vue",
@@ -1409,19 +1177,33 @@
         "static_vue2\\business_doc\\views\\component\\data\\icon\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\descriptions\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\card\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\component\\data\\avatar\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\base\\button\\JiChuYongFa.vue"
     ],
+    "ZuoWeiWrapper": [
+        "static_vue2\\business_doc\\views\\xComponent\\DemoxItem\\ZuoWeiWrapper.vue"
+    ],
+    "DemoxItem": [
+        "static_vue2\\business_doc\\views\\xComponent\\DemoxItem\\DemoxItem.vue"
+    ],
     "BianLiangXiuGai": [
-        "static_vue2\\business_doc\\views\\xComponent\\xItem\\BianLiangXiuGai.vue"
+        "static_vue2\\business_doc\\views\\xComponent\\DemoxItem\\BianLiangXiuGai.vue"
     ],
-    "DemoxItemCheckboxGroup": [
-        "static_vue2\\business_doc\\views\\xComponent\\DemoxItemCheckboxGroup.vue"
+    "WeiZhi": [
+        "static_vue2\\business_doc\\views\\xComponent\\DemoxForm\\WeiZhi.vue",
+        "static_vue2\\business_doc\\views\\component\\navigation\\tabs\\WeiZhi.vue"
     ],
-    "DemoxItemCheck": [
-        "static_vue2\\business_doc\\views\\xComponent\\DemoxItemCheck\\DemoxItemCheck.vue"
+    "WeiZhi copy": [
+        "static_vue2\\business_doc\\views\\xComponent\\DemoxForm\\WeiZhi copy.vue"
+    ],
+    "DemoxForm": [
+        "static_vue2\\business_doc\\views\\xComponent\\DemoxForm\\DemoxForm.vue"
     ],
     "ViewAllProject": [
         "static_vue2\\business_doc\\views\\ViewAllProject.vue"
+    ],
+    "ViewAllProject.upsert.dialog": [
+        "static_vue2\\business_doc\\views\\ViewAllProject.upsert.dialog.vue"
     ],
     "list": [
         "static_vue2\\business_doc\\views\\template\\list\\list.vue"
@@ -1431,6 +1213,28 @@
     ],
     "DemoItemWrapper": [
         "static_vue2\\business_doc\\views\\other\\xItemWrapper\\DemoItemWrapper.vue"
+    ],
+    "ZhuTi": [
+        "static_vue2\\business_doc\\views\\other\\tooltip\\ZhuTi.vue",
+        "static_vue2\\business_doc\\views\\other\\alert\\ZhuTi.vue"
+    ],
+    "tooltip": [
+        "static_vue2\\business_doc\\views\\other\\tooltip\\tooltip.vue"
+    ],
+    "GengDuoContent": [
+        "static_vue2\\business_doc\\views\\other\\tooltip\\GengDuoContent.vue"
+    ],
+    "GaoJiKuoZhan": [
+        "static_vue2\\business_doc\\views\\other\\tooltip\\GaoJiKuoZhan.vue"
+    ],
+    "ZiDingYiShiJianChuo": [
+        "static_vue2\\business_doc\\views\\other\\timeline\\ZiDingYiShiJianChuo.vue"
+    ],
+    "ZiDingYiJieDianYangShi": [
+        "static_vue2\\business_doc\\views\\other\\timeline\\ZiDingYiJieDianYangShi.vue"
+    ],
+    "DemoTimeline": [
+        "static_vue2\\business_doc\\views\\other\\timeline\\DemoTimeline.vue"
     ],
     "QianTaoXinXi": [
         "static_vue2\\business_doc\\views\\other\\popover\\QianTaoXinXi.vue"
@@ -1447,9 +1251,6 @@
     "popover": [
         "static_vue2\\business_doc\\views\\other\\popover\\popover.vue"
     ],
-    "OpenWindow": [
-        "static_vue2\\business_doc\\views\\other\\OpenWindow.vue"
-    ],
     "ZiDingYiDanChuWeiZhi": [
         "static_vue2\\business_doc\\views\\other\\notification\\ZiDingYiDanChuWeiZhi.vue"
     ],
@@ -1457,7 +1258,8 @@
         "static_vue2\\business_doc\\views\\other\\notification\\YinCangGuanBiAnNiu.vue"
     ],
     "ShiYongHtmlPianDuan": [
-        "static_vue2\\business_doc\\views\\other\\notification\\ShiYongHtmlPianDuan.vue"
+        "static_vue2\\business_doc\\views\\other\\notification\\ShiYongHtmlPianDuan.vue",
+        "static_vue2\\business_doc\\views\\other\\message\\ShiYongHtmlPianDuan.vue"
     ],
     "Notification": [
         "static_vue2\\business_doc\\views\\other\\notification\\Notification.vue"
@@ -1471,17 +1273,64 @@
     "move": [
         "static_vue2\\business_doc\\views\\other\\move\\move.vue"
     ],
+    "WenZiJuZhong": [
+        "static_vue2\\business_doc\\views\\other\\message\\WenZiJuZhong.vue",
+        "static_vue2\\business_doc\\views\\other\\alert\\WenZiJuZhong.vue"
+    ],
+    "KeGuanBi": [
+        "static_vue2\\business_doc\\views\\other\\message\\KeGuanBi.vue"
+    ],
+    "DemoMessage": [
+        "static_vue2\\business_doc\\views\\other\\message\\DemoMessage.vue"
+    ],
+    "BuTongZhuangTai": [
+        "static_vue2\\business_doc\\views\\other\\message\\BuTongZhuangTai.vue"
+    ],
     "layer": [
         "static_vue2\\business_doc\\views\\other\\layer\\layer.vue"
     ],
+    "ZiDingYiNeiRong": [
+        "static_vue2\\business_doc\\views\\other\\drawer\\ZiDingYiNeiRong.vue",
+        "static_vue2\\business_doc\\views\\other\\calendar\\ZiDingYiNeiRong.vue"
+    ],
+    "DuoCengQianTao": [
+        "static_vue2\\business_doc\\views\\other\\drawer\\DuoCengQianTao.vue"
+    ],
+    "DemoDrawer": [
+        "static_vue2\\business_doc\\views\\other\\drawer\\DemoDrawer.vue"
+    ],
+    "BuTianJiaTitle": [
+        "static_vue2\\business_doc\\views\\other\\drawer\\BuTianJiaTitle.vue"
+    ],
+    "SheZhiWenAn": [
+        "static_vue2\\business_doc\\views\\other\\divider\\SheZhiWenAn.vue"
+    ],
+    "DemoDivider": [
+        "static_vue2\\business_doc\\views\\other\\divider\\DemoDivider.vue"
+    ],
+    "ChuiZhiFenGe": [
+        "static_vue2\\business_doc\\views\\other\\divider\\ChuiZhiFenGe.vue"
+    ],
+    "dialog": [
+        "static_vue2\\business_doc\\views\\other\\dialog\\dialog.vue"
+    ],
+    "ZiDingYiMianBanBiaoTi": [
+        "static_vue2\\business_doc\\views\\other\\collapse\\ZiDingYiMianBanBiaoTi.vue"
+    ],
+    "ShouFengQinXiaoGuo": [
+        "static_vue2\\business_doc\\views\\other\\collapse\\ShouFengQinXiaoGuo.vue"
+    ],
+    "DemoCollapse": [
+        "static_vue2\\business_doc\\views\\other\\collapse\\DemoCollapse.vue"
+    ],
+    "ZiDingYiFanWei": [
+        "static_vue2\\business_doc\\views\\other\\calendar\\ZiDingYiFanWei.vue"
+    ],
+    "DemoCalendar": [
+        "static_vue2\\business_doc\\views\\other\\calendar\\DemoCalendar.vue"
+    ],
     "ZiDingYiGuanBiAnNiu": [
         "static_vue2\\business_doc\\views\\other\\alert\\ZiDingYiGuanBiAnNiu.vue"
-    ],
-    "ZhuTi": [
-        "static_vue2\\business_doc\\views\\other\\alert\\ZhuTi.vue"
-    ],
-    "WenZiJuZhong": [
-        "static_vue2\\business_doc\\views\\other\\alert\\WenZiJuZhong.vue"
     ],
     "DemoAlert": [
         "static_vue2\\business_doc\\views\\other\\alert\\DemoAlert.vue"
@@ -1523,12 +1372,10 @@
         "static_vue2\\business_doc\\views\\dev\\io.vue"
     ],
     "configList": [
-        "static_vue2\\business_doc\\views\\demo\\demo\\configList.vue",
-        "static_vue2\\business_a_init_element-ui\\views\\demo\\demo\\configList.vue"
+        "static_vue2\\business_doc\\views\\demo\\demo\\configList.vue"
     ],
     "configList.upsert": [
-        "static_vue2\\business_doc\\views\\demo\\demo\\configList.upsert.vue",
-        "static_vue2\\business_a_init_element-ui\\views\\demo\\demo\\configList.upsert.vue"
+        "static_vue2\\business_doc\\views\\demo\\demo\\configList.upsert.vue"
     ],
     "ZiDingYiZengJiaBiaoQianYeChuFaQi": [
         "static_vue2\\business_doc\\views\\component\\navigation\\tabs\\ZiDingYiZengJiaBiaoQianYeChuFaQi.vue"
@@ -1539,9 +1386,6 @@
     "XuanXiangKaYangShi": [
         "static_vue2\\business_doc\\views\\component\\navigation\\tabs\\XuanXiangKaYangShi.vue"
     ],
-    "WeiZhi": [
-        "static_vue2\\business_doc\\views\\component\\navigation\\tabs\\WeiZhi.vue"
-    ],
     "tabs": [
         "static_vue2\\business_doc\\views\\component\\navigation\\tabs\\tabs.vue"
     ],
@@ -1550,6 +1394,42 @@
     ],
     "DongTaiZengJianBiaoQianYe": [
         "static_vue2\\business_doc\\views\\component\\navigation\\tabs\\DongTaiZengJianBiaoQianYe.vue"
+    ],
+    "you_miao_shu_de_bu_zhou_tiao": [
+        "static_vue2\\business_doc\\views\\component\\navigation\\step\\you_miao_shu_de_bu_zhou_tiao.vue"
+    ],
+    "shu_zhi_fang_xiang_de_bu_zhou_tiao": [
+        "static_vue2\\business_doc\\views\\component\\navigation\\step\\shu_zhi_fang_xiang_de_bu_zhou_tiao.vue"
+    ],
+    "jian_jie_feng_ge_de_bu_zhou_tiao": [
+        "static_vue2\\business_doc\\views\\component\\navigation\\step\\jian_jie_feng_ge_de_bu_zhou_tiao.vue"
+    ],
+    "HanZhuangTaiBuZhouTiao": [
+        "static_vue2\\business_doc\\views\\component\\navigation\\step\\HanZhuangTaiBuZhouTiao.vue"
+    ],
+    "demo_step": [
+        "static_vue2\\business_doc\\views\\component\\navigation\\step\\demo_step.vue"
+    ],
+    "dai_tu_biao_de_bu_zhou_tiao": [
+        "static_vue2\\business_doc\\views\\component\\navigation\\step\\dai_tu_biao_de_bu_zhou_tiao.vue"
+    ],
+    "biao_ti_he_miao_shu_du_jiang_ju_zhong": [
+        "static_vue2\\business_doc\\views\\component\\navigation\\step\\biao_ti_he_miao_shu_du_jiang_ju_zhong.vue"
+    ],
+    "pageheader": [
+        "static_vue2\\business_doc\\views\\component\\navigation\\pageheader\\pageheader.vue"
+    ],
+    "ZheDie": [
+        "static_vue2\\business_doc\\views\\component\\navigation\\menu\\ZheDie.vue"
+    ],
+    "DingLan": [
+        "static_vue2\\business_doc\\views\\component\\navigation\\menu\\DingLan.vue"
+    ],
+    "DemoMenu": [
+        "static_vue2\\business_doc\\views\\component\\navigation\\menu\\DemoMenu.vue"
+    ],
+    "CeLan": [
+        "static_vue2\\business_doc\\views\\component\\navigation\\menu\\CeLan.vue"
     ],
     "ZhiLingShiJian": [
         "static_vue2\\business_doc\\views\\component\\navigation\\dropdown\\ZhiLingShiJian.vue"
@@ -1577,6 +1457,55 @@
     "breadcrumb": [
         "static_vue2\\business_doc\\views\\component\\navigation\\breadcrumb\\breadcrumb.vue"
     ],
+    "RenYiShiJianFanWei": [
+        "static_vue2\\business_doc\\views\\component\\form\\TimePicker\\RenYiShiJianFanWei.vue"
+    ],
+    "RenYiShiJianDian": [
+        "static_vue2\\business_doc\\views\\component\\form\\TimePicker\\RenYiShiJianDian.vue"
+    ],
+    "GuDingShiJianFanWei": [
+        "static_vue2\\business_doc\\views\\component\\form\\TimePicker\\GuDingShiJianFanWei.vue"
+    ],
+    "GuDingShiJianDian": [
+        "static_vue2\\business_doc\\views\\component\\form\\TimePicker\\GuDingShiJianDian.vue"
+    ],
+    "DemoTimePicker": [
+        "static_vue2\\business_doc\\views\\component\\form\\TimePicker\\DemoTimePicker.vue"
+    ],
+    "WenZiMiaoShu": [
+        "static_vue2\\business_doc\\views\\component\\form\\switch\\WenZiMiaoShu.vue"
+    ],
+    "switch": [
+        "static_vue2\\business_doc\\views\\component\\form\\switch\\switch.vue"
+    ],
+    "KuoZhanDeValueLeiXing": [
+        "static_vue2\\business_doc\\views\\component\\form\\switch\\KuoZhanDeValueLeiXing.vue"
+    ],
+    "JinYongZhuangTai": [
+        "static_vue2\\business_doc\\views\\component\\form\\switch\\JinYongZhuangTai.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\radio\\JinYongZhuangTai.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\inputNumber\\JinYongZhuangTai.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\input\\JinYongZhuangTai.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\checkbox\\JinYongZhuangTai.vue"
+    ],
+    "ZhanShiBiaoJi": [
+        "static_vue2\\business_doc\\views\\component\\form\\slider\\ZhanShiBiaoJi.vue"
+    ],
+    "ShuXiangMoShi": [
+        "static_vue2\\business_doc\\views\\component\\form\\slider\\ShuXiangMoShi.vue"
+    ],
+    "LiSanZhi": [
+        "static_vue2\\business_doc\\views\\component\\form\\slider\\LiSanZhi.vue"
+    ],
+    "FanWeiXuanZe": [
+        "static_vue2\\business_doc\\views\\component\\form\\slider\\FanWeiXuanZe.vue"
+    ],
+    "DemoSlider": [
+        "static_vue2\\business_doc\\views\\component\\form\\slider\\DemoSlider.vue"
+    ],
+    "DaiYouShuRuKuang": [
+        "static_vue2\\business_doc\\views\\component\\form\\slider\\DaiYouShuRuKuang.vue"
+    ],
     "ZiDingYiMoBan": [
         "static_vue2\\business_doc\\views\\component\\form\\select\\ZiDingYiMoBan.vue",
         "static_vue2\\business_doc\\views\\component\\form\\input\\ZiDingYiMoBan.vue"
@@ -1595,7 +1524,8 @@
         "static_vue2\\business_doc\\views\\component\\form\\select\\select.vue"
     ],
     "KeSouSuo": [
-        "static_vue2\\business_doc\\views\\component\\form\\select\\KeSouSuo.vue"
+        "static_vue2\\business_doc\\views\\component\\form\\select\\KeSouSuo.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\cascader\\KeSouSuo.vue"
     ],
     "KeQingKongDanXuan": [
         "static_vue2\\business_doc\\views\\component\\form\\select\\KeQingKongDanXuan.vue"
@@ -1609,16 +1539,24 @@
     "ChuangJianTiaoMu": [
         "static_vue2\\business_doc\\views\\component\\form\\select\\ChuangJianTiaoMu.vue"
     ],
-    "ipAddress": [
-        "static_vue2\\business_doc\\views\\component\\form\\ipAddress\\ipAddress.vue"
+    "radio": [
+        "static_vue2\\business_doc\\views\\component\\form\\radio\\radio.vue"
+    ],
+    "DanXuanKuangZu": [
+        "static_vue2\\business_doc\\views\\component\\form\\radio\\DanXuanKuangZu.vue"
+    ],
+    "DaiYouBianKuang": [
+        "static_vue2\\business_doc\\views\\component\\form\\radio\\DaiYouBianKuang.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\checkbox\\DaiYouBianKuang.vue"
+    ],
+    "AnNiuYangShi": [
+        "static_vue2\\business_doc\\views\\component\\form\\radio\\AnNiuYangShi.vue"
+    ],
+    "DemoIpAddress": [
+        "static_vue2\\business_doc\\views\\component\\form\\ipAddress\\DemoIpAddress.vue"
     ],
     "YanGeBuShu": [
         "static_vue2\\business_doc\\views\\component\\form\\inputNumber\\YanGeBuShu.vue"
-    ],
-    "JinYongZhuangTai": [
-        "static_vue2\\business_doc\\views\\component\\form\\inputNumber\\JinYongZhuangTai.vue",
-        "static_vue2\\business_doc\\views\\component\\form\\input\\JinYongZhuangTai.vue",
-        "static_vue2\\business_doc\\views\\component\\form\\checkbox\\JinYongZhuangTai.vue"
     ],
     "JingDu": [
         "static_vue2\\business_doc\\views\\component\\form\\inputNumber\\JingDu.vue"
@@ -1649,7 +1587,8 @@
         "static_vue2\\business_doc\\views\\component\\form\\input\\KeZiShiYingWenBenGaoDuDeWenBenYu.vue"
     ],
     "KeQingKong": [
-        "static_vue2\\business_doc\\views\\component\\form\\input\\KeQingKong.vue"
+        "static_vue2\\business_doc\\views\\component\\form\\input\\KeQingKong.vue",
+        "static_vue2\\business_doc\\views\\component\\form\\cascader\\KeQingKong.vue"
     ],
     "input": [
         "static_vue2\\business_doc\\views\\component\\form\\input\\input.vue"
@@ -1663,6 +1602,39 @@
     "DaiIconDeShuRuKuang": [
         "static_vue2\\business_doc\\views\\component\\form\\input\\DaiIconDeShuRuKuang.vue"
     ],
+    "RiQiHeShiJianFanWei": [
+        "static_vue2\\business_doc\\views\\component\\form\\DateTimePicker\\RiQiHeShiJianFanWei.vue"
+    ],
+    "RiQiHeShiJianDian": [
+        "static_vue2\\business_doc\\views\\component\\form\\DateTimePicker\\RiQiHeShiJianDian.vue"
+    ],
+    "MoRenDeQiShiYuJieShuShiKe": [
+        "static_vue2\\business_doc\\views\\component\\form\\DateTimePicker\\MoRenDeQiShiYuJieShuShiKe.vue"
+    ],
+    "DemoDateTimePicker": [
+        "static_vue2\\business_doc\\views\\component\\form\\DateTimePicker\\DemoDateTimePicker.vue"
+    ],
+    "XuanZeYueFenFanWei": [
+        "static_vue2\\business_doc\\views\\component\\form\\DatePicker\\XuanZeYueFenFanWei.vue"
+    ],
+    "XuanZeRiQiFanWei": [
+        "static_vue2\\business_doc\\views\\component\\form\\DatePicker\\XuanZeRiQiFanWei.vue"
+    ],
+    "XuanZeRi": [
+        "static_vue2\\business_doc\\views\\component\\form\\DatePicker\\XuanZeRi.vue"
+    ],
+    "RiQiGeShi": [
+        "static_vue2\\business_doc\\views\\component\\form\\DatePicker\\RiQiGeShi.vue"
+    ],
+    "QiTaRiQiDanWei": [
+        "static_vue2\\business_doc\\views\\component\\form\\DatePicker\\QiTaRiQiDanWei.vue"
+    ],
+    "MoRenXianShiRiQi": [
+        "static_vue2\\business_doc\\views\\component\\form\\DatePicker\\MoRenXianShiRiQi.vue"
+    ],
+    "DemoDatePicker": [
+        "static_vue2\\business_doc\\views\\component\\form\\DatePicker\\DemoDatePicker.vue"
+    ],
     "KeXuanXiangMuShuLiangDeXianZhi": [
         "static_vue2\\business_doc\\views\\component\\form\\checkbox\\KeXuanXiangMuShuLiangDeXianZhi.vue"
     ],
@@ -1672,17 +1644,48 @@
     "DuoXuanKuangZu": [
         "static_vue2\\business_doc\\views\\component\\form\\checkbox\\DuoXuanKuangZu.vue"
     ],
-    "DaiYouBianKuang": [
-        "static_vue2\\business_doc\\views\\component\\form\\checkbox\\DaiYouBianKuang.vue"
-    ],
     "checkbox": [
         "static_vue2\\business_doc\\views\\component\\form\\checkbox\\checkbox.vue"
     ],
     "AnNiuYangShiDeDuoXuanZuHe": [
         "static_vue2\\business_doc\\views\\component\\form\\checkbox\\AnNiuYangShiDeDuoXuanZuHe.vue"
     ],
+    "ZiDingYiJieDianNeiRong": [
+        "static_vue2\\business_doc\\views\\component\\form\\cascader\\ZiDingYiJieDianNeiRong.vue",
+        "static_vue2\\business_doc\\views\\component\\data\\tree\\ZiDingYiJieDianNeiRong.vue"
+    ],
+    "XuanZeRenYiYiJiXuanXiang": [
+        "static_vue2\\business_doc\\views\\component\\form\\cascader\\XuanZeRenYiYiJiXuanXiang.vue"
+    ],
+    "JinYongXuanXiang": [
+        "static_vue2\\business_doc\\views\\component\\form\\cascader\\JinYongXuanXiang.vue"
+    ],
+    "JinXianShiZuiHouYiJi": [
+        "static_vue2\\business_doc\\views\\component\\form\\cascader\\JinXianShiZuiHouYiJi.vue"
+    ],
+    "JiLianMianBan": [
+        "static_vue2\\business_doc\\views\\component\\form\\cascader\\JiLianMianBan.vue"
+    ],
+    "JiChuYongFa copy": [
+        "static_vue2\\business_doc\\views\\component\\form\\cascader\\JiChuYongFa copy.vue"
+    ],
+    "DuoXuan": [
+        "static_vue2\\business_doc\\views\\component\\form\\cascader\\DuoXuan.vue"
+    ],
+    "DongTaiJiaZai": [
+        "static_vue2\\business_doc\\views\\component\\form\\cascader\\DongTaiJiaZai.vue"
+    ],
+    "DemoCascader": [
+        "static_vue2\\business_doc\\views\\component\\form\\cascader\\DemoCascader.vue"
+    ],
+    "DemoAdvancedSearch": [
+        "static_vue2\\business_doc\\views\\component\\form\\advancedSearch\\DemoAdvancedSearch.vue"
+    ],
     "DemoExcalidraw": [
         "static_vue2\\business_doc\\views\\component\\data\\xExcalidraw\\DemoExcalidraw.vue"
+    ],
+    "ZiDingYiKongYuanSuXuanRanQi": [
+        "static_vue2\\business_doc\\views\\component\\data\\virtualizedTable\\ZiDingYiKongYuanSuXuanRanQi.vue"
     ],
     "ZiDingYiDanYuanGeXuanRanQi": [
         "static_vue2\\business_doc\\views\\component\\data\\virtualizedTable\\ZiDingYiDanYuanGeXuanRanQi.vue"
@@ -1690,14 +1693,35 @@
     "virtualizedTable": [
         "static_vue2\\business_doc\\views\\component\\data\\virtualizedTable\\virtualizedTable.vue"
     ],
+    "ShuXingShuJu": [
+        "static_vue2\\business_doc\\views\\component\\data\\virtualizedTable\\ShuXingShuJu.vue"
+    ],
     "SelectionCell": [
         "static_vue2\\business_doc\\views\\component\\data\\virtualizedTable\\SelectionCell.vue"
+    ],
+    "DongTaiGaoDuHang": [
+        "static_vue2\\business_doc\\views\\component\\data\\virtualizedTable\\DongTaiGaoDuHang.vue"
     ],
     "DaiYouXuanZeDeBiaoGeSelectionCell": [
         "static_vue2\\business_doc\\views\\component\\data\\virtualizedTable\\DaiYouXuanZeDeBiaoGeSelectionCell.vue"
     ],
     "DaiYouXuanZeDeBiaoGe": [
         "static_vue2\\business_doc\\views\\component\\data\\virtualizedTable\\DaiYouXuanZeDeBiaoGe.vue"
+    ],
+    "MoRenKuoZhanHeMoRenXuanZhong": [
+        "static_vue2\\business_doc\\views\\component\\data\\tree\\MoRenKuoZhanHeMoRenXuanZhong.vue"
+    ],
+    "KeXuanZe": [
+        "static_vue2\\business_doc\\views\\component\\data\\tree\\KeXuanZe.vue"
+    ],
+    "KeTuoZhuaiJieDian": [
+        "static_vue2\\business_doc\\views\\component\\data\\tree\\KeTuoZhuaiJieDian.vue"
+    ],
+    "JinYongFuXuanKuang": [
+        "static_vue2\\business_doc\\views\\component\\data\\tree\\JinYongFuXuanKuang.vue"
+    ],
+    "JieDianGuoLv": [
+        "static_vue2\\business_doc\\views\\component\\data\\tree\\JieDianGuoLv.vue"
     ],
     "DemoTree": [
         "static_vue2\\business_doc\\views\\component\\data\\tree\\DemoTree.vue"
@@ -1765,6 +1789,12 @@
     "icon": [
         "static_vue2\\business_doc\\views\\component\\data\\icon\\icon.vue"
     ],
+    "Style2": [
+        "static_vue2\\business_doc\\views\\component\\data\\descriptions\\Style2.vue"
+    ],
+    "Style1": [
+        "static_vue2\\business_doc\\views\\component\\data\\descriptions\\Style1.vue"
+    ],
     "DemoDescriptions": [
         "static_vue2\\business_doc\\views\\component\\data\\descriptions\\DemoDescriptions.vue"
     ],
@@ -1779,6 +1809,36 @@
     ],
     "card": [
         "static_vue2\\business_doc\\views\\component\\data\\card\\card.vue"
+    ],
+    "ZhanShiLeiXing": [
+        "static_vue2\\business_doc\\views\\component\\data\\avatar\\ZhanShiLeiXing.vue"
+    ],
+    "TuPianRuHeShiYingRongQiKuang": [
+        "static_vue2\\business_doc\\views\\component\\data\\avatar\\TuPianRuHeShiYingRongQiKuang.vue"
+    ],
+    "TuPianJiaZaiShiBaiDeFallbackHangWei": [
+        "static_vue2\\business_doc\\views\\component\\data\\avatar\\TuPianJiaZaiShiBaiDeFallbackHangWei.vue"
+    ],
+    "DemoAvatar": [
+        "static_vue2\\business_doc\\views\\component\\data\\avatar\\DemoAvatar.vue"
+    ],
+    "XiangYingShiBuJu": [
+        "static_vue2\\business_doc\\views\\component\\base\\layout\\XiangYingShiBuJu.vue"
+    ],
+    "layout": [
+        "static_vue2\\business_doc\\views\\component\\base\\layout\\layout.vue"
+    ],
+    "JiChuBuJu": [
+        "static_vue2\\business_doc\\views\\component\\base\\layout\\JiChuBuJu.vue"
+    ],
+    "FenLanPianYi": [
+        "static_vue2\\business_doc\\views\\component\\base\\layout\\FenLanPianYi.vue"
+    ],
+    "FenLanJianGe": [
+        "static_vue2\\business_doc\\views\\component\\base\\layout\\FenLanJianGe.vue"
+    ],
+    "DuiQiFangShi": [
+        "static_vue2\\business_doc\\views\\component\\base\\layout\\DuiQiFangShi.vue"
     ],
     "ClassName": [
         "static_vue2\\business_doc\\views\\common\\css\\ClassName.vue"
@@ -1807,6 +1867,9 @@
     "WindowSourceCode": [
         "static_vue2\\business_doc\\components\\WindowSourceCode.vue"
     ],
+    "DocThemeToggler": [
+        "static_vue2\\business_doc\\components\\DocThemeToggler.vue"
+    ],
     "DocContentOfDemo": [
         "static_vue2\\business_doc\\components\\DocContentOfDemo.vue"
     ],
@@ -1830,6 +1893,23 @@
     ],
     "StoreCategory": [
         "static_vue2\\business_book\\views\\store\\StoreCategory.vue"
+    ],
+    "index": [
+        "static_vue2\\business_book\\views\\store\\index.vue",
+        "static_vue2\\business_book\\views\\ebook\\index.vue",
+        "static_vue2\\business_book\\mock\\index.vue",
+        "static_vue2\\business_book\\lang\\index.vue",
+        "static_vue2\\business_admin_normal\\views\\system\\user\\index.vue",
+        "static_vue2\\business_admin_normal\\views\\system\\role\\index.vue",
+        "static_vue2\\business_admin_normal\\views\\system\\post\\index.vue",
+        "static_vue2\\business_admin_normal\\views\\system\\notice\\index.vue",
+        "static_vue2\\business_admin_normal\\views\\system\\menu\\index.vue",
+        "static_vue2\\business_admin_normal\\views\\system\\dict\\index.vue",
+        "static_vue2\\business_admin_normal\\views\\system\\dept\\index.vue",
+        "static_vue2\\business_admin_normal\\views\\system\\config\\index.vue",
+        "static_vue2\\business_admin_normal\\views\\redirect\\index.vue",
+        "static_vue2\\business_admin_normal\\views\\monitor\\operlog\\index.vue",
+        "static_vue2\\business_admin_normal\\views\\monitor\\logininfor\\index.vue"
     ],
     "store": [
         "static_vue2\\business_book\\utils\\store.vue",
@@ -2015,227 +2095,115 @@
     "BookMark": [
         "static_vue2\\business_book\\components\\common\\BookMark.vue"
     ],
-    "ViewMobileDetail": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail.vue"
+    "user.upsert.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\user\\user.upsert.dialog.vue"
     ],
-    "VpcIpException": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\handlers\\VpcIpException.vue",
-        "static_vue2\\business_anxin\\components\\ApplyformHandlers\\VpcIpException.vue"
+    "user.selector.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\user\\user.selector.dialog.vue"
     ],
-    "VdcUserGoup": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\handlers\\VdcUserGoup.vue"
+    "user.newPwd.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\user\\user.newPwd.dialog.vue"
     ],
-    "VdcQuota": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\handlers\\VdcQuota.vue"
+    "user.auth.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\user\\user.auth.dialog.vue"
     ],
-    "VdcCreate": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\handlers\\VdcCreate.vue"
+    "profile": [
+        "static_vue2\\business_admin_normal\\views\\system\\user\\profile\\profile.vue"
     ],
-    "ServerNicAdd": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\handlers\\ServerNicAdd.vue",
-        "static_vue2\\business_anxin\\components\\ApplyformHandlers\\ServerNicAdd.vue"
+    "role.upsert.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\role\\role.upsert.dialog.vue"
     ],
-    "NamespaceQuota": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\handlers\\NamespaceQuota.vue",
-        "static_vue2\\business_anxin\\components\\ApplyformHandlers\\NamespaceQuota.vue"
+    "role.add.user.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\role\\role.add.user.dialog.vue"
     ],
-    "namespaceCreate": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\handlers\\namespaceCreate.vue"
+    "post.upsert.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\post\\post.upsert.dialog.vue"
     ],
-    "formItems": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\handlers\\formItems.vue"
+    "notice.upsert.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\notice\\notice.upsert.dialog.vue"
     ],
-    "ElbCreate": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\handlers\\ElbCreate.vue"
+    "menu.upsert.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\menu\\menu.upsert.dialog.vue"
     ],
-    "EcsCreate": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\handlers\\EcsCreate.vue"
+    "DictDataList": [
+        "static_vue2\\business_admin_normal\\views\\system\\dict\\DictDataList.vue"
     ],
-    "CceIso": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\handlers\\CceIso.vue"
+    "DictDataList.upsert.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\dict\\DictDataList.upsert.dialog.vue"
     ],
-    "CceElb": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\handlers\\CceElb.vue",
-        "static_vue2\\business_anxin\\components\\ApplyformHandlers\\CceElb.vue"
+    "dict.upsert.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\dict\\dict.upsert.dialog.vue"
     ],
-    "DetailTable": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\DetailTable.vue"
+    "dept.upsert.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\dept\\dept.upsert.dialog.vue"
     ],
-    "DetailFormItem": [
-        "static_vue2\\business_anxin\\views\\ViewMobileDetail\\DetailFormItem.vue"
+    "config.upsert.dialog": [
+        "static_vue2\\business_admin_normal\\views\\system\\config\\config.upsert.dialog.vue"
     ],
-    "ViewFlowTodoList": [
-        "static_vue2\\business_anxin\\views\\flow_todo\\ViewFlowTodoList.vue"
+    "NotFound": [
+        "static_vue2\\business_admin_normal\\views\\NotFound.vue"
     ],
-    "ViewFlowTodoForm": [
-        "static_vue2\\business_anxin\\views\\flow_todo\\ViewFlowTodoForm.vue"
+    "TagsView": [
+        "static_vue2\\business_admin_normal\\views\\Layout\\TagsView.vue"
     ],
-    "ViewFlowCreatedByMe": [
-        "static_vue2\\business_anxin\\views\\flow_created\\ViewFlowCreatedByMe.vue"
+    "SidebarLogo": [
+        "static_vue2\\business_admin_normal\\views\\Layout\\SidebarLogo.vue"
     ],
-    "ViewFlowApproved": [
-        "static_vue2\\business_anxin\\views\\flow_approved\\ViewFlowApproved.vue"
+    "Sidebar": [
+        "static_vue2\\business_admin_normal\\views\\Layout\\Sidebar.vue"
     ],
-    "ViewFlowApplyList": [
-        "static_vue2\\business_anxin\\views\\flow_apply\\ViewFlowApplyList.vue"
+    "Settings": [
+        "static_vue2\\business_admin_normal\\views\\Layout\\Settings.vue"
     ],
-    "ViewFlowApplyForm": [
-        "static_vue2\\business_anxin\\views\\flow_apply\\ViewFlowApplyForm.vue"
+    "ParentView": [
+        "static_vue2\\business_admin_normal\\views\\Layout\\ParentView.vue"
     ],
-    "reuse": [
-        "static_vue2\\business_anxin\\utils\\reuse.vue"
+    "Navbar": [
+        "static_vue2\\business_admin_normal\\views\\Layout\\Navbar.vue"
     ],
-    "entry.mobile": [
-        "static_vue2\\business_anxin\\entry.mobile.vue"
+    "Layout": [
+        "static_vue2\\business_admin_normal\\views\\Layout\\Layout.vue"
     ],
-    "SpecialVpcIpException": [
-        "static_vue2\\business_anxin\\components\\SpecialVpcIpException.vue"
+    "InnerLink": [
+        "static_vue2\\business_admin_normal\\views\\Layout\\InnerLink.vue"
     ],
-    "SpecialPrivateCloudNetworkCardApp": [
-        "static_vue2\\business_anxin\\components\\SpecialPrivateCloudNetworkCardApp.vue"
+    "AppMain": [
+        "static_vue2\\business_admin_normal\\views\\Layout\\AppMain.vue"
     ],
-    "SpecialPrivateCloudeELBApplication1": [
-        "static_vue2\\business_anxin\\components\\SpecialPrivateCloudeELBApplication1.vue"
+    "AdminSidebarItem": [
+        "static_vue2\\business_admin_normal\\views\\Layout\\AdminSidebarItem.vue"
     ],
-    "SpecialPrivateCloudeELBApplication": [
-        "static_vue2\\business_anxin\\components\\SpecialPrivateCloudeELBApplication.vue"
+    "Home": [
+        "static_vue2\\business_admin_normal\\views\\Home.vue"
     ],
-    "SpecialCreateContainerApplicationSpace": [
-        "static_vue2\\business_anxin\\components\\SpecialCreateContainerApplicationSpace.vue"
+    "Home copy": [
+        "static_vue2\\business_admin_normal\\views\\Home copy.vue"
     ],
-    "SpecialCreateApplicationSpace.dialog": [
-        "static_vue2\\business_anxin\\components\\SpecialCreateApplicationSpace.dialog.vue"
+    "TagsViewScrollPane": [
+        "static_vue2\\business_admin_normal\\components\\TagsViewScrollPane.vue"
     ],
-    "SpecialContainerMicroisolationApplication": [
-        "static_vue2\\business_anxin\\components\\SpecialContainerMicroisolationApplication.vue"
+    "NavbarTopNav": [
+        "static_vue2\\business_admin_normal\\components\\NavbarTopNav.vue"
     ],
-    "SpecialContainerCceQuota": [
-        "static_vue2\\business_anxin\\components\\SpecialContainerCceQuota.vue"
+    "NavbarHamburger": [
+        "static_vue2\\business_admin_normal\\components\\NavbarHamburger.vue"
     ],
-    "SpecialCloudManagementUserPermissions": [
-        "static_vue2\\business_anxin\\components\\SpecialCloudManagementUserPermissions.vue"
+    "NavbarBreadcrumb": [
+        "static_vue2\\business_admin_normal\\components\\NavbarBreadcrumb.vue"
     ],
-    "SpecialCloudEcsAutomate": [
-        "static_vue2\\business_anxin\\components\\SpecialCloudEcsAutomate.vue"
+    "IframeToggle": [
+        "static_vue2\\business_admin_normal\\components\\IframeToggle.vue"
     ],
-    "SpecialCloudEcsAutomate.ListOfCloudHostsToBeDelivered": [
-        "static_vue2\\business_anxin\\components\\SpecialCloudEcsAutomate.ListOfCloudHostsToBeDelivered.vue"
+    "AdminItemUserName": [
+        "static_vue2\\business_admin_normal\\components\\AdminItems\\AdminItemUserName.vue"
     ],
-    "SpecialCloudEcsAutomate.dialog": [
-        "static_vue2\\business_anxin\\components\\SpecialCloudEcsAutomate.dialog.vue"
+    "AdminItemStatus": [
+        "static_vue2\\business_admin_normal\\components\\AdminItems\\AdminItemStatus.vue"
     ],
-    "SpecialPrivateCloudVdcQuota": [
-        "static_vue2\\business_anxin\\components\\Special\\PrivateCloudVdcQuota\\SpecialPrivateCloudVdcQuota.vue"
+    "AdminAppLink": [
+        "static_vue2\\business_admin_normal\\components\\AdminAppLink.vue"
     ],
-    "upsert": [
-        "static_vue2\\business_anxin\\components\\Special\\CreateApplicationSpace\\upsert.vue"
-    ],
-    "SpecialCreateApplicationSpace": [
-        "static_vue2\\business_anxin\\components\\Special\\CreateApplicationSpace\\SpecialCreateApplicationSpace.vue"
-    ],
-    "SpecialCreateApplicationSpace.reuse": [
-        "static_vue2\\business_anxin\\components\\Special\\CreateApplicationSpace\\SpecialCreateApplicationSpace.reuse.vue"
-    ],
-    "Quota.Vpc.upsert": [
-        "static_vue2\\business_anxin\\components\\Special\\CreateApplicationSpace\\Quota.Vpc.upsert.vue"
-    ],
-    "Quota.upsert": [
-        "static_vue2\\business_anxin\\components\\Special\\CreateApplicationSpace\\Quota.upsert.vue"
-    ],
-    "GhAnXinCreateApplicationSpaceVpcQuota": [
-        "static_vue2\\business_anxin\\components\\Special\\CreateApplicationSpace\\GhAnXinCreateApplicationSpaceVpcQuota.vue"
-    ],
-    "GhAnXinCreateApplicationSpaceVpcQuota.upsert": [
-        "static_vue2\\business_anxin\\components\\Special\\CreateApplicationSpace\\GhAnXinCreateApplicationSpaceVpcQuota.upsert.vue"
-    ],
-    "SpecialContainerELBApplication": [
-        "static_vue2\\business_anxin\\components\\Special\\ContainerELBApplication\\SpecialContainerELBApplication.vue"
-    ],
-    "SpecialContainerELBApplication.selectPOD.dialog": [
-        "static_vue2\\business_anxin\\components\\Special\\ContainerELBApplication\\SpecialContainerELBApplication.selectPOD.dialog.vue"
-    ],
-    "SpecialContainerELBApplication.fillbackData": [
-        "static_vue2\\business_anxin\\components\\Special\\ContainerELBApplication\\SpecialContainerELBApplication.fillbackData.vue"
-    ],
-    "RequirementFillingInstructions": [
-        "static_vue2\\business_anxin\\components\\RequirementFillingInstructions.vue"
-    ],
-    "ReasonForApplication": [
-        "static_vue2\\business_anxin\\components\\ReasonForApplication.vue"
-    ],
-    "ProcessResult": [
-        "static_vue2\\business_anxin\\components\\ProcessResult.vue"
-    ],
-    "ProcessApproval": [
-        "static_vue2\\business_anxin\\components\\ProcessApproval.vue"
-    ],
-    "SpecialPrivateCloudNetworkCardApp.usedIp": [
-        "static_vue2\\business_anxin\\components\\items\\SpecialPrivateCloudNetworkCardApp.usedIp.vue"
-    ],
-    "SpecialPrivateCloudNetworkCardApp.upsert": [
-        "static_vue2\\business_anxin\\components\\items\\SpecialPrivateCloudNetworkCardApp.upsert.vue"
-    ],
-    "GhAnxinServiceName": [
-        "static_vue2\\business_anxin\\components\\items\\GhAnxinServiceName.vue"
-    ],
-    "GhAnxinRenderUsedIp": [
-        "static_vue2\\business_anxin\\components\\items\\GhAnxinRenderUsedIp.vue"
-    ],
-    "GhAnxinNamespace": [
-        "static_vue2\\business_anxin\\components\\items\\GhAnxinNamespace.vue"
-    ],
-    "GhAnxinIpAddress": [
-        "static_vue2\\business_anxin\\components\\items\\GhAnxinIpAddress.vue"
-    ],
-    "GhAnXinContainerElbSelector": [
-        "static_vue2\\business_anxin\\components\\items\\GhAnXinContainerElbSelector.vue"
-    ],
-    "GhAnXinContainerElbPorts": [
-        "static_vue2\\business_anxin\\components\\items\\GhAnXinContainerElbPorts.vue"
-    ],
-    "GhAnXinContainerElbNote": [
-        "static_vue2\\business_anxin\\components\\items\\GhAnXinContainerElbNote.vue"
-    ],
-    "GhAnXinContainerElbForwardStrategy": [
-        "static_vue2\\business_anxin\\components\\items\\GhAnXinContainerElbForwardStrategy.vue"
-    ],
-    "GhAnXinContainerElbForwardStrategy.upsert": [
-        "static_vue2\\business_anxin\\components\\items\\GhAnXinContainerElbForwardStrategy.upsert.vue"
-    ],
-    "GhAnxinCloudHostName": [
-        "static_vue2\\business_anxin\\components\\items\\GhAnxinCloudHostName.vue"
-    ],
-    "ContainerComponent": [
-        "static_vue2\\business_anxin\\components\\items\\ContainerComponent.vue"
-    ],
-    "Fragment.HeaderOprbtns": [
-        "static_vue2\\business_anxin\\components\\Fragment.HeaderOprbtns.vue"
-    ],
-    "CardBaseInfo": [
-        "static_vue2\\business_anxin\\components\\CardBaseInfo.vue"
-    ],
-    "ApplicationInformation": [
-        "static_vue2\\business_anxin\\components\\ApplicationInformation.vue"
-    ],
-    "ValueConfigList": [
-        "static_vue2\\business_ait\\views\\alarm\\ValueConfigList.vue"
-    ],
-    "AlarmList": [
-        "static_vue2\\business_ait\\views\\alarm\\AlarmList.vue"
-    ],
-    "AlarmDetail": [
-        "static_vue2\\business_ait\\views\\alarm\\AlarmDetail.vue"
-    ],
-    "AlarmConfigList": [
-        "static_vue2\\business_ait\\views\\alarm\\AlarmConfigList.vue"
-    ],
-    "AlarmConfigDialog": [
-        "static_vue2\\business_ait\\views\\alarm\\AlarmConfigDialog.vue"
-    ],
-    "Alarm.upsert.dialog": [
-        "static_vue2\\business_ait\\views\\alarm\\Alarm.upsert.dialog.vue"
-    ],
-    "modifyPassword": [
-        "static_vue2\\business_ait\\components\\modifyPassword.vue"
+    "icons": [
+        "static_vue2\\business_admin_normal\\assets\\svg\\icons.vue"
     ]
 };

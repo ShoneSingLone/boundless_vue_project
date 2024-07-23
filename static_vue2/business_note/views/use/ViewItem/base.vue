@@ -46,7 +46,7 @@ export default async function () {
 				}
 			});
 
-			const formData = computed(() => JSON.stringify(_.$pickValueFromConfigs(form), null, 2));
+			const formData = computed(() => JSON.stringify(_.$pickFormValues(form), null, 2));
 
 			function handleFocus(...args) {
 				console.log("🚀 ~ file: base.vue:50 ~ handleFocus ~ args:", args);

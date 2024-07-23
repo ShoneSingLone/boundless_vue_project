@@ -1,7 +1,12 @@
 <template>
 	<div class="store-shelf">
 		<shelf-title :title="$t('shelf.title')"></shelf-title>
-		<scroll :top="0" :bottom="scrollBottom" class="store-shelf-scroll-wrapper" @onScroll="onScroll" ref="scroll">
+		<scroll
+			:top="0"
+			:bottom="scrollBottom"
+			class="store-shelf-scroll-wrapper"
+			@onScroll="onScroll"
+			ref="scroll">
 			<shelf-search></shelf-search>
 			<shelf-list :data="shelfList"></shelf-list>
 		</scroll>

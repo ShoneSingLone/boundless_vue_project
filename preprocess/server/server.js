@@ -6,6 +6,7 @@ const IO = require("koa-socket");
 
 var { appUseHMR, appUseProxy, appUseKoaAssets, appUseSocketMiddleware, appRun } = require("./middleware");
 
+
 const app = new Koa();
 const ioWs = new IO("ws");
 
@@ -22,3 +23,5 @@ appUseSocketMiddleware(ioWs);
 appUseHMR(ioWs);
 /* *********** */
 appRun(app);
+return app;
+

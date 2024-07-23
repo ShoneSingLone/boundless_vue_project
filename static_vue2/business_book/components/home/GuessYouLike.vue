@@ -1,8 +1,15 @@
 <template>
 	<div class="guess-you-like">
-		<title-view :label="$t('home.guessYouLike')" :btn="$t('home.change')" @onClick="change"></title-view>
+		<title-view
+			:label="$t('home.guessYouLike')"
+			:btn="$t('home.change')"
+			@onClick="change"></title-view>
 		<div class="guess-you-like-list">
-			<div class="guess-you-like-item" v-for="(item, index) in showData" :key="index" @click="showBookDetail(item)">
+			<div
+				class="guess-you-like-item"
+				v-for="(item, index) in showData"
+				:key="index"
+				@click="showBookDetail(item)">
 				<div class="img-wrapper">
 					<img class="img" :src="item.cover" />
 				</div>
@@ -43,7 +50,11 @@ export default async function () {
 			},
 			showData() {
 				if (this.data) {
-					return [this.data[this.index], this.data[this.index + this.total], this.data[this.index + this.total * 2]];
+					return [
+						this.data[this.index],
+						this.data[this.index + this.total],
+						this.data[this.index + this.total * 2]
+					];
 				} else {
 					return [];
 				}
@@ -71,7 +82,9 @@ export default async function () {
 						case 2:
 							return this.$t("home.sameReader").replace("$1", item.result);
 						case 3:
-							return this.$t("home.readPercent").replace("$1", item.percent).replace("$2", item.result);
+							return this.$t("home.readPercent")
+								.replace("$1", item.percent)
+								.replace("$2", item.result);
 					}
 				}
 			},

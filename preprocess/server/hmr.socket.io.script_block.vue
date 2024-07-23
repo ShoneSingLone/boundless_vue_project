@@ -1,13 +1,14 @@
 <script only-use-in-dev-model>
 window.ONLY_USE_IN_DEV_MODEL = function () {
 	const $win = $(window);
-
 	/* 运行时会replace */
 	/* window.io */
 	/* 运行时会replace */
-
 	/* 默认 socket.io */
-	var ws = io("LOCALHOST_PORT/ws");
+	// var ws = io("LOCALHOST_PORT/ws");
+	const websocketURL = `${location.host}/ws`;
+	var ws = io(websocketURL);
+	console.log("ONLY_USE_IN_DEV_MODEL", websocketURL);
 	window.APP_WS = ws;
 
 	ws.on("message", function (event) {
@@ -16,7 +17,16 @@ window.ONLY_USE_IN_DEV_MODEL = function () {
 
 	const HMR_COMPONENT_COLLECTION = {};
 
-	Vue._HandleAsyncComponentResolved = function ({ res, factory, baseCtor, isSync, owners, owner, ownerForceUpdate, ensureCtor }) {
+	Vue._HandleAsyncComponentResolved = function ({
+		res,
+		factory,
+		baseCtor,
+		isSync,
+		owners,
+		owner,
+		ownerForceUpdate,
+		ensureCtor
+	}) {
 		const { FILE_URL } = res;
 		if (HMR_COMPONENT_COLLECTION && FILE_URL) {
 			HMR_COMPONENT_COLLECTION[FILE_URL] = { factory };
@@ -32,7 +42,14 @@ window.ONLY_USE_IN_DEV_MODEL = function () {
 		}
 	};
 	/* VueRouter 加载的组件 */
-	Vue._HandleVueRouterAsyncComponentResolved = function ({ resolvedDef, def, match, key, pending, next }) {
+	Vue._HandleVueRouterAsyncComponentResolved = function ({
+		resolvedDef,
+		def,
+		match,
+		key,
+		pending,
+		next
+	}) {
 		if (Vue.isESModule(resolvedDef)) {
 			resolvedDef = resolvedDef.default;
 		}
@@ -61,12 +78,16 @@ window.ONLY_USE_IN_DEV_MODEL = function () {
 			if (~oldPath.indexOf(changedPath)) {
 				(async function () {
 					try {
-						const newComponent = await _.$sfcVueObject({ resolvedURL, sourceCode: content });
+						const newComponent = await _.$sfcVueObject({
+							resolvedURL,
+							sourceCode: content
+						});
 						factory.resolved = Vue.extend(newComponent);
 						if (match && key) {
 							match.components[key] = factory.resolved;
 						}
 						forceUpdate();
+						// location.reload();
 					} catch (error) {
 						console.error(error);
 					}

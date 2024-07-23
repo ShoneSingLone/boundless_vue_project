@@ -164,7 +164,6 @@ body.app-mobile {
 	.login-form-button {
 		background-image: linear-gradient(to right, #6d69fe 0%, #48a0fa 100%) !important;
 		border: none !important;
-		margin-top: 0.2rem;
 		width: 100%;
 	}
 }

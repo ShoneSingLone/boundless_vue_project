@@ -1,21 +1,26 @@
 <style lang="less"></style>
 <template>
 	<div class="flex1-overflow-auto">
+		<xBtn class="mb" @click="copyTo">复制到</xBtn>
 		<xCard header="基本信息">
-			<xForm col="3" style="--xdesc-item-width: 100px">
-				<xDescItem v-for="(item, index) in cptDescItems" :key="index" :item="item" :span="item.span || 1" />
+			<xForm col="3" style="--xItem-label-width: 100px">
+				<xItemDesc
+					v-for="(item, index) in cptDescItems"
+					:key="index"
+					:item="item"
+					:span="item.span || 1" />
 			</xForm>
 		</xCard>
 		<xGap t />
 		<xCard header="请求">
 			<xCard header="ReqHeaders">
-				<xForm col="1" style="--xdesc-item-width: 100px">
+				<xForm col="1" style="--xItem-label-width: 100px">
 					<YapiApiRequestBodyPreviewer :item="cptHeadersParams" />
 				</xForm>
 			</xCard>
 			<xGap t />
 			<xCard header="ReqBody">
-				<xForm col="1" style="--xdesc-item-width: 100px">
+				<xForm col="1" style="--xItem-label-width: 100px">
 					<YapiApiRequestBodyPreviewer :item="sourceReqBodyOther" />
 				</xForm>
 			</xCard>
@@ -23,7 +28,7 @@
 		<xGap t />
 		<!-- 
 <xCard header="源数据">
-	<xForm col="1" style="--xdesc-item-width: 100px">
+	<xForm col="1" style="--xItem-label-width: 100px">
 		<xItem :configs="form.source" />
 	</xForm>
 </xCard> 
@@ -82,7 +87,8 @@ ${resBackupJson}
 			cptCode() {
 				try {
 					const fn = new Function("params", `return (${this.cptRequestCode})(params)`);
-					const { title, _id, up_time, path, tag, isProxy, witchEnv, method } = this.cptInfo;
+					const { title, _id, up_time, path, tag, isProxy, witchEnv, method } =
+						this.cptInfo;
 
 					if (!path) {
 						return "";
@@ -105,7 +111,7 @@ ${resBackupJson}
 				if (this.APP.cptProject.requestCode) {
 					return this.APP.cptProject.requestCode;
 				} else {
-					return Vue._yapi_utils.RequestCode.toString();
+					return Vue._common_utils.RequestCode.toString();
 				}
 			},
 			cptInfo() {
@@ -114,11 +120,23 @@ ${resBackupJson}
 			cptDescItems() {
 				const vm = this;
 				const { title, uid, up_time, path, tag, isProxy, witchEnv, method } = this.cptInfo;
-				console.log("🚀 ~ cptDescItems ~  title, uid, up_time, path, tag, isProxy, witchEnv :", title, uid, up_time, path, tag, isProxy, witchEnv);
+				console.log(
+					"🚀 ~ cptDescItems ~  title, uid, up_time, path, tag, isProxy, witchEnv :",
+					title,
+					uid,
+					up_time,
+					path,
+					tag,
+					isProxy,
+					witchEnv
+				);
 
 				/* @ts-ignore */
 				const { protocol, hostname, port } = location;
-				const apiURL = String(`${this.APP.cptProject?.basepath || ""}${path}`).replace(/\/\//g, "/");
+				const apiURL = String(`${this.APP.cptProject?.basepath || ""}${path}`).replace(
+					/\/\//g,
+					"/"
+				);
 				const mockHref = `${protocol}//${hostname}${port ? `:${port}` : ""}/mock/${this.APP.cptProject._id}${apiURL}`;
 
 				return [
@@ -126,7 +144,7 @@ ${resBackupJson}
 					{
 						label: i18n("维护人"),
 						value: uid || "--",
-						readonlyAs: () => {
+						xItemRender: () => {
 							const user = _.find(vm.APP.allUser, user => {
 								return user.uid === uid;
 							});
@@ -137,7 +155,7 @@ ${resBackupJson}
 					{
 						label: i18n("更新时间"),
 						value: up_time || "--",
-						readonlyAs: () => {
+						xItemRender: () => {
 							return _.$dateFormat(up_time);
 						}
 					},
@@ -145,7 +163,7 @@ ${resBackupJson}
 						label: i18n("接口"),
 						value: path || "--",
 						span: "full",
-						readonlyAs: () => {
+						xItemRender: () => {
 							const vDomMockHref = (() => {
 								const btnProps = {
 									class: "ml",
@@ -160,16 +178,23 @@ ${resBackupJson}
 										}
 									}
 								};
-								return h("div", { class: "mt" }, [h("xTag", { class: "mr" }, ["mock地址"]), h("span", [mockHref]), h("xBtn", btnProps)]);
+								return h("div", { class: "mt" }, [
+									h("xTag", { class: "mr" }, ["mock地址"]),
+									h("span", [mockHref]),
+									h("xBtn", btnProps)
+								]);
 							})();
-							return h("div", [h("div", [h("xTag", { class: "mr" }, [method]), h("span", [path])]), vDomMockHref]);
+							return h("div", [
+								h("div", [h("xTag", { class: "mr" }, [method]), h("span", [path])]),
+								vDomMockHref
+							]);
 						}
 					},
 					{
 						label: i18n("code"),
 						value: path || "--",
 						span: "full",
-						readonlyAs: () => {
+						xItemRender: () => {
 							return h("xMd", {
 								id: "cptCode",
 								md: this.cptCode,
@@ -179,7 +204,7 @@ ${resBackupJson}
 										try {
 											/* https://www.cnblogs.com/hellxz/p/15192573.html */
 											await _.$copyToClipboard($("#cptCode").text());
-											_.$msgSuccess("复制成功");
+											_.$msg("复制成功");
 										} catch (error) {
 											console.error(error);
 											debugger;
@@ -194,7 +219,7 @@ ${resBackupJson}
 						label: i18n("备份response"),
 						value: path || "--",
 						span: "full",
-						readonlyAs: () => {
+						xItemRender: () => {
 							return h("xMd", { md: this.cptBackupData });
 						}
 					},
@@ -202,16 +227,19 @@ ${resBackupJson}
 						label: i18n("Tag"),
 						span: "full",
 						value: tag || "--",
-						readonlyAs: () => _.map(tag, i => h("xTag", { class: "mr" }, [i]))
+						xItemRender: () => _.map(tag, i => h("xTag", { class: "mr" }, [i]))
 					},
 					{
 						label: i18n("是否开启转发"),
 						value: isProxy || "--",
 						span: "full",
-						readonlyAs: () => {
+						xItemRender: () => {
 							if (isProxy) {
 								const env = _.find(this.APP.cptProject.env, { _id: witchEnv });
-								return h("div", [h("xTag", { class: "mr" }, [env.name]), h("span", [env.domain])]);
+								return h("div", [
+									h("xTag", { class: "mr" }, [env.name]),
+									h("span", [env.domain])
+								]);
 							} else {
 								return "否";
 							}
@@ -241,18 +269,30 @@ ${resBackupJson}
 			}
 		},
 		methods: {
-			async runInterefaceTestDialog({ mockHref, reqMethod }) {
-				const DialogTypeVueSFC = await _.$importVue("@/views/Api/Project/Section/ProjectInterfaceSectionInterfaceDetailPreview.TestInterface.dialog.vue", {
+			async copyTo() {
+				return _.$openModal({
+					title: i18n("复制接口"),
+					url: "@/views/Api/Project/Section/ProjectInterfaceSectionInterfaceCopyTo.dialog.vue",
 					parent: this,
-					mockHref,
-					reqMethod,
 					interfaceId: this.cptInfo._id,
 					projectId: this.APP.cptProject._id
 				});
-				_.$openWindow_deprecated(i18n("测试"), DialogTypeVueSFC, {
-					maxmin: true,
-					fullscreen: true
-				});
+			},
+			runInterefaceTestDialog({ mockHref, reqMethod }) {
+				return _.$openModal(
+					{
+						title: i18n("测试"),
+						url: "@/views/Api/Project/Section/ProjectInterfaceSectionInterfaceDetailPreview.TestInterface.dialog.vue",
+						parent: this,
+						mockHref,
+						reqMethod,
+						interfaceId: this.cptInfo._id,
+						projectId: this.APP.cptProject._id
+					},
+					{
+						fullscreen: true
+					}
+				);
 			}
 		}
 	});

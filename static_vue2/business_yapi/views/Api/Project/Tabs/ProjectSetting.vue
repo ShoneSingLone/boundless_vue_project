@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view flex1" v-if="isShow" id="ProjectSetting">
+	<div class="x-page-view flex1" v-if="isShow" id="ProjectSetting">
 		<xPageContent>
 			<xTabs v-model="cptProjectSettingTab">
 				<xTabPane label="项目配置" name="1"></xTabPane>
@@ -24,15 +24,22 @@ export default async function () {
 	const { useTabName } = await _.$importVue("/common/utils/hooks.vue");
 
 	return {
-		name: "CtyunecsEvsList",
+		name: "ProjectSettingVue",
 		inject: ["APP", "inject_project"],
 		components: {
-			ProjectSettingPanelCommon: () => _.$importVue("@/views/Api/Project/Tabs/ProjectSettingPanelCommon.vue"),
-			ProjectSettingPanelReqFrontendCode: () => _.$importVue("@/views/Api/Project/Tabs/ProjectSettingPanelReqFrontendCode.vue"),
-			ProjectSettingPanelDataImportExport: () => _.$importVue("@/views/Api/Project/Tabs/ProjectSettingPanelDataImportExport.vue")
+			ProjectSettingPanelCommon: () =>
+				_.$importVue("@/views/Api/Project/Tabs/ProjectSettingPanelCommon.vue"),
+			ProjectSettingPanelReqFrontendCode: () =>
+				_.$importVue("@/views/Api/Project/Tabs/ProjectSettingPanelReqFrontendCode.vue"),
+			ProjectSettingPanelDataImportExport: () =>
+				_.$importVue("@/views/Api/Project/Tabs/ProjectSettingPanelDataImportExport.vue")
 		},
 		setup() {
-			const cptProjectSettingTab = useTabName({ vm: this, propName: "project_setting_tab", defaultName: "1" });
+			const cptProjectSettingTab = useTabName({
+				vm: this,
+				propName: "project_setting_tab",
+				defaultName: "1"
+			});
 			return {
 				cptProjectSettingTab
 			};

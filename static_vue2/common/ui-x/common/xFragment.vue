@@ -19,7 +19,11 @@ export default async function () {
 			});
 
 			return function (h) {
-				return h("template", { attrs: { "fragment-start": id }, style: { display: "none" } }, this.$slots.default);
+				return h(
+					"template",
+					{ attrs: { "fragment-start": id }, style: { display: "none" } },
+					this.$slots.default
+				);
 			};
 		}
 	};

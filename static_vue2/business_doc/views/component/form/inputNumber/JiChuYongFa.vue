@@ -1,7 +1,12 @@
 <template>
 	<div>
 		<xMd :md="md" />
-		<xInputNumber v-model="num" @change="handleChange" :min="1" :max="10" label="描述文字"></xInputNumber>
+		<xInputNumber
+			v-model="num"
+			@change="handleChange"
+			:min="1"
+			:max="10"
+			label="描述文字"></xInputNumber>
 	</div>
 </template>
 <script lang="ts">

@@ -1,12 +1,12 @@
 <template>
-	<xBreadcrumb :items="cptBreadcrumbItems" />
+	<xBreadcrumb :items="breadcrumbItems" />
 </template>
 <script lang="ts">
 export default async function () {
 	return defineComponent({
 		inject: ["APP"],
 		computed: {
-			cptBreadcrumbItems() {
+			breadcrumbItems() {
 				const home = {
 					label: "首页",
 					href: _.$aHashLink("/api")

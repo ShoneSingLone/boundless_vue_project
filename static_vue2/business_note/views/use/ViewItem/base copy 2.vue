@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view">
+	<div class="x-page-view">
 		<xPageContent>
 			<p>{{ formData }}</p>
 			<xItem :configs="form.xItemSelect" />
@@ -29,7 +29,7 @@ export default async function () {
 				}
 			});
 
-			const formData = computed(() => _.$pickValueFromConfigs(form));
+			const formData = computed(() => _.$pickFormValues(form));
 
 			return {
 				form,

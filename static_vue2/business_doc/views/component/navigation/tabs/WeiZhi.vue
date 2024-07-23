@@ -1,12 +1,12 @@
 <template>
 	<div>
 		<xMd :md="md" />
-		<el-radio-group v-model="tabPosition" style="margin-bottom: 30px">
-			<el-radio-button label="top">top</el-radio-button>
-			<el-radio-button label="right">right</el-radio-button>
-			<el-radio-button label="bottom">bottom</el-radio-button>
-			<el-radio-button label="left">left</el-radio-button>
-		</el-radio-group>
+		<xRadioGroup v-model="tabPosition" style="margin-bottom: 30px">
+			<xRadioButton label="top">top</xRadioButton>
+			<xRadioButton label="right">right</xRadioButton>
+			<xRadioButton label="bottom">bottom</xRadioButton>
+			<xRadioButton label="left">left</xRadioButton>
+		</xRadioGroup>
 
 		<xTabs :tab-position="tabPosition" style="height: 200px">
 			<xTabPane label="用户管理">用户管理</xTabPane>

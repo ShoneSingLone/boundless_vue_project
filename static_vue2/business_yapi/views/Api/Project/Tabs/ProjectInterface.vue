@@ -25,8 +25,10 @@ export default async function () {
 	return defineComponent({
 		inject: ["APP", "inject_project"],
 		components: {
-			ProjectInterfaceAside: () => _.$importVue("@/views/Api/Project/Aside/ProjectInterfaceAside.vue"),
-			ProjectInterfaceSection: () => _.$importVue("@/views/Api/Project/Section/ProjectInterfaceSection.vue")
+			ProjectInterfaceAside: () =>
+				_.$importVue("@/views/Api/Project/Aside/ProjectInterfaceAside.vue"),
+			ProjectInterfaceSection: () =>
+				_.$importVue("@/views/Api/Project/Section/ProjectInterfaceSection.vue")
 		},
 		provide() {
 			return {
@@ -47,7 +49,10 @@ export default async function () {
 					parent: this,
 					groupInfo
 				});
-				_.$openWindow_deprecated(!!groupInfo ? i18n("修改分组信息") : i18n("添加分组"), upsert);
+				_.$openWindow_deprecated(
+					!!groupInfo ? i18n("修改分组信息") : i18n("添加分组"),
+					upsert
+				);
 			}
 		}
 	});

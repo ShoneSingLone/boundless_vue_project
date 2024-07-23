@@ -73,7 +73,7 @@ Total：${listData.length}
 				};
 			},
 			cptFormData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnTranslateIt() {
 				const vm = this;

@@ -1,21 +1,34 @@
 <style lang="less"></style>
 <template>
 	<ul @click="onPagerClick" class="el-pager">
-		<li :class="{ active: currentPage === 1, disabled }" v-if="pageCount > 0" class="number">1</li>
+		<li :class="{ active: currentPage === 1, disabled }" v-if="pageCount > 0" class="number">
+			1
+		</li>
 		<li
 			class="el-icon more btn-quickprev"
 			:class="[quickprevIconClass, { disabled }]"
 			v-if="showPrevMore"
 			@mouseenter="onMouseenter('left')"
 			@mouseleave="quickprevIconClass = 'el-icon-more'"></li>
-		<li v-for="pager in pagers" :key="pager" :class="{ active: currentPage === pager, disabled }" class="number">{{ pager }}</li>
+		<li
+			v-for="pager in pagers"
+			:key="pager"
+			:class="{ active: currentPage === pager, disabled }"
+			class="number">
+			{{ pager }}
+		</li>
 		<li
 			class="el-icon more btn-quicknext"
 			:class="[quicknextIconClass, { disabled }]"
 			v-if="showNextMore"
 			@mouseenter="onMouseenter('right')"
 			@mouseleave="quicknextIconClass = 'el-icon-more'"></li>
-		<li :class="{ active: currentPage === pageCount, disabled }" class="number" v-if="pageCount > 1">{{ pageCount }}</li>
+		<li
+			:class="{ active: currentPage === pageCount, disabled }"
+			class="number"
+			v-if="pageCount > 1">
+			{{ pageCount }}
+		</li>
 	</ul>
 </template>
 

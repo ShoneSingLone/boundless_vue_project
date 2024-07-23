@@ -4,9 +4,12 @@
 		<DemoAndCode title="基础用法" path="@/views/component/data/image/JiChuYongFa.vue" unfold />
 		<DemoAndCode title="大图预览" path="@/views/component/data/image/DaTuYuLan.vue" unfold />
 		<DemoAndCode title="加载失败" path="@/views/component/data/image/JiaZaiShiBai.vue" unfold />
-		<DemoAndCode title="占位内容" path="@/views/component/data/image/ZhanWeiNeiRong.vue" unfold />
+		<DemoAndCode
+			title="占位内容"
+			path="@/views/component/data/image/ZhanWeiNeiRong.vue"
+			unfold />
 		<DemoAndCode title="懒加载" path="@/views/component/data/image/LanJiaZai.vue" unfold />
-		<xMd :md="apiString" />
+		<xMd :md="apiString" data-role="api" />
 	</DocContentOfDemo>
 </template>
 

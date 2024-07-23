@@ -54,10 +54,18 @@ export default async function () {
 		methods: {
 			calcPaneInstances(isForceUpdate = false) {
 				if (this.$slots.default) {
-					const paneSlots = this.$slots.default.filter(vnode => vnode.tag && vnode.componentOptions && vnode.componentOptions.Ctor.options.name === "xTabPane");
+					const paneSlots = this.$slots.default.filter(
+						vnode =>
+							vnode.tag &&
+							vnode.componentOptions &&
+							vnode.componentOptions.Ctor.options.name === "xTabPane"
+					);
 					// update indeed
 					const panes = paneSlots.map(({ componentInstance }) => componentInstance);
-					const panesChanged = !(panes.length === this.panes.length && panes.every((pane, index) => pane === this.panes[index]));
+					const panesChanged = !(
+						panes.length === this.panes.length &&
+						panes.every((pane, index) => pane === this.panes[index])
+					);
 					if (isForceUpdate || panesChanged) {
 						this.panes = panes;
 					}
@@ -108,7 +116,18 @@ export default async function () {
 		},
 
 		render(h) {
-			let { type, handleTabClick, handleTabRemove, handleTabAdd, currentName, panes, editable, addable, tabPosition, stretch } = this;
+			let {
+				type,
+				handleTabClick,
+				handleTabRemove,
+				handleTabAdd,
+				currentName,
+				panes,
+				editable,
+				addable,
+				tabPosition,
+				stretch
+			} = this;
 
 			const newButton = h(
 				"span",

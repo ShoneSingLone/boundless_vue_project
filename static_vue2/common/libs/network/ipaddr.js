@@ -25,8 +25,14 @@
 	const ipv6Regexes = {
 		zoneIndex: new RegExp(zoneIndex, "i"),
 		native: new RegExp(`^(::)?(${ipv6Part})?([0-9a-f]+)?(::)?(${zoneIndex})?$`, "i"),
-		deprecatedTransitional: new RegExp(`^(?:::)(${ipv4Part}\\.${ipv4Part}\\.${ipv4Part}\\.${ipv4Part}(${zoneIndex})?)$`, "i"),
-		transitional: new RegExp(`^((?:${ipv6Part})|(?:::)(?:${ipv6Part})?)${ipv4Part}\\.${ipv4Part}\\.${ipv4Part}\\.${ipv4Part}(${zoneIndex})?$`, "i")
+		deprecatedTransitional: new RegExp(
+			`^(?:::)(${ipv4Part}\\.${ipv4Part}\\.${ipv4Part}\\.${ipv4Part}(${zoneIndex})?)$`,
+			"i"
+		),
+		transitional: new RegExp(
+			`^((?:${ipv6Part})|(?:::)(?:${ipv6Part})?)${ipv4Part}\\.${ipv4Part}\\.${ipv4Part}\\.${ipv4Part}(${zoneIndex})?$`,
+			"i"
+		)
 	};
 
 	// Expand :: in an IPv6 address or address part consisting of `parts` groups.
@@ -311,7 +317,9 @@
 			let i = 0;
 			while (i < 4) {
 				// Broadcast address is bitwise OR between ip interface and inverted mask
-				octets.push(parseInt(ipInterfaceOctets[i], 10) | (parseInt(subnetMaskOctets[i], 10) ^ 255));
+				octets.push(
+					parseInt(ipInterfaceOctets[i], 10) | (parseInt(subnetMaskOctets[i], 10) ^ 255)
+				);
 				i++;
 			}
 
@@ -757,7 +765,9 @@
 			let i = 0;
 			while (i < 16) {
 				// Broadcast address is bitwise OR between ip interface and inverted mask
-				octets.push(parseInt(ipInterfaceOctets[i], 10) | (parseInt(subnetMaskOctets[i], 10) ^ 255));
+				octets.push(
+					parseInt(ipInterfaceOctets[i], 10) | (parseInt(subnetMaskOctets[i], 10) ^ 255)
+				);
 				i++;
 			}
 
@@ -856,7 +866,12 @@
 			zoneId = match[6] || "";
 			addr = expandIPv6(match[1].slice(0, -1) + zoneId, 6);
 			if (addr.parts) {
-				octets = [parseInt(match[2]), parseInt(match[3]), parseInt(match[4]), parseInt(match[5])];
+				octets = [
+					parseInt(match[2]),
+					parseInt(match[3]),
+					parseInt(match[4]),
+					parseInt(match[5])
+				];
 				for (i = 0; i < octets.length; i++) {
 					octet = octets[i];
 					if (!(0 <= octet && octet <= 255)) {
@@ -974,7 +989,10 @@
 
 				for (i = 0; i < rangeSubnets.length; i++) {
 					subnet = rangeSubnets[i];
-					if (address.kind() === subnet[0].kind() && address.match.apply(address, subnet)) {
+					if (
+						address.kind() === subnet[0].kind() &&
+						address.match.apply(address, subnet)
+					) {
 						return rangeName;
 					}
 				}

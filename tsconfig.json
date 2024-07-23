@@ -8,7 +8,7 @@
   },
   "include": [
     "./**/*"
-  ],
+, "static_vue2/common/libs/lodash.min.js", "static_vue2/common/libs/seed.min.js"  ],
   "vueCompilerOptions": {
     "target": 2.7
   }

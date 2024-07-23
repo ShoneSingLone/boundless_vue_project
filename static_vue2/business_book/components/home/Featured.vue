@@ -1,9 +1,16 @@
 <template>
 	<div class="featured">
-		<title-view :label="titleText" :btn="btnText" v-if="titleVisible && data && data.length > 0"></title-view>
+		<title-view
+			:label="titleText"
+			:btn="btnText"
+			v-if="titleVisible && data && data.length > 0"></title-view>
 		<div class="featured-list">
 			<div class="featured-item-wrapper">
-				<div class="featured-item" v-for="(item, index) in data" :key="index" @click="showBookDetail(item)">
+				<div
+					class="featured-item"
+					v-for="(item, index) in data"
+					:key="index"
+					@click="showBookDetail(item)">
 					<div class="img-wrapper">
 						<img class="img" :src="item.cover" />
 					</div>

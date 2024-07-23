@@ -1,6 +1,12 @@
 <template>
 	<div class="xOprWithMore" ref="xOprWithMore">
-		<xBtn preset="text" v-for="(btn, index) in btnArray" :key="index" :data-title="btn | btnLabel(configs)" :disabled="btn | isDisabled(configs)" @click="handleClick(btn)">
+		<xBtn
+			preset="text"
+			v-for="(btn, index) in btnArray"
+			:key="index"
+			:data-title="btn | btnLabel(configs)"
+			:disabled="btn | isDisabled(configs)"
+			@click="handleClick(btn)">
 			<xRender :render="btn.label" :payload="configs" />
 		</xBtn>
 		<xDropdown v-if="isShowMoreBtn" trigger="click" @visible-change="handleVisibleChange">
@@ -8,8 +14,16 @@
 				{{ i18n("更多") }}
 			</xBtn>
 			<xDropdownMenu slot="dropdown" ref="ElDropdownMenu">
-				<div class="xOprWithMore-dropdown flex vertical center middle" ref="xOprWithMoreDropdown">
-					<xBtn preset="text" v-for="(btn, index) in btnArrayMore" :key="index" :data-title="btn | btnLabel(configs)" :disabled="btn | isDisabled(configs)" @click="handleClick(btn)">
+				<div
+					class="xOprWithMore-dropdown flex vertical center middle"
+					ref="xOprWithMoreDropdown">
+					<xBtn
+						preset="text"
+						v-for="(btn, index) in btnArrayMore"
+						:key="index"
+						:data-title="btn | btnLabel(configs)"
+						:disabled="btn | isDisabled(configs)"
+						@click="handleClick(btn)">
 						<xRender :render="btn.label" />
 					</xBtn>
 				</div>

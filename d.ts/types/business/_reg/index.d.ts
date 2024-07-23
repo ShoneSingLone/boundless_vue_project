@@ -56,6 +56,7 @@ VolumenameRe(args?:any):RegExp
 unixFilePathName(args?:any):RegExp
 winFilePathName(args?:any):RegExp
 letterNumber(args?:any):RegExp
+/* phoneRe: () => /((d{11})|^((d{7,8})|(d{4}|d{3})-(d{7,8})|(d{4}|d{3})-(d{7,8})-(d{4}|d{3}|d{2}|d{1})|(d{7,8})-(d{4}|d{3}|d{2}|d{1}))$)/,*/
 phoneRe(args?:any):RegExp
 macRe(args?:any):RegExp
 notAllSpaceReg(args?:any):RegExp

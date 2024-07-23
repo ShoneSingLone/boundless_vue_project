@@ -71,7 +71,9 @@ export default async function () {
 					var val = ref.val;
 
 					res[key] = function mappedState() {
-						return typeof val === "function" ? val.call(this, this.$store.state, this.$store.getters) : this.$store.state[val];
+						return typeof val === "function"
+							? val.call(this, this.$store.state, this.$store.getters)
+							: this.$store.state[val];
 					};
 				});
 				return res;
@@ -158,7 +160,10 @@ export default async function () {
 				if (options === void 0) options = {};
 
 				assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
-				assert(typeof Promise !== "undefined", "vuex requires a Promise polyfill in this browser.");
+				assert(
+					typeof Promise !== "undefined",
+					"vuex requires a Promise polyfill in this browser."
+				);
 
 				var state = options.state;
 				if (state === void 0) state = {};
@@ -351,7 +356,12 @@ export default async function () {
 				if (newModule.modules) {
 					for (var key in newModule.modules) {
 						if (!(targetModule.modules && targetModule.modules[key])) {
-							console.warn("[vuex] trying to add a new module '" + key + "' on hot reloading, " + "manual reload is needed");
+							console.warn(
+								"[vuex] trying to add a new module '" +
+									key +
+									"' on hot reloading, " +
+									"manual reload is needed"
+							);
 							return;
 						}
 						updateModule(targetModule.modules[key], newModule.modules[key]);
@@ -524,7 +534,10 @@ export default async function () {
 				store._vm.$watch(
 					"state",
 					function () {
-						assert(store._committing, "Do not mutate vuex store state outside mutation handlers.");
+						assert(
+							store._committing,
+							"Do not mutate vuex store state outside mutation handlers."
+						);
 					},
 					{ deep: true, sync: true }
 				);
@@ -540,7 +553,9 @@ export default async function () {
 
 			function install(_Vue) {
 				if (Vue) {
-					console.error("[vuex] already installed. Vue.use(Vuex) should be called only once.");
+					console.error(
+						"[vuex] already installed. Vue.use(Vuex) should be called only once."
+					);
 					return;
 				}
 				Vue = _Vue;

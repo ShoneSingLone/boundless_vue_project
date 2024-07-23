@@ -3,12 +3,18 @@
 		<template #header>
 			<div class="flex middle">
 				<label class="form-check-label">
-					<ElCheckbox :value="isSelectAll" :indeterminate="!isSelectAll && value.length > 0" @change="setSelectAll">
+					<xCheckbox
+						:value="isSelectAll"
+						:indeterminate="!isSelectAll && value.length > 0"
+						@change="setSelectAll">
 						{{ title }}
-					</ElCheckbox>
+					</xCheckbox>
 				</label>
 				<span class="flex1"></span>
-				<div v-if="slotSearchForm" :is="slotSearchForm" :vm-search-list="vmSearchList"></div>
+				<div
+					v-if="slotSearchForm"
+					:is="slotSearchForm"
+					:vm-search-list="vmSearchList"></div>
 				<div v-else class="flex middle">
 					<xItem v-model="searchForm.field" :configs="configsSearchForm.field" />
 					<span />
@@ -21,9 +27,11 @@
 		<div class="wrapper">
 			<div class="form-check flex" v-for="item in items" :key="item.key">
 				<label class="ml10 form-check-label flex1 ellipsis" :title="item.label">
-					<ElCheckbox :value="value.includes(item.key)" @change="handleValueChange(item.key)">
+					<xCheckbox
+						:value="value.includes(item.key)"
+						@change="handleValueChange(item.key)">
 						{{ item.label }}
-					</ElCheckbox>
+					</xCheckbox>
 				</label>
 			</div>
 		</div>
@@ -106,7 +114,7 @@ export default async function () {
 		.form-check-label {
 			&:hover {
 				.el-checkbox__label {
-					color: var(--ui-primary);
+					color: var(--el-color-primary);
 				}
 			}
 		}

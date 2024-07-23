@@ -10,7 +10,12 @@ export default async function () {
 		delay: 75,
 		disabled: false
 	};
-	const createContainer = ({ borderTopLeftRadius, borderTopRightRadius, borderBottomLeftRadius, borderBottomRightRadius }) => {
+	const createContainer = ({
+		borderTopLeftRadius,
+		borderTopRightRadius,
+		borderBottomLeftRadius,
+		borderBottomRightRadius
+	}) => {
 		const rippleContainer = document.createElement("div");
 		rippleContainer.style.top = "0";
 		rippleContainer.style.left = "0";

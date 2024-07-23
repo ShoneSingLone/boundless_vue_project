@@ -2,10 +2,10 @@
 export default async function () {
 	let PopoverComponent;
 
-	const TIPS_OPTIONS = new Map();
+	const TIPS_OPTIONS_MAP = new Map();
 	/* 可能是Vue实例，也可能是原始dom */
-	const VM_REFRENCE = new Map();
-	const VM_POPOVER = new Map();
+	const REFRENCE_MAP = new Map();
+	const POPOVER_MAP = new Map();
 
 	const X_TIPS_REF = "x-tips-ref";
 
@@ -20,10 +20,10 @@ export default async function () {
 	const TIMEOUT_DELAY = 200;
 
 	function setOptions(refId, options) {
-		const oldOptions = TIPS_OPTIONS.get(refId);
+		const oldOptions = TIPS_OPTIONS_MAP.get(refId);
 		if (_.isString(options)) {
 			/* 简写 */
-			TIPS_OPTIONS.set(refId, {
+			TIPS_OPTIONS_MAP.set(refId, {
 				content: options,
 				placement: "top",
 				trigger: "hover"
@@ -32,10 +32,10 @@ export default async function () {
 			if (hasOwn(options, "_btnInnerTips")) {
 				/* 只有btn disabled是true的时候才会显示 */
 				if (options._btnInnerTips) {
-					TIPS_OPTIONS.set(refId, _.merge(oldOptions, options));
+					TIPS_OPTIONS_MAP.set(refId, _.merge(oldOptions, options));
 				}
 			} else {
-				TIPS_OPTIONS.set(refId, _.merge(oldOptions, options));
+				TIPS_OPTIONS_MAP.set(refId, _.merge(oldOptions, options));
 			}
 		}
 	}
@@ -43,10 +43,10 @@ export default async function () {
 	function usePops(ele) {
 		const $ele = $(ele);
 		const refId = $ele.attr(SELECTOR_REFERENCE);
-		const options = TIPS_OPTIONS.get(refId) || {};
+		const options = TIPS_OPTIONS_MAP.get(refId) || {};
 		const trigger = options.trigger || "hover";
-		const vmRefrence = VM_REFRENCE.get(refId);
-		const vmPopover = VM_POPOVER.get(refId);
+		const vmRefrence = REFRENCE_MAP.get(refId);
+		const vmPopover = POPOVER_MAP.get(refId);
 		let $popover = $(`[${SELECTOR_POPOVER}=${refId}]`);
 
 		const isShow = !!options.content;
@@ -70,16 +70,18 @@ export default async function () {
 			});
 
 			_.$single.shadowTemplate.append($popover);
-			PopoverComponent = PopoverComponent || (await _.$importVue("/common/ui-x/directive/xtips/xtipsDefaultPopover.vue"));
+			PopoverComponent =
+				PopoverComponent ||
+				(await _.$importVue("/common/ui-x/directive/xtips/xtipsDefaultPopover.vue"));
 			let _PopoverComponent = { ...PopoverComponent };
 			_PopoverComponent.parent = vmRefrence;
 
 			vmPopover = new Vue(_PopoverComponent);
-			VM_POPOVER.set(refId, vmPopover);
+			POPOVER_MAP.set(refId, vmPopover);
 
 			/* popover使用onPopoverChange */
 			vmPopover.refId = refId;
-			vmPopover.options = TIPS_OPTIONS.get(refId);
+			vmPopover.options = TIPS_OPTIONS_MAP.get(refId);
 			vmPopover.options.$reference = $ele;
 
 			vmRefrence.onPopoverChange = vmRefrence.onPopoverChange || {};
@@ -90,7 +92,7 @@ export default async function () {
 							vmPopover.$destroy();
 							$popover.remove();
 							vmRefrence.popoverClearTimer = null;
-						}, 100);
+						}, 32);
 					} else {
 						vmPopover.$destroy();
 						$popover.remove();
@@ -144,15 +146,19 @@ export default async function () {
 		const { refId, vmPopover, $popover } = usePops(el);
 		vmPopover && vmPopover.$destroy();
 		$popover.remove();
-		TIPS_OPTIONS.delete(refId);
-		VM_REFRENCE.delete(refId);
-		VM_POPOVER.delete(refId);
+		TIPS_OPTIONS_MAP.delete(refId);
+		REFRENCE_MAP.delete(refId);
+		POPOVER_MAP.delete(refId);
 	}
 
 	_.$single.doc
 		/* click处理 */
 		.on(`click.${EVENT_UI_TARGET}` /* 左键单击 */, `[${SELECTOR_REFERENCE}]`, handleClick)
-		.on(`contextmenu.${EVENT_UI_TARGET}` /* 右键单击 */, `[${SELECTOR_REFERENCE}][data-trigger=rightClick]`, handleClick)
+		.on(
+			`contextmenu.${EVENT_UI_TARGET}` /* 右键单击 */,
+			`[${SELECTOR_REFERENCE}][data-trigger=rightClick]`,
+			handleClick
+		)
 		/* hover处理 */
 		.on(`mouseenter.${EVENT_UI_TARGET}`, `[${SELECTOR_REFERENCE}]`, handleEnterReference)
 		/* focus处理 */
@@ -167,7 +173,7 @@ export default async function () {
 			let vm = vnode.componentInstance || vnode.context;
 			const refId = _.$genId(X_TIPS_REF);
 			setOptions(refId, binding.value);
-			VM_REFRENCE.set(refId, vm);
+			REFRENCE_MAP.set(refId, vm);
 
 			$(ele)
 				.addClass(CLASS_NAME_REFERENCE)

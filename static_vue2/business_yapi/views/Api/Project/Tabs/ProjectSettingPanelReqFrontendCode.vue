@@ -3,11 +3,14 @@
 	<div>
 		<xForm col="2">
 			<xItem :configs="form.editor" @save="btnOk.onClick" style="height: 500px" />
-			<div class="padding">
+			<div class="x-padding" style="position: absolute">
 				<xMd :md="cptCode" />
 			</div>
 		</xForm>
-		<xBtn :configs="btnOk" />
+		<div class="flex middle">
+			<xGap f />
+			<xBtn :configs="btnOk" />
+		</div>
 	</div>
 </template>
 <script lang="ts">
@@ -32,7 +35,8 @@ export default async function () {
 			"APP.cptProject.requestCode": {
 				immediate: true,
 				handler() {
-					const code = this.APP.cptProject.requestCode || _yapi_utils.RequestCode.toString();
+					const code =
+						this.APP.cptProject.requestCode || _common_utils.RequestCode.toString();
 					this.form.editor.value = code;
 				}
 			}
@@ -68,7 +72,7 @@ export default async function () {
 							};
 							await _api.yapi.project_update(dataForm);
 							this.APP.updateGroupProjectList();
-							_.$msgSuccess("更新成功");
+							_.$msg("更新成功");
 						} catch (error) {
 							_.$msgError(error);
 						}

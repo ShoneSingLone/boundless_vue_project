@@ -1,7 +1,7 @@
 <script lang="ts">
 export default async function () {
 	const nodeList = [];
-	const ctx = "@@clickoutsideContext";
+	const EVENT_CLICK_OUTSIDE_CONTEXT = "@@clickoutsideContext";
 
 	let startClick;
 	let seed = 0;
@@ -9,7 +9,13 @@ export default async function () {
 	$(document)
 		.on("mousedown", e => (startClick = e))
 		.on("mouseup", e => {
-			nodeList.forEach(node => node[ctx].documentHandler(e, startClick));
+			nodeList.forEach(node => {
+				try {
+					node[EVENT_CLICK_OUTSIDE_CONTEXT]?.documentHandler?.(e, startClick);
+				} catch (error) {
+					console.log("error:", error);
+				}
+			});
 		});
 
 	function createDocumentHandler(el, binding, vnode) {
@@ -22,14 +28,21 @@ export default async function () {
 				el.contains(mouseup.target) ||
 				el.contains(mousedown.target) ||
 				el === mouseup.target ||
-				(vnode.context.popperElm && (vnode.context.popperElm.contains(mouseup.target) || vnode.context.popperElm.contains(mousedown.target)))
+				(vnode.context.popperElm &&
+					(vnode.context.popperElm.contains(mouseup.target) ||
+						vnode.context.popperElm.contains(mousedown.target)))
 			)
 				return;
 
-			if (binding.expression && el[ctx].methodName && vnode.context[el[ctx].methodName]) {
-				vnode.context[el[ctx].methodName]();
+			if (
+				binding.expression &&
+				el[EVENT_CLICK_OUTSIDE_CONTEXT].methodName &&
+				vnode.context[el[EVENT_CLICK_OUTSIDE_CONTEXT].methodName]
+			) {
+				vnode.context[el[EVENT_CLICK_OUTSIDE_CONTEXT].methodName]();
 			} else {
-				el[ctx].bindingFn && el[ctx].bindingFn();
+				el[EVENT_CLICK_OUTSIDE_CONTEXT].bindingFn &&
+					el[EVENT_CLICK_OUTSIDE_CONTEXT].bindingFn();
 			}
 		};
 	}
@@ -47,7 +60,7 @@ export default async function () {
 		bind(el, binding, vnode) {
 			nodeList.push(el);
 			const id = seed++;
-			el[ctx] = {
+			el[EVENT_CLICK_OUTSIDE_CONTEXT] = {
 				id,
 				documentHandler: createDocumentHandler(el, binding, vnode),
 				methodName: binding.expression,
@@ -56,21 +69,28 @@ export default async function () {
 		},
 
 		update(el, binding, vnode) {
-			el[ctx].documentHandler = createDocumentHandler(el, binding, vnode);
-			el[ctx].methodName = binding.expression;
-			el[ctx].bindingFn = binding.value;
+			el[EVENT_CLICK_OUTSIDE_CONTEXT].documentHandler = createDocumentHandler(
+				el,
+				binding,
+				vnode
+			);
+			el[EVENT_CLICK_OUTSIDE_CONTEXT].methodName = binding.expression;
+			el[EVENT_CLICK_OUTSIDE_CONTEXT].bindingFn = binding.value;
 		},
 
 		unbind(el) {
 			let len = nodeList.length;
 
 			for (let i = 0; i < len; i++) {
-				if (nodeList[i][ctx].id === el[ctx].id) {
+				if (
+					nodeList[i][EVENT_CLICK_OUTSIDE_CONTEXT].id ===
+					el[EVENT_CLICK_OUTSIDE_CONTEXT].id
+				) {
 					nodeList.splice(i, 1);
 					break;
 				}
 			}
-			delete el[ctx];
+			delete el[EVENT_CLICK_OUTSIDE_CONTEXT];
 		}
 	});
 }

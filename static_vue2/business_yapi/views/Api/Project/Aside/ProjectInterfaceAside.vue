@@ -30,10 +30,12 @@
 					<xIcon icon="currentLocation" class="icon-opreation_click" />
 				</div>
 			</div>
-			<div class="flex1" style="height: 1px; overflow: auto" ref="refTreeScroll">
-				<elTree :data="inject_project.cptAsideTreeData" node-key="href" default-expand-all :expand-on-click-node="false">
-					<xRender :render="nodeRender" :payload="payload" slot-scope="payload" />
-				</elTree>
+			<div class="flex1-overflow-auto" ref="refTreeScroll">
+				<xTree
+					ref="refTree"
+					:contentRender="treeContentRender"
+					:data="cptAsideTreeData"
+					:props="treeProps" />
 			</div>
 		</div>
 		<div class="resize_bar" icon="scroll" v-xmove="resizeOptions" />
@@ -50,40 +52,57 @@ export default async function () {
 			const { stateStyle, resizeOptions } = useXmove(props);
 			return {
 				stateStyle,
-				resizeOptions
+				resizeOptions,
+				treeProps: {
+					value: "_id",
+					label: "title",
+					children: "children"
+				},
+				treeFilterMethod(query, node) {
+					return new RegExp(query, "i").test(node.title);
+				}
 			};
 		},
 		data() {
 			const vm = this;
+			const onQueryChanged = _.debounce(query => {
+				if (vm.$refs.refTree?.filter) {
+					vm.$refs.refTree.filter(query);
+				}
+			}, 1000);
+
 			return {
 				configsSearch: defItem({
 					isSearch: false,
 					value: "",
 					placeholder: "搜索分组",
-					onEmitValue({ val }) {
-						console.log(val);
-						// vm.searchGroup();
+					onEmitValue({ val: query }) {
+						onQueryChanged(query);
 					},
 					clearable: true
 				})
 			};
 		},
 		computed: {
+			cptAsideTreeData() {
+				if (this.configsSearch.value) {
+					let newTree = [];
+					_.$traverse(this.inject_project.cptAsideTreeData, node => {
+						const isOk = new RegExp(this.configsSearch.value, "i").test(node.title);
+						if (isOk) {
+							newTree.push(node);
+						}
+					});
+					return newTree;
+				}
+
+				return this.inject_project.cptAsideTreeData;
+			},
 			cptInterfaceId() {
 				return this.$route.query.interfaceId;
 			}
 		},
 		methods: {
-			setCurrentInterfaceMenuHightlight() {
-				setTimeout(() => {
-					$(".treeitem-is-active").removeClass("treeitem-is-active");
-					setTimeout(() => {
-						let item = $(".asideTreeItem.is-current");
-						item = item.parent().parent();
-						item.addClass("treeitem-is-active");
-					}, 64);
-				}, 64);
-			},
 			selectInterface({ menuType, _id }) {
 				this.APP.routerUpsertQuery({ interfaceId: _id, interfaceType: menuType });
 			},
@@ -92,13 +111,15 @@ export default async function () {
 				if (this.cptInterfaceId) {
 					setTimeout(() => {
 						try {
-							this.$el.querySelector(".is-current").scrollIntoView({ behavior: "smooth", block: "center" });
+							this.$el
+								.querySelector(".is-current")
+								.scrollIntoView({ behavior: "smooth", block: "center" });
 						} catch (error) {}
 					}, 300);
 				}
 			},
 			/* 菜单 */
-			nodeRender({ node, data: menuInfo }) {
+			treeContentRender({ node, data: menuInfo }) {
 				const vm = this;
 				const { title, _id, categoryId, menuType } = menuInfo;
 				const isCurrent = _.$isSame(_id, this.cptInterfaceId);
@@ -135,7 +156,12 @@ export default async function () {
 						class: itemClass,
 						onClick: () => this.selectInterface(menuInfo)
 					},
-					[h("xIcon", { icon: `_${iconName}` }), h("div", { staticClass: "node-name ml4" }, [title]), h("xIcon", updateIconPorps), h("xIcon", insertIconPorps)]
+					[
+						h("xIcon", { icon: `_${iconName}` }),
+						h("div", { staticClass: "node-name ml4" }, [title]),
+						h("xIcon", updateIconPorps),
+						h("xIcon", insertIconPorps)
+					]
 				);
 			},
 			openInsertDialog(menuInfo) {
@@ -150,13 +176,16 @@ export default async function () {
 				}
 			},
 			async openInsertCategoryDialog(categoryInfo = false) {
-				const DialogTypeVueSFC = await _.$importVue("@/components/YapiDialogUpsertCategory.vue", {
-					parent: this,
-					project_id: this.APP.cptProjectId,
-					categoryInfo,
-					allCategory: this.inject_project.allCategory,
-					getInterfaceList: this.inject_project.getInterfaceList
-				});
+				const DialogTypeVueSFC = await _.$importVue(
+					"@/components/YapiDialogUpsertCategory.vue",
+					{
+						parent: this,
+						project_id: this.APP.cptProjectId,
+						categoryInfo,
+						allCategory: this.inject_project.allCategory,
+						getInterfaceList: this.inject_project.getInterfaceList
+					}
+				);
 				_.$openWindow_deprecated(categoryInfo ? "修改分类" : "添加分类", DialogTypeVueSFC);
 			},
 			openInterfaceDialog(categoryInfo) {
@@ -175,7 +204,6 @@ export default async function () {
 				immediate: true,
 				handler(interfaceId) {
 					if (interfaceId) {
-						this.setCurrentInterfaceMenuHightlight();
 					}
 				}
 			}

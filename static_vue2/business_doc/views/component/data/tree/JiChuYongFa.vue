@@ -14,7 +14,7 @@ export default async function () {
 		setup() {
 			let time = Date.now();
 			const data = this.inject_tree.createData(4, 30, 40);
-			_.$msgSuccess(`渲染耗时：${Date.now() - time}ms`);
+			_.$msg.success(`渲染耗时：${Date.now() - time}ms`);
 			return {
 				props: {
 					value: "id",

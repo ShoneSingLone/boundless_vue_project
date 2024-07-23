@@ -1,15 +1,28 @@
 <template>
 	<img v-if="cptImgUrl" :src="cptImgUrl" />
-	<svg v-else :class="['xIcon', cptIconName]" v-bind="$attrs" @click="handleClick">
+	<svg
+		v-else
+		:class="['xIcon', cptIconName]"
+		v-bind="$attrs"
+		@click="handleClick"
+		:fill="cptFill">
 		<use :xlink:href="cptHref" />
-		<animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="3s" repeatCount="indefinite" v-if="cptNeedRotation" />
+		<animateTransform
+			attributeName="transform"
+			type="rotate"
+			from="0 0 0"
+			to="360 0 0"
+			dur="3s"
+			repeatCount="indefinite"
+			v-if="cptNeedRotation" />
 	</svg>
 </template>
 <script lang="ts">
 export default async function () {
 	/* icon对应 /assets/svg 文件夹下的文件名*/
 	/* color 可以改变svg color 没有就继承父元素的color */
-	const rotationIndefinite = (dur = 1.2) => `<animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="${dur}s" repeatCount="indefinite" />`;
+	const rotationIndefinite = (dur = 1.2) =>
+		`<animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="${dur}s" repeatCount="indefinite" />`;
 	return {
 		props: ["icon", "color"],
 		data() {
@@ -52,16 +65,25 @@ export default async function () {
 							const $svgWrapper = $("#__SVG_SPRITE_NODE__");
 							const svgContent = await _.$loadText(this.cptIconUrl);
 							if (svgContent.includes("<svg ")) {
-								const $svgContent = $(svgContent)
+								const $svgContent = $(svgContent);
+								const width = $svgContent.attr("width");
+								const height = $svgContent.attr("height");
+
+								$svgContent
 									.attr({
 										id: this.cptId,
 										fill: "inherit"
 									})
 									.removeAttr("width")
 									.removeAttr("height");
+
+								if (width && height) {
+									$svgContent.attr({
+										viewBox: `0 0 ${width} ${height}`
+									});
+								}
 								$svgWrapper.append($svgContent);
 								if (this.cptIconName === "loading") {
-									debugger;
 									/* 需要旋转 */
 									$svgWrapper.append(rotationIndefinite(3));
 								}
@@ -73,13 +95,19 @@ export default async function () {
 							isLoaded = true;
 						}
 					} catch (error) {
-						console.error(error);
+						console.warn(error);
 					}
 					return isLoaded;
 				})();
 			}
 		},
 		computed: {
+			cptFill() {
+				return this.useCurrentColor ? "currentColor" : "inherit";
+			},
+			useCurrentColor() {
+				return _.$isInput(this.$attrs.useCurrentColor) && this.$attrs.useCurrentColor;
+			},
 			cptNeedRotation() {
 				return this.cptHref === "#_svg_icon_loading";
 			},

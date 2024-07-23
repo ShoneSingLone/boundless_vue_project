@@ -1,19 +1,40 @@
 <template>
 	<div :class="['markdown-wrapper', itemConfits.value]">
-		<div ref="refSlot" class="markdown-wrapper_description mt10 display-none">
+		<div ref="refSlot" class="markdown-wrapper_description display-none">
 			<slot> </slot>
 		</div>
 		<!-- <xItem :configs="itemConfits" /> -->
-		<div class="markdown-wrapper_description mt10" v-html="html"></div>
+		<div class="markdown-wrapper_description" v-html="html"></div>
 	</div>
 </template>
 
 <script lang="ts">
-export default async function ({ code }) {
-	const [hljs, marked] = await Promise.all([_.$importVue("/common/libs/highlight.vue"), _.$importVue("/common/libs/marked.vue")]);
+export default async function ({ code, PRIVATE_GLOBAL }) {
+	const [hljs, marked] = await Promise.all([
+		_.$importVue("/common/libs/highlight.vue"),
+		_.$importVue("/common/libs/marked.vue")
+	]);
+
+	if (!PRIVATE_GLOBAL.isSetXmarkdownListenner) {
+		$(document).on("click.xmarkdownmarkdownListenner", "[data-role=xMdItemImg]", function (e) {
+			const $img = $(this);
+			const src = $img.attr("src");
+			let currentIndex = 0;
+			const $doc = $(document);
+			const imgList = $doc.find(".markdown-wrapper img");
+			const urlList = _.map(imgList, (img, index) => {
+				if (img.src === src) {
+					currentIndex = index;
+				}
+				return img.src;
+			});
+			_.$previewImgs({ urlList, index: currentIndex });
+		});
+		PRIVATE_GLOBAL.isSetXmarkdownListenner = true;
+	}
 
 	return {
-		props: ["md" /* md text content */],
+		props: ["md" /* md text content */, "htmlFilter"],
 		data() {
 			return {
 				originHTML: "",
@@ -127,27 +148,46 @@ export default async function ({ code }) {
 			};
 		},
 		async mounted() {
-			this.init();
+			this.renderHtml();
 		},
 		watch: {
 			md() {
-				this.init();
+				this.renderHtml();
 			}
 		},
 		methods: {
-			init() {
+			renderHtml() {
+				const htmlFilter = this.htmlFilter || (text => text);
 				let text = $(this.$refs.refSlot).text();
 				text = text.replace(/\\`\\`\\`/g, "```");
 				this.originHTML = this.md || text;
 				const { Renderer } = marked;
 				marked.options = { langClass: "hljs" };
 				const renderer = new Renderer();
-				this.html = marked(this.originHTML, {
+				const html = marked(this.originHTML, {
 					renderer,
 					highlight: code => hljs.highlightAuto(code).value
 				});
+				const $html = $(`<div>${html}</div>`);
+				$html.find("img").each(function () {
+					const $img = $(this);
+					let src = $img.attr("src");
+					src = _.$resolvePath(src);
+					$img.attr("src", src);
+				});
+				this.html = htmlFilter($html[0].innerHTML);
 			}
 		}
 	};
 }
 </script>
+
+<style lang="less">
+.markdown-wrapper_description {
+	ul {
+		li {
+			margin-left: var(--ui-one);
+		}
+	}
+}
+</style>

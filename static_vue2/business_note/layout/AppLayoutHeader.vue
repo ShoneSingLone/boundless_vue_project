@@ -6,42 +6,7 @@
 
 <script lang="ts">
 export default async function () {
-	return {
-		methods: {
-			handleCommand(value) {
-				if (localStorage["X-Language"] !== value) {
-					localStorage["X-Language"] = value;
-					window.location.reload();
-				}
-			}
-		},
-		data() {
-			return {
-				value1: "",
-				languageOptions: [
-					{
-						label: "中文",
-						value: "zh-CN"
-					},
-					{
-						label: "English",
-						value: "en-US"
-					}
-				],
-				language: localStorage["X-Language"] || "zh-CN"
-			};
-		},
-		computed: {
-			languageLabel() {
-				return _.find(this.languageOptions, {
-					value: this.language
-				}).label;
-			}
-		},
-		mounted() {
-			localStorage["X-Language"] = this.language;
-		}
-	};
+	return {};
 }
 </script>
 

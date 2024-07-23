@@ -9,7 +9,7 @@
 		<DemoAndCode title="图标按钮" path="@/views/base/button/TuBiaoAnNiu.vue" unfold />
 		<DemoAndCode title="加载中" path="@/views/base/button/JiaZaiZhong.vue" unfold />
 		<DemoAndCode title="不同尺寸" path="@/views/base/button/BuTongChiCun.vue" unfold />
-		<xMd :md="apiString" />
+		<xMd :md="apiString" data-role="api" />
 	</DocContentOfDemo>
 </template>
 

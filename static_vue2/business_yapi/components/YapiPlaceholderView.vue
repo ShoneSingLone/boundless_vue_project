@@ -1,7 +1,10 @@
 <template>
 	<div class="YapiPlaceholderView flex vertical">
 		<div class="err-msg flex vertical center middle" style="margin: auto">
-			<xIcon :icon="icon" class="YapiPlaceholderView-icon" style="color: var(--el-color-warning)" />
+			<xIcon
+				:icon="icon"
+				class="YapiPlaceholderView-icon"
+				style="color: var(--el-color-warning)" />
 			<!-- <p class="title">{{ title }}</p> -->
 			<p class="desc">{{ desc }}</p>
 			<p class="opration">{{ opration }}</p>

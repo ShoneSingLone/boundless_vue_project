@@ -1,9 +1,9 @@
 <template>
 	<xDialog>
 		<xCard class="mt10" :header="i18n('xxxxxxxx')">
-			<form ref="form" :style="labelStyle">
+			<xForm col="1" ref="form" :style="labelStyle">
 				<xItem :configs="configs" v-for="(configs, prop) in form" :key="prop" />
-			</form>
+			</xForm>
 		</xCard>
 		<template #footer>
 			<xBtn :configs="btnOk" />
@@ -23,7 +23,11 @@ export default async function ({ row, callBack }) {
 		data() {
 			return {
 				form: {
-					name: { value: "", label: i18n("名称"), rules: [_rules.required()] }
+					name: {
+						value: "",
+						label: i18n("名称"),
+						rules: [_rules.required(), _rules.lessThan(64)]
+					}
 				}
 			};
 		},
@@ -34,7 +38,7 @@ export default async function ({ row, callBack }) {
 				};
 			},
 			cptFormData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnOk() {
 				const vm = this;
@@ -54,7 +58,7 @@ export default async function ({ row, callBack }) {
 		methods: {
 			init() {
 				if (isUpdate) {
-					_.$setValToForm(this.form, row);
+					_.$setFormValues(this.form, row);
 				}
 			},
 			async upsertOne() {

@@ -1,5 +1,9 @@
 <template>
-	<div class="scroll-wrapper" :class="{ 'no-scroll': ifNoScroll }" @scroll.passive="handleScroll" ref="scrollWrapper">
+	<div
+		class="scroll-wrapper"
+		:class="{ 'no-scroll': ifNoScroll }"
+		@scroll.passive="handleScroll"
+		ref="scrollWrapper">
 		<slot></slot>
 	</div>
 </template>
@@ -33,7 +37,8 @@ export default async function () {
 			},
 			refresh() {
 				if (this.$refs.scrollWrapper) {
-					this.$refs.scrollWrapper.style.height = window.innerHeight - realPx(this.top) - realPx(this.bottom) + "px";
+					this.$refs.scrollWrapper.style.height =
+						window.innerHeight - realPx(this.top) - realPx(this.bottom) + "px";
 					this.$refs.scrollWrapper.addEventListener("scroll", this.handleScroll);
 				}
 			}

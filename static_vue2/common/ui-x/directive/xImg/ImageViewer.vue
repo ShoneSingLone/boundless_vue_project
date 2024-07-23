@@ -1,7 +1,11 @@
 <style lang="less"></style>
 <template>
 	<transition name="viewer-fade">
-		<div tabindex="-1" ref="el-image-viewer__wrapper" class="el-image-viewer__wrapper" :style="{ 'z-index': viewerZIndex }">
+		<div
+			tabindex="-1"
+			ref="el-image-viewer__wrapper"
+			class="el-image-viewer__wrapper"
+			:style="{ 'z-index': viewerZIndex }">
 			<div class="el-image-viewer__mask" @click.self="handleMaskClick"></div>
 			<!-- CLOSE -->
 			<span class="el-image-viewer__btn el-image-viewer__close" @click="hide">
@@ -9,10 +13,16 @@
 			</span>
 			<!-- ARROW -->
 			<template v-if="!isSingle">
-				<span class="el-image-viewer__btn el-image-viewer__prev" :class="{ 'is-disabled': !infinite && isFirst }" @click="prev">
+				<span
+					class="el-image-viewer__btn el-image-viewer__prev"
+					:class="{ 'is-disabled': !infinite && isFirst }"
+					@click="prev">
 					<i class="el-icon-arrow-left" />
 				</span>
-				<span class="el-image-viewer__btn el-image-viewer__next" :class="{ 'is-disabled': !infinite && isLast }" @click="next">
+				<span
+					class="el-image-viewer__btn el-image-viewer__next"
+					:class="{ 'is-disabled': !infinite && isLast }"
+					@click="next">
 					<i class="el-icon-arrow-right" />
 				</span>
 			</template>
@@ -30,7 +40,14 @@
 			</div>
 			<!-- CANVAS -->
 			<div class="el-image-viewer__canvas">
-				<img ref="img" class="el-image-viewer__img" :src="currentImg" :style="imgStyle" @load="handleImgLoad" @error="handleImgError" @mousedown="handleMouseDown" />
+				<img
+					ref="img"
+					class="el-image-viewer__img"
+					:src="currentImg"
+					:style="imgStyle"
+					@load="handleImgLoad"
+					@error="handleImgError"
+					@mousedown="handleMouseDown" />
 			</div>
 		</div>
 	</transition>
@@ -102,7 +119,7 @@ export default async function () {
 					"margin-top": `${offsetY}px`
 				};
 				if (this.mode === Mode.CONTAIN) {
-					style.maxWidth = style.maxHeight = "100%";
+					style.maxWidth = style.maxHeight = "80%";
 				}
 				return style;
 			}
@@ -176,10 +193,14 @@ export default async function () {
 						});
 					}
 				});
-				_.$single.doc.on(KEY_DOWN, this._keyDownHandler).on(MOUSE_WHEEL, this._mouseWheelHandler);
+				_.$single.doc
+					.on(KEY_DOWN, this._keyDownHandler)
+					.on(MOUSE_WHEEL, this._mouseWheelHandler);
 			},
 			deviceSupportUninstall() {
-				_.$single.doc.off(KEY_DOWN, this._keyDownHandler).off(MOUSE_WHEEL, this._mouseWheelHandler);
+				_.$single.doc
+					.off(KEY_DOWN, this._keyDownHandler)
+					.off(MOUSE_WHEEL, this._mouseWheelHandler);
 				this._keyDownHandler = null;
 				this._mouseWheelHandler = null;
 			},

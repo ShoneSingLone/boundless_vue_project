@@ -15,7 +15,9 @@
 							<div class="small-point"></div>
 						</div>
 					</div>
-					<div class="line" :style="index === fontSizeList.length - 1 ? noBorder : ''"></div>
+					<div
+						class="line"
+						:style="index === fontSizeList.length - 1 ? noBorder : ''"></div>
 				</div>
 				<div
 					class="preview"

@@ -30,7 +30,9 @@ export default async function () {
 			/* 五种原始层模式 */
 			/* 获取节点的style属性值 */
 			getStyle: function (node, name) {
-				var style = node.currentStyle ? node.currentStyle : window.getComputedStyle(node, null);
+				var style = node.currentStyle
+					? node.currentStyle
+					: window.getComputedStyle(node, null);
 				return style[style.getPropertyValue ? "getPropertyValue" : "getAttribute"](name);
 			},
 			/* 记录宽高坐标，用于还原 */
@@ -285,7 +287,8 @@ export default async function () {
 				}
 
 				if (typeof this.config.area === "string") {
-					this.config.area = this.config.area === "auto" ? ["", ""] : [this.config.area, ""];
+					this.config.area =
+						this.config.area === "auto" ? ["", ""] : [this.config.area, ""];
 				}
 
 				/* 初始化 */
@@ -317,7 +320,8 @@ export default async function () {
 				if (config.fixed) {
 					_.$single.win.on("resize", () => {
 						this.offset();
-						(/^\d+%$/.test(config.area[0]) || /^\d+%$/.test(config.area[1])) && this.auto(this.index);
+						(/^\d+%$/.test(config.area[0]) || /^\d+%$/.test(config.area[1])) &&
+							this.auto(this.index);
 					});
 				}
 
@@ -331,9 +335,14 @@ export default async function () {
 				//为兼容jQuery3.0的css动画影响元素尺寸计算
 				if (doms.anim[config.anim]) {
 					var animClass = "layer-anim " + doms.anim[config.anim];
-					$layer.addClass(animClass).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function () {
-						$(this).removeClass(animClass);
-					});
+					$layer
+						.addClass(animClass)
+						.one(
+							"webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend",
+							function () {
+								$(this).removeClass(animClass);
+							}
+						);
 				}
 
 				//记录关闭动画
@@ -385,7 +394,10 @@ export default async function () {
 						// xLayerTools.$eleMoveOrResize = $(e.currentTarget).parent(`[layer-wrapper]`);
 						xLayerTools.moveOrResizeInstance = dialogInst;
 						xLayerTools.moveOrResizeType = "move";
-						xLayerTools.pointMousedown = [e.clientX - parseFloat($layer.css("left")), e.clientY - parseFloat($layer.css("top"))];
+						xLayerTools.pointMousedown = [
+							e.clientX - parseFloat($layer.css("left")),
+							e.clientY - parseFloat($layer.css("top"))
+						];
 						_.$single.mask.css("cursor", "move").show();
 					}
 				});

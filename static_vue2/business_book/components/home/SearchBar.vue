@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<div class="search-bar" :class="{ 'hide-title': !titleVisible, 'hide-shadow': !shadowVisible }">
+		<div
+			class="search-bar"
+			:class="{ 'hide-title': !titleVisible, 'hide-shadow': !shadowVisible }">
 			<transition name="title-move">
 				<div class="search-bar-title-wrapper" v-show="titleVisible">
 					<div class="title-text-wrapper">
@@ -11,14 +13,23 @@
 					</div>
 				</div>
 			</transition>
-			<div class="title-icon-back-wrapper" :class="{ 'hide-title': !titleVisible }" @click="back">
+			<div
+				class="title-icon-back-wrapper"
+				:class="{ 'hide-title': !titleVisible }"
+				@click="back">
 				<span class="icon-back icon"></span>
 			</div>
 			<div class="search-bar-input-wrapper" :class="{ 'hide-title': !titleVisible }">
 				<div class="search-bar-blank" :class="{ 'hide-title': !titleVisible }"></div>
 				<div class="search-bar-input">
 					<span class="icon-search icon"></span>
-					<input class="input" type="text" :placeholder="$t('home.hint')" v-model="searchText" @click="showHotSearch" @keyup.13.exact="search" />
+					<input
+						class="input"
+						type="text"
+						:placeholder="$t('home.hint')"
+						v-model="searchText"
+						@click="showHotSearch"
+						@keyup.13.exact="search" />
 				</div>
 			</div>
 		</div>

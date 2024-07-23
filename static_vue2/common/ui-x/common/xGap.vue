@@ -33,6 +33,16 @@ export default async function () {
 					const attrs = this.$attrs;
 					const gapStyle = {};
 
+					if (attrs.w !== undefined) {
+						if (attrs.w?.length) {
+							gapStyle.width = `${attrs.w}px`;
+						}
+					}
+					if (attrs.h !== undefined) {
+						if (attrs.h?.length) {
+							gapStyle.height = `${attrs.h}px`;
+						}
+					}
 					if (attrs.a !== undefined) {
 						if (attrs.a?.length) {
 							gapStyle.margin = `${attrs.a}px`;

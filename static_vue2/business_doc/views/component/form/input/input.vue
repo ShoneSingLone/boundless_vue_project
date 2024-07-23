@@ -2,19 +2,43 @@
 	<DocContentOfDemo class="demo-input">
 		<xMd :md="mdTips" />
 		<DemoAndCode title="基础用法" path="@/views/component/form/input/JiChuYongFa.vue" unfold />
-		<DemoAndCode title="禁用状态" path="@/views/component/form/input/JinYongZhuangTai.vue" unfold />
+		<DemoAndCode
+			title="禁用状态"
+			path="@/views/component/form/input/JinYongZhuangTai.vue"
+			unfold />
 		<DemoAndCode title="可清空" path="@/views/component/form/input/KeQingKong.vue" unfold />
 		<DemoAndCode title="密码框" path="@/views/component/form/input/MiMaKuang.vue" unfold />
-		<DemoAndCode title="带 icon 的输入框" path="@/views/component/form/input/DaiIconDeShuRuKuang.vue" unfold />
+		<DemoAndCode
+			title="带 icon 的输入框"
+			path="@/views/component/form/input/DaiIconDeShuRuKuang.vue"
+			unfold />
 		<DemoAndCode title="文本域" path="@/views/component/form/input/WenBenYu.vue" unfold />
-		<DemoAndCode title="可自适应文本高度的文本域" path="@/views/component/form/input/KeZiShiYingWenBenGaoDuDeWenBenYu.vue" unfold />
-		<DemoAndCode title="复合型输入框" path="@/views/component/form/input/FuHeXingShuRuKuang.vue" unfold />
+		<DemoAndCode
+			title="可自适应文本高度的文本域"
+			path="@/views/component/form/input/KeZiShiYingWenBenGaoDuDeWenBenYu.vue"
+			unfold />
+		<DemoAndCode
+			title="复合型输入框"
+			path="@/views/component/form/input/FuHeXingShuRuKuang.vue"
+			unfold />
 		<DemoAndCode title="尺寸" path="@/views/component/form/input/ChiCun.vue" unfold />
-		<DemoAndCode title="带输入建议" path="@/views/component/form/input/DaiShuRuJianYi.vue" unfold />
-		<DemoAndCode title="自定义模板" path="@/views/component/form/input/ZiDingYiMoBan.vue" unfold />
-		<DemoAndCode title="远程搜索" path="@/views/component/form/input/YuanChengSouSuo.vue" unfold />
-		<DemoAndCode title="输入长度限制" path="@/views/component/form/input/ShuRuChangDuXianZhi.vue" unfold />
-		<xMd :md="apiString" />
+		<DemoAndCode
+			title="带输入建议"
+			path="@/views/component/form/input/DaiShuRuJianYi.vue"
+			unfold />
+		<DemoAndCode
+			title="自定义模板"
+			path="@/views/component/form/input/ZiDingYiMoBan.vue"
+			unfold />
+		<DemoAndCode
+			title="远程搜索"
+			path="@/views/component/form/input/YuanChengSouSuo.vue"
+			unfold />
+		<DemoAndCode
+			title="输入长度限制"
+			path="@/views/component/form/input/ShuRuChangDuXianZhi.vue"
+			unfold />
+		<xMd :md="apiString" data-role="api" />
 	</DocContentOfDemo>
 </template>
 

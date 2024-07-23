@@ -8,7 +8,11 @@
 			</div>
 			<guess-you-like :data="guessYouLike" />
 			<recommend :data="recommend" :class="recommend" />
-			<featured :data="featured" :titleText="$t('home.featured')" :btnText="$t('home.seeAll')" class="featured" />
+			<featured
+				:data="featured"
+				:titleText="$t('home.featured')"
+				:btnText="$t('home.seeAll')"
+				class="featured" />
 			<div class="category-list-wrapper" v-for="item of categoryList" :key="item.category">
 				<category-book :data="item"></category-book>
 			</div>

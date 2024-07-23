@@ -12,7 +12,7 @@
 		<xItem span="full" :configs="configsForm.password" autocomplete="current-password" />
 		<!-- 确认密码 -->
 		<xItem span="full" :configs="configsForm.confirm" autocomplete="current-password" />
-		<div class="item-wrapper" span="full">
+		<div class="width100" span="full">
 			<xBtn :configs="configsSubmit" />
 		</div>
 	</xForm>
@@ -144,9 +144,11 @@ export default async function () {
 					},
 					async onClick() {
 						try {
-							const { data } = await _api.yapi.postNewVarifyCode(vm.configsForm.email.value);
+							const { data } = await _api.yapi.postNewVarifyCode(
+								vm.configsForm.email.value
+							);
 							if (data) {
-								_.$msgSuccess(data.msg);
+								_.$msg(data.msg);
 								vm.$router.push({ path: "/group" });
 							}
 						} catch (e) {
@@ -164,7 +166,7 @@ export default async function () {
 					class: "login-button flex center login-form-button",
 					label: i18n("注册"),
 					async onClick() {
-						const formData = _.$pickValueFromConfigs(vm.configsForm);
+						const formData = _.$pickFormValues(vm.configsForm);
 						_.each(formData, (val, key) => {
 							_.$lStorage[`reg_${key}`] = val;
 						});
@@ -175,7 +177,7 @@ export default async function () {
 								console.error("未通过验证");
 							} else {
 								const res = await _api.yapi.userReg(formData);
-								_.$msgSuccess(i18n("注册成功"));
+								_.$msg(i18n("注册成功"));
 								vm.$router.push({ path: "/group" });
 							}
 						} catch (e) {

@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view view-icon">
+	<div class="x-page-view view-icon">
 		<xPageContent>
 			<div>
 				<xBtn @click="openDialog" preset="blue">OpenDialog</xBtn>
@@ -14,7 +14,10 @@ export default async function () {
 		inject: ["APP"],
 		methods: {
 			async openDialog() {
-				const WindowImageModify = await _.$importVue("@/views/use/ViewOpenWindow/WindowModify.vue", { parent: this });
+				const WindowImageModify = await _.$importVue(
+					"@/views/use/ViewOpenWindow/WindowModify.vue",
+					{ parent: this }
+				);
 				_.$openWindow_deprecated(i18n("modifyImageInfo"), WindowImageModify);
 			}
 		}

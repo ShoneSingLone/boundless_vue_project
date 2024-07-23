@@ -54,7 +54,10 @@ export default async function ({ categoryInfo, project_id, getInterfaceList }) {
 						tips: "path第一位必需为 /, 只允许由 字母数字-/_:.! 组成",
 						$vSlots: {
 							prepend() {
-								return h("xItem", { configs: vm.form.apiMethod, style: `--xItem-wrapper-width:106px` });
+								return h("xItem", {
+									configs: vm.form.apiMethod,
+									style: `--xItem-wrapper-width:106px`
+								});
 							}
 						}
 					}
@@ -68,7 +71,7 @@ export default async function ({ categoryInfo, project_id, getInterfaceList }) {
 				};
 			},
 			cptFormData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnOk() {
 				const vm = this;
@@ -96,10 +99,12 @@ export default async function ({ categoryInfo, project_id, getInterfaceList }) {
 						path,
 						method: apiMethod
 					});
-					debugger;
+					if (res.errcode) {
+						throw new Error(res.message);
+					}
 					await getInterfaceList();
 					this.closeModal();
-					_.$msgSuccess("添加接口成功");
+					_.$msg("添加接口成功");
 				} catch (error) {
 					_.$msgError(error?.message || "添加接口失败");
 				}

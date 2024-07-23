@@ -1,7 +1,7 @@
 <template>
-	<div id="app" v-loading="APP.isLoading">
+	<div id="app">
 		<AppHeader />
-		<main class="AppLayoutMain">
+		<main class="x-app-layout-main">
 			<div class="AppLayoutContent">
 				<RouterView />
 			</div>

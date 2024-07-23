@@ -1,18 +1,19 @@
 <script lang="ts">
 export default async function () {
-	const { tableV2RowProps, useTableRow } = _useXui;
+	const { tableV2RowProps, useTableRow } = _xUtils;
 
 	return defineComponent({
 		name: "ComponentTableV2Row",
 		props: tableV2RowProps,
 		setup(props, { expose, slots, attrs }) {
-			const { eventHandlers, isScrolling, measurable, measured, rowRef, onExpand } = useTableRow(props);
+			const { eventHandlers, isScrolling, measurable, measured, rowRef, onExpand } =
+				useTableRow(props);
 			expose({ onExpand });
 
 			return function () {
 				let $vSlots = this.$vSlots;
-				const { columns, columnsStyles, expandColumnKey, depth, rowData, rowIndex, style } = this.$vnode.data;
-
+				const { columns, columnsStyles, expandColumnKey, depth, rowData, rowIndex, style } =
+					this.$vnode.data;
 				let ColumnCells = columns.map((column, columnIndex) => {
 					const expandable = _.$isArrayFill(rowData.children);
 					const cellParams = {
@@ -52,6 +53,12 @@ export default async function () {
 					});
 				}
 
+				const attrs = {
+					role: "row",
+					"data-row-index": rowIndex,
+					"even-number": rowIndex % 2
+				};
+
 				if (unref(measurable)) {
 					const { height, ...exceptHeightStyle } = style || {};
 					const _measured = unref(measured);
@@ -62,9 +69,7 @@ export default async function () {
 								ref: rowRef,
 								class: props.classV2,
 								style: _measured ? style : exceptHeightStyle,
-								attrs: {
-									role: "row"
-								}
+								attrs
 							},
 							attrs,
 							unref(eventHandlers)
@@ -80,9 +85,7 @@ export default async function () {
 							ref: rowRef,
 							class: props.classV2,
 							style: style,
-							attrs: {
-								role: "row"
-							}
+							attrs
 						},
 						unref(eventHandlers)
 					]),

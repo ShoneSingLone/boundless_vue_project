@@ -1,14 +1,27 @@
 <script lang="ts">
 export default async function () {
-	const { createList, getScrollDir, isHorizontal, useWheel, SMART_ALIGNMENT, AUTO_ALIGNMENT, CENTERED_ALIGNMENT, START_ALIGNMENT, END_ALIGNMENT } = await _.$importVue(
-		"/common/ui-x/components/data/xVirtualList/xBuildList.vue"
-	);
+	const {
+		createList,
+		getScrollDir,
+		isHorizontal,
+		useWheel,
+		SMART_ALIGNMENT,
+		AUTO_ALIGNMENT,
+		CENTERED_ALIGNMENT,
+		START_ALIGNMENT,
+		END_ALIGNMENT
+	} = await _.$importVue("/common/ui-x/components/data/xVirtualList/xBuildList.vue");
 	return createList({
 		name: "xFixedSizeList",
 		getItemOffset: ({ itemSize: itemSize2 }, index) => index * itemSize2,
 		getItemSize: ({ itemSize: itemSize2 }) => itemSize2,
 		getEstimatedTotalSize: ({ total: total2, itemSize: itemSize2 }) => itemSize2 * total2,
-		getOffset: ({ height, total: total2, itemSize: itemSize2, layout: layout2, width }, index, alignment, scrollOffset) => {
+		getOffset: (
+			{ height, total: total2, itemSize: itemSize2, layout: layout2, width },
+			index,
+			alignment,
+			scrollOffset
+		) => {
 			const size = isHorizontal(layout2) ? width : height;
 			const lastItemOffset = Math.max(0, total2 * itemSize2 - size);
 			const maxOffset = Math.min(lastItemOffset, index * itemSize2);
@@ -49,8 +62,13 @@ export default async function () {
 				}
 			}
 		},
-		getStartIndexForOffset: ({ total: total2, itemSize: itemSize2 }, offset) => Math.max(0, Math.min(total2 - 1, Math.floor(offset / itemSize2))),
-		getStopIndexForStartIndex: ({ height, total: total2, itemSize: itemSize2, layout: layout2, width }, startIndex, scrollOffset) => {
+		getStartIndexForOffset: ({ total: total2, itemSize: itemSize2 }, offset) =>
+			Math.max(0, Math.min(total2 - 1, Math.floor(offset / itemSize2))),
+		getStopIndexForStartIndex: (
+			{ height, total: total2, itemSize: itemSize2, layout: layout2, width },
+			startIndex,
+			scrollOffset
+		) => {
 			const offset = startIndex * itemSize2;
 			const size = isHorizontal(layout2) ? width : height;
 			const numVisibleItems = Math.ceil((size + scrollOffset - offset) / itemSize2);

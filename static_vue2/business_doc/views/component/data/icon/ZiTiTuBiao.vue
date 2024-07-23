@@ -8,7 +8,7 @@
 
 <template>
 	<xForm class="ZiTiTuBiao" col="4">
-		<xCard v-for="(icon, index) in iconArray" :key="icon" class="flex vertical center margin">
+		<xCard v-for="(icon, index) in iconArray" :key="icon" class="flex vertical center x-margin">
 			<i :class="[icon, 'ZiTiTuBiao_icon']"></i>
 			<span class="icon-name">{{ icon }}</span>
 		</xCard>

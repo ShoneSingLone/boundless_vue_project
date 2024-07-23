@@ -1,3 +1,5 @@
+import { VNode } from "../vue";
+
 type t_pagination = {
 	page: number;
 	total: number;
@@ -14,6 +16,7 @@ type t_column = {
 	isShow?: boolean;
 	prop: string;
 	label: string;
+	cellRenderer?: (params: t_cellRendererParams) => VNode | string | number;
 };
 type t_colMultiple = {
 	/**
@@ -25,6 +28,7 @@ type t_colMultiple = {
 	 */
 	getConfigs: () => object;
 	disabled?: (params: t_cellRendererParams) => boolean | string;
+	isHide?: (params: t_cellRendererParams) => boolean;
 };
 type t_cellRendererParams = {
 	class: string;
@@ -41,7 +45,7 @@ type t_colOprations = {
 	prop?: "COL_ACTIONS";
 	fixed?: "left" | "right";
 	width: number;
-	cellRenderer: (params: t_cellRendererParams) => any;
+	cellRenderer: (params: t_cellRendererParams) => VNode;
 };
 
 export type t_tableOptions = {
@@ -56,8 +60,8 @@ export type t_tableOptions = {
 
 export declare type t_defTableFn = (options: t_tableOptions) => t_tableOptions;
 
+/** window.defTable.*/
 export interface t_defTable extends t_defTableFn {
-	/** Show a success notification */
 	colSingle(options: t_colMultiple): any;
 	colExpandArrow(options?: t_colOprations): any;
 	colMultiple(options: t_colMultiple): any;

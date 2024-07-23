@@ -2,7 +2,7 @@
 	<DocContentOfDemo class="layer-demo">
 		<xMd :md="md" />
 		<DemoAndCode title="基础用法" path="@/views/other/layer/JiChuYongFa.vue" unfold />
-		<xMd :md="apiString" />
+		<xMd :md="apiString" data-role="api" />
 	</DocContentOfDemo>
 </template>
 

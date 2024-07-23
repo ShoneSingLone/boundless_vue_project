@@ -2,6 +2,7 @@ export type t_yapi = {
 i18nTranslate(args?:any):Promise<any>
 i18nUpsertOne(args?:any):Promise<any>
 i18nGetList(args?:any):Promise<any>
+wikiResetMenuOrder(args?:any):Promise<any>
 wikiUpsertOne(args?:any):Promise<any>
 saveImgByBase64(args?:any):Promise<any>
 wikiDetail(args?:any):Promise<any>
@@ -16,6 +17,15 @@ wikiMenu(args?:any):Promise<any>
 				 */
 wikiList(args?:any):Promise<any>
 getSwaggerDataByUrl(args?:any):Promise<any>
+resourceLs(args?:any):Promise<any>
+resourceCloudDiskCheckChunks(args?:any):Promise<any>
+resourceCloudDiskRename(args?:any):Promise<any>
+resourceCloudDiskDir(args?:any):Promise<any>
+resourceCloudDiskMoveDir(args?:any):Promise<any>
+resourceCloudDiskGetDirs(args?:any):Promise<any>
+resourceCloudDiskFileList(args?:any):Promise<any>
+audioDetail(args?:any):Promise<any>
+resourceCloudDiskShardUpload(args?:any):Promise<any>
 apiInterfaceListMenu(args?:any):Promise<any>
 interface_get_by_id(args?:any):Promise<any>
 interface_up(args?:any):Promise<any>

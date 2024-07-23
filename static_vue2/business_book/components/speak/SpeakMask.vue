@@ -2,7 +2,10 @@
 	<transition name="fade">
 		<div class="book-speak-mask-wrapper" @click.stop.prevent="hide" v-show="visible">
 			<transition name="popup-slide-up">
-				<div class="book-speak-mask-card-wrapper" v-show="speakCardVisible" @click.stop.prevent="hide">
+				<div
+					class="book-speak-mask-card-wrapper"
+					v-show="speakCardVisible"
+					@click.stop.prevent="hide">
 					<div class="pulldown-icon-wrapper" @click="hide">
 						<span class="icon-pull_down"></span>
 					</div>
@@ -38,8 +41,16 @@
 								ref="progress" />
 						</div>
 						<div class="progress-text">
-							<div class="progress-text-current">{{ playInfo ? playInfo.currentMinute : "00" }}:{{ playInfo ? playInfo.currentSecond : "00" }}</div>
-							<div class="progress-text-left">-{{ playInfo ? playInfo.leftMinute : "00" }}:{{ playInfo ? playInfo.leftSecond : "00" }}</div>
+							<div class="progress-text-current">
+								{{ playInfo ? playInfo.currentMinute : "00" }}:{{
+									playInfo ? playInfo.currentSecond : "00"
+								}}
+							</div>
+							<div class="progress-text-left">
+								-{{ playInfo ? playInfo.leftMinute : "00" }}:{{
+									playInfo ? playInfo.leftSecond : "00"
+								}}
+							</div>
 						</div>
 					</div>
 					<div class="playing-wrapper">
@@ -47,12 +58,18 @@
 							<span class="icon-settings"></span>
 							<div class="settings-text">{{ $t("speak.settings") }}</div>
 						</div>
-						<span class="icon-play_backward" :class="{ 'not-use': currentSectionIndex <= 1 }" @click.stop.prevent="prev"></span>
+						<span
+							class="icon-play_backward"
+							:class="{ 'not-use': currentSectionIndex <= 1 }"
+							@click.stop.prevent="prev"></span>
 						<div class="icon-play-wrapper" @click.stop.prevent="togglePlay">
 							<span class="icon-play_go" v-if="!isPlaying"></span>
 							<span class="icon-play_pause" v-else></span>
 						</div>
-						<span class="icon-play_forward" :class="{ 'not-use': currentSectionIndex >= currentSectionTotal }" @click.stop.prevent="next"></span>
+						<span
+							class="icon-play_forward"
+							:class="{ 'not-use': currentSectionIndex >= currentSectionTotal }"
+							@click.stop.prevent="next"></span>
 						<div class="icon-clock-wrapper">
 							<span class="icon-clock"></span>
 							<div class="clock-text">{{ $t("speak.timing") }}</div>
@@ -172,7 +189,14 @@ export default async function () {
 				});
 			},
 			refresh() {
-				this.readHeight = window.innerHeight * 0.9 - realPx(40) - realPx(54) - realPx(46) - realPx(48) - realPx(60) - realPx(44);
+				this.readHeight =
+					window.innerHeight * 0.9 -
+					realPx(40) -
+					realPx(54) -
+					realPx(46) -
+					realPx(48) -
+					realPx(60) -
+					realPx(44);
 				// console.log(this.readHeight)
 				this.$refs.bookWrapper.style.height = this.readHeight + "px";
 			}

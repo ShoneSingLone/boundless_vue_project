@@ -1,5 +1,13 @@
 <template>
-	<label class="el-checkbox" :class="[border && checkboxSize ? 'el-checkbox--' + checkboxSize : '', { 'is-disabled': isDisabled }, { 'is-bordered': border }, { 'is-checked': isChecked }]" :id="id">
+	<label
+		class="el-checkbox"
+		:class="[
+			border && checkboxSize ? 'el-checkbox--' + checkboxSize : '',
+			{ 'is-disabled': isDisabled },
+			{ 'is-bordered': border },
+			{ 'is-checked': isChecked }
+		]"
+		:id="id">
 		<span
 			class="el-checkbox__input"
 			:class="{
@@ -45,7 +53,7 @@
 	</label>
 </template>
 <script lang="ts">
-export default async function () {
+export default async function ({ PRIVATE_GLOBAL }) {
 	return defineComponent({
 		name: "ElCheckbox",
 		inject: {
@@ -68,17 +76,26 @@ export default async function () {
 		computed: {
 			model: {
 				get() {
-					return this.isGroup ? this.store : this.value !== undefined ? this.value : this.selfModel;
+					return this.isGroup
+						? this.store
+						: this.value !== undefined
+							? this.value
+							: this.selfModel;
 				},
 
 				set(val) {
 					if (this.isGroup) {
 						this.isLimitExceeded = false;
-						this._checkboxGroup.min !== undefined && val.length < this._checkboxGroup.min && (this.isLimitExceeded = true);
+						this._checkboxGroup.min !== undefined &&
+							val.length < this._checkboxGroup.min &&
+							(this.isLimitExceeded = true);
 
-						this._checkboxGroup.max !== undefined && val.length > this._checkboxGroup.max && (this.isLimitExceeded = true);
+						this._checkboxGroup.max !== undefined &&
+							val.length > this._checkboxGroup.max &&
+							(this.isLimitExceeded = true);
 
-						this.isLimitExceeded === false && this.dispatch("ElCheckboxGroup", "input", [val]);
+						this.isLimitExceeded === false &&
+							this.dispatch("ElCheckboxGroup", "input", [val]);
 					} else {
 						this.$emit("input", val);
 						this.selfModel = val;
@@ -116,11 +133,19 @@ export default async function () {
 			/* used to make the isDisabled judgment under max/min props */
 			isLimitDisabled() {
 				const { max, min } = this._checkboxGroup;
-				return (!!(max || min) && this.model.length >= max && !this.isChecked) || (this.model.length <= min && this.isChecked);
+				return (
+					(!!(max || min) && this.model.length >= max && !this.isChecked) ||
+					(this.model.length <= min && this.isChecked)
+				);
 			},
 
 			isDisabled() {
-				return this.isGroup ? this._checkboxGroup.disabled || this.disabled || (this.elForm || {}).disabled || this.isLimitDisabled : this.disabled || (this.elForm || {}).disabled;
+				return this.isGroup
+					? this._checkboxGroup.disabled ||
+							this.disabled ||
+							(this.elForm || {}).disabled ||
+							this.isLimitDisabled
+					: this.disabled || (this.elForm || {}).disabled;
 			},
 
 			_elFormItemSize() {
@@ -128,8 +153,11 @@ export default async function () {
 			},
 
 			checkboxSize() {
-				const temCheckboxSize = this.size || this._elFormItemSize || (this.$xUiConfigs || {}).size;
-				return this.isGroup ? this._checkboxGroup.checkboxGroupSize || temCheckboxSize : temCheckboxSize;
+				const temCheckboxSize =
+					this.size || this._elFormItemSize || PRIVATE_GLOBAL.x_ui_size;
+				return this.isGroup
+					? this._checkboxGroup.checkboxGroupSize || temCheckboxSize
+					: temCheckboxSize;
 			}
 		},
 
@@ -143,7 +171,8 @@ export default async function () {
 			trueLabel: [String, Number],
 			falseLabel: [String, Number],
 			id: String /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系*/,
-			controls: String /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系*/,
+			controls:
+				String /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系*/,
 			border: Boolean,
 			size: String
 		},

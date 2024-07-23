@@ -1,12 +1,13 @@
 <script lang="ts">
 export default async function () {
-	const { castArray, enforceUnit, useNamespace, tableV2HeaderProps } = _useXui;
+	const { castArray, enforceUnit, useNamespace, tableV2HeaderProps } = _xUtils;
 
 	return defineComponent({
 		name: "ComponentTableV2Header",
 		props: tableV2HeaderProps,
-		setup(props, { expose }) {
-			slots = this.$vSlots;
+		setup(props) {
+			const vm = this;
+			const slots = this.$vSlots || {};
 			const ns = useNamespace("table-v2");
 			const headerRef = ref();
 			const headerStyle = computed(() => {
@@ -33,15 +34,16 @@ export default async function () {
 			};
 			const renderFixedRows = () => {
 				const fixedRowClassName = ns.e("fixed-header-row");
-				const { columns: columns2, fixedHeaderData, rowHeight } = props;
+				const { columns, fixedHeaderData, rowHeight } = props;
 				return fixedHeaderData?.map((fixedRowData, fixedRowIndex) => {
 					const style = enforceUnit({
 						height: rowHeight,
 						width: "100%"
 					});
+					// console.log("renderFixedRows", columns.width, columns);
 					return slots.fixed?.({
 						class: fixedRowClassName,
-						columns: columns2,
+						columns,
 						rowData: fixedRowData,
 						rowIndex: -(fixedRowIndex + 1),
 						style
@@ -50,23 +52,24 @@ export default async function () {
 			};
 			const renderDynamicRows = () => {
 				const dynamicRowClassName = ns.e("dynamic-header-row");
-				const { columns: columns2 } = props;
+				const { columns } = props;
 				return unref(headerHeights).map((rowHeight, rowIndex) => {
 					const style = enforceUnit({
 						width: "100%",
 						height: rowHeight
 					});
+					// console.log("renderDynamicRows", columns.width, columns);
 					return slots.dynamic?.({
 						class: dynamicRowClassName,
-						columns: columns2,
+						columns: columns,
 						headerIndex: rowIndex,
 						style
 					});
 				});
 			};
-			expose({
-				scrollToLeft
-			});
+
+			vm.scrollToLeft = scrollToLeft;
+
 			return function () {
 				if (props.height <= 0) {
 					return;
@@ -78,7 +81,8 @@ export default async function () {
 						class: props.classV2,
 						style: unref(headerStyle),
 						attrs: {
-							role: "rowgroup"
+							role: "rowgroup",
+							"data-role": "table-main_header"
 						}
 					},
 					[

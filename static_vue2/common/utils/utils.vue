@@ -33,7 +33,17 @@ export default async function UTILS() {
 
 		Vue._utils = {
 			addResizeListener,
-			removeResizeListener
+			removeResizeListener,
+			KeyCode: {
+				tab: 9,
+				enter: 13,
+				space: 32,
+				left: 37,
+				up: 38,
+				right: 39,
+				down: 40,
+				esc: 27
+			}
 		};
 	}
 	return Vue._utils;

@@ -42,11 +42,4 @@ export default async function () {
 	});
 }
 </script>
-<style lang="less">
-.item-wrapper {
-	display: flex;
-	button {
-		flex: 1;
-	}
-}
-</style>
+<style lang="less"></style>

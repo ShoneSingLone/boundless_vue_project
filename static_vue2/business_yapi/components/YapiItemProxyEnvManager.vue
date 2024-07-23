@@ -2,7 +2,11 @@
 	<xDialog id="YapiItemProxyEnvManager">
 		<xForm col="2">
 			<xSelect placeholder="转发环境" span="full">
-				<xOption v-for="item in cptOptions" :key="item.value" :label="item.label" :value="item.value" />
+				<xOption
+					v-for="item in cptOptions"
+					:key="item.value"
+					:label="item.label"
+					:value="item.value" />
 			</xSelect>
 			<xMd :md="mdTips" />
 			<xItem :configs="form.editor" @save="btnOk.onClick" style="height: 500px" />
@@ -80,7 +84,7 @@ export default async function ({}) {
 							};
 							await _api.yapi.project_update(dataForm);
 							this.APP.updateGroupProjectList();
-							_.$msgSuccess("更新成功");
+							_.$msg("更新成功");
 						} catch (error) {
 							_.$msgError(error);
 						}

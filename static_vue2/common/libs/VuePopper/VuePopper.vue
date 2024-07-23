@@ -74,8 +74,10 @@ export default async function () {
 				}
 
 				const options = this.popperOptions;
-				const popper = (this.popperElm = this.popperElm || this.popper || this.$refs.popper);
-				let reference = (this.referenceElm = this.referenceElm || this.reference || this.$refs.reference);
+				const popper = (this.popperElm =
+					this.popperElm || this.popper || this.$refs.popper);
+				let reference = (this.referenceElm =
+					this.referenceElm || this.reference || this.$refs.reference);
 
 				if (!reference && this.$slots.reference && this.$slots.reference[0]) {
 					reference = this.referenceElm = this.$slots.reference[0].elm;
@@ -140,7 +142,11 @@ export default async function () {
 				let placement = this.popperJS._popper.getAttribute("x-placement").split("-")[0];
 				let origin = placementMap[placement];
 				this.popperJS._popper.style.transformOrigin =
-					typeof this.transformOrigin === "string" ? this.transformOrigin : ["top", "bottom"].indexOf(placement) > -1 ? `center ${origin}` : `${origin} center`;
+					typeof this.transformOrigin === "string"
+						? this.transformOrigin
+						: ["top", "bottom"].indexOf(placement) > -1
+							? `center ${origin}`
+							: `${origin} center`;
 			},
 
 			appendArrow(element) {

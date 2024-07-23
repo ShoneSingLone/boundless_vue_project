@@ -3,13 +3,14 @@
 		<xMd :md="mdTitle" />
 		<xMd :md="mdConfigs" />
 		<xForm col="3">
-			<xItem v-model="btnSets.label" :configs="configsLabel" />
-			<xItem v-model="btnSets.preset" :configs="configsPreset" />
-			<div>
+			<xForm span="full" col="3">
 				<xBtn :configs="configs" />
 				<xBtn :configs="configs">template slot内容优先级更高</xBtn>
 				<xBtn :configs="configsDisabled">展示disabled结果是字符的情况</xBtn>
-			</div>
+			</xForm>
+			<xItem v-model="btnSets.label" :configs="configsLabel" />
+			<xItem v-model="btnSets.preset" :configs="configsPreset" />
+			<xItem v-model="btnSets.shape" :configs="configsShape" />
 		</xForm>
 	</div>
 </template>
@@ -42,10 +43,11 @@ export default async function () {
 		},
 		data() {
 			return {
-				mdTitle: "基础的按钮用法。\n\n使用`preset`、`plain`、`round`和`circle`属性来定义 Button 的样式。",
+				mdTitle: "基础的按钮用法。\n\n使用`preset`、`shape`属性来定义 Button 的样式。",
 				btnSets: {
 					label: "按钮",
 					preset: "blue",
+					shape: "",
 					icon: "",
 					isHide: false,
 					disabled: false
@@ -55,7 +57,6 @@ export default async function () {
 				}),
 				configsPreset: defItem({
 					label: "预设颜色",
-					// type: "select",
 					itemType: "xItemRadioGroup",
 					options: [
 						{ label: "blue", value: "blue" },
@@ -65,6 +66,16 @@ export default async function () {
 						{ label: "danger", value: "danger" },
 						{ label: "info", value: "info" },
 						{ label: "text", value: "text" }
+					]
+				}),
+				configsShape: defItem({
+					label: "预设形状",
+					itemType: "xItemRadioGroup",
+					options: [
+						{ label: "默认", value: "" },
+						{ label: "朴素", value: "plain" },
+						{ label: "圆角", value: "round" },
+						{ label: "圆", value: "circle" }
 					]
 				})
 			};

@@ -8,6 +8,12 @@ export default async function () {
 					return {};
 				}
 			},
+			bodyStyle: {
+				type: Object,
+				default() {
+					return {};
+				}
+			},
 			header: {
 				type: String,
 				default: ""
@@ -59,8 +65,22 @@ export default async function () {
 		render() {
 			const header = this.vDomHeader();
 			return h("div", { class: this.getClass({ xBlock: true, "el-card": true }) }, [
-				h("div", { vIf: header, class: this.getClass({ "el-card__header": true }) }, [header]),
-				h("div", { class: this.getBodyClass({ "el-card__body": true }) }, [this.$scopedSlots.default?.()])
+				h(
+					"div",
+					{
+						vIf: header,
+						class: this.getClass({ "el-card__header": true })
+					},
+					[header]
+				),
+				h(
+					"div",
+					{
+						class: this.getBodyClass({ "el-card__body": true }),
+						style: this.bodyStyle || {}
+					},
+					[this.$scopedSlots.default?.()]
+				)
 			]);
 		}
 	};
@@ -120,7 +140,7 @@ export default async function () {
 			}
 			// font-size: 14px;
 			font-weight: 400;
-			border-left: 4px solid var(--ui-primary);
+			border-left: 4px solid var(--el-color-primary);
 			border-bottom: unset;
 
 			.card__header {

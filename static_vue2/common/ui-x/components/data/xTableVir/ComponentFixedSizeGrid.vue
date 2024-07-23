@@ -1,6 +1,13 @@
 <script lang="ts">
 export default async function () {
-	const { createGrid, AUTO_ALIGNMENT, SMART_ALIGNMENT, START_ALIGNMENT, CENTERED_ALIGNMENT, END_ALIGNMENT } = _useXui;
+	const {
+		createGrid,
+		AUTO_ALIGNMENT,
+		SMART_ALIGNMENT,
+		START_ALIGNMENT,
+		CENTERED_ALIGNMENT,
+		END_ALIGNMENT
+	} = _xUtils;
 
 	return createGrid({
 		name: "ComponentFixedSizeGrid",
@@ -8,11 +15,21 @@ export default async function () {
 		getRowPosition: ({ rowHeight }, index) => [rowHeight, index * rowHeight],
 		getEstimatedTotalHeight: ({ totalRow, rowHeight }) => rowHeight * totalRow,
 		getEstimatedTotalWidth: ({ totalColumn, columnWidth }) => columnWidth * totalColumn,
-		getColumnOffset: ({ totalColumn, columnWidth, width }, columnIndex, alignment, scrollLeft, _, scrollBarWidth2) => {
+		getColumnOffset: (
+			{ totalColumn, columnWidth, width },
+			columnIndex,
+			alignment,
+			scrollLeft,
+			_,
+			scrollBarWidth2
+		) => {
 			width = Number(width);
 			const lastColumnOffset = Math.max(0, totalColumn * columnWidth - width);
 			const maxOffset = Math.min(lastColumnOffset, columnIndex * columnWidth);
-			const minOffset = Math.max(0, columnIndex * columnWidth - width + scrollBarWidth2 + columnWidth);
+			const minOffset = Math.max(
+				0,
+				columnIndex * columnWidth - width + scrollBarWidth2 + columnWidth
+			);
 			if (alignment === "smart") {
 				if (scrollLeft >= minOffset - width && scrollLeft <= maxOffset + width) {
 					alignment = AUTO_ALIGNMENT;
@@ -48,11 +65,21 @@ export default async function () {
 					}
 			}
 		},
-		getRowOffset: ({ rowHeight, height, totalRow }, rowIndex, align, scrollTop, _, scrollBarWidth2) => {
+		getRowOffset: (
+			{ rowHeight, height, totalRow },
+			rowIndex,
+			align,
+			scrollTop,
+			_,
+			scrollBarWidth2
+		) => {
 			height = Number(height);
 			const lastRowOffset = Math.max(0, totalRow * rowHeight - height);
 			const maxOffset = Math.min(lastRowOffset, rowIndex * rowHeight);
-			const minOffset = Math.max(0, rowIndex * rowHeight - height + scrollBarWidth2 + rowHeight);
+			const minOffset = Math.max(
+				0,
+				rowIndex * rowHeight - height + scrollBarWidth2 + rowHeight
+			);
 			if (align === SMART_ALIGNMENT) {
 				if (scrollTop >= minOffset - height && scrollTop <= maxOffset + height) {
 					align = AUTO_ALIGNMENT;
@@ -88,13 +115,19 @@ export default async function () {
 					}
 			}
 		},
-		getColumnStartIndexForOffset: ({ columnWidth, totalColumn }, scrollLeft) => Math.max(0, Math.min(totalColumn - 1, Math.floor(scrollLeft / columnWidth))),
-		getColumnStopIndexForStartIndex: ({ columnWidth, totalColumn, width }, startIndex, scrollLeft) => {
+		getColumnStartIndexForOffset: ({ columnWidth, totalColumn }, scrollLeft) =>
+			Math.max(0, Math.min(totalColumn - 1, Math.floor(scrollLeft / columnWidth))),
+		getColumnStopIndexForStartIndex: (
+			{ columnWidth, totalColumn, width },
+			startIndex,
+			scrollLeft
+		) => {
 			const left = startIndex * columnWidth;
 			const visibleColumnsCount = Math.ceil((width + scrollLeft - left) / columnWidth);
 			return Math.max(0, Math.min(totalColumn - 1, startIndex + visibleColumnsCount - 1));
 		},
-		getRowStartIndexForOffset: ({ rowHeight, totalRow }, scrollTop) => Math.max(0, Math.min(totalRow - 1, Math.floor(scrollTop / rowHeight))),
+		getRowStartIndexForOffset: ({ rowHeight, totalRow }, scrollTop) =>
+			Math.max(0, Math.min(totalRow - 1, Math.floor(scrollTop / rowHeight))),
 		getRowStopIndexForStartIndex: ({ rowHeight, totalRow, height }, startIndex, scrollTop) => {
 			const top = startIndex * rowHeight;
 			const numVisibleRows = Math.ceil((height + scrollTop - top) / rowHeight);

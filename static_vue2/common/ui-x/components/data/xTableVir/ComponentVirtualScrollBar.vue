@@ -1,6 +1,16 @@
 <script lang="ts">
 export default async function () {
-	const { BAR_MAP, virtualizedScrollbarProps, useNamespace, HORIZONTAL, ScrollbarDirKey, SCROLLBAR_MIN_SIZE, renderThumbStyle, rAF, cAF } = _useXui;
+	const {
+		BAR_MAP,
+		virtualizedScrollbarProps,
+		useNamespace,
+		HORIZONTAL,
+		ScrollbarDirKey,
+		SCROLLBAR_MIN_SIZE,
+		renderThumbStyle,
+		rAF,
+		cAF
+	} = _xUtils;
 	return defineComponent({
 		name: "ComponentVirtualScrollBar",
 		props: virtualizedScrollbarProps,
@@ -39,7 +49,9 @@ export default async function () {
 					return (ratio * clientSize) / 100;
 				}
 				const SCROLLBAR_MAX_SIZE = clientSize / 3;
-				return Math.floor(Math.min(Math.max(ratio * clientSize, SCROLLBAR_MIN_SIZE), SCROLLBAR_MAX_SIZE));
+				return Math.floor(
+					Math.min(Math.max(ratio * clientSize, SCROLLBAR_MIN_SIZE), SCROLLBAR_MAX_SIZE)
+				);
 			});
 			const thumbStyle = computed(() => {
 				if (!Number.isFinite(thumbSize.value)) {
@@ -58,7 +70,9 @@ export default async function () {
 				);
 				return style;
 			});
-			const totalSteps = computed(() => Math.floor(props.clientSize - thumbSize.value - unref(GAP)));
+			const totalSteps = computed(() =>
+				Math.floor(props.clientSize - thumbSize.value - unref(GAP))
+			);
 			const attachEvents = () => {
 				window.addEventListener("mousemove", onMouseMove);
 				window.addEventListener("mouseup", onMouseUp);
@@ -85,7 +99,10 @@ export default async function () {
 					return;
 				}
 				state.isDragging = true;
-				state[bar.value.axis] = e.currentTarget[bar.value.offset] - (e[bar.value.client] - e.currentTarget.getBoundingClientRect()[bar.value.direction]);
+				state[bar.value.axis] =
+					e.currentTarget[bar.value.offset] -
+					(e[bar.value.client] -
+						e.currentTarget.getBoundingClientRect()[bar.value.direction]);
 				emit("start-move");
 				attachEvents();
 			};
@@ -102,7 +119,10 @@ export default async function () {
 				const prevPage = state[bar.value.axis];
 				if (!prevPage) return;
 				cAF(frameHandle);
-				const offset = (vm.$refs.trackRef.getBoundingClientRect()[bar.value.direction] - e[bar.value.client]) * -1;
+				const offset =
+					(vm.$refs.trackRef.getBoundingClientRect()[bar.value.direction] -
+						e[bar.value.client]) *
+					-1;
 				const thumbClickPosition = vm.$refs.thumbRef[bar.value.offset] - prevPage;
 				const distance = offset - thumbClickPosition;
 				frameHandle = rAF(() => {
@@ -113,7 +133,9 @@ export default async function () {
 			const clickTrackHandler = e => {
 				e.stopPropagation();
 				e.preventDefault();
-				const offset = Math.abs(e.target.getBoundingClientRect()[bar.value.direction] - e[bar.value.client]);
+				const offset = Math.abs(
+					e.target.getBoundingClientRect()[bar.value.direction] - e[bar.value.client]
+				);
 				const thumbHalf = vm.$refs.thumbRef[bar.value.offset] / 2;
 				const distance = offset - thumbHalf;
 				state.traveled = Math.max(0, Math.min(distance, totalSteps.value));
@@ -137,7 +159,11 @@ export default async function () {
 							role: "presentation"
 						},
 						ref: "trackRef",
-						class: [nsVirtualScrollbar.b(), props.classV2, (props.alwaysOn || state.isDragging) && "always-on"],
+						class: [
+							nsVirtualScrollbar.b(),
+							props.classV2,
+							(props.alwaysOn || state.isDragging) && "always-on"
+						],
 						style: trackStyle.value,
 						onMousedown: clickTrackHandler,
 						onTouchstartPrevent: onThumbMouseDown

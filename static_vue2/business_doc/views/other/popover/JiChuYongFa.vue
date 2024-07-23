@@ -3,35 +3,103 @@
 		<xMd :md="mdTitle" />
 		<xMd :md="md1" />
 
-		<div v-xtips="'如果是字符串，默认为`content`'" class="el-button el-button--default el-button--small">DIV hover</div>
-		<div v-xtips="{ content: '' }" class="el-button el-button--default el-button--small">DIV hover 如果content是假值，不会有tips</div>
+		<div
+			v-xtips="'如果是字符串，默认为`content`'"
+			class="el-button el-button--default el-button--small">
+			DIV hover
+		</div>
+		<div v-xtips="{ content: '' }" class="el-button el-button--default el-button--small">
+			DIV hover 如果content是假值，不会有tips
+		</div>
 
 		<xMd :md="'#### 普通dom\n\n'" />
 
-		<div v-xtips="{ title: '标题', content: 'hover 激活', width: 200, trigger: 'hover', placement: 'top' }" class="el-button el-button--default el-button--small">DIV hover</div>
-		<div v-xtips="manual" @click="toggle" class="el-button el-button--default el-button--small">DIV 手动 {{ visible_label }}</div>
+		<div
+			v-xtips="{
+				title: '标题',
+				content: 'hover 激活',
+				width: 200,
+				trigger: 'hover',
+				placement: 'top'
+			}"
+			class="el-button el-button--default el-button--small">
+			DIV hover
+		</div>
+		<div v-xtips="manual" @click="toggle" class="el-button el-button--default el-button--small">
+			DIV 手动 {{ visible_label }}
+		</div>
 
 		{{ manual }}
 		<xMd :md="'#### 组件\n\n'" />
 
-		<xBtn v-xtips="{ title: '标题', content: 'hover 激活', width: 200, trigger: 'hover', placement: 'top' }">hover 激活</xBtn>
-		<xBtn v-xtips="{ title: '标题', content: 'click 激活', width: 200, trigger: 'click', placement: 'left' }">click 激活</xBtn>
-		<xBtn v-xtips="{ title: '标题', content: 'focus 激活', width: 200, trigger: 'focus', placement: 'right' }">focus 激活</xBtn>
-		{{ visible_label }}<xBtn v-xtips="manual" @click="toggle">手动激活 {{ visible_label }}</xBtn>
+		<xBtn
+			v-xtips="{
+				title: '标题',
+				content: 'hover 激活',
+				width: 200,
+				trigger: 'hover',
+				placement: 'top'
+			}"
+			>hover 激活</xBtn
+		>
+		<xBtn
+			v-xtips="{
+				title: '标题',
+				content: 'click 激活',
+				width: 200,
+				trigger: 'click',
+				placement: 'left'
+			}"
+			>click 激活</xBtn
+		>
+		<xBtn
+			v-xtips="{
+				title: '标题',
+				content: 'focus 激活',
+				width: 200,
+				trigger: 'focus',
+				placement: 'right'
+			}"
+			>focus 激活</xBtn
+		>
+		{{ visible_label
+		}}<xBtn v-xtips="manual" @click="toggle">手动激活 {{ visible_label }}</xBtn>
 
 		<xMd :md="'#### 声明式用法'" />
 
-		<elPopover placement="top-start" title="标题" width="200" trigger="hover" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+		<xPopover
+			placement="top-start"
+			title="标题"
+			width="200"
+			trigger="hover"
+			content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
 			<xBtn slot="reference">hover 激活</xBtn>
-		</elPopover>
-		<elPopover placement="bottom" title="标题" width="200" trigger="click" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+		</xPopover>
+		<xPopover
+			placement="bottom"
+			title="标题"
+			width="200"
+			trigger="click"
+			content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
 			<xBtn slot="reference">click 激活</xBtn>
-		</elPopover>
-		<elPopover ref="popover" placement="right" title="标题" width="200" trigger="focus" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"> </elPopover>
+		</xPopover>
+		<xPopover
+			ref="popover"
+			placement="right"
+			title="标题"
+			width="200"
+			trigger="focus"
+			content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。" />
 		<xBtn v-popover:popover>focus 激活</xBtn>
-		<elPopover placement="bottom" title="标题" width="200" trigger="manual" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。" v-model="visible">
+		<xPopover
+			placement="bottom"
+			title="标题"
+			width="200"
+			trigger="manual"
+			content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+			v-model="visible">
 			<xBtn slot="reference" @click="visible = !visible">手动激活</xBtn>
-		</elPopover>
+		</xPopover>
 	</div>
 </template>
 <script lang="ts">
@@ -47,7 +115,10 @@ export default async function () {
 		},
 		methods: {
 			toggle() {
-				const placement = "top/top-start/top-end/bottom/bottom-start/bottom-end/left/left-start/left-end/right/right-start/right-end".split("/");
+				const placement =
+					"top/top-start/top-end/bottom/bottom-start/bottom-end/left/left-start/left-end/right/right-start/right-end".split(
+						"/"
+					);
 				this.manual.visible = !this.manual.visible;
 				if (this.manual.visible) {
 					this.manual.placement = placement[this.count++ % placement.length];

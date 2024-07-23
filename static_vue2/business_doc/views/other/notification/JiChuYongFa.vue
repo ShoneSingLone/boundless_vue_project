@@ -23,7 +23,6 @@
 <script lang="ts">
 export default async function () {
 	return defineComponent({
-		beforeUnmount() {},
 		computed: {
 			btnSingle() {
 				const vm = this;
@@ -36,7 +35,12 @@ export default async function () {
 					async onClick() {
 						vm.notifyVm = await _.$notify[vm.form.type.value]({
 							title: "这是一条不会自动关闭的消息",
-							message: () => h("i", { style: "color: teal" }, "将message作为render函数使用,返回vNode"),
+							message: () =>
+								h(
+									"i",
+									{ style: "color: teal" },
+									"将message作为render函数使用,返回vNode"
+								),
 							duration: 0
 						});
 					}
@@ -112,7 +116,11 @@ export default async function () {
 				_.$notify({
 					title: "_.$notify",
 					message: () => [
-						h("div", { style: "color:yellow;background:black;padding:10px;" }, "将message作为render函数使用,返回vNode"),
+						h(
+							"div",
+							{ style: "color:yellow;background:black;padding:10px;" },
+							"将message作为render函数使用,返回vNode"
+						),
 						h("p", { style: "color: teal" }, "将message作为render函数使用,返回vNode")
 					],
 					duration: 0

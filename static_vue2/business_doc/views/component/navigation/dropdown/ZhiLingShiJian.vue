@@ -2,7 +2,9 @@
 	<div>
 		<xMd :md="md" />
 		<xDropdown @command="handleCommand">
-			<span class="xDropdown-link"> 下拉菜单<i class="el-icon-arrow-down el-icon--right"></i> </span>
+			<span class="xDropdown-link">
+				下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+			</span>
 			<xDropdownMenu slot="dropdown">
 				<xDropdownItem command="a">黄金糕</xDropdownItem>
 				<xDropdownItem command="b">狮子头</xDropdownItem>
@@ -18,7 +20,7 @@ export default async function () {
 	return defineComponent({
 		methods: {
 			handleCommand(command) {
-				this.$message("click on item " + command);
+				_.$msg("click on item " + command);
 			}
 		},
 		data() {

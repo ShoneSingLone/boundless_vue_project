@@ -3,7 +3,7 @@ export default async function () {
 	return defineComponent({
 		name: "xNodeContent",
 		inject: ["injectRootTree"],
-		props: _useXui.buildProps({
+		props: _xUtils.buildProps({
 			node: {
 				type: Object,
 				required: true
@@ -13,7 +13,7 @@ export default async function () {
 			const vm = this;
 			/* @ts-ignore */
 			const injectRootTree = vm.injectRootTree;
-			const ns = _useXui.useNamespace("tree");
+			const ns = _xUtils.useNamespace("tree");
 			return () => {
 				const { node } = vm;
 				const { data } = node;

@@ -1,433 +1,473 @@
 module.exports = {
   "vars": {
-    "$$tags": [
-      "2",
-      19,
+    "$traverse": [
+      "1",
+      15,
       1
     ],
-    "$$id": [
-      "2",
-      9,
+    "$setDocTitle": [
+      "1",
+      29,
       1
     ],
-    "$val": [
-      "2",
-      169,
+    "$md5": [
+      "1",
+      37,
       1
     ],
-    "$appendScript": [
-      "2",
-      331,
+    "$bytesToSize": [
+      "1",
+      56,
       1
-    ],
-    "$appendStyle": [
-      "2",
-      372,
-      1
-    ],
-    "$resolveCssAssetsPath": [
-      "2",
-      364,
-      1
-    ],
-    "$idb": [
-      "2",
-      454,
-      2
-    ],
-    "$resolvePath": [
-      "2",
-      241,
-      1
-    ],
-    "$loadText": [
-      "2",
-      456,
-      2
     ],
     "$rafThrottle": [
       "1",
-      11,
+      67,
       1
     ],
     "$copyToClipboard": [
       "1",
-      28,
+      84,
       1
     ],
     "$ramdomStr": [
       "1",
-      58,
+      114,
       1
     ],
     "$openFileSelector": [
       "1",
-      71,
+      127,
       1
     ],
     "$readFileAsText": [
       "1",
-      113,
+      169,
       1
     ],
     "$downloadTextAsBlob": [
       "1",
-      130,
-      1
+      187,
+      2
     ],
     "$handleSetFormValue": [
       "1",
-      149,
+      207,
       1
     ],
     "$translateStrByNull": [
       "1",
-      158,
+      216,
       1
     ],
     "$timeAgo": [
       "1",
-      170,
+      228,
       1
     ],
     "$eqObj": [
       "1",
-      224,
+      282,
       1
+    ],
+    "$isHttp": [
+      "1",
+      548,
+      2
+    ],
+    "$isArrayFill": [
+      "1",
+      558,
+      2
+    ],
+    "$isExternal": [
+      "1",
+      565,
+      2
+    ],
+    "$isSame": [
+      "1",
+      576,
+      2
+    ],
+    "$isIE": [
+      "1",
+      580,
+      2
+    ],
+    "$isEdge": [
+      "1",
+      584,
+      2
+    ],
+    "$isFirefox": [
+      "1",
+      588,
+      2
     ],
     "$getLeftTopFromAbsolute": [
       "1",
-      467,
+      599,
       1
     ],
     "$getLeftTopFromTranslate": [
       "1",
-      482,
+      614,
       1
     ],
     "$aHashLink": [
       "1",
-      522,
+      654,
       1
     ],
     "$setAppTheme": [
       "1",
-      534,
-      1
-    ],
-    "$isSame": [
-      "1",
-      548,
-      1
-    ],
-    "$isIE": [
-      "1",
-      552,
-      1
-    ],
-    "$isEdge": [
-      "1",
-      556,
-      1
-    ],
-    "$isFirefox": [
-      "1",
-      560,
+      666,
       1
     ],
     "$valueEquals": [
       "1",
-      564,
+      673,
       1
     ],
     "$scrollIntoView": [
       "1",
-      576,
+      685,
       1
     ],
     "$firstUpperCase": [
       "1",
-      606,
+      715,
       1
     ],
     "$isMac": [
       "1",
-      615,
+      724,
       1
     ],
     "$isNumber": [
       "1",
-      625,
+      734,
       1
     ],
     "$isKorean": [
       "1",
-      629,
+      738,
       1
     ],
     "$filterSomeInput": [
       "1",
-      635,
+      744,
       1
     ],
     "$filterAllInput": [
       "1",
-      643,
+      752,
       1
     ],
     "$trylog": [
       "1",
-      657,
+      766,
       1
     ],
     "$lStorage": [
       "1",
-      666,
+      775,
       1
     ],
     "$genId": [
       "1",
-      696,
+      812,
       2
     ],
     "$dateFormat": [
       "1",
-      715,
+      831,
       1
     ],
     "$val2L": [
       "1",
-      751,
+      867,
       1
     ],
     "$randomName": [
       "1",
-      766,
+      882,
       1
     ],
     "$is200": [
       "1",
-      776,
+      892,
       1
     ],
     "$isEveryInput": [
       "1",
-      786,
+      902,
       1
     ],
     "$isInput": [
       "1",
-      808,
+      924,
       1
     ],
     "$doNoting": [
       "1",
-      823,
+      939,
       1
     ],
     "$sleep": [
       "1",
-      829,
+      945,
       1
     ],
     "$asyncDebounce": [
       "1",
-      838,
-      1
-    ],
-    "$isArrayFill": [
-      "1",
-      870,
+      954,
       1
     ],
     "$loading": [
       "1",
-      894,
+      1007,
       1
     ],
     "$confirm": [
       "1",
-      929,
+      1059,
       1
     ],
-    "$delConfirm": [
+    "$confirm_important": [
       "1",
-      952,
+      1100,
       1
     ],
     "$msgSuccess": [
       "1",
-      965,
+      1113,
       1
     ],
     "$msgError": [
       "1",
-      980,
+      1128,
       2
     ],
     "$openWindow_deprecated": [
       "1",
-      1018,
+      1177,
       2
     ],
     "$ensure": [
       "1",
-      1038,
-      1
+      1198,
+      2
     ],
     "$globalVar": [
       "1",
-      1077,
+      1238,
       1
     ],
     "$urlSearch": [
       "1",
-      1111,
+      1272,
       1
     ],
     "$location": [
       "1",
-      1117,
+      1278,
       1
     ],
     "$GenComponentOptions": [
       "1",
-      1183,
+      1344,
       2
     ],
     "$single": [
       "1",
-      1236,
+      1398,
       2
     ],
     "$sourceCodeSFC": [
       "1",
-      1272,
+      1434,
       2
     ],
     "$vNode": [
       "1",
-      1318,
+      1480,
       2
     ],
     "$importVue": [
       "1",
-      1340,
+      1502,
       2
     ],
     "$sfcVueObject": [
       "1",
-      1352,
+      1514,
       2
     ],
     "$newRoute": [
       "1",
-      1394,
+      1565,
       2
     ],
     "$setPagination": [
       "1",
-      1404,
+      1575,
       1
     ],
     "$setTableData": [
       "1",
-      1416,
+      1587,
       1
     ],
     "$validateForm": [
       "1",
-      1483,
+      1654,
       1
     ],
     "$hideRow": [
       "1",
-      1508,
+      1679,
       1
     ],
     "$modifyItemsAttrs": [
       "1",
-      1517,
+      1695,
       1
     ],
     "$getVmById": [
       "1",
-      1534,
+      1712,
       1
     ],
     "$getCellItemVm": [
       "1",
-      1553,
+      1731,
       1
     ],
     "$CellItem": [
       "1",
-      1574,
+      1752,
       1
     ],
     "$fillBackData": [
       "1",
-      1597,
-      1
+      1775,
+      2
     ],
-    "$setValToForm": [
+    "$resetFormValues": [
       "1",
-      1621,
-      1
+      1797,
+      2
     ],
-    "$pickValueFromConfigs": [
+    "$setFormValues": [
       "1",
-      1635,
-      1
+      1810,
+      2
     ],
-    "$valFirstOrDefault": [
+    "$pickFormValues": [
       "1",
-      1654,
-      1
+      1825,
+      2
     ],
-    "$firstIpFrom": [
+    "$newI18nMany": [
       "1",
-      1665,
-      1
+      1843,
+      2
+    ],
+    "$getSelectedItemFrom": [
+      "1",
+      1853,
+      2
+    ],
+    "$getFirstOrDefaultValue": [
+      "1",
+      1875,
+      2
     ],
     "$getIpInRangeAndUseable": [
       "1",
-      1671,
-      1
+      1886,
+      2
     ],
     "$intToIp4": [
       "1",
-      1701,
+      1937,
       1
     ],
     "$ip4ToInt": [
       "1",
-      1702,
+      1938,
       1
     ],
     "$isIp4InCidr": [
       "1",
-      1703,
+      1939,
       1
     ],
     "$intToBin": [
       "1",
-      1713,
+      1949,
       1
     ],
     "$calculateCidrRange": [
       "1",
-      1720,
+      1957,
       1
     ],
-    "$newI18n": [
-      "1",
-      1735,
+    "$$tags": [
+      "2",
+      20,
+      1
+    ],
+    "$$id": [
+      "2",
+      10,
+      1
+    ],
+    "$val": [
+      "2",
+      189,
+      1
+    ],
+    "$appendScript": [
+      "2",
+      354,
+      1
+    ],
+    "$appendStyle": [
+      "2",
+      399,
+      1
+    ],
+    "$resolveCssAssetsPath": [
+      "2",
+      391,
+      1
+    ],
+    "$idb": [
+      "2",
+      493,
       2
+    ],
+    "$resolvePath": [
+      "2",
+      261,
+      1
+    ],
+    "$loadText": [
+      "2",
+      495,
+      2
+    ],
+    "$newI18n": [
+      "2",
+      519,
+      3
     ]
   },
   "files": {
-    "1": "static_vue2/common/libs/common.js",
+    "1": "static_vue2/common/libs/common.ts",
     "2": "static_vue2/common/libs/seed.js"
   }
 };

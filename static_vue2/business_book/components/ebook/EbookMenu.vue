@@ -4,7 +4,10 @@
 		<ebook-setting-theme />
 		<ebook-setting-progress />
 		<transition name="slide-up">
-			<div class="menu-wrapper" :class="{ 'hide-box-shadow': !menuVisible || settingVisible >= 0 }" v-show="menuVisible">
+			<div
+				class="menu-wrapper"
+				:class="{ 'hide-box-shadow': !menuVisible || settingVisible >= 0 }"
+				v-show="menuVisible">
 				<div class="icon-wrapper">
 					<span class="icon-menu icon" @click="showSetting(3)"></span>
 				</div>

@@ -1,5 +1,5 @@
 <template>
-	<xDialog id="WindowConfirm">
+	<xDialog id="WindowConfirm" :style="cptStyle">
 		<xRender :render="content" />
 		<template #footer>
 			<xRender :render="renderFooter" v-if="renderFooter" />
@@ -12,12 +12,8 @@
 </template>
 
 <script lang="ts">
-export default async function ({ onOk, onCancel, content, renderFooter }) {
-	const isUpdate = false;
-	/*  */
-	const RULES = await _.$importVue("/common/utils/rules.vue");
+export default async function ({ resolve, reject, content, renderFooter, style }) {
 	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
-
 	return defineComponent({
 		props: useDialogProps(),
 		data() {
@@ -26,6 +22,13 @@ export default async function ({ onOk, onCancel, content, renderFooter }) {
 			};
 		},
 		computed: {
+			cptStyle() {
+				if (style) {
+					return style;
+				} else {
+					return { "--xDialog-wrapper-width": "300px" };
+				}
+			},
 			renderFooter() {
 				if (renderFooter) {
 					return renderFooter(this);
@@ -39,20 +42,19 @@ export default async function ({ onOk, onCancel, content, renderFooter }) {
 					label,
 					async onClick() {
 						vm.closeModal();
-						onOk();
+						resolve();
 					}
 				};
 			},
 			btnCancel() {
 				const vm = this;
-				let label = i18n("取消");
 				return {
-					label,
+					label: i18n("取消"),
 					/* 因为是弹出确认框，引导用户取消 */
 					preset: "blue",
 					async onClick() {
 						vm.closeModal();
-						onCancel();
+						reject();
 					}
 				};
 			}

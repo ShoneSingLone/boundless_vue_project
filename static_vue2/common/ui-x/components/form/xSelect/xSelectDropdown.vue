@@ -1,5 +1,8 @@
 <template>
-	<div class="el-select-dropdown el-popper" :class="[{ 'is-multiple': $parent.multiple }, popperClass]" :style="{ minWidth: minWidth }">
+	<div
+		class="el-select-dropdown el-popper"
+		:class="[{ 'is-multiple': $parent.multiple }, popperClass]"
+		:style="{ minWidth: minWidth }">
 		<slot></slot>
 	</div>
 </template>

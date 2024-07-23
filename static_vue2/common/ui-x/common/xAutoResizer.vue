@@ -2,11 +2,11 @@
 export default async function () {
 	return defineComponent({
 		name: "xAutoResizer",
-		props: _useXui.autoResizerProps,
+		props: _xUtils.autoResizerProps,
 		setup(props, context) {
 			const { slots } = context;
-			const ns = _useXui.useNamespace("auto-resizer");
-			const { height, width, sizer } = _useXui.useAutoResize(props);
+			const ns = _xUtils.useNamespace("auto-resizer");
+			const { height, width, sizer } = _xUtils.useAutoResize(props);
 			return function () {
 				return h(
 					"div",

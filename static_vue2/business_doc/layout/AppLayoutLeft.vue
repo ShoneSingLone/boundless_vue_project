@@ -1,14 +1,15 @@
 <template>
 	<div id="AppLayoutLeft" :style="leftStyle" :class="{ close: !isOpen }">
-		<div class="padding">
+		<div class="x-padding flex middle">
 			<xInput v-model="filterText" placeholder="Search" clearable />
+			<xIcon icon="_icon_local" @click="local" class="pointer ml" />
 		</div>
 		<aside
 			:class="{
-				'sidebar-menu-wrapper flex vertical center': true,
+				'x-sidebar-menu-wrapper flex vertical center': true,
 				hide: !isOpen
 			}">
-			<div class="sidebar-menu">
+			<div class="x-sidebar-menu" ref="menuWrapper">
 				<!-- <xMenuTree :data="menuList" :render="defaultRender" /> -->
 				<xMenuTreeItem
 					v-for="menu in cptMenuArray"
@@ -32,6 +33,13 @@ export default async function () {
 	return {
 		inject: ["APP"],
 		methods: {
+			local() {
+				setTimeout(async () => {
+					await _.$ensure(() => this.$refs.menuWrapper);
+					const [currentMenu] = $(".xMenuTreeItem.el-menu.active");
+					_.$scrollIntoView(this.$refs.menuWrapper, currentMenu);
+				}, 1000);
+			},
 			traverse({ menuArray, prefix, target, level }) {
 				prefix = prefix || "";
 				level = level || 0;
@@ -61,7 +69,11 @@ export default async function () {
 						style,
 						staticClass: "flex middle"
 					},
-					[h("span", { staticClass: "mr" }, [node.label]), h("span", { staticClass: "mr" }, [node._munu_level]), h("span", { staticClass: "mr" }, [node._munu_id])]
+					[
+						h("span", { staticClass: "mr" }, [node.label]),
+						h("span", { staticClass: "mr" }, [node._munu_level]),
+						h("span", { staticClass: "mr" }, [node._munu_id])
+					]
 				);
 			},
 			search: _.debounce(function (value) {}, 1000),
@@ -115,7 +127,7 @@ export default async function () {
 			}
 		},
 		mounted() {
-			// this.initActive();
+			this.local();
 		},
 		computed: {
 			menuList() {
@@ -135,9 +147,9 @@ export default async function () {
 					return `--left-aside-width:1px`;
 				}
 				if (window.I18N_LANGUAGE === "zh-CN") {
-					return `--left-aside-width:240px;`;
+					return `--left-aside-width:340px;`;
 				} else {
-					return `--left-aside-width:240px;`;
+					return `--left-aside-width:340px;`;
 				}
 			}
 		},
@@ -148,6 +160,14 @@ export default async function () {
 				isOpen: true,
 				vSlots: {
 					label({ item }) {
+						const label = (() => {
+							return item.label;
+							const labelArray = item.label.split(" ");
+							return _.map(labelArray, label => {
+								return h("div", { class: "menu-item-label" }, [label]);
+							});
+						})();
+
 						if (item.href) {
 							const { href } = vm.$router.resolve(item.href);
 							return h(
@@ -159,10 +179,10 @@ export default async function () {
 										event.preventDefault();
 									}
 								},
-								[item.label]
+								label
 							);
 						}
-						return h("span", {}, [item.label]);
+						return h("span", {}, label);
 					}
 				}
 			};
@@ -175,4 +195,8 @@ export default async function () {
 	};
 }
 </script>
-<style lang="less"></style>
+<style lang="less">
+.menu-item-label {
+	font-size: 14px;
+}
+</style>

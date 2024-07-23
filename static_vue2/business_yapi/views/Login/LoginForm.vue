@@ -3,8 +3,11 @@
 		<!-- 用户名 -->
 		<xItem :configs="configsForm.email" autocomplete="email" @keypress.enter="login" />
 		<!-- 密码 -->
-		<xItem :configs="configsForm.password" autocomplete="current-password" @keypress.enter="login" />
-		<div class="item-wrapper">
+		<xItem
+			:configs="configsForm.password"
+			autocomplete="current-password"
+			@keypress.enter="login" />
+		<div class="width100">
 			<xBtn :configs="configsSubmit" />
 		</div>
 	</xForm>
@@ -79,11 +82,11 @@ export default async function () {
 					if (error) {
 						console.error("未通过验证");
 					} else {
-						const formData = _.$pickValueFromConfigs(vm.configsForm);
+						const formData = _.$pickFormValues(vm.configsForm);
 						const res = await _api.yapi.userLogin(formData);
 						if (res?.data?.x_token) {
 							_.$lStorage.x_token = res?.data?.x_token;
-							_.$msgSuccess("登录成功! ");
+							_.$msg("登录成功! ");
 							await this.APP.refreshUserInfo();
 						}
 					}

@@ -10,15 +10,24 @@
 			<div class="group-operate flex start middle mb10 left-tree box-shadow">
 				<xItem :configs="configsSearch" class="flex1" />
 				<xGap l="10" />
-				<div class="pointer" @click="() => Group.openGroupUpsertDialog()" v-xtips="{ content: '添加分组', placement: 'right', style: '--min-width:unset;' }">
+				<div
+					class="pointer"
+					@click="() => Group.openGroupUpsertDialog()"
+					v-xtips="{
+						content: '添加分组',
+						placement: 'right',
+						style: '--min-width:unset;'
+					}">
 					<!-- 添加分组 -->
 					<xIcon icon="_add" class="icon-opreation_click" />
 				</div>
 			</div>
-			<div class="flex1" style="height: 1px; overflow: auto" ref="refTreeScroll">
-				<elTree :data="groupListForShow" node-key="href" default-expand-all :expand-on-click-node="false">
-					<xRender :render="nodeRender" :payload="payload" slot-scope="payload" />
-				</elTree>
+			<div class="flex1-overflow-auto" ref="refTreeScroll">
+				<xTree
+					:data="groupListForShow"
+					:props="props"
+					:contentRender="nodeRender"
+					:expandedKeys="expandedKeys" />
 			</div>
 		</div>
 		<div class="resize_bar" icon="scroll" v-xmove="resizeOptions" />
@@ -44,6 +53,12 @@ export default async function () {
 		data() {
 			const vm = this;
 			return {
+				props: {
+					value: "group_name",
+					label: "group_name",
+					children: "children"
+				},
+				expandedKeys: ["非分组成员", "分组成员", "开发者", "所有者"],
 				configsSearch: defItem({
 					isSearch: false,
 					value: "",
@@ -63,13 +78,16 @@ export default async function () {
 				const keywords = vm.configsSearch.value;
 				let groupListForShow;
 
-				const a = {
-					label: "11"
-				};
 				if (keywords === "") {
-					const { true: notInGroup, undefined: inGroup } = _.groupBy(groupList, "notInGroup");
+					const { true: notInGroup, undefined: inGroup } = _.groupBy(
+						groupList,
+						"notInGroup"
+					);
 					const { owner, member } = _.groupBy(inGroup, "role");
-					let { true: privateSpace, undefined: otherOwner } = _.groupBy(owner, "privateSpace");
+					let { true: privateSpace, undefined: otherOwner } = _.groupBy(
+						owner,
+						"privateSpace"
+					);
 
 					groupListForShow = [
 						{
@@ -108,7 +126,9 @@ export default async function () {
 						}
 					];
 				} else {
-					groupListForShow = _.filter(groupList, group => new RegExp(keywords, "i").test(group.group_name)).map(i => ({
+					groupListForShow = _.filter(groupList, group =>
+						new RegExp(keywords, "i").test(group.group_name)
+					).map(i => ({
 						...i,
 						icon: "_icon_group_exclude"
 					}));
@@ -119,7 +139,9 @@ export default async function () {
 				await _.$ensure(() => this.$refs.refTreeScroll);
 				setTimeout(() => {
 					try {
-						this.$el.querySelector(".is-current").scrollIntoView({ behavior: "smooth", block: "center" });
+						this.$el
+							.querySelector(".is-current")
+							.scrollIntoView({ behavior: "smooth", block: "center" });
 					} catch (error) {}
 				}, 1000);
 			},
@@ -141,7 +163,7 @@ export default async function () {
 						h("xIcon", {
 							icon: "currentLocation",
 							staticClass: "node-icon-current",
-							attrs: { color: "var(--ui-primary)" }
+							attrs: { color: "var(--el-color-primary)" }
 						})
 					]
 				);

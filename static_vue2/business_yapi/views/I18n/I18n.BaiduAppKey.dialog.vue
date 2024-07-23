@@ -42,7 +42,7 @@ export default async function ({ onResponse }) {
 		},
 		computed: {
 			cptFormData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnOk() {
 				const vm = this;

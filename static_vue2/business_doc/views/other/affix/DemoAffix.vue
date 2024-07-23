@@ -8,7 +8,7 @@
 		<div style="height: 800px; width: 100%" />
 		<DemoAndCode title="固定位置" path="@/views/other/affix/GuDingWeiZhi.vue" unfold />
 		<div style="height: 800px; width: 100%" />
-		<xMd :md="apiString" />
+		<xMd :md="apiString" data-role="api" />
 	</DocContentOfDemo>
 </template>
 

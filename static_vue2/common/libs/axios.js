@@ -26,7 +26,11 @@
 				: Object.getOwnPropertyDescriptors
 					? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source))
 					: ownKeys(Object(source)).forEach(function (key) {
-							Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+							Object.defineProperty(
+								target,
+								key,
+								Object.getOwnPropertyDescriptor(source, key)
+							);
 						});
 		}
 		return target;
@@ -61,7 +65,8 @@
 			};
 		}
 		function wrap(innerFn, outerFn, self, tryLocsList) {
-			var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator,
+			var protoGenerator =
+					outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator,
 				generator = Object.create(protoGenerator.prototype),
 				context = new Context(tryLocsList || []);
 			return (
@@ -82,21 +87,32 @@
 									return delegateResult;
 								}
 							}
-							if ("next" === context.method) context.sent = context._sent = context.arg;
+							if ("next" === context.method)
+								context.sent = context._sent = context.arg;
 							else if ("throw" === context.method) {
-								if ("suspendedStart" === state) throw ((state = "completed"), context.arg);
+								if ("suspendedStart" === state)
+									throw ((state = "completed"), context.arg);
 								context.dispatchException(context.arg);
-							} else "return" === context.method && context.abrupt("return", context.arg);
+							} else
+								"return" === context.method &&
+									context.abrupt("return", context.arg);
 							state = "executing";
 							var record = tryCatch(innerFn, self, context);
 							if ("normal" === record.type) {
-								if (((state = context.done ? "completed" : "suspendedYield"), record.arg === ContinueSentinel)) continue;
+								if (
+									((state = context.done ? "completed" : "suspendedYield"),
+									record.arg === ContinueSentinel)
+								)
+									continue;
 								return {
 									value: record.arg,
 									done: context.done
 								};
 							}
-							"throw" === record.type && ((state = "completed"), (context.method = "throw"), (context.arg = record.arg));
+							"throw" === record.type &&
+								((state = "completed"),
+								(context.method = "throw"),
+								(context.arg = record.arg));
 						}
 					};
 				})(innerFn, self, context)),
@@ -127,8 +143,14 @@
 		});
 		var getProto = Object.getPrototypeOf,
 			NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-		NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype);
-		var Gp = (GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype));
+		NativeIteratorPrototype &&
+			NativeIteratorPrototype !== Op &&
+			hasOwn.call(NativeIteratorPrototype, iteratorSymbol) &&
+			(IteratorPrototype = NativeIteratorPrototype);
+		var Gp =
+			(GeneratorFunctionPrototype.prototype =
+			Generator.prototype =
+				Object.create(IteratorPrototype));
 		function defineIteratorMethods(prototype) {
 			["next", "throw", "return"].forEach(function (method) {
 				define(prototype, method, function (arg) {
@@ -169,37 +191,60 @@
 						invoke(method, arg, resolve, reject);
 					});
 				}
-				return (previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg());
+				return (previousPromise = previousPromise
+					? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg)
+					: callInvokeWithMethodAndArg());
 			};
 		}
 		function maybeInvokeDelegate(delegate, context) {
 			var method = delegate.iterator[context.method];
 			if (undefined === method) {
 				if (((context.delegate = null), "throw" === context.method)) {
-					if (delegate.iterator.return && ((context.method = "return"), (context.arg = undefined), maybeInvokeDelegate(delegate, context), "throw" === context.method))
+					if (
+						delegate.iterator.return &&
+						((context.method = "return"),
+						(context.arg = undefined),
+						maybeInvokeDelegate(delegate, context),
+						"throw" === context.method)
+					)
 						return ContinueSentinel;
-					(context.method = "throw"), (context.arg = new TypeError("The iterator does not provide a 'throw' method"));
+					(context.method = "throw"),
+						(context.arg = new TypeError(
+							"The iterator does not provide a 'throw' method"
+						));
 				}
 				return ContinueSentinel;
 			}
 			var record = tryCatch(method, delegate.iterator, context.arg);
-			if ("throw" === record.type) return (context.method = "throw"), (context.arg = record.arg), (context.delegate = null), ContinueSentinel;
+			if ("throw" === record.type)
+				return (
+					(context.method = "throw"),
+					(context.arg = record.arg),
+					(context.delegate = null),
+					ContinueSentinel
+				);
 			var info = record.arg;
 			return info
 				? info.done
 					? ((context[delegate.resultName] = info.value),
 						(context.next = delegate.nextLoc),
-						"return" !== context.method && ((context.method = "next"), (context.arg = undefined)),
+						"return" !== context.method &&
+							((context.method = "next"), (context.arg = undefined)),
 						(context.delegate = null),
 						ContinueSentinel)
 					: info
-				: ((context.method = "throw"), (context.arg = new TypeError("iterator result is not an object")), (context.delegate = null), ContinueSentinel);
+				: ((context.method = "throw"),
+					(context.arg = new TypeError("iterator result is not an object")),
+					(context.delegate = null),
+					ContinueSentinel);
 		}
 		function pushTryEntry(locs) {
 			var entry = {
 				tryLoc: locs[0]
 			};
-			1 in locs && (entry.catchLoc = locs[1]), 2 in locs && ((entry.finallyLoc = locs[2]), (entry.afterLoc = locs[3])), this.tryEntries.push(entry);
+			1 in locs && (entry.catchLoc = locs[1]),
+				2 in locs && ((entry.finallyLoc = locs[2]), (entry.afterLoc = locs[3])),
+				this.tryEntries.push(entry);
 		}
 		function resetTryEntry(entry) {
 			var record = entry.completion || {};
@@ -222,7 +267,9 @@
 				if (!isNaN(iterable.length)) {
 					var i = -1,
 						next = function next() {
-							for (; ++i < iterable.length; ) if (hasOwn.call(iterable, i)) return (next.value = iterable[i]), (next.done = !1), next;
+							for (; ++i < iterable.length; )
+								if (hasOwn.call(iterable, i))
+									return (next.value = iterable[i]), (next.done = !1), next;
 							return (next.value = undefined), (next.done = !0), next;
 						};
 					return (next.next = next);
@@ -242,16 +289,25 @@
 			(GeneratorFunction.prototype = GeneratorFunctionPrototype),
 			define(Gp, "constructor", GeneratorFunctionPrototype),
 			define(GeneratorFunctionPrototype, "constructor", GeneratorFunction),
-			(GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction")),
+			(GeneratorFunction.displayName = define(
+				GeneratorFunctionPrototype,
+				toStringTagSymbol,
+				"GeneratorFunction"
+			)),
 			(exports.isGeneratorFunction = function (genFun) {
 				var ctor = "function" == typeof genFun && genFun.constructor;
-				return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
+				return (
+					!!ctor &&
+					(ctor === GeneratorFunction ||
+						"GeneratorFunction" === (ctor.displayName || ctor.name))
+				);
 			}),
 			(exports.mark = function (genFun) {
 				return (
 					Object.setPrototypeOf
 						? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype)
-						: ((genFun.__proto__ = GeneratorFunctionPrototype), define(genFun, toStringTagSymbol, "GeneratorFunction")),
+						: ((genFun.__proto__ = GeneratorFunctionPrototype),
+							define(genFun, toStringTagSymbol, "GeneratorFunction")),
 					(genFun.prototype = Object.create(Gp)),
 					genFun
 				);
@@ -268,7 +324,10 @@
 			(exports.AsyncIterator = AsyncIterator),
 			(exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) {
 				void 0 === PromiseImpl && (PromiseImpl = Promise);
-				var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
+				var iter = new AsyncIterator(
+					wrap(innerFn, outerFn, self, tryLocsList),
+					PromiseImpl
+				);
 				return exports.isGeneratorFunction(outerFn)
 					? iter
 					: iter.next().then(function (result) {
@@ -312,7 +371,11 @@
 						this.tryEntries.forEach(resetTryEntry),
 						!skipTempReset)
 					)
-						for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined);
+						for (var name in this)
+							"t" === name.charAt(0) &&
+								hasOwn.call(this, name) &&
+								!isNaN(+name.slice(1)) &&
+								(this[name] = undefined);
 				},
 				stop: function () {
 					this.done = !0;
@@ -324,7 +387,13 @@
 					if (this.done) throw exception;
 					var context = this;
 					function handle(loc, caught) {
-						return (record.type = "throw"), (record.arg = exception), (context.next = loc), caught && ((context.method = "next"), (context.arg = undefined)), !!caught;
+						return (
+							(record.type = "throw"),
+							(record.arg = exception),
+							(context.next = loc),
+							caught && ((context.method = "next"), (context.arg = undefined)),
+							!!caught
+						);
 					}
 					for (var i = this.tryEntries.length - 1; i >= 0; --i) {
 						var entry = this.tryEntries[i],
@@ -339,7 +408,8 @@
 							} else if (hasCatch) {
 								if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
 							} else {
-								if (!hasFinally) throw new Error("try statement without catch or finally");
+								if (!hasFinally)
+									throw new Error("try statement without catch or finally");
 								if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
 							}
 						}
@@ -348,14 +418,30 @@
 				abrupt: function (type, arg) {
 					for (var i = this.tryEntries.length - 1; i >= 0; --i) {
 						var entry = this.tryEntries[i];
-						if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
+						if (
+							entry.tryLoc <= this.prev &&
+							hasOwn.call(entry, "finallyLoc") &&
+							this.prev < entry.finallyLoc
+						) {
 							var finallyEntry = entry;
 							break;
 						}
 					}
-					finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null);
+					finallyEntry &&
+						("break" === type || "continue" === type) &&
+						finallyEntry.tryLoc <= arg &&
+						arg <= finallyEntry.finallyLoc &&
+						(finallyEntry = null);
 					var record = finallyEntry ? finallyEntry.completion : {};
-					return (record.type = type), (record.arg = arg), finallyEntry ? ((this.method = "next"), (this.next = finallyEntry.finallyLoc), ContinueSentinel) : this.complete(record);
+					return (
+						(record.type = type),
+						(record.arg = arg),
+						finallyEntry
+							? ((this.method = "next"),
+								(this.next = finallyEntry.finallyLoc),
+								ContinueSentinel)
+							: this.complete(record)
+					);
 				},
 				complete: function (record, afterLoc) {
 					if ("throw" === record.type) throw record.arg;
@@ -363,7 +449,9 @@
 						"break" === record.type || "continue" === record.type
 							? (this.next = record.arg)
 							: "return" === record.type
-								? ((this.rval = this.arg = record.arg), (this.method = "return"), (this.next = "end"))
+								? ((this.rval = this.arg = record.arg),
+									(this.method = "return"),
+									(this.next = "end"))
 								: "normal" === record.type && afterLoc && (this.next = afterLoc),
 						ContinueSentinel
 					);
@@ -371,7 +459,12 @@
 				finish: function (finallyLoc) {
 					for (var i = this.tryEntries.length - 1; i >= 0; --i) {
 						var entry = this.tryEntries[i];
-						if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel;
+						if (entry.finallyLoc === finallyLoc)
+							return (
+								this.complete(entry.completion, entry.afterLoc),
+								resetTryEntry(entry),
+								ContinueSentinel
+							);
 					}
 				},
 				catch: function (tryLoc) {
@@ -413,7 +506,12 @@
 							return typeof obj;
 						}
 					: function (obj) {
-							return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+							return obj &&
+								"function" == typeof Symbol &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
+								? "symbol"
+								: typeof obj;
 						}),
 			_typeof(obj)
 		);
@@ -484,13 +582,28 @@
 		return obj;
 	}
 	function _slicedToArray(arr, i) {
-		return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+		return (
+			_arrayWithHoles(arr) ||
+			_iterableToArrayLimit(arr, i) ||
+			_unsupportedIterableToArray(arr, i) ||
+			_nonIterableRest()
+		);
 	}
 	function _toArray(arr) {
-		return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest();
+		return (
+			_arrayWithHoles(arr) ||
+			_iterableToArray(arr) ||
+			_unsupportedIterableToArray(arr) ||
+			_nonIterableRest()
+		);
 	}
 	function _toConsumableArray(arr) {
-		return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+		return (
+			_arrayWithoutHoles(arr) ||
+			_iterableToArray(arr) ||
+			_unsupportedIterableToArray(arr) ||
+			_nonIterableSpread()
+		);
 	}
 	function _arrayWithoutHoles(arr) {
 		if (Array.isArray(arr)) return _arrayLikeToArray(arr);
@@ -499,10 +612,17 @@
 		if (Array.isArray(arr)) return arr;
 	}
 	function _iterableToArray(iter) {
-		if ((typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) || iter["@@iterator"] != null) return Array.from(iter);
+		if (
+			(typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) ||
+			iter["@@iterator"] != null
+		)
+			return Array.from(iter);
 	}
 	function _iterableToArrayLimit(arr, i) {
-		var _i = arr == null ? null : (typeof Symbol !== "undefined" && arr[Symbol.iterator]) || arr["@@iterator"];
+		var _i =
+			arr == null
+				? null
+				: (typeof Symbol !== "undefined" && arr[Symbol.iterator]) || arr["@@iterator"];
 		if (_i == null) return;
 		var _arr = [];
 		var _n = true;
@@ -531,7 +651,8 @@
 		var n = Object.prototype.toString.call(o).slice(8, -1);
 		if (n === "Object" && o.constructor) n = o.constructor.name;
 		if (n === "Map" || n === "Set") return Array.from(o);
-		if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+		if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+			return _arrayLikeToArray(o, minLen);
 	}
 	function _arrayLikeToArray(arr, len) {
 		if (len == null || len > arr.length) len = arr.length;
@@ -539,10 +660,14 @@
 		return arr2;
 	}
 	function _nonIterableSpread() {
-		throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+		throw new TypeError(
+			"Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
+		);
 	}
 	function _nonIterableRest() {
-		throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+		throw new TypeError(
+			"Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
+		);
 	}
 
 	function bind(fn, thisArg) {
@@ -599,7 +724,14 @@
 	 * @returns {boolean} True if value is a Buffer, otherwise false
 	 */
 	function isBuffer(val) {
-		return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor) && isFunction(val.constructor.isBuffer) && val.constructor.isBuffer(val);
+		return (
+			val !== null &&
+			!isUndefined(val) &&
+			val.constructor !== null &&
+			!isUndefined(val.constructor) &&
+			isFunction(val.constructor.isBuffer) &&
+			val.constructor.isBuffer(val)
+		);
 	}
 
 	/**
@@ -687,7 +819,13 @@
 			return false;
 		}
 		var prototype = getPrototypeOf(val);
-		return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in val) && !(Symbol.iterator in val);
+		return (
+			(prototype === null ||
+				prototype === Object.prototype ||
+				Object.getPrototypeOf(prototype) === null) &&
+			!(Symbol.toStringTag in val) &&
+			!(Symbol.iterator in val)
+		);
 	};
 
 	/**
@@ -752,7 +890,9 @@
 				(isFunction(thing.append) &&
 					((kind = kindOf(thing)) === "formdata" ||
 						// detect form-data instance
-						(kind === "object" && isFunction(thing.toString) && thing.toString() === "[object FormData]"))))
+						(kind === "object" &&
+							isFunction(thing.toString) &&
+							thing.toString() === "[object FormData]"))))
 		);
 	};
 
@@ -975,7 +1115,11 @@
 				}
 			}
 			sourceObj = filter !== false && getPrototypeOf(sourceObj);
-		} while (sourceObj && (!filter || filter(sourceObj, destObj)) && sourceObj !== Object.prototype);
+		} while (
+			sourceObj &&
+			(!filter || filter(sourceObj, destObj)) &&
+			sourceObj !== Object.prototype
+		);
 		return destObj;
 	};
 
@@ -1136,7 +1280,9 @@
 				obj[value] = true;
 			});
 		};
-		isArray(arrayOrString) ? define(arrayOrString) : define(String(arrayOrString).split(delimiter));
+		isArray(arrayOrString)
+			? define(arrayOrString)
+			: define(String(arrayOrString).split(delimiter));
 		return obj;
 	};
 	var noop = function noop() {};
@@ -1153,7 +1299,10 @@
 	};
 	var generateString = function generateString() {
 		var size = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 16;
-		var alphabet = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ALPHABET.ALPHA_DIGIT;
+		var alphabet =
+			arguments.length > 1 && arguments[1] !== undefined
+				? arguments[1]
+				: ALPHABET.ALPHA_DIGIT;
 		var str = "";
 		var length = alphabet.length;
 		while (size--) {
@@ -1170,7 +1319,12 @@
 	 * @returns {boolean}
 	 */
 	function isSpecCompliantForm(thing) {
-		return !!(thing && isFunction(thing.append) && thing[Symbol.toStringTag] === "FormData" && thing[Symbol.iterator]);
+		return !!(
+			thing &&
+			isFunction(thing.append) &&
+			thing[Symbol.toStringTag] === "FormData" &&
+			thing[Symbol.iterator]
+		);
 	}
 	var toJSONObject = function toJSONObject(obj) {
 		var stack = new Array(10);
@@ -1196,7 +1350,12 @@
 	};
 	var isAsyncFn = kindOfTest("AsyncFunction");
 	var isThenable = function isThenable(thing) {
-		return thing && (isObject(thing) || isFunction(thing)) && isFunction(thing.then) && isFunction(thing["catch"]);
+		return (
+			thing &&
+			(isObject(thing) || isFunction(thing)) &&
+			isFunction(thing.then) &&
+			isFunction(thing["catch"])
+		);
 	};
 	var utils$1 = {
 		isArray: isArray,
@@ -1469,7 +1628,9 @@
 				throw new AxiosError("Blob is not supported. Use a Buffer instead.");
 			}
 			if (utils$1.isArrayBuffer(value) || utils$1.isTypedArray(value)) {
-				return useBlob && typeof Blob === "function" ? new Blob([value]) : Buffer.from(value);
+				return useBlob && typeof Blob === "function"
+					? new Blob([value])
+					: Buffer.from(value);
 			}
 			return value;
 		}
@@ -1492,14 +1653,22 @@
 					key = metaTokens ? key : key.slice(0, -2);
 					// eslint-disable-next-line no-param-reassign
 					value = JSON.stringify(value);
-				} else if ((utils$1.isArray(value) && isFlatArray(value)) || ((utils$1.isFileList(value) || utils$1.endsWith(key, "[]")) && (arr = utils$1.toArray(value)))) {
+				} else if (
+					(utils$1.isArray(value) && isFlatArray(value)) ||
+					((utils$1.isFileList(value) || utils$1.endsWith(key, "[]")) &&
+						(arr = utils$1.toArray(value)))
+				) {
 					// eslint-disable-next-line no-param-reassign
 					key = removeBrackets(key);
 					arr.forEach(function each(el, index) {
 						!(utils$1.isUndefined(el) || el === null) &&
 							formData.append(
 								// eslint-disable-next-line no-nested-ternary
-								indexes === true ? renderKey([key], index, dots) : indexes === null ? key : key + "[]",
+								indexes === true
+									? renderKey([key], index, dots)
+									: indexes === null
+										? key
+										: key + "[]",
 								convertValue(el)
 							);
 					});
@@ -1525,7 +1694,15 @@
 			}
 			stack.push(value);
 			utils$1.forEach(value, function each(el, key) {
-				var result = !(utils$1.isUndefined(el) || el === null) && visitor.call(formData, el, utils$1.isString(key) ? key.trim() : key, path, exposedHelpers);
+				var result =
+					!(utils$1.isUndefined(el) || el === null) &&
+					visitor.call(
+						formData,
+						el,
+						utils$1.isString(key) ? key.trim() : key,
+						path,
+						exposedHelpers
+					);
 				if (result === true) {
 					build(el, path ? path.concat(key) : [key]);
 				}
@@ -1600,7 +1777,13 @@
 	 * @returns {string} The encoded value.
 	 */
 	function encode(val) {
-		return encodeURIComponent(val).replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%20/g, "+").replace(/%5B/gi, "[").replace(/%5D/gi, "]");
+		return encodeURIComponent(val)
+			.replace(/%3A/gi, ":")
+			.replace(/%24/g, "$")
+			.replace(/%2C/gi, ",")
+			.replace(/%20/g, "+")
+			.replace(/%5B/gi, "[")
+			.replace(/%5D/gi, "]");
 	}
 
 	/**
@@ -1623,7 +1806,9 @@
 		if (serializeFn) {
 			serializedParams = serializeFn(params, options);
 		} else {
-			serializedParams = utils$1.isURLSearchParams(params) ? params.toString() : new AxiosURLSearchParams(params, options).toString(_encode);
+			serializedParams = utils$1.isURLSearchParams(params)
+				? params.toString()
+				: new AxiosURLSearchParams(params, options).toString(_encode);
 		}
 		if (serializedParams) {
 			var hashmarkIndex = url.indexOf("#");
@@ -1724,7 +1909,8 @@
 		clarifyTimeoutError: false
 	};
 
-	var URLSearchParams$1 = typeof URLSearchParams !== "undefined" ? URLSearchParams : AxiosURLSearchParams;
+	var URLSearchParams$1 =
+		typeof URLSearchParams !== "undefined" ? URLSearchParams : AxiosURLSearchParams;
 
 	var FormData$1 = typeof FormData !== "undefined" ? FormData : null;
 
@@ -1925,14 +2111,23 @@
 				if (isFormData) {
 					return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
 				}
-				if (utils$1.isArrayBuffer(data) || utils$1.isBuffer(data) || utils$1.isStream(data) || utils$1.isFile(data) || utils$1.isBlob(data)) {
+				if (
+					utils$1.isArrayBuffer(data) ||
+					utils$1.isBuffer(data) ||
+					utils$1.isStream(data) ||
+					utils$1.isFile(data) ||
+					utils$1.isBlob(data)
+				) {
 					return data;
 				}
 				if (utils$1.isArrayBufferView(data)) {
 					return data.buffer;
 				}
 				if (utils$1.isURLSearchParams(data)) {
-					headers.setContentType("application/x-www-form-urlencoded;charset=utf-8", false);
+					headers.setContentType(
+						"application/x-www-form-urlencoded;charset=utf-8",
+						false
+					);
 					return data.toString();
 				}
 				var isFileList;
@@ -1940,7 +2135,10 @@
 					if (contentType.indexOf("application/x-www-form-urlencoded") > -1) {
 						return toURLEncodedForm(data, this.formSerializer).toString();
 					}
-					if ((isFileList = utils$1.isFileList(data)) || contentType.indexOf("multipart/form-data") > -1) {
+					if (
+						(isFileList = utils$1.isFileList(data)) ||
+						contentType.indexOf("multipart/form-data") > -1
+					) {
 						var _FormData = this.env && this.env.FormData;
 						return toFormData(
 							isFileList
@@ -1965,7 +2163,11 @@
 				var transitional = this.transitional || defaults.transitional;
 				var forcedJSONParsing = transitional && transitional.forcedJSONParsing;
 				var JSONRequested = this.responseType === "json";
-				if (data && utils$1.isString(data) && ((forcedJSONParsing && !this.responseType) || JSONRequested)) {
+				if (
+					data &&
+					utils$1.isString(data) &&
+					((forcedJSONParsing && !this.responseType) || JSONRequested)
+				) {
 					var silentJSONParsing = transitional && transitional.silentJSONParsing;
 					var strictJSONParsing = !silentJSONParsing && JSONRequested;
 					try {
@@ -1973,7 +2175,13 @@
 					} catch (e) {
 						if (strictJSONParsing) {
 							if (e.name === "SyntaxError") {
-								throw AxiosError.from(e, AxiosError.ERR_BAD_RESPONSE, this, null, this.response);
+								throw AxiosError.from(
+									e,
+									AxiosError.ERR_BAD_RESPONSE,
+									this,
+									null,
+									this.response
+								);
 							}
 							throw e;
 						}
@@ -2146,7 +2354,12 @@
 								throw new Error("header name must be a non-empty string");
 							}
 							var key = utils$1.findKey(self, lHeader);
-							if (!key || self[key] === undefined || _rewrite === true || (_rewrite === undefined && self[key] !== false)) {
+							if (
+								!key ||
+								self[key] === undefined ||
+								_rewrite === true ||
+								(_rewrite === undefined && self[key] !== false)
+							) {
 								self[key || _header] = normalizeValue(_value);
 							}
 						}
@@ -2157,7 +2370,11 @@
 						};
 						if (utils$1.isPlainObject(header) || header instanceof this.constructor) {
 							setHeaders(header, valueOrRewrite);
-						} else if (utils$1.isString(header) && (header = header.trim()) && !isValidHeaderName(header)) {
+						} else if (
+							utils$1.isString(header) &&
+							(header = header.trim()) &&
+							!isValidHeaderName(header)
+						) {
 							setHeaders(parseHeaders(header), valueOrRewrite);
 						} else {
 							header != null && setHeader(valueOrRewrite, header, rewrite);
@@ -2196,7 +2413,11 @@
 						header = normalizeHeader(header);
 						if (header) {
 							var key = utils$1.findKey(this, header);
-							return !!(key && this[key] !== undefined && (!matcher || matchHeaderValue(this, this[key], key, matcher)));
+							return !!(
+								key &&
+								this[key] !== undefined &&
+								(!matcher || matchHeaderValue(this, this[key], key, matcher))
+							);
 						}
 						return false;
 					}
@@ -2210,7 +2431,10 @@
 							_header = normalizeHeader(_header);
 							if (_header) {
 								var key = utils$1.findKey(self, _header);
-								if (key && (!matcher || matchHeaderValue(self, self[key], key, matcher))) {
+								if (
+									key &&
+									(!matcher || matchHeaderValue(self, self[key], key, matcher))
+								) {
 									delete self[key];
 									deleted = true;
 								}
@@ -2266,10 +2490,17 @@
 					key: "concat",
 					value: function concat() {
 						var _this$constructor;
-						for (var _len = arguments.length, targets = new Array(_len), _key = 0; _key < _len; _key++) {
+						for (
+							var _len = arguments.length, targets = new Array(_len), _key = 0;
+							_key < _len;
+							_key++
+						) {
 							targets[_key] = arguments[_key];
 						}
-						return (_this$constructor = this.constructor).concat.apply(_this$constructor, [this].concat(targets));
+						return (_this$constructor = this.constructor).concat.apply(
+							_this$constructor,
+							[this].concat(targets)
+						);
 					}
 				},
 				{
@@ -2277,7 +2508,10 @@
 					value: function toJSON(asStrings) {
 						var obj = Object.create(null);
 						utils$1.forEach(this, function (value, header) {
-							value != null && value !== false && (obj[header] = asStrings && utils$1.isArray(value) ? value.join(", ") : value);
+							value != null &&
+								value !== false &&
+								(obj[header] =
+									asStrings && utils$1.isArray(value) ? value.join(", ") : value);
 						});
 						return obj;
 					}
@@ -2319,7 +2553,13 @@
 					key: "concat",
 					value: function concat(first) {
 						var computed = new this(first);
-						for (var _len2 = arguments.length, targets = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+						for (
+							var _len2 = arguments.length,
+								targets = new Array(_len2 > 1 ? _len2 - 1 : 0),
+								_key2 = 1;
+							_key2 < _len2;
+							_key2++
+						) {
 							targets[_key2 - 1] = arguments[_key2];
 						}
 						targets.forEach(function (target) {
@@ -2346,7 +2586,9 @@
 								accessors[lHeader] = true;
 							}
 						}
-						utils$1.isArray(header) ? header.forEach(defineAccessor) : defineAccessor(header);
+						utils$1.isArray(header)
+							? header.forEach(defineAccessor)
+							: defineAccessor(header);
 						return this;
 					}
 				}
@@ -2354,7 +2596,14 @@
 		);
 		return AxiosHeaders;
 	})(Symbol.iterator, Symbol.toStringTag);
-	AxiosHeaders.accessor(["Content-Type", "Content-Length", "Accept", "Accept-Encoding", "User-Agent", "Authorization"]);
+	AxiosHeaders.accessor([
+		"Content-Type",
+		"Content-Length",
+		"Accept",
+		"Accept-Encoding",
+		"User-Agent",
+		"Authorization"
+	]);
 
 	// reserved names hotfix
 	utils$1.reduceDescriptors(AxiosHeaders.prototype, function (_ref3, key) {
@@ -2386,7 +2635,12 @@
 		var headers = AxiosHeaders$1.from(context.headers);
 		var data = context.data;
 		utils$1.forEach(fns, function transform(fn) {
-			data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
+			data = fn.call(
+				config,
+				data,
+				headers.normalize(),
+				response ? response.status : undefined
+			);
 		});
 		headers.normalize();
 		return data;
@@ -2407,7 +2661,13 @@
 	 */
 	function CanceledError(message, config, request) {
 		// eslint-disable-next-line no-eq-null,eqeqeq
-		AxiosError.call(this, message == null ? "canceled" : message, AxiosError.ERR_CANCELED, config, request);
+		AxiosError.call(
+			this,
+			message == null ? "canceled" : message,
+			AxiosError.ERR_CANCELED,
+			config,
+			request
+		);
 		this.name = "CanceledError";
 	}
 	utils$1.inherits(CanceledError, AxiosError, {
@@ -2431,7 +2691,9 @@
 			reject(
 				new AxiosError(
 					"Request failed with status code " + response.status,
-					[AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][Math.floor(response.status / 100) - 4],
+					[AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][
+						Math.floor(response.status / 100) - 4
+					],
 					response.config,
 					response.request,
 					response
@@ -2445,14 +2707,17 @@
 			{
 				write: function write(name, value, expires, path, domain, secure) {
 					var cookie = [name + "=" + encodeURIComponent(value)];
-					utils$1.isNumber(expires) && cookie.push("expires=" + new Date(expires).toGMTString());
+					utils$1.isNumber(expires) &&
+						cookie.push("expires=" + new Date(expires).toGMTString());
 					utils$1.isString(path) && cookie.push("path=" + path);
 					utils$1.isString(domain) && cookie.push("domain=" + domain);
 					secure === true && cookie.push("secure");
 					document.cookie = cookie.join("; ");
 				},
 				read: function read(name) {
-					var match = document.cookie.match(new RegExp("(^|;\\s*)(" + name + ")=([^;]*)"));
+					var match = document.cookie.match(
+						new RegExp("(^|;\\s*)(" + name + ")=([^;]*)")
+					);
 					return match ? decodeURIComponent(match[3]) : null;
 				},
 				remove: function remove(name) {
@@ -2491,7 +2756,9 @@
 	 * @returns {string} The combined URL
 	 */
 	function combineURLs(baseURL, relativeURL) {
-		return relativeURL ? baseURL.replace(/\/?\/$/, "") + "/" + relativeURL.replace(/^\/+/, "") : baseURL;
+		return relativeURL
+			? baseURL.replace(/\/?\/$/, "") + "/" + relativeURL.replace(/^\/+/, "")
+			: baseURL;
 	}
 
 	/**
@@ -2537,13 +2804,20 @@
 					// urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
 					return {
 						href: urlParsingNode.href,
-						protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, "") : "",
+						protocol: urlParsingNode.protocol
+							? urlParsingNode.protocol.replace(/:$/, "")
+							: "",
 						host: urlParsingNode.host,
-						search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, "") : "",
+						search: urlParsingNode.search
+							? urlParsingNode.search.replace(/^\?/, "")
+							: "",
 						hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, "") : "",
 						hostname: urlParsingNode.hostname,
 						port: urlParsingNode.port,
-						pathname: urlParsingNode.pathname.charAt(0) === "/" ? urlParsingNode.pathname : "/" + urlParsingNode.pathname
+						pathname:
+							urlParsingNode.pathname.charAt(0) === "/"
+								? urlParsingNode.pathname
+								: "/" + urlParsingNode.pathname
 					};
 				}
 				originURL = resolveURL(window.location.href);
@@ -2669,7 +2943,11 @@
 							_ref2 = _toArray(_ref),
 							type = _ref2[0],
 							tokens = _ref2.slice(1);
-						requestHeaders.setContentType([type || "multipart/form-data"].concat(_toConsumableArray(tokens)).join("; "));
+						requestHeaders.setContentType(
+							[type || "multipart/form-data"]
+								.concat(_toConsumableArray(tokens))
+								.join("; ")
+						);
 					}
 				}
 				var request = new XMLHttpRequest();
@@ -2677,11 +2955,17 @@
 				// HTTP basic authentication
 				if (config.auth) {
 					var username = config.auth.username || "";
-					var password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : "";
+					var password = config.auth.password
+						? unescape(encodeURIComponent(config.auth.password))
+						: "";
 					requestHeaders.set("Authorization", "Basic " + btoa(username + ":" + password));
 				}
 				var fullPath = buildFullPath(config.baseURL, config.url);
-				request.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
+				request.open(
+					config.method.toUpperCase(),
+					buildURL(fullPath, config.params, config.paramsSerializer),
+					true
+				);
 
 				// Set the request timeout in MS
 				request.timeout = config.timeout;
@@ -2690,8 +2974,13 @@
 						return;
 					}
 					// Prepare the response
-					var responseHeaders = AxiosHeaders$1.from("getAllResponseHeaders" in request && request.getAllResponseHeaders());
-					var responseData = !responseType || responseType === "text" || responseType === "json" ? request.responseText : request.response;
+					var responseHeaders = AxiosHeaders$1.from(
+						"getAllResponseHeaders" in request && request.getAllResponseHeaders()
+					);
+					var responseData =
+						!responseType || responseType === "text" || responseType === "json"
+							? request.responseText
+							: request.response;
 					var response = {
 						data: responseData,
 						status: request.status,
@@ -2729,7 +3018,10 @@
 						// handled by onerror instead
 						// With one exception: request that using file: protocol, most browsers
 						// will return status as 0 even though it's a successful request
-						if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf("file:") === 0)) {
+						if (
+							request.status === 0 &&
+							!(request.responseURL && request.responseURL.indexOf("file:") === 0)
+						) {
 							return;
 						}
 						// readystate handler is calling before onerror or ontimeout handlers,
@@ -2743,7 +3035,9 @@
 					if (!request) {
 						return;
 					}
-					reject(new AxiosError("Request aborted", AxiosError.ECONNABORTED, config, request));
+					reject(
+						new AxiosError("Request aborted", AxiosError.ECONNABORTED, config, request)
+					);
 
 					// Clean up request
 					request = null;
@@ -2753,7 +3047,9 @@
 				request.onerror = function handleError() {
 					// Real errors are hidden from us by the browser
 					// onerror should only fire if it's a network error
-					reject(new AxiosError("Network Error", AxiosError.ERR_NETWORK, config, request));
+					reject(
+						new AxiosError("Network Error", AxiosError.ERR_NETWORK, config, request)
+					);
 
 					// Clean up request
 					request = null;
@@ -2761,12 +3057,23 @@
 
 				// Handle timeout
 				request.ontimeout = function handleTimeout() {
-					var timeoutErrorMessage = config.timeout ? "timeout of " + config.timeout + "ms exceeded" : "timeout exceeded";
+					var timeoutErrorMessage = config.timeout
+						? "timeout of " + config.timeout + "ms exceeded"
+						: "timeout exceeded";
 					var transitional = config.transitional || transitionalDefaults;
 					if (config.timeoutErrorMessage) {
 						timeoutErrorMessage = config.timeoutErrorMessage;
 					}
-					reject(new AxiosError(timeoutErrorMessage, transitional.clarifyTimeoutError ? AxiosError.ETIMEDOUT : AxiosError.ECONNABORTED, config, request));
+					reject(
+						new AxiosError(
+							timeoutErrorMessage,
+							transitional.clarifyTimeoutError
+								? AxiosError.ETIMEDOUT
+								: AxiosError.ECONNABORTED,
+							config,
+							request
+						)
+					);
 
 					// Clean up request
 					request = null;
@@ -2776,10 +3083,15 @@
 				// This is only done if running in a standard browser environment.
 				// Specifically not if we're in a web worker, or react-native.
 				if (platform.hasStandardBrowserEnv) {
-					withXSRFToken && utils$1.isFunction(withXSRFToken) && (withXSRFToken = withXSRFToken(config));
+					withXSRFToken &&
+						utils$1.isFunction(withXSRFToken) &&
+						(withXSRFToken = withXSRFToken(config));
 					if (withXSRFToken || (withXSRFToken !== false && isURLSameOrigin(fullPath))) {
 						// Add xsrf header
-						var xsrfValue = config.xsrfHeaderName && config.xsrfCookieName && cookies.read(config.xsrfCookieName);
+						var xsrfValue =
+							config.xsrfHeaderName &&
+							config.xsrfCookieName &&
+							cookies.read(config.xsrfCookieName);
 						if (xsrfValue) {
 							requestHeaders.set(config.xsrfHeaderName, xsrfValue);
 						}
@@ -2808,12 +3120,18 @@
 
 				// Handle progress if needed
 				if (typeof config.onDownloadProgress === "function") {
-					request.addEventListener("progress", progressEventReducer(config.onDownloadProgress, true));
+					request.addEventListener(
+						"progress",
+						progressEventReducer(config.onDownloadProgress, true)
+					);
 				}
 
 				// Not all browsers support upload events
 				if (typeof config.onUploadProgress === "function" && request.upload) {
-					request.upload.addEventListener("progress", progressEventReducer(config.onUploadProgress));
+					request.upload.addEventListener(
+						"progress",
+						progressEventReducer(config.onUploadProgress)
+					);
 				}
 				if (config.cancelToken || config.signal) {
 					// Handle cancellation
@@ -2822,18 +3140,30 @@
 						if (!request) {
 							return;
 						}
-						reject(!cancel || cancel.type ? new CanceledError(null, config, request) : cancel);
+						reject(
+							!cancel || cancel.type
+								? new CanceledError(null, config, request)
+								: cancel
+						);
 						request.abort();
 						request = null;
 					};
 					config.cancelToken && config.cancelToken.subscribe(onCanceled);
 					if (config.signal) {
-						config.signal.aborted ? onCanceled() : config.signal.addEventListener("abort", onCanceled);
+						config.signal.aborted
+							? onCanceled()
+							: config.signal.addEventListener("abort", onCanceled);
 					}
 				}
 				var protocol = parseProtocol(fullPath);
 				if (protocol && platform.protocols.indexOf(protocol) === -1) {
-					reject(new AxiosError("Unsupported protocol " + protocol + ":", AxiosError.ERR_BAD_REQUEST, config));
+					reject(
+						new AxiosError(
+							"Unsupported protocol " + protocol + ":",
+							AxiosError.ERR_BAD_REQUEST,
+							config
+						)
+					);
 					return;
 				}
 
@@ -2894,10 +3224,22 @@
 					var _ref2 = _slicedToArray(_ref, 2),
 						id = _ref2[0],
 						state = _ref2[1];
-					return "adapter ".concat(id, " ") + (state === false ? "is not supported by the environment" : "is not available in the build");
+					return (
+						"adapter ".concat(id, " ") +
+						(state === false
+							? "is not supported by the environment"
+							: "is not available in the build")
+					);
 				});
-				var s = length ? (reasons.length > 1 ? "since :\n" + reasons.map(renderReason).join("\n") : " " + renderReason(reasons[0])) : "as no adapter specified";
-				throw new AxiosError("There is no suitable adapter to dispatch the request " + s, "ERR_NOT_SUPPORT");
+				var s = length
+					? reasons.length > 1
+						? "since :\n" + reasons.map(renderReason).join("\n")
+						: " " + renderReason(reasons[0])
+					: "as no adapter specified";
+				throw new AxiosError(
+					"There is no suitable adapter to dispatch the request " + s,
+					"ERR_NOT_SUPPORT"
+				);
 			}
 			return adapter;
 		},
@@ -2952,7 +3294,11 @@
 
 					// Transform response data
 					if (reason && reason.response) {
-						reason.response.data = transformData.call(config, config.transformResponse, reason.response);
+						reason.response.data = transformData.call(
+							config,
+							config.transformResponse,
+							reason.response
+						);
 						reason.response.headers = AxiosHeaders$1.from(reason.response.headers);
 					}
 				}
@@ -3061,11 +3407,15 @@
 				return mergeDeepProperties(headersToObject(a), headersToObject(b), true);
 			}
 		};
-		utils$1.forEach(Object.keys(Object.assign({}, config1, config2)), function computeConfigValue(prop) {
-			var merge = mergeMap[prop] || mergeDeepProperties;
-			var configValue = merge(config1[prop], config2[prop], prop);
-			(utils$1.isUndefined(configValue) && merge !== mergeDirectKeys) || (config[prop] = configValue);
-		});
+		utils$1.forEach(
+			Object.keys(Object.assign({}, config1, config2)),
+			function computeConfigValue(prop) {
+				var merge = mergeMap[prop] || mergeDeepProperties;
+				var configValue = merge(config1[prop], config2[prop], prop);
+				(utils$1.isUndefined(configValue) && merge !== mergeDirectKeys) ||
+					(config[prop] = configValue);
+			}
+		);
 		return config;
 	}
 
@@ -3092,18 +3442,36 @@
 	 */
 	validators$1.transitional = function transitional(validator, version, message) {
 		function formatMessage(opt, desc) {
-			return "[Axios v" + VERSION + "] Transitional option '" + opt + "'" + desc + (message ? ". " + message : "");
+			return (
+				"[Axios v" +
+				VERSION +
+				"] Transitional option '" +
+				opt +
+				"'" +
+				desc +
+				(message ? ". " + message : "")
+			);
 		}
 
 		// eslint-disable-next-line func-names
 		return function (value, opt, opts) {
 			if (validator === false) {
-				throw new AxiosError(formatMessage(opt, " has been removed" + (version ? " in " + version : "")), AxiosError.ERR_DEPRECATED);
+				throw new AxiosError(
+					formatMessage(opt, " has been removed" + (version ? " in " + version : "")),
+					AxiosError.ERR_DEPRECATED
+				);
 			}
 			if (version && !deprecatedWarnings[opt]) {
 				deprecatedWarnings[opt] = true;
 				// eslint-disable-next-line no-console
-				console.warn(formatMessage(opt, " has been deprecated since v" + version + " and will be removed in the near future"));
+				console.warn(
+					formatMessage(
+						opt,
+						" has been deprecated since v" +
+							version +
+							" and will be removed in the near future"
+					)
+				);
 			}
 			return validator ? validator(value, opt, opts) : true;
 		};
@@ -3132,7 +3500,10 @@
 				var value = options[opt];
 				var result = value === undefined || validator(value, opt, options);
 				if (result !== true) {
-					throw new AxiosError("option " + opt + " must be " + result, AxiosError.ERR_BAD_OPTION_VALUE);
+					throw new AxiosError(
+						"option " + opt + " must be " + result,
+						AxiosError.ERR_BAD_OPTION_VALUE
+					);
 				}
 				continue;
 			}
@@ -3178,45 +3549,56 @@
 				key: "request",
 				value: (function () {
 					var _request2 = _asyncToGenerator(
-						/*#__PURE__*/ _regeneratorRuntime().mark(function _callee(configOrUrl, config) {
-							var dummy, stack;
-							return _regeneratorRuntime().wrap(
-								function _callee$(_context) {
-									while (1) {
-										switch ((_context.prev = _context.next)) {
-											case 0:
-												_context.prev = 0;
-												_context.next = 3;
-												return this._request(configOrUrl, config);
-											case 3:
-												return _context.abrupt("return", _context.sent);
-											case 6:
-												_context.prev = 6;
-												_context.t0 = _context["catch"](0);
-												if (_context.t0 instanceof Error) {
-													Error.captureStackTrace ? Error.captureStackTrace((dummy = {})) : (dummy = new Error());
+						/*#__PURE__*/ _regeneratorRuntime().mark(
+							function _callee(configOrUrl, config) {
+								var dummy, stack;
+								return _regeneratorRuntime().wrap(
+									function _callee$(_context) {
+										while (1) {
+											switch ((_context.prev = _context.next)) {
+												case 0:
+													_context.prev = 0;
+													_context.next = 3;
+													return this._request(configOrUrl, config);
+												case 3:
+													return _context.abrupt("return", _context.sent);
+												case 6:
+													_context.prev = 6;
+													_context.t0 = _context["catch"](0);
+													if (_context.t0 instanceof Error) {
+														Error.captureStackTrace
+															? Error.captureStackTrace((dummy = {}))
+															: (dummy = new Error());
 
-													// slice off the Error: ... line
-													stack = dummy.stack ? dummy.stack.replace(/^.+\n/, "") : "";
-													if (!_context.t0.stack) {
-														_context.t0.stack = stack;
-														// match without the 2 top stack lines
-													} else if (stack && !String(_context.t0.stack).endsWith(stack.replace(/^.+\n.+\n/, ""))) {
-														_context.t0.stack += "\n" + stack;
+														// slice off the Error: ... line
+														stack = dummy.stack
+															? dummy.stack.replace(/^.+\n/, "")
+															: "";
+														if (!_context.t0.stack) {
+															_context.t0.stack = stack;
+															// match without the 2 top stack lines
+														} else if (
+															stack &&
+															!String(_context.t0.stack).endsWith(
+																stack.replace(/^.+\n.+\n/, "")
+															)
+														) {
+															_context.t0.stack += "\n" + stack;
+														}
 													}
-												}
-												throw _context.t0;
-											case 10:
-											case "end":
-												return _context.stop();
+													throw _context.t0;
+												case 10:
+												case "end":
+													return _context.stop();
+											}
 										}
-									}
-								},
-								_callee,
-								this,
-								[[0, 6]]
-							);
-						})
+									},
+									_callee,
+									this,
+									[[0, 6]]
+								);
+							}
+						)
 					);
 					function request(_x, _x2) {
 						return _request2.apply(this, arguments);
@@ -3272,27 +3654,45 @@
 					config.method = (config.method || this.defaults.method || "get").toLowerCase();
 
 					// Flatten headers
-					var contextHeaders = headers && utils$1.merge(headers.common, headers[config.method]);
+					var contextHeaders =
+						headers && utils$1.merge(headers.common, headers[config.method]);
 					headers &&
-						utils$1.forEach(["delete", "get", "head", "post", "put", "patch", "common"], function (method) {
-							delete headers[method];
-						});
+						utils$1.forEach(
+							["delete", "get", "head", "post", "put", "patch", "common"],
+							function (method) {
+								delete headers[method];
+							}
+						);
 					config.headers = AxiosHeaders$1.concat(contextHeaders, headers);
 
 					// filter out skipped interceptors
 					var requestInterceptorChain = [];
 					var synchronousRequestInterceptors = true;
-					this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
-						if (typeof interceptor.runWhen === "function" && interceptor.runWhen(config) === false) {
-							return;
+					this.interceptors.request.forEach(
+						function unshiftRequestInterceptors(interceptor) {
+							if (
+								typeof interceptor.runWhen === "function" &&
+								interceptor.runWhen(config) === false
+							) {
+								return;
+							}
+							synchronousRequestInterceptors =
+								synchronousRequestInterceptors && interceptor.synchronous;
+							requestInterceptorChain.unshift(
+								interceptor.fulfilled,
+								interceptor.rejected
+							);
 						}
-						synchronousRequestInterceptors = synchronousRequestInterceptors && interceptor.synchronous;
-						requestInterceptorChain.unshift(interceptor.fulfilled, interceptor.rejected);
-					});
+					);
 					var responseInterceptorChain = [];
-					this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
-						responseInterceptorChain.push(interceptor.fulfilled, interceptor.rejected);
-					});
+					this.interceptors.response.forEach(
+						function pushResponseInterceptors(interceptor) {
+							responseInterceptorChain.push(
+								interceptor.fulfilled,
+								interceptor.rejected
+							);
+						}
+					);
 					var promise;
 					var i = 0;
 					var len;
@@ -3328,7 +3728,10 @@
 					i = 0;
 					len = responseInterceptorChain.length;
 					while (i < len) {
-						promise = promise.then(responseInterceptorChain[i++], responseInterceptorChain[i++]);
+						promise = promise.then(
+							responseInterceptorChain[i++],
+							responseInterceptorChain[i++]
+						);
 					}
 					return promise;
 				}

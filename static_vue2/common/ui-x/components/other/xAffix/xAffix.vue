@@ -13,7 +13,17 @@
 <script lang="ts">
 export default async function () {
 	const COMPONENT_NAME = "xAffix";
-	const { buildProps, useResizeObserver, useNamespace, useWindowSize, useElementBounding, addUnit, throwError, getScrollContainer, useEventListener } = _useXui;
+	const {
+		buildProps,
+		useResizeObserver,
+		useNamespace,
+		useWindowSize,
+		useElementBounding,
+		addUnit,
+		throwError,
+		getScrollContainer,
+		useEventListener
+	} = _xUtils;
 	return defineComponent({
 		props: buildProps({
 			zIndex: {
@@ -66,7 +76,13 @@ export default async function () {
 
 			const scrollContainer = shallowRef();
 			const { height: windowHeight, width: windowWidth } = useWindowSize();
-			const { height: rootHeight, width: rootWidth, top: rootTop, bottom: rootBottom, update: updateRoot } = _useXui.useElementBounding(root, { windowScroll: false });
+			const {
+				height: rootHeight,
+				width: rootWidth,
+				top: rootTop,
+				bottom: rootBottom,
+				update: updateRoot
+			} = _xUtils.useElementBounding(root, { windowScroll: false });
 
 			const targetRect = useElementBounding(target);
 			const fixed = ref(false);
@@ -79,8 +95,12 @@ export default async function () {
 				contentRect.height;
 				contentRect.width;
 				if (fixed.value) {
-					let height = contentRect.height < rootHeight.value ? contentRect.height : rootHeight.value;
-					let width = contentRect.width > rootWidth.value ? contentRect.width : rootWidth.value;
+					let height =
+						contentRect.height < rootHeight.value
+							? contentRect.height
+							: rootHeight.value;
+					let width =
+						contentRect.width > rootWidth.value ? contentRect.width : rootWidth.value;
 					return {
 						height: `${height}px`,
 						width: `${width}px`
@@ -107,18 +127,25 @@ export default async function () {
 			const update = () => {
 				vm.$emit("update");
 				if (!scrollContainer.value) return;
-				scrollTop.value = scrollContainer.value instanceof Window ? document.documentElement.scrollTop : scrollContainer.value.scrollTop || 0;
+				scrollTop.value =
+					scrollContainer.value instanceof Window
+						? document.documentElement.scrollTop
+						: scrollContainer.value.scrollTop || 0;
 				if (props.position === "top") {
 					if (props.target) {
-						const difference = targetRect.bottom.value - props.offset - rootHeight.value;
+						const difference =
+							targetRect.bottom.value - props.offset - rootHeight.value;
 						fixed.value = props.offset > rootTop.value && targetRect.bottom.value > 0;
 						transform.value = difference < 0 ? difference : 0;
 					} else {
 						fixed.value = props.offset > rootTop.value;
 					}
 				} else if (props.target) {
-					const difference = windowHeight.value - targetRect.top.value - props.offset - rootHeight.value;
-					fixed.value = windowHeight.value - props.offset < rootBottom.value && windowHeight.value > targetRect.top.value;
+					const difference =
+						windowHeight.value - targetRect.top.value - props.offset - rootHeight.value;
+					fixed.value =
+						windowHeight.value - props.offset < rootBottom.value &&
+						windowHeight.value > targetRect.top.value;
 					transform.value = difference < 0 ? -difference : 0;
 				} else {
 					fixed.value = windowHeight.value - props.offset < rootBottom.value;
@@ -136,8 +163,10 @@ export default async function () {
 			onMounted(() => {
 				var _a2;
 				if (props.target) {
-					target.value = (_a2 = document.querySelector(props.target)) != null ? _a2 : void 0;
-					if (!target.value) throwError(COMPONENT_NAME, `Target is not existed: ${props.target}`);
+					target.value =
+						(_a2 = document.querySelector(props.target)) != null ? _a2 : void 0;
+					if (!target.value)
+						throwError(COMPONENT_NAME, `Target is not existed: ${props.target}`);
 				} else {
 					target.value = document.documentElement;
 				}

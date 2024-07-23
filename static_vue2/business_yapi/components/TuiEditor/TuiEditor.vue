@@ -1,7 +1,10 @@
 <script lang="ts">
 export default async function () {
-	const { Editor: TuiEditor } = await _.$appendScript("/common/libs/toastui-editor-all.js", "toastui");
-	const { PreprocessHTML, leftArrow, rightArrow } = await _.$importVue("@/components/TuiEditor/MkitTheme.vue");
+	const { Editor: TuiEditor } = await _.$appendScript(
+		"/common/libs/toastui-editor-all.js",
+		"toastui"
+	);
+	const { PreprocessHTML } = await _.$importVue("@/components/TuiEditor/MkitTheme.vue");
 	return defineComponent({
 		props: ["value", "asRender"],
 		model: {
@@ -94,7 +97,7 @@ export default async function () {
 					let html = this.vmTuiEditor.getHTML();
 					this.html = new PreprocessHTML(html).html;
 					setTimeout(() => {
-						$(this.$refs.viewer).html(this.html);
+						$(this.$refs.refViewer).html(this.html);
 					}, 64);
 				} catch (error) {
 					console.error(error);
@@ -104,7 +107,7 @@ export default async function () {
 			},
 			/*  */
 			showImg(index) {
-				const $md = $(this.$refs.viewer);
+				const $md = $(this.$refs.refViewer);
 				const imgList = $md.find("img");
 				_.$previewImgs({
 					urlList: _.map(imgList, img => img.src),
@@ -113,9 +116,9 @@ export default async function () {
 			},
 			handleClick(event) {
 				const { target } = event;
-				const $ele = $(target).parents(".el-image[data-el-image-index]");
+				const $ele = $(target).parents(".x-mkit-wrapper[data-x-mkit-wrapper-index]");
 				if ($ele && $ele.length) {
-					this.showImg(Number($ele.attr("data-el-image-index")));
+					this.showImg(Number($ele.attr("data-x-mkit-wrapper-index")));
 				}
 			},
 			/*  */
@@ -146,7 +149,9 @@ export default async function () {
 						const src = (() => {
 							const [_, id] = String(destination).match(/^_id:(\d+)/) || [];
 							if (id) {
-								return Vue._yapi_utils.appendToken(`${window._URL_PREFIX_4_DEV || ""}/api/resource/get?id=${id}`);
+								return Vue._common_utils.appendToken(
+									`${window._URL_PREFIX_4_DEV || ""}/api/resource/get?id=${id}`
+								);
 							} else {
 								return destination;
 							}
@@ -240,17 +245,20 @@ export default async function () {
 		},
 		render() {
 			const vm = this;
+			const viewerProps = {
+				onClick: vm.handleClick,
+				class: {
+					"toastui-editor-contents flex1 border-radius box-shadow": true,
+					"display-none": !vm.readonly
+				},
+				style: "position:relative;height:100%;width:100%;z-index:1;padding:var(--note-normal-padding,var(--ui-one));"
+			};
+
 			return h("div", { class: "flex1-overflow-auto" }, [
 				/*viewer html*/
-				h("div", {
-					ref: "viewer",
-					onClick: vm.handleClick,
-					class: {
-						"toastui-editor-contents flex1 border-radius box-shadow padding20": true,
-						"display-none": !vm.readonly
-					},
-					style: "position:relative;height:100%;width:100%;z-index:1;padding:var(--app-padding);"
-				}),
+				h("div", viewerProps, [
+					h("div", { ref: "refViewer", staticClass: "toastui-viewer-contents" })
+				]),
 				/*tuiEdior*/
 				h("div", {
 					id: vm._uid,
@@ -490,8 +498,7 @@ img.ProseMirror-separator {
 	border: 1px solid #dadde6;
 	height: 100%;
 	font-family: var(--font-family);
-
-	border-radius: 4px;
+	border-radius: var(--border-radius);
 }
 
 .toastui-editor-defaultUI button {
@@ -506,7 +513,7 @@ img.ProseMirror-separator {
 .toastui-editor-defaultUI .toastui-editor-ok-button {
 	min-width: 63px;
 	height: 32px;
-	background-color: #00a9ff;
+	background-color: var(--el-color-primary);
 	color: #fff;
 	outline-color: #009bf2;
 }
@@ -665,7 +672,7 @@ img.ProseMirror-separator {
 }
 
 .toastui-editor-defaultUI-toolbar .scroll-sync.active:before {
-	color: #00a9ff;
+	color: var(--el-color-primary);
 }
 
 .toastui-editor-defaultUI-toolbar .scroll-sync input {
@@ -687,7 +694,7 @@ img.ProseMirror-separator {
 }
 
 .toastui-editor-defaultUI-toolbar input:checked + .switch {
-	background-color: #acddfa;
+	background-color: var(--el-color-primary-light-8);
 }
 
 .toastui-editor-defaultUI-toolbar .switch:before {
@@ -704,7 +711,7 @@ img.ProseMirror-separator {
 }
 
 .toastui-editor-defaultUI-toolbar input:checked + .switch:before {
-	background-color: #00a9ff;
+	background-color: var(--el-color-primary);
 	-webkit-transform: translateX(12px);
 	-moz-transform: translateX(12px);
 	-ms-transform: translateX(12px);
@@ -771,7 +778,7 @@ img.ProseMirror-separator {
 }
 
 .toastui-editor-popup-body input[type="text"]:focus {
-	outline: 1px solid #00a9ff;
+	outline: 1px solid var(--el-color-primary);
 	border-color: transparent;
 }
 
@@ -824,8 +831,8 @@ img.ProseMirror-separator {
 }
 
 .toastui-editor-popup-add-image .toastui-editor-tabs .tab-item.active {
-	color: #00a9ff;
-	border-bottom: 2px solid #00a9ff;
+	color: var(--el-color-primary);
+	border-bottom: 2px solid var(--el-color-primary);
 }
 
 .toastui-editor-popup-add-image .toastui-editor-file-name {
@@ -895,7 +902,7 @@ img.ProseMirror-separator {
 	position: absolute;
 	top: 0;
 	left: 0;
-	border: 1px solid #00a9ff;
+	border: 1px solid var(--el-color-primary);
 	background: rgba(0, 169, 255, 0.1);
 	z-index: 30;
 }
@@ -1282,7 +1289,7 @@ img.ProseMirror-separator {
 .toastui-editor-contents .toastui-editor-md-preview-highlight:after {
 	content: "";
 	background-color: #fff58380;
-	border-radius: 4px;
+	border-radius: var(--border-radius);
 	z-index: -1;
 	position: absolute;
 	top: -4px;
@@ -1386,7 +1393,7 @@ img.ProseMirror-separator {
 
 .toastui-editor-md-link.toastui-editor-md-link-desc.toastui-editor-md-marked-text,
 .toastui-editor-md-list-item-style.toastui-editor-md-list-item-odd {
-	color: #4b96e6;
+	color: var(--el-color-primary);
 }
 
 .toastui-editor-md-list-item-style.toastui-editor-md-list-item-even {
@@ -1476,16 +1483,29 @@ img.ProseMirror-separator {
 table.ProseMirror-selectednode,
 .html-block.ProseMirror-selectednode {
 	border-radius: 2px;
-	outline: 2px solid #00a9ff;
+	outline: 2px solid var(--el-color-primary);
 }
 
 .toastui-editor-contents {
-	margin: 0;
+	// display:flex;
+	// flex-flow:column nowrap;
+	margin: 0 auto;
 	padding: 0;
 	font-size: 13px;
 	font-family: var(--font-family);
-
+	border: 1px solid #dadde6;
+	border-radius: var(--border-radius);
 	z-index: 20;
+	// div,
+	// p{
+	// max-width:1024px;
+	// margin:0 auto;
+
+	// }
+	.toastui-viewer-contents {
+		max-width: 1024px;
+		// margin:0 auto;
+	}
 }
 
 .toastui-editor-contents *:not(table) {
@@ -1575,60 +1595,63 @@ table.ProseMirror-selectednode,
 	color: #999;
 }
 
-.toastui-editor-contents blockquote {
-	margin: 14px 0;
-	border-left: 4px solid #e5e5e5;
-	padding: 0 16px;
-	color: #999;
-}
+.toastui-editor-contents {
+	padding: var(--ui-one);
+	blockquote {
+		margin: 14px 0;
+		border-left: 4px solid #e5e5e5;
+		padding: 0 16px;
+		color: #999;
 
-.toastui-editor-contents blockquote p,
-.toastui-editor-contents blockquote ul,
-.toastui-editor-contents blockquote ol {
-	color: #999;
-}
+		p,
+		ul,
+		ol {
+			color: #999;
+		}
+	}
 
-.toastui-editor-contents blockquote > :first-child {
-	margin-top: 0;
-}
+	> :first-child {
+		margin-top: 0;
+	}
 
-.toastui-editor-contents blockquote > :last-child {
-	margin-bottom: 0;
-}
+	blockquote > :last-child {
+		margin-bottom: 0;
+	}
 
-.toastui-editor-contents pre,
-.toastui-editor-contents code {
-	font-family: var(--font-family);
-	border: 0;
-	border-radius: 0;
-}
+	pre,
+	code {
+		font-family: var(--font-family);
+		border: 0;
+		border-radius: 0;
+	}
 
-.toastui-editor-contents pre {
-	margin: 2px 0 8px;
-	padding: 18px;
-	background-color: #f4f7f8;
-}
+	pre {
+		margin: 2px 0 8px;
+		padding: 18px;
+		background-color: #f4f7f8;
 
-.toastui-editor-contents code {
-	color: #c1798b;
-	background-color: #f9f2f4;
-	padding: 2px 3px;
-	letter-spacing: -0.3px;
-	border-radius: 2px;
-}
+		code {
+			padding: 0;
+			color: inherit;
+			white-space: pre-wrap;
+			background-color: transparent;
+		}
+	}
 
-.toastui-editor-contents pre code {
-	padding: 0;
-	color: inherit;
-	white-space: pre-wrap;
-	background-color: transparent;
-}
+	code {
+		color: #c1798b;
+		background-color: #f9f2f4;
+		padding: 2px 3px;
+		letter-spacing: -0.3px;
+		border-radius: 2px;
+	}
 
-.toastui-editor-contents img {
-	margin: 4px 0 10px;
-	box-sizing: border-box;
-	vertical-align: top;
-	max-width: 100%;
+	img {
+		margin: 4px 0 10px;
+		box-sizing: border-box;
+		vertical-align: top;
+		max-width: 90%;
+	}
 }
 
 .toastui-editor-contents table {
@@ -1740,13 +1763,15 @@ table.ProseMirror-selectednode,
 	margin: 16px 0;
 }
 
-.toastui-editor-contents a {
-	text-decoration: underline;
-	color: #4b96e6;
-}
+.toastui-editor-contents {
+	a {
+		text-decoration: underline;
+		color: var(--el-color-primary);
 
-.toastui-editor-contents a:hover {
-	color: #1f70de;
+		&:hover {
+			color: var(--el-color-primary-hover);
+		}
+	}
 }
 
 .toastui-editor-contents .image-link {
@@ -1879,17 +1904,17 @@ table.ProseMirror-selectednode,
 	border-radius: 2px;
 	background-color: #fff;
 	z-index: 30;
-}
 
-.toastui-editor-ww-code-block-language input {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0 10px;
-	height: 100%;
-	width: 100%;
-	background-color: transparent;
-	border: none;
-	outline: none;
+	input {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0 10px;
+		height: 100%;
+		width: 100%;
+		background-color: transparent;
+		border: none;
+		outline: none;
+	}
 }
 
 .toastui-editor-contents-placeholder:before {
@@ -1899,20 +1924,24 @@ table.ProseMirror-selectednode,
 	position: absolute;
 }
 
-.toastui-editor-md-preview .toastui-editor-contents h1 {
-	min-height: 28px;
-}
+.toastui-editor-md-preview {
+	.toastui-editor-contents {
+		h1 {
+			min-height: 28px;
+		}
 
-.toastui-editor-md-preview .toastui-editor-contents h2 {
-	min-height: 23px;
-}
+		h2 {
+			min-height: 23px;
+		}
 
-.toastui-editor-md-preview .toastui-editor-contents blockquote {
-	min-height: 20px;
-}
+		blockquote {
+			min-height: 20px;
+		}
 
-.toastui-editor-md-preview .toastui-editor-contents li {
-	min-height: 22px;
+		li {
+			min-height: 22px;
+		}
+	}
 }
 
 .toastui-editor-pseudo-clipboard {

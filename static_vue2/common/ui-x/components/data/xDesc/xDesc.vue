@@ -1,11 +1,13 @@
 <style lang="less">
 .xDesc {
-	--xdesc-item-width: 120px;
+	--xItem-label-width: 120px;
 }
 </style>
 <script lang="ts">
 export default async function () {
 	const { THIS_FILE_URL } = this;
+	/* 目前是一个弃案 */
+	/* @deprecated */
 	return defineComponent({
 		props: ["itemWidth"],
 		provide() {

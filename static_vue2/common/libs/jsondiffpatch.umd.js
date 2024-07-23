@@ -15,7 +15,12 @@
 					return typeof obj;
 				}
 			: function (obj) {
-					return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+					return obj &&
+						typeof Symbol === "function" &&
+						obj.constructor === Symbol &&
+						obj !== Symbol.prototype
+						? "symbol"
+						: typeof obj;
 				};
 
 	var classCallCheck = function (instance, Constructor) {
@@ -69,7 +74,9 @@
 
 	var inherits = function (subClass, superClass) {
 		if (typeof superClass !== "function" && superClass !== null) {
-			throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+			throw new TypeError(
+				"Super expression must either be null or a function, not " + typeof superClass
+			);
 		}
 
 		subClass.prototype = Object.create(superClass && superClass.prototype, {
@@ -80,7 +87,10 @@
 				configurable: true
 			}
 		});
-		if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : (subClass.__proto__ = superClass);
+		if (superClass)
+			Object.setPrototypeOf
+				? Object.setPrototypeOf(subClass, superClass)
+				: (subClass.__proto__ = superClass);
 	};
 
 	var possibleConstructorReturn = function (self, call) {
@@ -99,7 +109,11 @@
 			var _e = undefined;
 
 			try {
-				for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+				for (
+					var _i = arr[Symbol.iterator](), _s;
+					!(_n = (_s = _i.next()).done);
+					_n = true
+				) {
 					_arr.push(_s.value);
 
 					if (i && _arr.length === i) break;
@@ -239,7 +253,11 @@
 							this.log("filter: " + filter.filterName);
 						}
 						filter(context);
-						if ((typeof context === "undefined" ? "undefined" : _typeof(context)) === "object" && context.exiting) {
+						if (
+							(typeof context === "undefined" ? "undefined" : _typeof(context)) ===
+								"object" &&
+							context.exiting
+						) {
 							context.exiting = false;
 							break;
 						}
@@ -479,7 +497,10 @@
 		function DiffContext(left, right) {
 			classCallCheck(this, DiffContext);
 
-			var _this = possibleConstructorReturn(this, (DiffContext.__proto__ || Object.getPrototypeOf(DiffContext)).call(this));
+			var _this = possibleConstructorReturn(
+				this,
+				(DiffContext.__proto__ || Object.getPrototypeOf(DiffContext)).call(this)
+			);
 
 			_this.left = left;
 			_this.right = right;
@@ -491,8 +512,14 @@
 			{
 				key: "setResult",
 				value: function setResult(result) {
-					if (this.options.cloneDiffValues && (typeof result === "undefined" ? "undefined" : _typeof(result)) === "object") {
-						var clone$$1 = typeof this.options.cloneDiffValues === "function" ? this.options.cloneDiffValues : clone;
+					if (
+						this.options.cloneDiffValues &&
+						(typeof result === "undefined" ? "undefined" : _typeof(result)) === "object"
+					) {
+						var clone$$1 =
+							typeof this.options.cloneDiffValues === "function"
+								? this.options.cloneDiffValues
+								: clone;
 						if (_typeof(result[0]) === "object") {
 							result[0] = clone$$1(result[0]);
 						}
@@ -513,7 +540,10 @@
 		function PatchContext(left, delta) {
 			classCallCheck(this, PatchContext);
 
-			var _this = possibleConstructorReturn(this, (PatchContext.__proto__ || Object.getPrototypeOf(PatchContext)).call(this));
+			var _this = possibleConstructorReturn(
+				this,
+				(PatchContext.__proto__ || Object.getPrototypeOf(PatchContext)).call(this)
+			);
 
 			_this.left = left;
 			_this.delta = delta;
@@ -530,7 +560,10 @@
 		function ReverseContext(delta) {
 			classCallCheck(this, ReverseContext);
 
-			var _this = possibleConstructorReturn(this, (ReverseContext.__proto__ || Object.getPrototypeOf(ReverseContext)).call(this));
+			var _this = possibleConstructorReturn(
+				this,
+				(ReverseContext.__proto__ || Object.getPrototypeOf(ReverseContext)).call(this)
+			);
 
 			_this.delta = delta;
 			_this.pipe = "reverse";
@@ -739,7 +772,10 @@
 		var child = void 0;
 		for (var index = 0; index < length; index++) {
 			child = context.children[index];
-			if (Object.prototype.hasOwnProperty.call(context.left, child.childName) && child.result === undefined) {
+			if (
+				Object.prototype.hasOwnProperty.call(context.left, child.childName) &&
+				child.result === undefined
+			) {
 				delete context.left[child.childName];
 			} else if (context.left[child.childName] !== child.result) {
 				context.left[child.childName] = child.result;
@@ -912,7 +948,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 		if (value1 === value2) {
 			return true;
 		}
-		if ((typeof value1 === "undefined" ? "undefined" : _typeof(value1)) !== "object" || (typeof value2 === "undefined" ? "undefined" : _typeof(value2)) !== "object") {
+		if (
+			(typeof value1 === "undefined" ? "undefined" : _typeof(value1)) !== "object" ||
+			(typeof value2 === "undefined" ? "undefined" : _typeof(value2)) !== "object"
+		) {
 			return false;
 		}
 		var objectHash = context.objectHash;
@@ -970,19 +1009,32 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 
 		var child = void 0;
 
-		if (len1 > 0 && len2 > 0 && !matchContext.objectHash && typeof matchContext.matchByPosition !== "boolean") {
+		if (
+			len1 > 0 &&
+			len2 > 0 &&
+			!matchContext.objectHash &&
+			typeof matchContext.matchByPosition !== "boolean"
+		) {
 			matchContext.matchByPosition = !arraysHaveMatchByRef(array1, array2, len1, len2);
 		}
 
 		// separate common head
-		while (commonHead < len1 && commonHead < len2 && matchItems(array1, array2, commonHead, commonHead, matchContext)) {
+		while (
+			commonHead < len1 &&
+			commonHead < len2 &&
+			matchItems(array1, array2, commonHead, commonHead, matchContext)
+		) {
 			index = commonHead;
 			child = new DiffContext(context.left[index], context.right[index]);
 			context.push(child, index);
 			commonHead++;
 		}
 		// separate common tail
-		while (commonTail + commonHead < len1 && commonTail + commonHead < len2 && matchItems(array1, array2, len1 - 1 - commonTail, len2 - 1 - commonTail, matchContext)) {
+		while (
+			commonTail + commonHead < len1 &&
+			commonTail + commonHead < len2 &&
+			matchItems(array1, array2, len1 - 1 - commonTail, len2 - 1 - commonTail, matchContext)
+		) {
 			index1 = len1 - 1 - commonTail;
 			index2 = len2 - 1 - commonTail;
 			child = new DiffContext(context.left[index1], context.right[index2]);
@@ -1038,11 +1090,19 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 		}
 
 		var detectMove = true;
-		if (context.options && context.options.arrays && context.options.arrays.detectMove === false) {
+		if (
+			context.options &&
+			context.options.arrays &&
+			context.options.arrays.detectMove === false
+		) {
 			detectMove = false;
 		}
 		var includeValueOnMove = false;
-		if (context.options && context.options.arrays && context.options.arrays.includeValueOnMove) {
+		if (
+			context.options &&
+			context.options.arrays &&
+			context.options.arrays.includeValueOnMove
+		) {
 			includeValueOnMove = true;
 		}
 
@@ -1053,9 +1113,21 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 				// added, try to match with a removed item and register as position move
 				var isMove = false;
 				if (detectMove && removedItemsLength > 0) {
-					for (var removeItemIndex1 = 0; removeItemIndex1 < removedItemsLength; removeItemIndex1++) {
+					for (
+						var removeItemIndex1 = 0;
+						removeItemIndex1 < removedItemsLength;
+						removeItemIndex1++
+					) {
 						index1 = removedItems[removeItemIndex1];
-						if (matchItems(trimmed1, trimmed2, index1 - commonHead, index - commonHead, matchContext)) {
+						if (
+							matchItems(
+								trimmed1,
+								trimmed2,
+								index1 - commonHead,
+								index - commonHead,
+								matchContext
+							)
+						) {
 							// store position move as: [originalValue, newPosition, ARRAY_MOVE]
 							result["_" + index1].splice(1, 2, index, ARRAY_MOVE);
 							if (!includeValueOnMove) {
@@ -1124,7 +1196,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					if (delta[index][2] === 0 || delta[index][2] === ARRAY_MOVE) {
 						toRemove.push(parseInt(index.slice(1), 10));
 					} else {
-						throw new Error("only removal or move can be applied at original array indices," + (" invalid diff type: " + delta[index][2]));
+						throw new Error(
+							"only removal or move can be applied at original array indices," +
+								(" invalid diff type: " + delta[index][2])
+						);
 					}
 				} else {
 					if (delta[index].length === 1) {
@@ -1207,7 +1282,13 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 		if (!context.nested) {
 			if (context.delta[2] === ARRAY_MOVE) {
 				context.newName = "_" + context.delta[1];
-				context.setResult([context.delta[0], parseInt(context.childName.substr(1), 10), ARRAY_MOVE]).exit();
+				context
+					.setResult([
+						context.delta[0],
+						parseInt(context.childName.substr(1), 10),
+						ARRAY_MOVE
+					])
+					.exit();
 			}
 			return;
 		}
@@ -1379,7 +1460,12 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 		var DIFF_EQUAL = 0;
 
 		/** @typedef {{0: number, 1: string}} */
-		diff_match_patch.prototype.diff_main = function (text1, text2, opt_checklines, opt_deadline) {
+		diff_match_patch.prototype.diff_main = function (
+			text1,
+			text2,
+			opt_checklines,
+			opt_deadline
+		) {
 			// Set a deadline by which time the diff must be complete.
 			if (typeof opt_deadline == "undefined") {
 				if (this.Diff_Timeout <= 0) {
@@ -1554,7 +1640,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 						// Upon reaching an equality, check for prior redundancies.
 						if (count_delete >= 1 && count_insert >= 1) {
 							// Delete the offending records and add the merged ones.
-							diffs.splice(pointer - count_delete - count_insert, count_delete + count_insert);
+							diffs.splice(
+								pointer - count_delete - count_insert,
+								count_delete + count_insert
+							);
 							pointer = pointer - count_delete - count_insert;
 							var a = this.diff_main(text_delete, text_insert, false, deadline);
 							for (var j = a.length - 1; j >= 0; j--) {
@@ -1628,7 +1717,11 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 						x1 = v1[k1_offset - 1] + 1;
 					}
 					var y1 = x1 - k1;
-					while (x1 < text1_length && y1 < text2_length && text1.charAt(x1) == text2.charAt(y1)) {
+					while (
+						x1 < text1_length &&
+						y1 < text2_length &&
+						text1.charAt(x1) == text2.charAt(y1)
+					) {
 						x1++;
 						y1++;
 					}
@@ -1662,7 +1755,11 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 						x2 = v2[k2_offset - 1] + 1;
 					}
 					var y2 = x2 - k2;
-					while (x2 < text1_length && y2 < text2_length && text1.charAt(text1_length - x2 - 1) == text2.charAt(text2_length - y2 - 1)) {
+					while (
+						x2 < text1_length &&
+						y2 < text2_length &&
+						text1.charAt(text1_length - x2 - 1) == text2.charAt(text2_length - y2 - 1)
+					) {
 						x2++;
 						y2++;
 					}
@@ -1764,7 +1861,11 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					var line = text.substring(lineStart, lineEnd + 1);
 					lineStart = lineEnd + 1;
 
-					if (lineHash.hasOwnProperty ? lineHash.hasOwnProperty(line) : lineHash[line] !== undefined) {
+					if (
+						lineHash.hasOwnProperty
+							? lineHash.hasOwnProperty(line)
+							: lineHash[line] !== undefined
+					) {
 						chars += String.fromCharCode(lineHash[line]);
 					} else {
 						chars += String.fromCharCode(lineArrayLength);
@@ -1817,7 +1918,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			var pointermid = pointermax;
 			var pointerstart = 0;
 			while (pointermin < pointermid) {
-				if (text1.substring(pointerstart, pointermid) == text2.substring(pointerstart, pointermid)) {
+				if (
+					text1.substring(pointerstart, pointermid) ==
+					text2.substring(pointerstart, pointermid)
+				) {
 					pointermin = pointermid;
 					pointerstart = pointermin;
 				} else {
@@ -1836,7 +1940,11 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 		 */
 		diff_match_patch.prototype.diff_commonSuffix = function (text1, text2) {
 			// Quick check for common null cases.
-			if (!text1 || !text2 || text1.charAt(text1.length - 1) != text2.charAt(text2.length - 1)) {
+			if (
+				!text1 ||
+				!text2 ||
+				text1.charAt(text1.length - 1) != text2.charAt(text2.length - 1)
+			) {
 				return 0;
 			}
 			// Binary search.
@@ -1846,7 +1954,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			var pointermid = pointermax;
 			var pointerend = 0;
 			while (pointermin < pointermid) {
-				if (text1.substring(text1.length - pointermid, text1.length - pointerend) == text2.substring(text2.length - pointermid, text2.length - pointerend)) {
+				if (
+					text1.substring(text1.length - pointermid, text1.length - pointerend) ==
+					text2.substring(text2.length - pointermid, text2.length - pointerend)
+				) {
 					pointermin = pointermid;
 					pointerend = pointermin;
 				} else {
@@ -1897,7 +2008,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					return best;
 				}
 				length += found;
-				if (found == 0 || text1.substring(text_length - length) == text2.substring(0, length)) {
+				if (
+					found == 0 ||
+					text1.substring(text_length - length) == text2.substring(0, length)
+				) {
 					best = length;
 					length++;
 				}
@@ -1946,10 +2060,18 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 				var best_common = "";
 				var best_longtext_a, best_longtext_b, best_shorttext_a, best_shorttext_b;
 				while ((j = shorttext.indexOf(seed, j + 1)) != -1) {
-					var prefixLength = dmp.diff_commonPrefix(longtext.substring(i), shorttext.substring(j));
-					var suffixLength = dmp.diff_commonSuffix(longtext.substring(0, i), shorttext.substring(0, j));
+					var prefixLength = dmp.diff_commonPrefix(
+						longtext.substring(i),
+						shorttext.substring(j)
+					);
+					var suffixLength = dmp.diff_commonSuffix(
+						longtext.substring(0, i),
+						shorttext.substring(0, j)
+					);
 					if (best_common.length < suffixLength + prefixLength) {
-						best_common = shorttext.substring(j - suffixLength, j) + shorttext.substring(j, j + prefixLength);
+						best_common =
+							shorttext.substring(j - suffixLength, j) +
+							shorttext.substring(j, j + prefixLength);
 						best_longtext_a = longtext.substring(0, i - suffixLength);
 						best_longtext_b = longtext.substring(i + prefixLength);
 						best_shorttext_a = shorttext.substring(0, j - suffixLength);
@@ -1957,7 +2079,13 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					}
 				}
 				if (best_common.length * 2 >= longtext.length) {
-					return [best_longtext_a, best_longtext_b, best_shorttext_a, best_shorttext_b, best_common];
+					return [
+						best_longtext_a,
+						best_longtext_b,
+						best_shorttext_a,
+						best_shorttext_b,
+						best_common
+					];
 				} else {
 					return null;
 				}
@@ -2032,9 +2160,16 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					}
 					// Eliminate an equality that is smaller or equal to the edits on both
 					// sides of it.
-					if (lastequality && lastequality.length <= Math.max(length_insertions1, length_deletions1) && lastequality.length <= Math.max(length_insertions2, length_deletions2)) {
+					if (
+						lastequality &&
+						lastequality.length <= Math.max(length_insertions1, length_deletions1) &&
+						lastequality.length <= Math.max(length_insertions2, length_deletions2)
+					) {
 						// Duplicate record.
-						diffs.splice(equalities[equalitiesLength - 1], 0, [DIFF_DELETE, lastequality]);
+						diffs.splice(equalities[equalitiesLength - 1], 0, [
+							DIFF_DELETE,
+							lastequality
+						]);
 						// Change second copy to insert.
 						diffs[equalities[equalitiesLength - 1] + 1][0] = DIFF_INSERT;
 						// Throw away the equality we just deleted.
@@ -2073,20 +2208,38 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					var overlap_length1 = this.diff_commonOverlap_(deletion, insertion);
 					var overlap_length2 = this.diff_commonOverlap_(insertion, deletion);
 					if (overlap_length1 >= overlap_length2) {
-						if (overlap_length1 >= deletion.length / 2 || overlap_length1 >= insertion.length / 2) {
+						if (
+							overlap_length1 >= deletion.length / 2 ||
+							overlap_length1 >= insertion.length / 2
+						) {
 							// Overlap found.  Insert an equality and trim the surrounding edits.
-							diffs.splice(pointer, 0, [DIFF_EQUAL, insertion.substring(0, overlap_length1)]);
-							diffs[pointer - 1][1] = deletion.substring(0, deletion.length - overlap_length1);
+							diffs.splice(pointer, 0, [
+								DIFF_EQUAL,
+								insertion.substring(0, overlap_length1)
+							]);
+							diffs[pointer - 1][1] = deletion.substring(
+								0,
+								deletion.length - overlap_length1
+							);
 							diffs[pointer + 1][1] = insertion.substring(overlap_length1);
 							pointer++;
 						}
 					} else {
-						if (overlap_length2 >= deletion.length / 2 || overlap_length2 >= insertion.length / 2) {
+						if (
+							overlap_length2 >= deletion.length / 2 ||
+							overlap_length2 >= insertion.length / 2
+						) {
 							// Reverse overlap found.
 							// Insert an equality and swap and trim the surrounding edits.
-							diffs.splice(pointer, 0, [DIFF_EQUAL, deletion.substring(0, overlap_length2)]);
+							diffs.splice(pointer, 0, [
+								DIFF_EQUAL,
+								deletion.substring(0, overlap_length2)
+							]);
 							diffs[pointer - 1][0] = DIFF_INSERT;
-							diffs[pointer - 1][1] = insertion.substring(0, insertion.length - overlap_length2);
+							diffs[pointer - 1][1] = insertion.substring(
+								0,
+								insertion.length - overlap_length2
+							);
 							diffs[pointer + 1][0] = DIFF_DELETE;
 							diffs[pointer + 1][1] = deletion.substring(overlap_length2);
 							pointer++;
@@ -2130,8 +2283,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 				var char2 = two.charAt(0);
 				var nonAlphaNumeric1 = char1.match(diff_match_patch.nonAlphaNumericRegex_);
 				var nonAlphaNumeric2 = char2.match(diff_match_patch.nonAlphaNumericRegex_);
-				var whitespace1 = nonAlphaNumeric1 && char1.match(diff_match_patch.whitespaceRegex_);
-				var whitespace2 = nonAlphaNumeric2 && char2.match(diff_match_patch.whitespaceRegex_);
+				var whitespace1 =
+					nonAlphaNumeric1 && char1.match(diff_match_patch.whitespaceRegex_);
+				var whitespace2 =
+					nonAlphaNumeric2 && char2.match(diff_match_patch.whitespaceRegex_);
 				var lineBreak1 = whitespace1 && char1.match(diff_match_patch.linebreakRegex_);
 				var lineBreak2 = whitespace2 && char2.match(diff_match_patch.linebreakRegex_);
 				var blankLine1 = lineBreak1 && one.match(diff_match_patch.blanklineEndRegex_);
@@ -2178,12 +2333,16 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					var bestEquality1 = equality1;
 					var bestEdit = edit;
 					var bestEquality2 = equality2;
-					var bestScore = diff_cleanupSemanticScore_(equality1, edit) + diff_cleanupSemanticScore_(edit, equality2);
+					var bestScore =
+						diff_cleanupSemanticScore_(equality1, edit) +
+						diff_cleanupSemanticScore_(edit, equality2);
 					while (edit.charAt(0) === equality2.charAt(0)) {
 						equality1 += edit.charAt(0);
 						edit = edit.substring(1) + equality2.charAt(0);
 						equality2 = equality2.substring(1);
-						var score = diff_cleanupSemanticScore_(equality1, edit) + diff_cleanupSemanticScore_(edit, equality2);
+						var score =
+							diff_cleanupSemanticScore_(equality1, edit) +
+							diff_cleanupSemanticScore_(edit, equality2);
 						// The >= encourages trailing rather than leading whitespace on edits.
 						if (score >= bestScore) {
 							bestScore = score;
@@ -2271,9 +2430,17 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					 * <ins>A</del>X<ins>C</ins><del>D</del>
 					 * <ins>A</ins><del>B</del>X<del>C</del>
 					 */
-					if (lastequality && ((pre_ins && pre_del && post_ins && post_del) || (lastequality.length < this.Diff_EditCost / 2 && pre_ins + pre_del + post_ins + post_del == 3))) {
+					if (
+						lastequality &&
+						((pre_ins && pre_del && post_ins && post_del) ||
+							(lastequality.length < this.Diff_EditCost / 2 &&
+								pre_ins + pre_del + post_ins + post_del == 3))
+					) {
 						// Duplicate record.
-						diffs.splice(equalities[equalitiesLength - 1], 0, [DIFF_DELETE, lastequality]);
+						diffs.splice(equalities[equalitiesLength - 1], 0, [
+							DIFF_DELETE,
+							lastequality
+						]);
 						// Change second copy to insert.
 						diffs[equalities[equalitiesLength - 1] + 1][0] = DIFF_INSERT;
 						equalitiesLength--; // Throw away the equality we just deleted;
@@ -2330,10 +2497,18 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 								// Factor out any common prefixies.
 								commonlength = this.diff_commonPrefix(text_insert, text_delete);
 								if (commonlength !== 0) {
-									if (pointer - count_delete - count_insert > 0 && diffs[pointer - count_delete - count_insert - 1][0] == DIFF_EQUAL) {
-										diffs[pointer - count_delete - count_insert - 1][1] += text_insert.substring(0, commonlength);
+									if (
+										pointer - count_delete - count_insert > 0 &&
+										diffs[pointer - count_delete - count_insert - 1][0] ==
+											DIFF_EQUAL
+									) {
+										diffs[pointer - count_delete - count_insert - 1][1] +=
+											text_insert.substring(0, commonlength);
 									} else {
-										diffs.splice(0, 0, [DIFF_EQUAL, text_insert.substring(0, commonlength)]);
+										diffs.splice(0, 0, [
+											DIFF_EQUAL,
+											text_insert.substring(0, commonlength)
+										]);
 										pointer++;
 									}
 									text_insert = text_insert.substring(commonlength);
@@ -2342,20 +2517,45 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 								// Factor out any common suffixies.
 								commonlength = this.diff_commonSuffix(text_insert, text_delete);
 								if (commonlength !== 0) {
-									diffs[pointer][1] = text_insert.substring(text_insert.length - commonlength) + diffs[pointer][1];
-									text_insert = text_insert.substring(0, text_insert.length - commonlength);
-									text_delete = text_delete.substring(0, text_delete.length - commonlength);
+									diffs[pointer][1] =
+										text_insert.substring(text_insert.length - commonlength) +
+										diffs[pointer][1];
+									text_insert = text_insert.substring(
+										0,
+										text_insert.length - commonlength
+									);
+									text_delete = text_delete.substring(
+										0,
+										text_delete.length - commonlength
+									);
 								}
 							}
 							// Delete the offending records and add the merged ones.
 							if (count_delete === 0) {
-								diffs.splice(pointer - count_insert, count_delete + count_insert, [DIFF_INSERT, text_insert]);
+								diffs.splice(pointer - count_insert, count_delete + count_insert, [
+									DIFF_INSERT,
+									text_insert
+								]);
 							} else if (count_insert === 0) {
-								diffs.splice(pointer - count_delete, count_delete + count_insert, [DIFF_DELETE, text_delete]);
+								diffs.splice(pointer - count_delete, count_delete + count_insert, [
+									DIFF_DELETE,
+									text_delete
+								]);
 							} else {
-								diffs.splice(pointer - count_delete - count_insert, count_delete + count_insert, [DIFF_DELETE, text_delete], [DIFF_INSERT, text_insert]);
+								diffs.splice(
+									pointer - count_delete - count_insert,
+									count_delete + count_insert,
+									[DIFF_DELETE, text_delete],
+									[DIFF_INSERT, text_insert]
+								);
 							}
-							pointer = pointer - count_delete - count_insert + (count_delete ? 1 : 0) + (count_insert ? 1 : 0) + 1;
+							pointer =
+								pointer -
+								count_delete -
+								count_insert +
+								(count_delete ? 1 : 0) +
+								(count_insert ? 1 : 0) +
+								1;
 						} else if (pointer !== 0 && diffs[pointer - 1][0] == DIFF_EQUAL) {
 							// Merge this equality with the previous one.
 							diffs[pointer - 1][1] += diffs[pointer][1];
@@ -2383,16 +2583,30 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			while (pointer < diffs.length - 1) {
 				if (diffs[pointer - 1][0] == DIFF_EQUAL && diffs[pointer + 1][0] == DIFF_EQUAL) {
 					// This is a single edit surrounded by equalities.
-					if (diffs[pointer][1].substring(diffs[pointer][1].length - diffs[pointer - 1][1].length) == diffs[pointer - 1][1]) {
+					if (
+						diffs[pointer][1].substring(
+							diffs[pointer][1].length - diffs[pointer - 1][1].length
+						) == diffs[pointer - 1][1]
+					) {
 						// Shift the edit over the previous equality.
-						diffs[pointer][1] = diffs[pointer - 1][1] + diffs[pointer][1].substring(0, diffs[pointer][1].length - diffs[pointer - 1][1].length);
+						diffs[pointer][1] =
+							diffs[pointer - 1][1] +
+							diffs[pointer][1].substring(
+								0,
+								diffs[pointer][1].length - diffs[pointer - 1][1].length
+							);
 						diffs[pointer + 1][1] = diffs[pointer - 1][1] + diffs[pointer + 1][1];
 						diffs.splice(pointer - 1, 1);
 						changes = true;
-					} else if (diffs[pointer][1].substring(0, diffs[pointer + 1][1].length) == diffs[pointer + 1][1]) {
+					} else if (
+						diffs[pointer][1].substring(0, diffs[pointer + 1][1].length) ==
+						diffs[pointer + 1][1]
+					) {
 						// Shift the edit over the next equality.
 						diffs[pointer - 1][1] += diffs[pointer + 1][1];
-						diffs[pointer][1] = diffs[pointer][1].substring(diffs[pointer + 1][1].length) + diffs[pointer + 1][1];
+						diffs[pointer][1] =
+							diffs[pointer][1].substring(diffs[pointer + 1][1].length) +
+							diffs[pointer + 1][1];
 						diffs.splice(pointer + 1, 1);
 						changes = true;
 					}
@@ -2457,7 +2671,11 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			for (var x = 0; x < diffs.length; x++) {
 				var op = diffs[x][0]; // Operation (insert, delete, equal)
 				var data = diffs[x][1]; // Text of change.
-				var text = data.replace(pattern_amp, "&amp;").replace(pattern_lt, "&lt;").replace(pattern_gt, "&gt;").replace(pattern_para, "&para;<br>");
+				var text = data
+					.replace(pattern_amp, "&amp;")
+					.replace(pattern_lt, "&lt;")
+					.replace(pattern_gt, "&gt;")
+					.replace(pattern_para, "&para;<br>");
 				switch (op) {
 					case DIFF_INSERT:
 						html[x] = '<ins style="background:#e6ffe6;">' + text + "</ins>";
@@ -2605,12 +2823,20 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 						// Blank tokens are ok (from a trailing \t).
 						// Anything else is an error.
 						if (tokens[x]) {
-							throw new Error("Invalid diff operation in diff_fromDelta: " + tokens[x]);
+							throw new Error(
+								"Invalid diff operation in diff_fromDelta: " + tokens[x]
+							);
 						}
 				}
 			}
 			if (pointer != text1.length) {
-				throw new Error("Delta length (" + pointer + ") does not equal source text length (" + text1.length + ").");
+				throw new Error(
+					"Delta length (" +
+						pointer +
+						") does not equal source text length (" +
+						text1.length +
+						")."
+				);
 			}
 			return diffs;
 		};
@@ -2733,7 +2959,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 						rd[j] = ((rd[j + 1] << 1) | 1) & charMatch;
 					} else {
 						// Subsequent passes: fuzzy match.
-						rd[j] = (((rd[j + 1] << 1) | 1) & charMatch) | (((last_rd[j + 1] | last_rd[j]) << 1) | 1) | last_rd[j + 1];
+						rd[j] =
+							(((rd[j + 1] << 1) | 1) & charMatch) |
+							(((last_rd[j + 1] | last_rd[j]) << 1) | 1) |
+							last_rd[j + 1];
 					}
 					if (rd[j] & matchmask) {
 						var score = match_bitapScore_(d, j - 1);
@@ -2797,9 +3026,15 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 
 			// Look for the first and last matches of pattern in text.  If two different
 			// matches are found, increase the pattern length.
-			while (text.indexOf(pattern) != text.lastIndexOf(pattern) && pattern.length < this.Match_MaxBits - this.Patch_Margin - this.Patch_Margin) {
+			while (
+				text.indexOf(pattern) != text.lastIndexOf(pattern) &&
+				pattern.length < this.Match_MaxBits - this.Patch_Margin - this.Patch_Margin
+			) {
 				padding += this.Patch_Margin;
-				pattern = text.substring(patch.start2 - padding, patch.start2 + patch.length1 + padding);
+				pattern = text.substring(
+					patch.start2 - padding,
+					patch.start2 + patch.length1 + padding
+				);
 			}
 			// Add one chunk for good luck.
 			padding += this.Patch_Margin;
@@ -2810,7 +3045,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 				patch.diffs.unshift([DIFF_EQUAL, prefix]);
 			}
 			// Add the suffix.
-			var suffix = text.substring(patch.start2 + patch.length1, patch.start2 + patch.length1 + padding);
+			var suffix = text.substring(
+				patch.start2 + patch.length1,
+				patch.start2 + patch.length1 + padding
+			);
 			if (suffix) {
 				patch.diffs.push([DIFF_EQUAL, suffix]);
 			}
@@ -2856,16 +3094,31 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					this.diff_cleanupSemantic(diffs);
 					this.diff_cleanupEfficiency(diffs);
 				}
-			} else if (a && typeof a == "object" && typeof opt_b == "undefined" && typeof opt_c == "undefined") {
+			} else if (
+				a &&
+				typeof a == "object" &&
+				typeof opt_b == "undefined" &&
+				typeof opt_c == "undefined"
+			) {
 				// Method 2: diffs
 				// Compute text1 from diffs.
 				diffs = /** @type {!Array.<!diff_match_patch.Diff>} */ (a);
 				text1 = this.diff_text1(diffs);
-			} else if (typeof a == "string" && opt_b && typeof opt_b == "object" && typeof opt_c == "undefined") {
+			} else if (
+				typeof a == "string" &&
+				opt_b &&
+				typeof opt_b == "object" &&
+				typeof opt_c == "undefined"
+			) {
 				// Method 3: text1, diffs
 				text1 = /** @type {string} */ (a);
 				diffs = /** @type {!Array.<!diff_match_patch.Diff>} */ (opt_b);
-			} else if (typeof a == "string" && typeof opt_b == "string" && opt_c && typeof opt_c == "object") {
+			} else if (
+				typeof a == "string" &&
+				typeof opt_b == "string" &&
+				opt_c &&
+				typeof opt_c == "object"
+			) {
 				// Method 4: text1, text2, diffs
 				// text2 is not used.
 				text1 = /** @type {string} */ (a);
@@ -2901,15 +3154,24 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					case DIFF_INSERT:
 						patch.diffs[patchDiffLength++] = diffs[x];
 						patch.length2 += diff_text.length;
-						postpatch_text = postpatch_text.substring(0, char_count2) + diff_text + postpatch_text.substring(char_count2);
+						postpatch_text =
+							postpatch_text.substring(0, char_count2) +
+							diff_text +
+							postpatch_text.substring(char_count2);
 						break;
 					case DIFF_DELETE:
 						patch.length1 += diff_text.length;
 						patch.diffs[patchDiffLength++] = diffs[x];
-						postpatch_text = postpatch_text.substring(0, char_count2) + postpatch_text.substring(char_count2 + diff_text.length);
+						postpatch_text =
+							postpatch_text.substring(0, char_count2) +
+							postpatch_text.substring(char_count2 + diff_text.length);
 						break;
 					case DIFF_EQUAL:
-						if (diff_text.length <= 2 * this.Patch_Margin && patchDiffLength && diffs.length != x + 1) {
+						if (
+							diff_text.length <= 2 * this.Patch_Margin &&
+							patchDiffLength &&
+							diffs.length != x + 1
+						) {
 							// Small equality inside a patch.
 							patch.diffs[patchDiffLength++] = diffs[x];
 							patch.length1 += diff_text.length;
@@ -3007,9 +3269,17 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 				if (text1.length > this.Match_MaxBits) {
 					// patch_splitMax will only provide an oversized pattern in the case of
 					// a monster delete.
-					start_loc = this.match_main(text, text1.substring(0, this.Match_MaxBits), expected_loc);
+					start_loc = this.match_main(
+						text,
+						text1.substring(0, this.Match_MaxBits),
+						expected_loc
+					);
 					if (start_loc != -1) {
-						end_loc = this.match_main(text, text1.substring(text1.length - this.Match_MaxBits), expected_loc + text1.length - this.Match_MaxBits);
+						end_loc = this.match_main(
+							text,
+							text1.substring(text1.length - this.Match_MaxBits),
+							expected_loc + text1.length - this.Match_MaxBits
+						);
 						if (end_loc == -1 || start_loc >= end_loc) {
 							// Can't find valid trailing context.  Drop this patch.
 							start_loc = -1;
@@ -3035,12 +3305,18 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					}
 					if (text1 == text2) {
 						// Perfect match, just shove the replacement text in.
-						text = text.substring(0, start_loc) + this.diff_text2(patches[x].diffs) + text.substring(start_loc + text1.length);
+						text =
+							text.substring(0, start_loc) +
+							this.diff_text2(patches[x].diffs) +
+							text.substring(start_loc + text1.length);
 					} else {
 						// Imperfect match.  Run a diff to get a framework of equivalent
 						// indices.
 						var diffs = this.diff_main(text1, text2, false);
-						if (text1.length > this.Match_MaxBits && this.diff_levenshtein(diffs) / text1.length > this.Patch_DeleteThreshold) {
+						if (
+							text1.length > this.Match_MaxBits &&
+							this.diff_levenshtein(diffs) / text1.length > this.Patch_DeleteThreshold
+						) {
 							// The end points match, but the content is unacceptably bad.
 							results[x] = false;
 						} else {
@@ -3054,10 +3330,18 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 								}
 								if (mod[0] === DIFF_INSERT) {
 									// Insertion
-									text = text.substring(0, start_loc + index2) + mod[1] + text.substring(start_loc + index2);
+									text =
+										text.substring(0, start_loc + index2) +
+										mod[1] +
+										text.substring(start_loc + index2);
 								} else if (mod[0] === DIFF_DELETE) {
 									// Deletion
-									text = text.substring(0, start_loc + index2) + text.substring(start_loc + this.diff_xIndex(diffs, index1 + mod[1].length));
+									text =
+										text.substring(0, start_loc + index2) +
+										text.substring(
+											start_loc +
+												this.diff_xIndex(diffs, index1 + mod[1].length)
+										);
 								}
 								if (mod[0] !== DIFF_DELETE) {
 									index1 += mod[1].length;
@@ -3158,7 +3442,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 						patch.length1 = patch.length2 = precontext.length;
 						patch.diffs.push([DIFF_EQUAL, precontext]);
 					}
-					while (bigpatch.diffs.length !== 0 && patch.length1 < patch_size - this.Patch_Margin) {
+					while (
+						bigpatch.diffs.length !== 0 &&
+						patch.length1 < patch_size - this.Patch_Margin
+					) {
 						var diff_type = bigpatch.diffs[0][0];
 						var diff_text = bigpatch.diffs[0][1];
 						if (diff_type === DIFF_INSERT) {
@@ -3167,7 +3454,12 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 							start2 += diff_text.length;
 							patch.diffs.push(bigpatch.diffs.shift());
 							empty = false;
-						} else if (diff_type === DIFF_DELETE && patch.diffs.length == 1 && patch.diffs[0][0] == DIFF_EQUAL && diff_text.length > 2 * patch_size) {
+						} else if (
+							diff_type === DIFF_DELETE &&
+							patch.diffs.length == 1 &&
+							patch.diffs[0][0] == DIFF_EQUAL &&
+							diff_text.length > 2 * patch_size
+						) {
 							// This is a large deletion.  Let it pass in one chunk.
 							patch.length1 += diff_text.length;
 							start1 += diff_text.length;
@@ -3176,7 +3468,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 							bigpatch.diffs.shift();
 						} else {
 							// Deletion or equality.  Only take as much as we can stomach.
-							diff_text = diff_text.substring(0, patch_size - patch.length1 - this.Patch_Margin);
+							diff_text = diff_text.substring(
+								0,
+								patch_size - patch.length1 - this.Patch_Margin
+							);
 							patch.length1 += diff_text.length;
 							start1 += diff_text.length;
 							if (diff_type === DIFF_EQUAL) {
@@ -3189,7 +3484,9 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 							if (diff_text == bigpatch.diffs[0][1]) {
 								bigpatch.diffs.shift();
 							} else {
-								bigpatch.diffs[0][1] = bigpatch.diffs[0][1].substring(diff_text.length);
+								bigpatch.diffs[0][1] = bigpatch.diffs[0][1].substring(
+									diff_text.length
+								);
 							}
 						}
 					}
@@ -3197,11 +3494,17 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					precontext = this.diff_text2(patch.diffs);
 					precontext = precontext.substring(precontext.length - this.Patch_Margin);
 					// Append the end context for this patch.
-					var postcontext = this.diff_text1(bigpatch.diffs).substring(0, this.Patch_Margin);
+					var postcontext = this.diff_text1(bigpatch.diffs).substring(
+						0,
+						this.Patch_Margin
+					);
 					if (postcontext !== "") {
 						patch.length1 += postcontext.length;
 						patch.length2 += postcontext.length;
-						if (patch.diffs.length !== 0 && patch.diffs[patch.diffs.length - 1][0] === DIFF_EQUAL) {
+						if (
+							patch.diffs.length !== 0 &&
+							patch.diffs[patch.diffs.length - 1][0] === DIFF_EQUAL
+						) {
 							patch.diffs[patch.diffs.length - 1][1] += postcontext;
 						} else {
 							patch.diffs.push([DIFF_EQUAL, postcontext]);
@@ -3383,7 +3686,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			/* eslint-disable camelcase, new-cap */
 			if (typeof diff_match_patch !== "undefined") {
 				// already loaded, probably a browser
-				instance = typeof diff_match_patch === "function" ? new diff_match_patch() : new diff_match_patch.diff_match_patch();
+				instance =
+					typeof diff_match_patch === "function"
+						? new diff_match_patch()
+						: new diff_match_patch.diff_match_patch();
 			} else if (diffMatchPatch) {
 				try {
 					instance = diffMatchPatch && new diffMatchPatch();
@@ -3424,7 +3730,9 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 		if (context.leftType !== "string") {
 			return;
 		}
-		var minLength = (context.options && context.options.textDiff && context.options.textDiff.minLength) || DEFAULT_MIN_LENGTH;
+		var minLength =
+			(context.options && context.options.textDiff && context.options.textDiff.minLength) ||
+			DEFAULT_MIN_LENGTH;
 		if (context.left.length < minLength || context.right.length < minLength) {
 			context.setResult([context.left, context.right]).exit();
 			return;
@@ -3474,7 +3782,16 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 				lineHeader = i;
 
 				// fix header
-				lines[lineHeader] = "@@ -" + header[3] + "," + header[4] + " +" + header[1] + "," + header[2] + " @@";
+				lines[lineHeader] =
+					"@@ -" +
+					header[3] +
+					"," +
+					header[4] +
+					" +" +
+					header[1] +
+					"," +
+					header[2] +
+					" @@";
 			} else if (lineStart === "+") {
 				lines[i] = "-" + lines[i].slice(1);
 				if (lines[i - 1].slice(0, 1) === "+") {
@@ -3508,10 +3825,41 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			classCallCheck(this, DiffPatcher);
 
 			this.processor = new Processor(options);
-			this.processor.pipe(new Pipe("diff").append(collectChildrenDiffFilter, diffFilter, diffFilter$2, diffFilter$3, objectsDiffFilter, diffFilter$1).shouldHaveResult());
-			this.processor.pipe(new Pipe("patch").append(collectChildrenPatchFilter, collectChildrenPatchFilter$1, patchFilter, patchFilter$3, patchFilter$1, patchFilter$2).shouldHaveResult());
 			this.processor.pipe(
-				new Pipe("reverse").append(collectChildrenReverseFilter, collectChildrenReverseFilter$1, reverseFilter, reverseFilter$3, reverseFilter$1, reverseFilter$2).shouldHaveResult()
+				new Pipe("diff")
+					.append(
+						collectChildrenDiffFilter,
+						diffFilter,
+						diffFilter$2,
+						diffFilter$3,
+						objectsDiffFilter,
+						diffFilter$1
+					)
+					.shouldHaveResult()
+			);
+			this.processor.pipe(
+				new Pipe("patch")
+					.append(
+						collectChildrenPatchFilter,
+						collectChildrenPatchFilter$1,
+						patchFilter,
+						patchFilter$3,
+						patchFilter$1,
+						patchFilter$2
+					)
+					.shouldHaveResult()
+			);
+			this.processor.pipe(
+				new Pipe("reverse")
+					.append(
+						collectChildrenReverseFilter,
+						collectChildrenReverseFilter$1,
+						reverseFilter,
+						reverseFilter$3,
+						reverseFilter$1,
+						reverseFilter$2
+					)
+					.shouldHaveResult()
 			);
 		}
 
@@ -3672,10 +4020,27 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 
 					var typeFormattter = void 0;
 					try {
-						typeFormattter = this["format_" + type] || this.typeFormattterNotFound(context, type);
-						typeFormattter.call(this, context, delta, leftValue, key, leftKey, movedFrom);
+						typeFormattter =
+							this["format_" + type] || this.typeFormattterNotFound(context, type);
+						typeFormattter.call(
+							this,
+							context,
+							delta,
+							leftValue,
+							key,
+							leftKey,
+							movedFrom
+						);
 					} catch (err) {
-						this.typeFormattterErrorFormatter(context, err, delta, leftValue, key, leftKey, movedFrom);
+						this.typeFormattterErrorFormatter(
+							context,
+							err,
+							delta,
+							leftValue,
+							key,
+							leftKey,
+							movedFrom
+						);
 						if (typeof console !== "undefined" && console.error) {
 							console.error(err.stack);
 						}
@@ -3693,7 +4058,15 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 				value: function formatDeltaChildren(context, delta, left) {
 					var self = this;
 					this.forEachDeltaKey(delta, left, function (key, leftKey, movedFrom, isLast) {
-						self.recurse(context, delta[key], left ? left[leftKey] : undefined, key, leftKey, movedFrom, isLast);
+						self.recurse(
+							context,
+							delta[key],
+							left ? left[leftKey] : undefined,
+							key,
+							leftKey,
+							movedFrom,
+							isLast
+						);
 					});
 				}
 			},
@@ -3707,7 +4080,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					if (typeof left !== "undefined") {
 						for (name in left) {
 							if (Object.prototype.hasOwnProperty.call(left, name)) {
-								if (typeof delta[name] === "undefined" && (!arrayKeys || typeof delta["_" + name] === "undefined")) {
+								if (
+									typeof delta[name] === "undefined" &&
+									(!arrayKeys || typeof delta["_" + name] === "undefined")
+								) {
 									keys.push(name);
 								}
 							}
@@ -3723,7 +4099,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 									value: left && left[parseInt(name.substr(1))]
 								};
 								if (this.includeMoveDestinations !== false) {
-									if (typeof left === "undefined" && typeof delta[value[1]] === "undefined") {
+									if (
+										typeof left === "undefined" &&
+										typeof delta[value[1]] === "undefined"
+									) {
 										keys.push(value[1].toString());
 									}
 								}
@@ -3740,7 +4119,11 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 						if (arrayKeys && key === "_t") {
 							continue;
 						}
-						var leftKey = arrayKeys ? (typeof key === "number" ? key : parseInt(trimUnderscore(key), 10)) : key;
+						var leftKey = arrayKeys
+							? typeof key === "number"
+								? key
+								: parseInt(trimUnderscore(key), 10)
+							: key;
 						var isLast = index === length - 1;
 						fn(key, leftKey, moveDestinations[leftKey], isLast);
 					}
@@ -3771,7 +4154,9 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 						if (delta.length === 3 && delta[2] === 3) {
 							return "moved";
 						}
-					} else if ((typeof delta === "undefined" ? "undefined" : _typeof(delta)) === "object") {
+					} else if (
+						(typeof delta === "undefined" ? "undefined" : _typeof(delta)) === "object"
+					) {
 						return "node";
 					}
 					return "unknown";
@@ -3793,7 +4178,11 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 							chr: location[1]
 						};
 						var pieces = line.split("\n").slice(1);
-						for (var pieceIndex = 0, piecesLength = pieces.length; pieceIndex < piecesLength; pieceIndex++) {
+						for (
+							var pieceIndex = 0, piecesLength = pieces.length;
+							pieceIndex < piecesLength;
+							pieceIndex++
+						) {
 							var piece = pieces[pieceIndex];
 							if (!piece.length) {
 								continue;
@@ -3827,7 +4216,13 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 
 		function HtmlFormatter() {
 			classCallCheck(this, HtmlFormatter);
-			return possibleConstructorReturn(this, (HtmlFormatter.__proto__ || Object.getPrototypeOf(HtmlFormatter)).apply(this, arguments));
+			return possibleConstructorReturn(
+				this,
+				(HtmlFormatter.__proto__ || Object.getPrototypeOf(HtmlFormatter)).apply(
+					this,
+					arguments
+				)
+			);
 		}
 
 		createClass(HtmlFormatter, [
@@ -3859,10 +4254,20 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 									'</span></div><div class="jsondiffpatch-textdiff-line">')
 						);
 						var pieces = line.pieces;
-						for (var pieceIndex = 0, piecesLength = pieces.length; pieceIndex < piecesLength; pieceIndex++) {
+						for (
+							var pieceIndex = 0, piecesLength = pieces.length;
+							pieceIndex < piecesLength;
+							pieceIndex++
+						) {
 							/* global decodeURI */
 							var piece = pieces[pieceIndex];
-							context.out('<span class="jsondiffpatch-textdiff-' + piece.type + '">' + htmlEscape(decodeURI(piece.text)) + "</span>");
+							context.out(
+								'<span class="jsondiffpatch-textdiff-' +
+									piece.type +
+									'">' +
+									htmlEscape(decodeURI(piece.text)) +
+									"</span>"
+							);
 						}
 						context.out("</div></li>");
 					}
@@ -3872,21 +4277,40 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			{
 				key: "rootBegin",
 				value: function rootBegin(context, type, nodeType) {
-					var nodeClass = "jsondiffpatch-" + type + (nodeType ? " jsondiffpatch-child-node-type-" + nodeType : "");
+					var nodeClass =
+						"jsondiffpatch-" +
+						type +
+						(nodeType ? " jsondiffpatch-child-node-type-" + nodeType : "");
 					context.out('<div class="jsondiffpatch-delta ' + nodeClass + '">');
 				}
 			},
 			{
 				key: "rootEnd",
 				value: function rootEnd(context) {
-					context.out("</div>" + (context.hasArrows ? '<script type="text/javascript">setTimeout(' + (adjustArrows.toString() + ",10);</script>") : ""));
+					context.out(
+						"</div>" +
+							(context.hasArrows
+								? '<script type="text/javascript">setTimeout(' +
+									(adjustArrows.toString() + ",10);</script>")
+								: "")
+					);
 				}
 			},
 			{
 				key: "nodeBegin",
 				value: function nodeBegin(context, key, leftKey, type, nodeType) {
-					var nodeClass = "jsondiffpatch-" + type + (nodeType ? " jsondiffpatch-child-node-type-" + nodeType : "");
-					context.out('<li class="' + nodeClass + '" data-key="' + leftKey + '">' + ('<div class="jsondiffpatch-property-name">' + leftKey + "</div>"));
+					var nodeClass =
+						"jsondiffpatch-" +
+						type +
+						(nodeType ? " jsondiffpatch-child-node-type-" + nodeType : "");
+					context.out(
+						'<li class="' +
+							nodeClass +
+							'" data-key="' +
+							leftKey +
+							'">' +
+							('<div class="jsondiffpatch-property-name">' + leftKey + "</div>")
+					);
 				}
 			},
 			{
@@ -3925,7 +4349,9 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 				value: function format_node(context, delta, left) {
 					// recurse
 					var nodeType = delta._t === "a" ? "array" : "object";
-					context.out('<ul class="jsondiffpatch-node jsondiffpatch-node-type-' + nodeType + '">');
+					context.out(
+						'<ul class="jsondiffpatch-node jsondiffpatch-node-type-' + nodeType + '">'
+					);
 					this.formatDeltaChildren(context, delta, left);
 					context.out("</ul>");
 				}
@@ -3943,7 +4369,9 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 				value: function format_modified(context, delta) {
 					context.out('<div class="jsondiffpatch-value jsondiffpatch-left-value">');
 					this.formatValue(context, delta[0]);
-					context.out("</div>" + '<div class="jsondiffpatch-value jsondiffpatch-right-value">');
+					context.out(
+						"</div>" + '<div class="jsondiffpatch-value jsondiffpatch-right-value">'
+					);
 					this.formatValue(context, delta[1]);
 					context.out("</div>");
 				}
@@ -3961,7 +4389,9 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 				value: function format_moved(context, delta) {
 					context.out('<div class="jsondiffpatch-value">');
 					this.formatValue(context, delta[0]);
-					context.out('</div><div class="jsondiffpatch-moved-destination">' + delta[1] + "</div>");
+					context.out(
+						'</div><div class="jsondiffpatch-moved-destination">' + delta[1] + "</div>"
+					);
 
 					// draw an SVG arrow from here to move destination
 					context.out(
@@ -4030,7 +4460,9 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			var svg = children[0];
 			var path = svg.children[1];
 			svg.style.display = "none";
-			var destination = getElementText(arrowParent.querySelector(".jsondiffpatch-moved-destination"));
+			var destination = getElementText(
+				arrowParent.querySelector(".jsondiffpatch-moved-destination")
+			);
 			var container = arrowParent.parentNode;
 			var destinationElem = void 0;
 			eachChildren(container, function (child) {
@@ -4045,7 +4477,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 				var distance = destinationElem.offsetTop - arrowParent.offsetTop;
 				svg.setAttribute("height", Math.abs(distance) + 6);
 				style.top = -8 + (distance > 0 ? 0 : distance) + "px";
-				var curve = distance > 0 ? "M30,0 Q-10," + Math.round(distance / 2) + " 26," + (distance - 4) : "M30," + -distance + " Q-10," + Math.round(-distance / 2) + " 26,4";
+				var curve =
+					distance > 0
+						? "M30,0 Q-10," + Math.round(distance / 2) + " 26," + (distance - 4)
+						: "M30," + -distance + " Q-10," + Math.round(-distance / 2) + " 26,4";
 				path.setAttribute("d", curve);
 				svg.style.display = "";
 			} catch (err) {}
@@ -4135,7 +4570,12 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 		function AnnotatedFormatter() {
 			classCallCheck(this, AnnotatedFormatter);
 
-			var _this = possibleConstructorReturn(this, (AnnotatedFormatter.__proto__ || Object.getPrototypeOf(AnnotatedFormatter)).call(this));
+			var _this = possibleConstructorReturn(
+				this,
+				(AnnotatedFormatter.__proto__ || Object.getPrototypeOf(AnnotatedFormatter)).call(
+					this
+				)
+			);
 
 			_this.includeMoveDestinations = false;
 			return _this;
@@ -4145,13 +4585,23 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			{
 				key: "prepareContext",
 				value: function prepareContext(context) {
-					get(AnnotatedFormatter.prototype.__proto__ || Object.getPrototypeOf(AnnotatedFormatter.prototype), "prepareContext", this).call(this, context);
+					get(
+						AnnotatedFormatter.prototype.__proto__ ||
+							Object.getPrototypeOf(AnnotatedFormatter.prototype),
+						"prepareContext",
+						this
+					).call(this, context);
 					context.indent = function (levels) {
-						this.indentLevel = (this.indentLevel || 0) + (typeof levels === "undefined" ? 1 : levels);
+						this.indentLevel =
+							(this.indentLevel || 0) + (typeof levels === "undefined" ? 1 : levels);
 						this.indentPad = new Array(this.indentLevel + 1).join("&nbsp;&nbsp;");
 					};
 					context.row = function (json, htmlNote) {
-						context.out('<tr><td style="white-space: nowrap;">' + '<pre class="jsondiffpatch-annotated-indent"' + ' style="display: inline-block">');
+						context.out(
+							'<tr><td style="white-space: nowrap;">' +
+								'<pre class="jsondiffpatch-annotated-indent"' +
+								' style="display: inline-block">'
+						);
 						context.out(context.indentPad);
 						context.out('</pre><pre style="display: inline-block">');
 						context.out(json);
@@ -4183,9 +4633,19 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 									'</span></div><div class="jsondiffpatch-textdiff-line">')
 						);
 						var pieces = line.pieces;
-						for (var pieceIndex = 0, piecesLength = pieces.length; pieceIndex < piecesLength; pieceIndex++) {
+						for (
+							var pieceIndex = 0, piecesLength = pieces.length;
+							pieceIndex < piecesLength;
+							pieceIndex++
+						) {
 							var piece = pieces[pieceIndex];
-							context.out('<span class="jsondiffpatch-textdiff-' + piece.type + '">' + piece.text + "</span>");
+							context.out(
+								'<span class="jsondiffpatch-textdiff-' +
+									piece.type +
+									'">' +
+									piece.text +
+									"</span>"
+							);
 						}
 						context.out("</div></li>");
 					}
@@ -4201,7 +4661,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 						context.indent();
 					}
 					if (nodeType === "array") {
-						context.row('"_t": "a",', "Array delta (member names indicate array indices)");
+						context.row(
+							'"_t": "a",',
+							"Array delta (member names indicate array indices)"
+						);
 					}
 				}
 			},
@@ -4223,7 +4686,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 						context.indent();
 					}
 					if (nodeType === "array") {
-						context.row('"_t": "a",', "Array delta (member names indicate array indices)");
+						context.row(
+							'"_t": "a",',
+							"Array delta (member names indicate array indices)"
+						);
 					}
 				}
 			},
@@ -4304,15 +4770,26 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			);
 		},
 		textdiff: function textdiff(delta, left, key, leftKey) {
-			var location = typeof leftKey === "undefined" ? "" : typeof leftKey === "number" ? " at index " + leftKey : " at property " + wrapPropertyName(leftKey);
-			return "text diff" + location + ', format is <a href="https://code.google.com/' + 'p/google-diff-match-patch/wiki/Unidiff">a variation of Unidiff</a>';
+			var location =
+				typeof leftKey === "undefined"
+					? ""
+					: typeof leftKey === "number"
+						? " at index " + leftKey
+						: " at property " + wrapPropertyName(leftKey);
+			return (
+				"text diff" +
+				location +
+				', format is <a href="https://code.google.com/' +
+				'p/google-diff-match-patch/wiki/Unidiff">a variation of Unidiff</a>'
+			);
 		}
 	};
 
 	var formatAnyChange = function formatAnyChange(context, delta) {
 		var deltaType = this.getDeltaType(delta);
 		var annotator = deltaAnnotations[deltaType];
-		var htmlNote = annotator && annotator.apply(annotator, Array.prototype.slice.call(arguments, 1));
+		var htmlNote =
+			annotator && annotator.apply(annotator, Array.prototype.slice.call(arguments, 1));
 		var json = JSON.stringify(delta, null, 2);
 		if (deltaType === "textdiff") {
 			// split text diffs lines
@@ -4356,7 +4833,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 		function JSONFormatter() {
 			classCallCheck(this, JSONFormatter);
 
-			var _this = possibleConstructorReturn(this, (JSONFormatter.__proto__ || Object.getPrototypeOf(JSONFormatter)).call(this));
+			var _this = possibleConstructorReturn(
+				this,
+				(JSONFormatter.__proto__ || Object.getPrototypeOf(JSONFormatter)).call(this)
+			);
 
 			_this.includeMoveDestinations = true;
 			return _this;
@@ -4366,7 +4846,12 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			{
 				key: "prepareContext",
 				value: function prepareContext(context) {
-					get(JSONFormatter.prototype.__proto__ || Object.getPrototypeOf(JSONFormatter.prototype), "prepareContext", this).call(this, context);
+					get(
+						JSONFormatter.prototype.__proto__ ||
+							Object.getPrototypeOf(JSONFormatter.prototype),
+						"prepareContext",
+						this
+					).call(this, context);
 					context.result = [];
 					context.path = [];
 					context.pushCurrentOp = function (obj) {
@@ -4565,7 +5050,11 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			restOps = _partitionOps2[2];
 
 		var removeOpsReverse = opsByDescendingOrder(removedOps);
-		return [].concat(toConsumableArray(removeOpsReverse), toConsumableArray(moveOps), toConsumableArray(restOps));
+		return [].concat(
+			toConsumableArray(removeOpsReverse),
+			toConsumableArray(moveOps),
+			toConsumableArray(restOps)
+		);
 	};
 
 	var defaultInstance$2 = void 0;
@@ -4592,7 +5081,11 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 		return (
 			(chalk && chalk[name]) ||
 			function () {
-				for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				for (
+					var _len = arguments.length, args = Array(_len), _key = 0;
+					_key < _len;
+					_key++
+				) {
 					args[_key] = arguments[_key];
 				}
 
@@ -4617,7 +5110,10 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 		function ConsoleFormatter() {
 			classCallCheck(this, ConsoleFormatter);
 
-			var _this = possibleConstructorReturn(this, (ConsoleFormatter.__proto__ || Object.getPrototypeOf(ConsoleFormatter)).call(this));
+			var _this = possibleConstructorReturn(
+				this,
+				(ConsoleFormatter.__proto__ || Object.getPrototypeOf(ConsoleFormatter)).call(this)
+			);
 
 			_this.includeMoveDestinations = false;
 			return _this;
@@ -4627,9 +5123,15 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			{
 				key: "prepareContext",
 				value: function prepareContext(context) {
-					get(ConsoleFormatter.prototype.__proto__ || Object.getPrototypeOf(ConsoleFormatter.prototype), "prepareContext", this).call(this, context);
+					get(
+						ConsoleFormatter.prototype.__proto__ ||
+							Object.getPrototypeOf(ConsoleFormatter.prototype),
+						"prepareContext",
+						this
+					).call(this, context);
 					context.indent = function (levels) {
-						this.indentLevel = (this.indentLevel || 0) + (typeof levels === "undefined" ? 1 : levels);
+						this.indentLevel =
+							(this.indentLevel || 0) + (typeof levels === "undefined" ? 1 : levels);
 						this.indentPad = new Array(this.indentLevel + 1).join("  ");
 						this.outLine();
 					};
@@ -4637,7 +5139,11 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 						this.buffer.push("\n" + (this.indentPad || ""));
 					};
 					context.out = function () {
-						for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+						for (
+							var _len2 = arguments.length, args = Array(_len2), _key2 = 0;
+							_key2 < _len2;
+							_key2++
+						) {
 							args[_key2] = arguments[_key2];
 						}
 
@@ -4685,7 +5191,11 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 						context.out(line.location.line + "," + line.location.chr + " ");
 						context.popColor();
 						var pieces = line.pieces;
-						for (var pieceIndex = 0, piecesLength = pieces.length; pieceIndex < piecesLength; pieceIndex++) {
+						for (
+							var pieceIndex = 0, piecesLength = pieces.length;
+							pieceIndex < piecesLength;
+							pieceIndex++
+						) {
 							var piece = pieces[pieceIndex];
 							context.pushColor(colors[piece.type]);
 							context.out(piece.text);
@@ -4842,9 +5352,22 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 		var parts = void 0;
 		if (typeof value === "string") {
 			// eslint-disable-next-line max-len
-			parts = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d*))?(Z|([+-])(\d{2}):(\d{2}))$/.exec(value);
+			parts =
+				/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d*))?(Z|([+-])(\d{2}):(\d{2}))$/.exec(
+					value
+				);
 			if (parts) {
-				return new Date(Date.UTC(+parts[1], +parts[2] - 1, +parts[3], +parts[4], +parts[5], +parts[6], +(parts[7] || 0)));
+				return new Date(
+					Date.UTC(
+						+parts[1],
+						+parts[2] - 1,
+						+parts[3],
+						+parts[4],
+						+parts[5],
+						+parts[6],
+						+(parts[7] || 0)
+					)
+				);
 			}
 		}
 		return value;

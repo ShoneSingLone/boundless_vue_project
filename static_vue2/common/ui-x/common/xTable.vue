@@ -1,6 +1,8 @@
 <script lang="ts">
 export default async function () {
-	const { emptyRender } = await _.$importVue("/common/ui-x/components/data/xTableVir/xTableEmptyRender.vue");
+	const { emptyRender } = await _.$importVue(
+		"/common/ui-x/components/data/xTableVir/xTableEmptyRender.vue"
+	);
 	const NEVER_USE = "never_use";
 	/**
 	 * 如果有COL_MULTIPLE ，就必须有vm.selectedBy:"id", selected：[]
@@ -9,7 +11,7 @@ export default async function () {
 	return defineComponent({
 		props: ["configs", "data"],
 		setup(props) {
-			const { useAutoResize } = _useXui;
+			const { useAutoResize } = _xUtils;
 			const { height, width, sizer: refxTable } = useAutoResize(props);
 
 			const setColActionWidthImmediate = () => {
@@ -17,7 +19,11 @@ export default async function () {
 					if (this?.cpt_data?.list?.length > 0) {
 						const $xColActions = $(refxTable.value.$el).find(".xColActions")[0];
 						/* TODO: 列表中最长的操作 */
-						if ($xColActions && $xColActions.children && $xColActions.children.length > 0) {
+						if (
+							$xColActions &&
+							$xColActions.children &&
+							$xColActions.children.length > 0
+						) {
 							const WORD_WIDTH = 12;
 
 							let cellWidth = _.reduce(
@@ -34,7 +40,8 @@ export default async function () {
 
 							let currentWidth = this.configs.colInfo.COL_ACTIONS.width || 100;
 
-							const isResetWidth = currentWidth < cellWidth || currentWidth > cellWidth + WORD_WIDTH;
+							const isResetWidth =
+								currentWidth < cellWidth || currentWidth > cellWidth + WORD_WIDTH;
 							if (isResetWidth) {
 								currentWidth = cellWidth;
 							}
@@ -70,7 +77,13 @@ export default async function () {
 						default: () => {
 							const genChildByProp = prop => {
 								if (prop === NEVER_USE) {
-									const currentDisplay = _.filter(vm.displayProps, i => !["COL_MULTIPLE", "COL_SINGLE", "COL_ACTIONS"].includes(i));
+									const currentDisplay = _.filter(
+										vm.displayProps,
+										i =>
+											!["COL_MULTIPLE", "COL_SINGLE", "COL_ACTIONS"].includes(
+												i
+											)
+									);
 									/* 如果没有需要显示的列，空白列占满列表，否则用1表个意思 */
 									const width = currentDisplay.length ? 1 : "";
 									return h("elTableColumn", { key: NEVER_USE, width });
@@ -159,7 +172,10 @@ export default async function () {
 												return [
 													"div",
 													{
-														innerHTML: vm.allColInfo[prop].html(row, $index)
+														innerHTML: vm.allColInfo[prop].html(
+															row,
+															$index
+														)
 													},
 													[]
 												];

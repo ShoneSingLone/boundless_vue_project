@@ -82,7 +82,7 @@ export default async function ({ refreshTableData, rowData }) {
 		},
 		computed: {
 			cptFormData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnOk() {
 				const vm = this;

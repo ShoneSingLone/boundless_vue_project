@@ -13,9 +13,18 @@ export default async function () {
 	const ON_NODE_CONTEXTMENU = "node-contextmenu";
 
 	function useTree(props, emit, injectRootTree) {
-		const expandedKeySet = ref(new Set(props.expandedKeys));
+		const expandedKeySet = ref(new Set());
 		const currentKey = ref();
 		const tree = shallowRef();
+		watch(
+			() => props.expandedKeys,
+			expandedKeys => {
+				expandedKeySet.value = new Set(expandedKeys);
+			},
+			{
+				immediate: true
+			}
+		);
 		watch(
 			() => props.currentNodeKey,
 			key => {
@@ -34,11 +43,18 @@ export default async function () {
 				immediate: true
 			}
 		);
-		const { isIndeterminate, isChecked, toggleCheckbox, getCheckedKeys, getCheckedNodes, getHalfCheckedKeys, getHalfCheckedNodes, setChecked, setCheckedKeys, checkedKeysSet } = useCheck(
-			props,
-			tree,
-			injectRootTree
-		);
+		const {
+			isIndeterminate,
+			isChecked,
+			toggleCheckbox,
+			getCheckedKeys,
+			getCheckedNodes,
+			getHalfCheckedKeys,
+			getHalfCheckedNodes,
+			setChecked,
+			setCheckedKeys,
+			checkedKeysSet
+		} = useCheck(props, tree, injectRootTree);
 		const { doFilter, hiddenNodeKeySet, isForceHiddenExpandIcon } = useFilter(props, tree);
 		const valueKey = computed(() => {
 			var _a2;
@@ -138,6 +154,8 @@ export default async function () {
 			const keys2 = doFilter(query);
 			if (keys2) {
 				expandedKeySet.value = keys2;
+				injectRootTree.updateByToggleExpand();
+
 			}
 		}
 		function getChildren(node) {
@@ -169,12 +187,17 @@ export default async function () {
 		}
 		function handleNodeClick(node, e) {
 			emit(NODE_CLICK, node.data, node, e);
-			handleCurrentChange(node);
+
+			if (props.showCheckbox) {
+				if (props.checkOnClickNode && !node.disabled) {
+					toggleCheckbox(node, !isChecked(node), true);
+				}
+			} else {
+				handleCurrentChange(node);
+			}
+
 			if (props.expandOnClickNode) {
 				toggleExpand(node);
-			}
-			if (props.showCheckbox && props.checkOnClickNode && !node.disabled) {
-				toggleCheckbox(node, !isChecked(node), true);
 			}
 		}
 		function handleCurrentChange(node) {
@@ -217,7 +240,10 @@ export default async function () {
 		function getCurrentNode() {
 			var _a2, _b;
 			if (!currentKey.value) return void 0;
-			return (_b = (_a2 = tree.value) == null ? void 0 : _a2.treeNodeMap.get(currentKey.value)) == null ? void 0 : _b.data;
+			return (_b =
+				(_a2 = tree.value) == null ? void 0 : _a2.treeNodeMap.get(currentKey.value)) == null
+				? void 0
+				: _b.data;
 		}
 		function getCurrentKey() {
 			return currentKey.value;
@@ -372,7 +398,7 @@ export default async function () {
 		function getChecked(leafOnly = false) {
 			const checkedNodes = [];
 			const keys2 = [];
-			if ((tree == null ? void 0 : tree.value) && props.showCheckbox) {
+			if (tree?.value && props.showCheckbox) {
 				const { treeNodeMap } = tree.value;
 				checkedKeysSet.value.forEach(key => {
 					const node = treeNodeMap.get(key);
@@ -390,7 +416,7 @@ export default async function () {
 		function getHalfChecked() {
 			const halfCheckedNodes = [];
 			const halfCheckedKeys = [];
-			if ((tree == null ? void 0 : tree.value) && props.showCheckbox) {
+			if (tree?.value && props.showCheckbox) {
 				const { treeNodeMap } = tree.value;
 				indeterminateKeys.value.forEach(key => {
 					const node = treeNodeMap.get(key);
@@ -411,7 +437,7 @@ export default async function () {
 			_setCheckedKeys(keys2);
 		}
 		function setChecked(key, isChecked2) {
-			if ((tree == null ? void 0 : tree.value) && props.showCheckbox) {
+			if (tree?.value && props.showCheckbox) {
 				const node = tree.value.treeNodeMap.get(key);
 				if (node) {
 					toggleCheckbox(node, isChecked2, false);
@@ -419,14 +445,19 @@ export default async function () {
 			}
 		}
 		function _setCheckedKeys(keys2) {
-			if (tree == null ? void 0 : tree.value) {
+			if (tree?.value) {
 				const { treeNodeMap } = tree.value;
 				if (props.showCheckbox && treeNodeMap && keys2) {
-					for (const key of keys2) {
-						const node = treeNodeMap.get(key);
-						if (node && !isChecked(node)) {
-							toggleCheckbox(node, true, false);
+					try {
+						for (const key of keys2) {
+							const node = treeNodeMap.get(key);
+							if (node && !isChecked(node)) {
+								toggleCheckbox(node, true, false);
+							}
 						}
+					} catch (error) {
+						// console.log(error);
+						/* TODO: */
 					}
 				}
 			}
@@ -450,7 +481,7 @@ export default async function () {
 		const hiddenNodeKeySet = ref(/* @__PURE__ */ new Set([]));
 		const hiddenExpandIconKeySet = ref(/* @__PURE__ */ new Set([]));
 		const filterable = computed(() => {
-			return _.isFunction(props.filterMethod);
+			return _.isFunction(props.filterHandler);
 		});
 		function doFilter(query) {
 			var _a2;
@@ -462,13 +493,13 @@ export default async function () {
 			const hiddenKeys = hiddenNodeKeySet.value;
 			const family = [];
 			const nodes = ((_a2 = tree.value) == null ? void 0 : _a2.treeNodes) || [];
-			const filter = props.filterMethod;
+			const filter = props.filterHandler;
 			hiddenKeys.clear();
-			function traverse(nodes2) {
-				nodes2.forEach(node => {
+			function traverse(allNodeTree) {
+				_.each(allNodeTree, node => {
 					family.push(node);
-					if (filter == null ? void 0 : filter(query, node.data)) {
-						family.forEach(member => {
+					if (_.isFunction(filter) && filter(query, node.data)) {
+						_.each(family, member => {
 							expandKeySet.add(member.key);
 						});
 					} else if (node.isLeaf) {

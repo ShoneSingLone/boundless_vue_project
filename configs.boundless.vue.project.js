@@ -3,5 +3,5 @@ module.exports = {
         "^/common/": "/static_vue2/common/"
     },
     components: require("./preprocess/vscode.definitions/components.js"),
-    globalLodash: require("./preprocess/vscode.definitions/globalLodash.js"),
+    scanLodashDefine: require("./preprocess/vscode.definitions/scanLodashDefine.js"),
 };

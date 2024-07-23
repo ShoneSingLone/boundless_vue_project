@@ -14,7 +14,10 @@ export default async function () {
 				return this?.$options?.propsData?.configs?.col?.componentOptions?.type || 0;
 			},
 			cpt_prop() {
-				return this?.$options?.propsData?.configs?.col?.componentOptions?.prop || this?.$options?.propsData?.configs?.prop;
+				return (
+					this?.$options?.propsData?.configs?.col?.componentOptions?.prop ||
+					this?.$options?.propsData?.configs?.prop
+				);
 			},
 			cpt_label() {
 				return _.$dateFormat(this.row[this.cpt_prop], this.cpt_type);

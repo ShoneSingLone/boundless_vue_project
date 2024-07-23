@@ -2,7 +2,11 @@
 <template>
 	<div>
 		<xMd :md="md" />
-		<xInput v-model="query" style="width: 240px" placeholder="Please enter keyword" @input="onQueryChanged" />
+		<xInput
+			v-model="query"
+			style="width: 240px"
+			placeholder="Please enter keyword"
+			@input="onQueryChanged" />
 		<xCard style="height: 500px; width: 500px">
 			<xTree ref="treeRef" :data="data" :props="props" :filter-method="filterMethod" />
 		</xCard>

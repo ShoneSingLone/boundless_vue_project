@@ -1,41 +1,78 @@
+const { execCmd } = require("../preprocess.utils");
 const os = require("os");
 const useProxy = require("koa2-proxy-middleware"); //引入代理模块
 const { appUseKoaAssets } = require("./middleware.appUseKoaAssets");
 const { appUseSocketMiddleware } = require("./middleware.appUseSocketMiddleware");
 const { appUseHMR } = require("./middleware.appUseHMR");
 const { PROXY_OPTIONS, SERVER_PORT } = require("./server.configs");
-const { serverContorller } = require("./server.controller");
+const { Router } = require("./server.router");
+const { openBrowser } = require("./plugins.openBrowser");
+const bodyparser = require("koa-bodyparser");
 
 function appUseProxy(app) {
+	/* 代理 */
 	app.use(useProxy(PROXY_OPTIONS));
-
-	app.use(async (ctx, next) => {
-		if (ctx.url.match(/\/boundless-api\//)) {
-			return serverContorller(ctx);
-		} else {
-			await next();
-		}
-	});
+	/* 解析参数 */
+	app.use(bodyparser());
+	/* 路由*/
+	const router = Router();
+	app.use(router.routes());
+	app.use(router.allowedMethods());
 }
 
-function appRun(app, port = 3000) {
-	port = SERVER_PORT || port;
-	app.listen(port).on("error", () => {
-		app.server.close();
-		console.log("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀", `端口${port}被占用`);
-		appRun(app, ++port);
+
+function openInBrowser(lan) {
+	if (openInBrowser.timer) {
+		clearTimeout(openInBrowser.timer);
+	}
+
+	openInBrowser.timer = setTimeout(() => {
+		let title = `🚀: auto open broswer chrome`;
+		try {
+			openBrowser(lan, { app: ["chrome"] });
+
+			console.log(title);
+		} catch (error) {
+			console.log(title, error);
+
+		}
+	}, 2000 * 1);
+}
+
+let server;
+
+function appRun(app) {
+	server = app.listen(SERVER_PORT);
+	server.on("error", async (error) => {
+		console.log("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀", `端口${SERVER_PORT}被占用`);
+		server.close();
+		await execCmd(`kill-port ${SERVER_PORT}`);
+		appRun(app, SERVER_PORT);
 	});
 
-	app.LOCALHOST_PORT = `http://localhost:${port}`;
-	const line = "🚀=====================================";
-	console.log(`${line}\n🚀${app.LOCALHOST_PORT}`);
+	app.LOCALHOST_PORT = `http://localhost:${SERVER_PORT}/`;
+	const line = "=====================================";
+	console.log(`${line}\n${app.LOCALHOST_PORT}`);
+	console.log(line);
 
 	const content = JSON.stringify(os.networkInterfaces());
 	const contentArray = content.split(`",`).filter(s => s.match(/"address":"(.*)/));
+	let lan;
 	contentArray.forEach(s => {
 		const res = s.match(/address":"192.(.*)/);
 		if (res) {
-			console.log(`🚀http://192.${res[1]}:${port}/\n${line}`);
+			const url = `http://192.${res[1]}:${SERVER_PORT}`;
+			console.log(`${url}/\n${line}`);
+
+			if (!lan) {
+				/* 第一个是局域网地址 */
+				lan = url;
+			}
+			try {
+				openInBrowser(lan);
+			} catch (error) {
+				console.log("openInBrowser error:", error);
+			}
 		}
 	});
 }

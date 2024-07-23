@@ -2,7 +2,12 @@
 	<div>
 		<xMd :md="md" />
 		<xSelect v-model="value" filterable placeholder="请选择">
-			<xOption v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </xOption>
+			<xOption
+				v-for="item in options"
+				:key="item.value"
+				:label="item.label"
+				:value="item.value">
+			</xOption>
 		</xSelect>
 	</div>
 </template>

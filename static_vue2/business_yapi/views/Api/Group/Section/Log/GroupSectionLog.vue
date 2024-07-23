@@ -1,20 +1,29 @@
 <template>
 	<div v-if="isShow" class="GroupSectionLog">
-		<section class="mb mt el-card padding flex1 log-wrapper beautiful-scroll">
-			<el-timeline>
-				<el-timeline-item center :timestamp="getTime(logItem.add_time)" placement="top" v-for="(logItem, index) in logList" :key="index">
-					<el-card>
+		<section class="mb mt el-card x-padding flex1 log-wrapper beautiful-scroll">
+			<xTimeline>
+				<xTimelineItem
+					center
+					:timestamp="getTime(logItem.add_time)"
+					placement="top"
+					v-for="(logItem, index) in logList"
+					:key="index">
+					<xCard>
 						<template #header>
 							<div class="logtype flex middle">
 								<span class="logHead">{{ getTitle(logItem.type) }}</span>
-								<span class="logtime ml mr"> {{ getTimeAgo(logItem.add_time) }} </span>
-								<xBtn @click="showDiff(logItem.data)" v-if="hasDiff(logItem.data)">改动详情</xBtn>
+								<span class="logtime ml mr">
+									{{ getTimeAgo(logItem.add_time) }}
+								</span>
+								<xBtn @click="showDiff(logItem.data)" v-if="hasDiff(logItem.data)"
+									>改动详情</xBtn
+								>
 							</div>
 						</template>
 						<span class="logcontent" v-html="logItem.content" />
-					</el-card>
-				</el-timeline-item>
-			</el-timeline>
+					</xCard>
+				</xTimelineItem>
+			</xTimeline>
 		</section>
 		<div class="flex end">
 			<xPagination :configs="configsTable" />
@@ -49,33 +58,45 @@ export default async function () {
 		methods: {
 			async showDiff(data) {
 				const vm = this;
-				const jsondiffpatch = await _.$appendScript("/common/libs/jsondiffpatch.umd.js", "jsondiffpatch");
+				const jsondiffpatch = await _.$appendScript(
+					"/common/libs/jsondiffpatch.umd.js",
+					"jsondiffpatch"
+				);
 				const formattersHtml = jsondiffpatch.formatters.html;
-				const diffView = Vue._yapi_utils.diffMessage(jsondiffpatch, formattersHtml, data);
-				const addMember = await _.$importVue("@/views/Api/Group/Section/Log/GroupSectionLogWindowDiff.vue", {
-					parent: this,
-					diffView,
-					onOk() {
-						vm.APP.updateGroupMemberList();
+				const diffView = Vue._common_utils.diffMessage(jsondiffpatch, formattersHtml, data);
+				const addMember = await _.$importVue(
+					"@/views/Api/Group/Section/Log/GroupSectionLogWindowDiff.vue",
+					{
+						parent: this,
+						diffView,
+						onOk() {
+							vm.APP.updateGroupMemberList();
+						}
 					}
-				});
+				);
 				_.$openWindow_deprecated(i18n("Api 改动日志"), addMember, {
 					maxmin: true,
 					fullscreen: false
 				});
 			},
 			async updateGroupLog() {
-				const { page, size } = this.configsTable.pagination;
-				const {
-					data: { list, total }
-				} = await _api.yapi.getLogList({
-					typeid: this.APP.cptGroupId,
-					type: "group",
-					page: page,
-					limit: size
-				});
-				this.logList = list;
-				_.$setPagination(this.configsTable, { page, size, total });
+				_.$loading(true);
+				try {
+					const { page, size } = this.configsTable.pagination;
+					const {
+						data: { list, total }
+					} = await _api.yapi.getLogList({
+						typeid: this.APP.cptGroupId,
+						type: "group",
+						page: page,
+						limit: size
+					});
+					this.logList = list;
+					_.$setPagination(this.configsTable, { page, size, total });
+				} catch (error) {
+				} finally {
+					_.$loading(false);
+				}
 			},
 			getTime(time) {
 				return _.$dateFormat(time);
@@ -125,7 +146,7 @@ export default async function () {
 		margin-top: var(--ui-one);
 		padding: 0px 16px;
 		a {
-			color: var(--ui-primary-active);
+			color: var(--el-color-primary-active);
 		}
 	}
 }

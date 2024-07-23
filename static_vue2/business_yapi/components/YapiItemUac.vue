@@ -1,6 +1,19 @@
 <template>
-	<xSelect multiple filterable remote remote-show-suffix v-model="mixin_value" :remoteMethod="onSearch" placeholder="请输入用户名">
-		<xOption :key="item.uid" :value="item.uid" :label="item.username" v-for="item in optionArray"> {{ item.username }} </xOption>
+	<xSelect
+		multiple
+		filterable
+		remote
+		remote-show-suffix
+		v-model="mixin_value"
+		:remoteMethod="onSearch"
+		placeholder="请输入用户名">
+		<xOption
+			:key="item.uid"
+			:value="item.uid"
+			:label="item.username"
+			v-for="item in optionArray">
+			{{ item.username }}
+		</xOption>
 	</xSelect>
 </template>
 

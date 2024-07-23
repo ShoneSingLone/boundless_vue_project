@@ -1,6 +1,7 @@
 <script lang="ts">
 export default async function () {
-	const { addResizeListener, removeResizeListener } = await _.$importVue("/common/utils/utils.vue");
+	const { addResizeListener, removeResizeListener } =
+		await _.$importVue("/common/utils/utils.vue");
 
 	return defineComponent({
 		name: "TabNav",
@@ -39,13 +40,16 @@ export default async function () {
 				};
 			},
 			sizeName() {
-				return ["top", "bottom"].indexOf(this.rootTabs.tabPosition) !== -1 ? "width" : "height";
+				return ["top", "bottom"].indexOf(this.rootTabs.tabPosition) !== -1
+					? "width"
+					: "height";
 			}
 		},
 
 		methods: {
 			scrollPrev() {
-				const containerSize = this.$refs.navScroll[`offset${_.$firstUpperCase(this.sizeName)}`];
+				const containerSize =
+					this.$refs.navScroll[`offset${_.$firstUpperCase(this.sizeName)}`];
 				const currentOffset = this.navOffset;
 
 				if (!currentOffset) return;
@@ -56,12 +60,16 @@ export default async function () {
 			},
 			scrollNext() {
 				const navSize = this.$refs.nav[`offset${_.$firstUpperCase(this.sizeName)}`];
-				const containerSize = this.$refs.navScroll[`offset${_.$firstUpperCase(this.sizeName)}`];
+				const containerSize =
+					this.$refs.navScroll[`offset${_.$firstUpperCase(this.sizeName)}`];
 				const currentOffset = this.navOffset;
 
 				if (navSize - currentOffset <= containerSize) return;
 
-				let newOffset = navSize - currentOffset > containerSize * 2 ? currentOffset + containerSize : navSize - containerSize;
+				let newOffset =
+					navSize - currentOffset > containerSize * 2
+						? currentOffset + containerSize
+						: navSize - containerSize;
 
 				this.navOffset = newOffset;
 			},
@@ -74,23 +82,28 @@ export default async function () {
 				const isHorizontal = ["top", "bottom"].indexOf(this.rootTabs.tabPosition) !== -1;
 				const activeTabBounding = activeTab.getBoundingClientRect();
 				const navScrollBounding = navScroll.getBoundingClientRect();
-				const maxOffset = isHorizontal ? nav.offsetWidth - navScrollBounding.width : nav.offsetHeight - navScrollBounding.height;
+				const maxOffset = isHorizontal
+					? nav.offsetWidth - navScrollBounding.width
+					: nav.offsetHeight - navScrollBounding.height;
 				const currentOffset = this.navOffset;
 				let newOffset = currentOffset;
 
 				if (isHorizontal) {
 					if (activeTabBounding.left < navScrollBounding.left) {
-						newOffset = currentOffset - (navScrollBounding.left - activeTabBounding.left);
+						newOffset =
+							currentOffset - (navScrollBounding.left - activeTabBounding.left);
 					}
 					if (activeTabBounding.right > navScrollBounding.right) {
-						newOffset = currentOffset + activeTabBounding.right - navScrollBounding.right;
+						newOffset =
+							currentOffset + activeTabBounding.right - navScrollBounding.right;
 					}
 				} else {
 					if (activeTabBounding.top < navScrollBounding.top) {
 						newOffset = currentOffset - (navScrollBounding.top - activeTabBounding.top);
 					}
 					if (activeTabBounding.bottom > navScrollBounding.bottom) {
-						newOffset = currentOffset + (activeTabBounding.bottom - navScrollBounding.bottom);
+						newOffset =
+							currentOffset + (activeTabBounding.bottom - navScrollBounding.bottom);
 					}
 				}
 				newOffset = Math.max(newOffset, 0);
@@ -183,7 +196,21 @@ export default async function () {
 		},
 
 		render(h) {
-			const { type, panes, editable, stretch, onTabClick, onTabRemove, navStyle, scrollable, scrollNext, scrollPrev, changeTab, setFocus, removeFocus } = this;
+			const {
+				type,
+				panes,
+				editable,
+				stretch,
+				onTabClick,
+				onTabRemove,
+				navStyle,
+				scrollable,
+				scrollNext,
+				scrollPrev,
+				changeTab,
+				setFocus,
+				removeFocus
+			} = this;
 			const scrollBtn = scrollable
 				? [
 						h(
@@ -276,7 +303,11 @@ export default async function () {
 			return h(
 				"div",
 				{
-					class: ["el-tabs__nav-wrap", scrollable ? "is-scrollable" : "", `is-${this.rootTabs.tabPosition}`]
+					class: [
+						"el-tabs__nav-wrap",
+						scrollable ? "is-scrollable" : "",
+						`is-${this.rootTabs.tabPosition}`
+					]
 				},
 				[
 					scrollBtn,
@@ -290,7 +321,14 @@ export default async function () {
 							h(
 								"div",
 								{
-									class: ["el-tabs__nav", `is-${this.rootTabs.tabPosition}`, stretch && ["top", "bottom"].indexOf(this.rootTabs.tabPosition) !== -1 ? "is-stretch" : ""],
+									class: [
+										"el-tabs__nav",
+										`is-${this.rootTabs.tabPosition}`,
+										stretch &&
+										["top", "bottom"].indexOf(this.rootTabs.tabPosition) !== -1
+											? "is-stretch"
+											: ""
+									],
 									ref: "nav",
 									style: navStyle,
 									role: "tablist",

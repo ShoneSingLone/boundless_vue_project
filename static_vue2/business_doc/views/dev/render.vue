@@ -22,13 +22,13 @@ export default async function () {
 				}
 			});
 
-			const formData = computed(() => _.$pickValueFromConfigs(form));
+			const formData = computed(() => _.$pickFormValues(form));
 
 			return function (h) {
 				return h(
 					"div",
 					{
-						staticClass: "page-view view-icon"
+						staticClass: "x-page-view view-icon"
 					},
 					[
 						h("xInput", {
@@ -54,7 +54,12 @@ export default async function () {
 									return "first";
 								},
 								params(props) {
-									return ["params:" + props.title, "params:" + props.title, "params:" + props.title, "params:" + props.title];
+									return [
+										"params:" + props.title,
+										"params:" + props.title,
+										"params:" + props.title,
+										"params:" + props.title
+									];
 								}
 							}
 						})

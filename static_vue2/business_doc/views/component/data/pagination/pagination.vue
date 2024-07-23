@@ -1,14 +1,35 @@
 <template>
 	<DocContentOfDemo class="pagination-demo">
 		<xMd :md="md" />
-		<DemoAndCode title="configs用法" path="@/views/component/data/pagination/ConfigsChuYongFa.vue" unfold />
-		<DemoAndCode title="基础用法" path="@/views/component/data/pagination/JiChuYongFa.vue" unfold />
-		<DemoAndCode title="设置最大页码按钮数" path="@/views/component/data/pagination/SheZhiZuiDaYeMaAnNiuShu.vue" unfold />
-		<DemoAndCode title="带有背景色的分页" path="@/views/component/data/pagination/DaiYouBeiJingSeDeFenYe.vue" unfold />
-		<DemoAndCode title="小型分页" path="@/views/component/data/pagination/XiaoXingFenYe.vue" unfold />
-		<DemoAndCode title="附加功能" path="@/views/component/data/pagination/FuJiaGongNeng.vue" unfold />
-		<DemoAndCode title="当只有一页时隐藏分页" path="@/views/component/data/pagination/DangZhiYouYiYeShiYinCangFenYe.vue" unfold />
-		<xMd :md="apiString" />
+		<DemoAndCode
+			title="configs用法"
+			path="@/views/component/data/pagination/ConfigsChuYongFa.vue"
+			unfold />
+		<DemoAndCode
+			title="基础用法"
+			path="@/views/component/data/pagination/JiChuYongFa.vue"
+			unfold />
+		<DemoAndCode
+			title="设置最大页码按钮数"
+			path="@/views/component/data/pagination/SheZhiZuiDaYeMaAnNiuShu.vue"
+			unfold />
+		<DemoAndCode
+			title="带有背景色的分页"
+			path="@/views/component/data/pagination/DaiYouBeiJingSeDeFenYe.vue"
+			unfold />
+		<DemoAndCode
+			title="小型分页"
+			path="@/views/component/data/pagination/XiaoXingFenYe.vue"
+			unfold />
+		<DemoAndCode
+			title="附加功能"
+			path="@/views/component/data/pagination/FuJiaGongNeng.vue"
+			unfold />
+		<DemoAndCode
+			title="当只有一页时隐藏分页"
+			path="@/views/component/data/pagination/DangZhiYouYiYeShiYinCangFenYe.vue"
+			unfold />
+		<xMd :md="apiString" data-role="api" />
 	</DocContentOfDemo>
 </template>
 

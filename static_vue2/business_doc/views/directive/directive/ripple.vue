@@ -1,10 +1,17 @@
 <template>
 	<DocContentOfDemo class="ViewRipple">
-		<xMd :md="'# Ripple 水波纹指令\n水波纹指令，用于点击之后产生水波纹的动效。\n## 何时使用\n`v-ripple`指令用于点击之后产生水波纹的动效, 可以应用于任何块级元素。\n>注：只能作用于块级元素 '" />
+		<xMd
+			:md="'# Ripple 水波纹指令\n水波纹指令，用于点击之后产生水波纹的动效。\n## 何时使用\n`v-ripple`指令用于点击之后产生水波纹的动效, 可以应用于任何块级元素。\n>注：只能作用于块级元素 '" />
 
-		<DemoAndCode title="基础用法" path="@/views/directive/directive/ripple/JiChuYongFa.vue" unfold />
-		<DemoAndCode title="自定义颜色" path="@/views/directive/directive/ripple/ZiDingYiYanSe.vue" unfold />
-		<xMd :md="apiString" />
+		<DemoAndCode
+			title="基础用法"
+			path="@/views/directive/directive/ripple/JiChuYongFa.vue"
+			unfold />
+		<DemoAndCode
+			title="自定义颜色"
+			path="@/views/directive/directive/ripple/ZiDingYiYanSe.vue"
+			unfold />
+		<xMd :md="apiString" data-role="api" />
 	</DocContentOfDemo>
 </template>
 

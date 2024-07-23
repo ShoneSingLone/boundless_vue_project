@@ -4,7 +4,10 @@ export default async function () {
 		await _.$appendScript("https://unpkg.com/react@18.2.0/umd/react.development.js", "React");
 	}
 	if (!window.ReactDOM) {
-		await _.$appendScript("https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js", "ReactDOM");
+		await _.$appendScript(
+			"https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js",
+			"ReactDOM"
+		);
 	}
 
 	if (!window.ReactJsxRuntime) {
@@ -38,7 +41,8 @@ export default async function () {
 				void 0 !== a.key && (e = "" + a.key);
 				void 0 !== a.ref && (l = a.ref);
 				for (b in a) n.call(a, b) && !p.hasOwnProperty(b) && (d[b] = a[b]);
-				if (c && c.defaultProps) for (b in ((a = c.defaultProps), a)) void 0 === d[b] && (d[b] = a[b]);
+				if (c && c.defaultProps)
+					for (b in ((a = c.defaultProps), a)) void 0 === d[b] && (d[b] = a[b]);
 				return {
 					$$typeof: g,
 					type: c,

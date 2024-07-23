@@ -1,6 +1,7 @@
 <template>
-	<div class="xPagination flex end" v-if="isShowXPagination">
-		<PrivatePagination
+	<div :class="cptPaginationClass" v-if="isShowXPagination">
+		<component
+			:is="currentPaginationComponent"
 			background
 			@size-change="size => handleChange({ page: 1, size })"
 			@current-change="page => handleChange({ page })"
@@ -9,28 +10,30 @@
 			:page-size="privateValue.size"
 			layout="total, sizes, prev, pager, next, jumper"
 			:total="privateValue.total">
-		</PrivatePagination>
+		</component>
 	</div>
 	<PrivatePagination v-else-if="isShowElPagination" v-bind="$attrs" />
 </template>
 
 <script lang="ts">
-export default async function () {
+export default async function ({ PRIVATE_GLOBAL }) {
 	/* xPagination  后台是以0开始，注意current的加减*/
 	return {
 		name: "xPagination",
 		components: {
-			PrivatePagination: () => _.$importVue("/common/ui-x/components/data/xPagination/PrivatePagination.vue")
+			PrivatePagination: () =>
+				_.$importVue("/common/ui-x/components/data/xPagination/PrivatePagination.vue")
 		},
 		model: {
 			prop: "value",
 			event: "change"
 		},
 		/* page,size,total */
-		props: ["value", "options", "configs"],
-		data() {
+		props: ["value", "options", "configs", "position"],
+		data(vm) {
 			return {
-				pagination: {}
+				pagination: {},
+				currentPaginationComponent: PRIVATE_GLOBAL.x_pagination_pagination_component
 			};
 		},
 		mounted() {
@@ -57,6 +60,10 @@ export default async function () {
 			}
 		},
 		computed: {
+			cptPaginationClass() {
+				let position = this.position || PRIVATE_GLOBAL.x_pagination_position;
+				return ["xPagination flex", position];
+			},
 			isShowElPagination() {
 				return !this.privateValue;
 			},

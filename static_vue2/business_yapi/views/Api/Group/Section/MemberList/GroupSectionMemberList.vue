@@ -39,7 +39,7 @@ export default async function () {
 								h("xItem", {
 									staticClass: "mr4 ml4",
 									configs: {
-										value: rowData.uid,
+										value: rowData.uid || "",
 										itemType: "YapiItemAvatar",
 										disabled: true
 									}
@@ -49,14 +49,18 @@ export default async function () {
 									{
 										staticClass: "pointer",
 										async onClick() {
-											const Component = await _.$importVue("@/views/User/UserProfile.Dialog.vue", {
-												parent: vm,
-												userId: rowData.uid,
-												canModifyAvatar: rowData.uid === vm.APP.user._id,
-												onOk() {
-													vm.APP.updateGroupMemberList();
+											const Component = await _.$importVue(
+												"@/views/User/UserProfile.Dialog.vue",
+												{
+													parent: vm,
+													userId: rowData.uid,
+													canModifyAvatar:
+														rowData.uid === vm.APP.user._id,
+													onOk() {
+														vm.APP.updateGroupMemberList();
+													}
 												}
-											});
+											);
 											_.$openWindow_deprecated(i18n("个人中心"), Component);
 										}
 									},
@@ -83,7 +87,12 @@ export default async function () {
 						cellRenderer({ rowData, rowIndex }) {
 							if (vm.cptAuth) {
 								return h("div", { staticClass: "flex middle width100" }, [
-									h("xItem", { configs: vm.item_role, value: rowData.role, payload: { rowIndex, rowData }, class: "mr8" }),
+									h("xItem", {
+										configs: vm.item_role,
+										value: rowData.role,
+										payload: { rowIndex, rowData },
+										class: "mr8"
+									}),
 									h("xBtn", {
 										configs: {
 											icon: "el-icon-delete",
@@ -102,7 +111,9 @@ export default async function () {
 								};
 								// 非管理员可以看到权限 但无法修改
 
-								return h("div", { staticClass: "flex middle width100" }, [ROLE_MAP[rowData.role]]);
+								return h("div", { staticClass: "flex middle width100" }, [
+									ROLE_MAP[rowData.role]
+								]);
 							}
 						}
 					}
@@ -112,12 +123,15 @@ export default async function () {
 		methods: {
 			async addMember() {
 				const vm = this;
-				const addMember = await _.$importVue("@/views/Api/Group/Section/MemberList/GroupSectionMemberList.AddMember.vue", {
-					parent: this,
-					onOk() {
-						vm.APP.updateGroupMemberList();
+				const addMember = await _.$importVue(
+					"@/views/Api/Group/Section/MemberList/GroupSectionMemberList.AddMember.vue",
+					{
+						parent: this,
+						onOk() {
+							vm.APP.updateGroupMemberList();
+						}
 					}
-				});
+				);
 				_.$openWindow_deprecated(i18n("添加成员"), addMember);
 			},
 			async changeMemberRole({ role, uid, index }) {
@@ -139,7 +153,9 @@ export default async function () {
 				}
 			},
 			cptAvatarUrl(id) {
-				return Vue._yapi_utils.appendToken(`${window._URL_PREFIX_4_DEV || ""}/api/user/avatar?uid=${id}`);
+				return Vue._common_utils.appendToken(
+					`${window._URL_PREFIX_4_DEV || ""}/api/user/avatar?uid=${id}`
+				);
 			}
 		},
 		computed: {
@@ -147,7 +163,9 @@ export default async function () {
 				return this.$route.query.GroupViewTabName === Vue._yapi_var.TAB_KEY_MEMBER_LIST;
 			},
 			cptAuth() {
-				return [Vue._yapi_var.OWNER, Vue._yapi_var.ADMIN].includes(this.APP.cptCurrentGroup?.role);
+				return [Vue._yapi_var.OWNER, Vue._yapi_var.ADMIN].includes(
+					this.APP.cptCurrentGroup?.role
+				);
 			}
 		},
 		watch: {

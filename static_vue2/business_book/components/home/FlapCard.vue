@@ -1,17 +1,37 @@
 <template>
 	<div class="flap-card-wrapper" v-show="flapCardVisible">
-		<div class="flap-card-bg" :class="{ animation: runFlapCardAnimation }" v-show="runFlapCardAnimation">
-			<div class="flap-card" v-for="(item, index) in flapCardList" :key="index" :style="{ zIndex: item.zIndex }">
+		<div
+			class="flap-card-bg"
+			:class="{ animation: runFlapCardAnimation }"
+			v-show="runFlapCardAnimation">
+			<div
+				class="flap-card"
+				v-for="(item, index) in flapCardList"
+				:key="index"
+				:style="{ zIndex: item.zIndex }">
 				<div class="flap-card-circle">
-					<div class="flap-card-semi-circle flap-card-semi-circle-left" :style="semiCircleStyle(item, 'left')" ref="left"></div>
-					<div class="flap-card-semi-circle flap-card-semi-circle-right" :style="semiCircleStyle(item, 'right')" ref="right"></div>
+					<div
+						class="flap-card-semi-circle flap-card-semi-circle-left"
+						:style="semiCircleStyle(item, 'left')"
+						ref="left"></div>
+					<div
+						class="flap-card-semi-circle flap-card-semi-circle-right"
+						:style="semiCircleStyle(item, 'right')"
+						ref="right"></div>
 				</div>
 			</div>
 			<div class="point-wrapper">
-				<div class="point" :class="{ animation: runPointAnimation }" v-for="item in pointList" :key="item"></div>
+				<div
+					class="point"
+					:class="{ animation: runPointAnimation }"
+					v-for="item in pointList"
+					:key="item"></div>
 			</div>
 		</div>
-		<div class="book-card" :class="{ animation: runBookCardAnimation }" v-show="runBookCardAnimation">
+		<div
+			class="book-card"
+			:class="{ animation: runBookCardAnimation }"
+			v-show="runBookCardAnimation">
 			<div class="book-card-wrapper">
 				<div class="img-wrapper">
 					<img class="img" :src="data ? data.cover : ''" />

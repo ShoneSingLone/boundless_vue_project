@@ -5,18 +5,13 @@
 				<xBtn :configs="btnRun" />
 				<xBtn :configs="btnSave" />
 			</div>
-			<xItem :configs="form.editor" style="min-height: 516px" />
-			<div class="padding">
-				<xBlock class="flex vertical" :bodyClass="{ 'overflow-auto flex flex1': true }" style="height: 500px">
-					<template #header>
-						<div class="flex">
-							<span>响应详情</span>
-							<xGap f />
-							<xBtn :configs="btnSaveAsBackupData" />
-						</div>
-					</template>
-					<xMd :md="cptCode" />
-				</xBlock>
+			<xItem :configs="form.editor" style="height: 516px" />
+			<div class="flex vertical x-padding">
+				<div>
+					<xBtn :configs="btnSaveAsBackupData" />
+				</div>
+				<xGap b="8" />
+				<xMd :md="cptCode" style="height: 460px" />
 			</div>
 		</xForm>
 		<template #footer>
@@ -36,6 +31,7 @@ export default async function ({ mockHref, reqMethod, interfaceId, projectId }) 
 		data() {
 			return {
 				response: "",
+				httprequestoptions: {},
 				form: defItems({
 					editor: {
 						type: "textarea",
@@ -52,16 +48,22 @@ export default async function ({ mockHref, reqMethod, interfaceId, projectId }) 
 		computed: {
 			cptCode() {
 				let response = "";
+				let httprequestoptions = "";
 				try {
 					if (this.response) {
 						response = JSON.stringify(this.response, null, 2);
+					}
+					if (this.httprequestoptions) {
+						httprequestoptions = JSON.stringify(this.httprequestoptions, null, 2);
 					}
 				} catch (error) {
 					console.error(error);
 				}
 				if (response) {
-					return `\`\`\`json
+					return `\`\`\`js
 ${response}
+
+${httprequestoptions}
 \`\`\``;
 				}
 				return response;
@@ -134,7 +136,7 @@ ${response}
 					}
 
 					this.APP.updateGroupProjectList();
-					_.$msgSuccess("更新成功");
+					_.$msg("更新成功");
 				} catch (error) {
 					_.$msgError(error);
 				}
@@ -150,7 +152,7 @@ ${response}
 					};
 					await _api.yapi.interface_usecase_upsert(dataForm);
 					this.APP.updateGroupProjectList();
-					_.$msgSuccess("更新成功");
+					_.$msg("更新成功");
 				} catch (error) {
 					_.$msgError(error);
 				}
@@ -196,6 +198,11 @@ ${response}
 						this.response = response;
 					}
 				}
+
+				try {
+					const { httprequestoptions } = response.headers;
+					this.httprequestoptions = JSON.parse(httprequestoptions);
+				} catch (error) {}
 			}
 		}
 	});

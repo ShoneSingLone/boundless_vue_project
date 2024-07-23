@@ -1,5 +1,5 @@
 <template>
-	<div class="page-view view-icon">
+	<div class="x-page-view view-icon">
 		<xPageContent>
 			<xBtn class="js-btn" @click="onEmit_All">onEmit_All</xBtn>
 			<xBtn class="js-btn" @click="onEmit_Self">onEmit_Self</xBtn>

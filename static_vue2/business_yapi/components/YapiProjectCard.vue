@@ -1,7 +1,7 @@
 <template>
-	<div class="YapiProjectCard card-container">
+	<div class="YapiProjectCard card-container el-card">
 		<div class="project-card-wrapper">
-			<div class="el-card__body padding">
+			<div class="el-card__body x-padding">
 				<xRender :render="logo" />
 			</div>
 			<xRender :render="title" />
@@ -22,7 +22,12 @@ export default async function () {
 		},
 		computed: {
 			cptAvatarUrl() {
-				return this.imageUrl || Vue._yapi_utils.appendToken(`${window._URL_PREFIX_4_DEV || ""}/api/user/avatar?uid=${this.projectData._id}&usedBy=project`);
+				return (
+					this.imageUrl ||
+					Vue._common_utils.appendToken(
+						`${window._URL_PREFIX_4_DEV || ""}/api/user/avatar?uid=${this.projectData._id}&usedBy=project`
+					)
+				);
 			},
 			followIcon() {
 				return h(
@@ -57,7 +62,7 @@ export default async function () {
 					height: "100px",
 					"background-image": `url(${this.cptAvatarUrl})`,
 					"background-position": "center center",
-					"background-size": "contain",
+					"background-size": "50% 50%",
 					"background-repeat": "no-repeat"
 				};
 			},
@@ -89,19 +94,24 @@ export default async function () {
 				);
 			},
 			title() {
-				return h("div", { class: "ui-title" }, [this.projectData.name || this.projectData.projectname]);
+				return h("div", { staticClass: "ui-title flex middle center" }, [
+					this.projectData.name || this.projectData.projectname
+				]);
 			}
 		},
 		methods: {
 			async openCopyProjectDialog() {
 				const vm = this;
-				const addMember = await _.$importVue("@/components/YapiProjectCard.CopyProject.vue", {
-					parent: vm,
-					projectData: vm.projectData,
-					onOk() {
-						vm.$emit("change");
+				const addMember = await _.$importVue(
+					"@/components/YapiProjectCard.CopyProject.vue",
+					{
+						parent: vm,
+						projectData: vm.projectData,
+						onOk() {
+							vm.$emit("change");
+						}
 					}
-				});
+				);
 				_.$openWindow_deprecated(`复制项目${this.projectData.name}`, addMember);
 			},
 			follow: _.debounce(async function () {
@@ -136,6 +146,9 @@ export default async function () {
 </script>
 <style lang="less">
 .YapiProjectCard {
+	& + .YapiProjectCard {
+		margin-left: var(--ui-one);
+	}
 	&.card-container {
 		position: relative;
 		user-select: none;

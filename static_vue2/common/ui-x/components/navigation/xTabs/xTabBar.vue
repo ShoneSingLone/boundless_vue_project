@@ -21,7 +21,8 @@ export default async function () {
 					let style = {};
 					let offset = 0;
 					let tabSize = 0;
-					const sizeName = ["top", "bottom"].indexOf(this.cptPosition) !== -1 ? "width" : "height";
+					const sizeName =
+						["top", "bottom"].indexOf(this.cptPosition) !== -1 ? "width" : "height";
 					const sizeDir = sizeName === "width" ? "x" : "y";
 					_.every(this.tabs, (tab, index) => {
 						let $el = _.find(this.$parent.$refs.tabs, _tab => {
@@ -38,7 +39,9 @@ export default async function () {
 							tabSize = $el[`client${_.$firstUpperCase(sizeName)}`];
 							const tabStyles = window.getComputedStyle($el);
 							if (sizeName === "width" && this.tabs.length > 1) {
-								tabSize -= parseFloat(tabStyles.paddingLeft) + parseFloat(tabStyles.paddingRight);
+								tabSize -=
+									parseFloat(tabStyles.paddingLeft) +
+									parseFloat(tabStyles.paddingRight);
 							}
 							if (sizeName === "width") {
 								offset += parseFloat(tabStyles.paddingLeft);

@@ -2,10 +2,13 @@
 	<DocContentOfDemo class="icon-demo">
 		<xMd :md="md" />
 		<DemoAndCode title="基础用法" path="@/views/component/data/icon/JiChuYongFa.vue" unfold />
-		<DemoAndCode title="icon未找到" path="@/views/component/data/icon/IconWeiZhaoDao.vue" unfold />
+		<DemoAndCode
+			title="icon未找到"
+			path="@/views/component/data/icon/IconWeiZhaoDao.vue"
+			unfold />
 		<DemoAndCode title="icon颜色" path="@/views/component/data/icon/YanSe.vue" unfold />
 		<DemoAndCode title="加载图片" path="@/views/component/data/icon/JiaZaiTuPian.vue" unfold />
-		<xMd :md="apiString" />
+		<xMd :md="apiString" data-role="api" />
 		<DemoAndCode title="字体图标" path="@/views/component/data/icon/ZiTiTuBiao.vue" unfold />
 	</DocContentOfDemo>
 </template>
@@ -21,6 +24,7 @@ export default async function () {
 |---------------------|------------------|---------|-----------------------------|--------|
 | icon                | svg路径             | string  | — | —      |
 | img                | 图片路径             | string  | — | —      |
+| useCurrentColor                |   若为真值，会置icon的fill为currentColor          | any  | — | false   |
 `
 			};
 		}

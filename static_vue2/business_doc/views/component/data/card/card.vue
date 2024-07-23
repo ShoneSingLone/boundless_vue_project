@@ -4,7 +4,7 @@
 		<DemoAndCode title="简单卡片" path="@/views/component/data/card/JianDanKaPian.vue" />
 		<DemoAndCode title="带图片" path="@/views/component/data/card/DaiTuPian.vue" />
 		<DemoAndCode title="卡片阴影" path="@/views/component/data/card/KaPianYinYing.vue" />
-		<xMd :md="mdDoc" />
+		<xMd :md="apiString" data-role="api" />
 	</DocContentOfDemo>
 </template>
 
@@ -13,7 +13,7 @@ export default async function () {
 	return {
 		data() {
 			return {
-				mdDoc: `### Attributes
+				apiString: `### Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
 | header | 设置 header，也可以通过 \`slot#header\` 传入 DOM | string| — | — |

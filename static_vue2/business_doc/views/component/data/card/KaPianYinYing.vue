@@ -1,17 +1,17 @@
 <template>
 	<div class="card-JianDanKaPian">
 		<xMd :md="mdTitle" />
-		<el-row :gutter="12">
-			<el-col :span="8">
+		<xRow :gutter="12">
+			<xCol :span="8">
 				<xCard shadow="always"> 总是显示 </xCard>
-			</el-col>
-			<el-col :span="8">
+			</xCol>
+			<xCol :span="8">
 				<xCard shadow="hover"> 鼠标悬浮时显示 </xCard>
-			</el-col>
-			<el-col :span="8">
+			</xCol>
+			<xCol :span="8">
 				<xCard shadow="never"> 从不显示 </xCard>
-			</el-col>
-		</el-row>
+			</xCol>
+		</xRow>
 	</div>
 </template>
 <script lang="ts">
@@ -19,7 +19,8 @@ export default async function () {
 	return defineComponent({
 		data() {
 			return {
-				mdTitle: "可对阴影的显示进行配置。\n通过`shadow`属性设置卡片阴影出现的时机：`always`、`hover`或`never`。"
+				mdTitle:
+					"可对阴影的显示进行配置。\n通过`shadow`属性设置卡片阴影出现的时机：`always`、`hover`或`never`。\n\n> tiny主题没有阴影"
 			};
 		}
 	});

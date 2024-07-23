@@ -2,7 +2,13 @@
 	<div>
 		<xMd :md="md" />
 		<xSelect v-model="value" placeholder="请选择">
-			<xOption v-for="item in options" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled"> </xOption>
+			<xOption
+				v-for="item in options"
+				:key="item.value"
+				:label="item.label"
+				:value="item.value"
+				:disabled="item.disabled">
+			</xOption>
 		</xSelect>
 	</div>
 </template>

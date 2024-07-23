@@ -2,6 +2,7 @@ import { VNode } from "../vue";
 
 type t_itemType = "xItemInput" | "xItemSelect" | "xItemRadioGroup" | "xItemCheckboxGroup" | "xItemCheck" | "xItemSwitch" | "xItemCheck" | (() => VNode);
 export type t_xItemConfigsOptions = {
+	/*** xItem 的label */
 	label?: string | Function;
 	/*** xSelect 是否多选 */
 	multiple?: boolean;
@@ -17,16 +18,18 @@ export type t_xItemConfigsOptions = {
 	isButton?: boolean;
 	/* xItemCheck 是否使用组,value为数组 */
 	xItemCheckUse?: "blockCheck";
-	isGroup?: boolean;
-	type?: "textarea";
-	value?: any;
-	itemType?: t_itemType;
 	/**
 	 * xItemRadioGroup 最小宽度，方便计算每一行排多少个元素
 	 */
 	minWidth?: number;
+	isGroup?: boolean;
+	type?: "textarea";
+	value?: any;
+	itemType?: t_itemType;
 	/*** 自定义显示效果,如果效果与xItemSelect一样，就用字符串xItemSelect，不然就用render函数 */
-	readonlyAs?: t_itemType;
+	xItemRender?: t_itemType;
+	/*** 订单需要的 国际化数组 */
+	i18nMany?: Function;
 	disabled?: boolean | Function;
 	isHide?: boolean | Function;
 	options?: any[] | Function;
@@ -36,7 +39,10 @@ export type t_xItemConfigsOptions = {
 	msg?: string | Function;
 	rules?: any[];
 	attrs?: any;
-	itemSlots?: any;
+	itemSlots?: {
+		beforeController?: Function;
+		afterController?: Function;
+	};
 	onEnter?: Function;
 };
 

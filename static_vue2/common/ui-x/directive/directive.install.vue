@@ -1,11 +1,10 @@
 <script lang="ts">
 export default async function () {
-	const [PopupManager] = await _.$importVue(["/common/libs/VuePopper/popupManager.vue"]);
-
-	(function () {
+	(function (/* 预览图片 */) {
 		let instance;
 		_.$previewImgs = async function (options) {
 			const ImageViewer = await _.$importVue("/common/ui-x/directive/xImg/ImageViewer.vue");
+			const PopupManager = await _.$importVue("/common/libs/VuePopper/popupManager.vue");
 
 			if (options.currentUrl) {
 				options.index = _.findIndex(options.urlList, i => i === options.currentUrl) || 0;
@@ -21,9 +20,13 @@ export default async function () {
 		};
 	})();
 
-	(function () {
-		_.$openModal = async function (options) {
-			const xModal = await _.$importVue("/common/ui-x/directive/xModal/xModal.vue", { options });
+	(function (/* 弹窗 */) {
+		_.$openModal = async function (options, modalConfigs) {
+			const xModal = await _.$importVue("/common/ui-x/directive/xModal/xModal.vue", {
+				options,
+				modalConfigs
+			});
+			const PopupManager = await _.$importVue("/common/libs/VuePopper/popupManager.vue");
 			xModal.parent = options.parent || Vue.forceUpdate.getVM();
 			let instance = new Vue(xModal);
 			instance.$mount();
@@ -32,9 +35,54 @@ export default async function () {
 			return instance;
 		};
 	})();
+	(function (/* xDrawer */) {
+		_.$openDrawer = async function (options) {
+			const [xDrawer, PopupManager] = await _.$importVue([
+				"/common/ui-x/directive/xDrawer/xDrawer.vue",
+				"/common/libs/VuePopper/popupManager.vue"
+			]);
+			xDrawer.parent = options.parent || Vue.forceUpdate.getVM();
+			const xDrawerComponent = Vue.extend(xDrawer);
+			let instance = new xDrawerComponent({
+				_parentListeners: {
+					"update:visible"(val) {
+						if (!val) {
+							instance.closeModal();
+						}
+					}
+				},
+				propsData: _.merge(
+					{
+						destroyOnClose: true
+					},
+					options
+				)
+			});
+			instance.ALLOW_MUTATING_A_PROP_DIRECTLY = true;
+			instance.closeModal = () => {
+				instance.$props.visible = false;
+				instance.$nextTick(() => {
+					setTimeout(() => {
+						instance.$destroy();
+					}, 600);
+				});
+			};
+			const contentComponent = await _.$importVue(options.url, {
+				options,
+				xDrawerVm: instance
+			});
+			instance.currentContentComponent = contentComponent;
+			instance.$mount();
+			document.body.appendChild(instance.$el);
+			instance.viewerZIndex = PopupManager.nextZIndex();
+			instance.$nextTick(() => {
+				instance.$props.visible = true;
+			});
+			return instance;
+		};
+	})();
 
-	(function () {
-		let instance;
+	(function (/* notification */) {
 		let instances = [];
 		let seed = 1;
 
@@ -46,7 +94,9 @@ export default async function () {
 		};
 
 		_.$notify = async function (options) {
-			const xNotification = await getCurrentNotifyComponent(_useXui.globalConfigs?.xNotification?.componentName);
+			const xNotification = await getCurrentNotifyComponent(
+				_xUtils.globalConfigs?.xNotification?.componentName
+			);
 			const PopupManager = await _.$importVue("/common/libs/VuePopper/popupManager.vue");
 
 			const NotificationConstructor = Vue.extend(xNotification);
@@ -58,7 +108,7 @@ export default async function () {
 			options.onClose = function () {
 				_.$notify.close(id, userOnClose);
 			};
-			instance = new NotificationConstructor({
+			let instance = new NotificationConstructor({
 				data: options
 			});
 
@@ -117,13 +167,108 @@ export default async function () {
 				const removedHeight = instance.dom.offsetHeight;
 				for (let i = index; i < len - 1; i++) {
 					if (instances[i].position === position) {
-						instances[i].dom.style[instance.verticalProperty] = parseInt(instances[i].dom.style[instance.verticalProperty], 10) - removedHeight - 16 + "px";
+						instances[i].dom.style[instance.verticalProperty] =
+							parseInt(instances[i].dom.style[instance.verticalProperty], 10) -
+							removedHeight -
+							16 +
+							"px";
 					}
 				}
 			}
 		};
 
 		_.$notify.closeAll = function () {
+			for (let i = instances.length - 1; i >= 0; i--) {
+				instances[i].close();
+			}
+		};
+	})();
+
+	(function (/* message */) {
+		let instances = [];
+		let seed = 1;
+
+		const getCurrentMessageComponent = componentName => {
+			if (!componentName) {
+				return _.$importVue("/common/ui-x/directive/xMessage/xMessage.vue");
+			}
+		};
+
+		_.$msg = async function (options) {
+			const xMsg = await getCurrentMessageComponent(
+				_xUtils.globalConfigs?.xNotification?.componentName
+			);
+			const PopupManager = await _.$importVue("/common/libs/VuePopper/popupManager.vue");
+
+			const MsgConstructor = Vue.extend(xMsg);
+
+			if (_.isString(options) || _.isNumber(options)) {
+				options = {
+					message: options
+				};
+			}
+			options = _.merge({}, options);
+			const userOnClose = options.onClose;
+			const id = "message_" + seed++;
+
+			options.onClose = function () {
+				_.$msg.close(id, userOnClose);
+			};
+			let instance = new MsgConstructor({
+				data: options
+			});
+
+			instance.id = id;
+			instance.$mount();
+			document.body.appendChild(instance.$el);
+			let verticalOffset = options.offset || 20;
+			instances.forEach(item => {
+				verticalOffset += item.$el.offsetHeight + 16;
+			});
+			instance.verticalOffset = verticalOffset;
+			instance.visible = true;
+			instance.$el.style.zIndex = PopupManager.nextZIndex();
+			instances.push(instance);
+			return instance;
+		};
+		["success", "warning", "info", "error"].forEach(type => {
+			_.$msg[type] = options => {
+				if (isObject(options) && !isVNode(options)) {
+					return _.$msg({
+						...options,
+						type
+					});
+				}
+				return _.$msg({
+					type,
+					message: options
+				});
+			};
+		});
+
+		_.$msg.close = function (id, userOnClose) {
+			let len = instances.length;
+			let index = -1;
+			let removedHeight;
+			for (let i = 0; i < len; i++) {
+				if (id === instances[i].id) {
+					removedHeight = instances[i].$el.offsetHeight;
+					index = i;
+					if (typeof userOnClose === "function") {
+						userOnClose(instances[i]);
+					}
+					instances.splice(i, 1);
+					break;
+				}
+			}
+			if (len <= 1 || index === -1 || index > instances.length - 1) return;
+			for (let i = index; i < len - 1; i++) {
+				let dom = instances[i].$el;
+				dom.style["top"] = parseInt(dom.style["top"], 10) - removedHeight - 16 + "px";
+			}
+		};
+
+		_.$msg.closeAll = function () {
 			for (let i = instances.length - 1; i >= 0; i--) {
 				instances[i].close();
 			}

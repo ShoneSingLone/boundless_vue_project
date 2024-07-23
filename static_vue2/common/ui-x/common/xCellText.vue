@@ -17,12 +17,16 @@ export default async function () {
 			},
 			cpt_label() {
 				let label = "--";
-				const { cpt_label } = this?.$options?.propsData?.configs?.col?.componentOptions || {};
+				const { cpt_label } =
+					this?.$options?.propsData?.configs?.col?.componentOptions || {};
 				if (_.isString(cpt_label)) {
 					return cpt_label;
 				}
 				if (_.isFunction(cpt_label)) {
-					label = cpt_label.call(this?.$options?.propsData?.configs?.col?.componentOptions, { row: this.row, label });
+					label = cpt_label.call(
+						this?.$options?.propsData?.configs?.col?.componentOptions,
+						{ row: this.row, label }
+					);
 				}
 				return label;
 			},

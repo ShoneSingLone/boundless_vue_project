@@ -6,7 +6,11 @@
 			<div>configsTable.data.set: {{ Array.from(configsTable.data.set) }}</div>
 		</div>
 		<xMd :md="md" />"
-		<xTableVir :columns="configsTable.columns" :data="configsTable.data.list" :height="500" fixed />
+		<xTableVir
+			:columns="configsTable.columns"
+			:data="configsTable.data.list"
+			:height="500"
+			fixed />
 	</div>
 </template>
 <script lang="ts">
@@ -54,7 +58,10 @@ defTable.colSingle({
 						});
 					},
 					onSelectedChange(newValue, oldValue) {
-						const row = _.find(vm.configsTable.data.list, item => item.id === newValue[0]);
+						const row = _.find(
+							vm.configsTable.data.list,
+							item => item.id === newValue[0]
+						);
 						if (row) {
 							vm.selected = row;
 						} else {

@@ -73,7 +73,15 @@
 		arrowOffset: 0,
 
 		// list of functions used to modify the offsets before they are applied to the popper
-		modifiers: ["shift", "offset", "preventOverflow", "keepTogether", "arrow", "flip", "applyStyle"],
+		modifiers: [
+			"shift",
+			"offset",
+			"preventOverflow",
+			"keepTogether",
+			"arrow",
+			"flip",
+			"applyStyle"
+		],
 
 		modifiersIgnored: [],
 
@@ -233,7 +241,11 @@
 		data.offsets = this._getOffsets(this._popper, this._reference, data.placement);
 
 		// get boundaries
-		data.boundaries = this._getBoundaries(data, this._options.boundariesPadding, this._options.boundariesElement);
+		data.boundaries = this._getBoundaries(
+			data,
+			this._options.boundariesPadding,
+			this._options.boundariesElement
+		);
 
 		data = this.runModifiers(data, this._options.modifiers);
 
@@ -316,7 +328,11 @@
 		if (typeof parent === "string") {
 			parent = d.querySelectorAll(config.parent);
 			if (parent.length > 1) {
-				console.warn("WARNING: the given `parent` query(" + config.parent + ") matched more than one element, the first one will be used");
+				console.warn(
+					"WARNING: the given `parent` query(" +
+						config.parent +
+						") matched more than one element, the first one will be used"
+				);
 			}
 			if (parent.length === 0) {
 				throw "ERROR: the given `parent` doesn't exists!";
@@ -326,7 +342,9 @@
 		// if the given parent is a DOM nodes list or an array of nodes with more than one element,
 		// the first one will be used as parent
 		if (parent.length > 1 && parent instanceof Element === false) {
-			console.warn("WARNING: you have passed as parent a list of elements, the first one will be used");
+			console.warn(
+				"WARNING: you have passed as parent a list of elements, the first one will be used"
+			);
 			parent = parent[0];
 		}
 
@@ -404,7 +422,11 @@
 		//
 		// Get reference element position
 		//
-		var referenceOffsets = getOffsetRectRelativeToCustomParent(reference, getOffsetParent(popper), isParentFixed);
+		var referenceOffsets = getOffsetRectRelativeToCustomParent(
+			reference,
+			getOffsetParent(popper),
+			isParentFixed
+		);
 
 		//
 		// Get popper sizes
@@ -417,14 +439,16 @@
 
 		// depending by the popper placement we have to compute its offsets slightly differently
 		if (["right", "left"].indexOf(placement) !== -1) {
-			popperOffsets.top = referenceOffsets.top + referenceOffsets.height / 2 - popperRect.height / 2;
+			popperOffsets.top =
+				referenceOffsets.top + referenceOffsets.height / 2 - popperRect.height / 2;
 			if (placement === "left") {
 				popperOffsets.left = referenceOffsets.left - popperRect.width;
 			} else {
 				popperOffsets.left = referenceOffsets.right;
 			}
 		} else {
-			popperOffsets.left = referenceOffsets.left + referenceOffsets.width / 2 - popperRect.width / 2;
+			popperOffsets.left =
+				referenceOffsets.left + referenceOffsets.width / 2 - popperRect.width / 2;
 			if (placement === "top") {
 				popperOffsets.top = referenceOffsets.top - popperRect.height;
 			} else {
@@ -498,8 +522,20 @@
 			var body = root.document.body,
 				html = root.document.documentElement;
 
-			height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-			width = Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
+			height = Math.max(
+				body.scrollHeight,
+				body.offsetHeight,
+				html.clientHeight,
+				html.scrollHeight,
+				html.offsetHeight
+			);
+			width = Math.max(
+				body.scrollWidth,
+				body.offsetWidth,
+				html.clientWidth,
+				html.scrollWidth,
+				html.offsetWidth
+			);
 
 			boundaries = {
 				top: 0,
@@ -514,20 +550,29 @@
 
 			// Thanks the fucking native API, `document.body.scrollTop` & `document.documentElement.scrollTop`
 			var getScrollTopValue = function (element) {
-				return element == document.body ? Math.max(document.documentElement.scrollTop, document.body.scrollTop) : element.scrollTop;
+				return element == document.body
+					? Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+					: element.scrollTop;
 			};
 			var getScrollLeftValue = function (element) {
-				return element == document.body ? Math.max(document.documentElement.scrollLeft, document.body.scrollLeft) : element.scrollLeft;
+				return element == document.body
+					? Math.max(document.documentElement.scrollLeft, document.body.scrollLeft)
+					: element.scrollLeft;
 			};
 
 			// if the popper is fixed we don't have to substract scrolling from the boundaries
-			var scrollTop = data.offsets.popper.position === "fixed" ? 0 : getScrollTopValue(scrollParent);
-			var scrollLeft = data.offsets.popper.position === "fixed" ? 0 : getScrollLeftValue(scrollParent);
+			var scrollTop =
+				data.offsets.popper.position === "fixed" ? 0 : getScrollTopValue(scrollParent);
+			var scrollLeft =
+				data.offsets.popper.position === "fixed" ? 0 : getScrollLeftValue(scrollParent);
 
 			boundaries = {
 				top: 0 - (offsetParentRect.top - scrollTop),
-				right: root.document.documentElement.clientWidth - (offsetParentRect.left - scrollLeft),
-				bottom: root.document.documentElement.clientHeight - (offsetParentRect.top - scrollTop),
+				right:
+					root.document.documentElement.clientWidth -
+					(offsetParentRect.left - scrollLeft),
+				bottom:
+					root.document.documentElement.clientHeight - (offsetParentRect.top - scrollTop),
 				left: 0 - (offsetParentRect.left - scrollLeft)
 			};
 		} else {
@@ -561,7 +606,10 @@
 	Popper.prototype.runModifiers = function (data, modifiers, ends) {
 		var modifiersToRun = modifiers.slice();
 		if (ends !== undefined) {
-			modifiersToRun = this._options.modifiers.slice(0, getArrayKeyIndex(this._options.modifiers, ends));
+			modifiersToRun = this._options.modifiers.slice(
+				0,
+				getArrayKeyIndex(this._options.modifiers, ends)
+			);
 		}
 
 		modifiersToRun.forEach(
@@ -623,7 +671,10 @@
 		// if gpuAcceleration is set to true and transform is supported, we use `translate3d` to apply the position to the popper
 		// we automatically use the supported prefixed version if needed
 		var prefixedProperty;
-		if (this._options.gpuAcceleration && (prefixedProperty = getSupportedPropertyName("transform"))) {
+		if (
+			this._options.gpuAcceleration &&
+			(prefixedProperty = getSupportedPropertyName("transform"))
+		) {
 			styles[prefixedProperty] = "translate3d(" + left + "px, " + top + "px, 0)";
 			styles.top = 0;
 			styles.left = 0;
@@ -647,7 +698,10 @@
 		this._popper.setAttribute("x-placement", data.placement);
 
 		// if the arrow modifier is required and the arrow style has been computed, apply the arrow style
-		if (this.isModifierRequired(this.modifiers.applyStyle, this.modifiers.arrow) && data.offsets.arrow) {
+		if (
+			this.isModifierRequired(this.modifiers.applyStyle, this.modifiers.arrow) &&
+			data.offsets.arrow
+		) {
 			setStyle(data.arrowElement, data.offsets.arrow);
 		}
 
@@ -780,7 +834,9 @@
 		// check if preventOverflow is in the list of modifiers before the flip modifier.
 		// otherwise flip would not work as expected.
 		if (!this.isModifierRequired(this.modifiers.flip, this.modifiers.preventOverflow)) {
-			console.warn("WARNING: preventOverflow modifier is required by flip modifier in order to work, be sure to include it before flip!");
+			console.warn(
+				"WARNING: preventOverflow modifier is required by flip modifier in order to work, be sure to include it before flip!"
+			);
 			return data;
 		}
 
@@ -817,8 +873,12 @@
 
 				// using Math.floor because the reference offsets may contain decimals we are not going to consider here
 				if (
-					(a && Math.floor(data.offsets.reference[placement]) > Math.floor(popperOffsets[placementOpposite])) ||
-					(!a && Math.floor(data.offsets.reference[placement]) < Math.floor(popperOffsets[placementOpposite]))
+					(a &&
+						Math.floor(data.offsets.reference[placement]) >
+							Math.floor(popperOffsets[placementOpposite])) ||
+					(!a &&
+						Math.floor(data.offsets.reference[placement]) <
+							Math.floor(popperOffsets[placementOpposite]))
 				) {
 					// we'll use this boolean to detect any flip loop
 					data.flipped = true;
@@ -826,7 +886,11 @@
 					if (variation) {
 						data.placement += "-" + variation;
 					}
-					data.offsets.popper = this._getOffsets(this._popper, this._reference, data.placement).popper;
+					data.offsets.popper = this._getOffsets(
+						this._popper,
+						this._reference,
+						data.placement
+					).popper;
 
 					data = this.runModifiers(data, this._options.modifiers, this._flip);
 				}
@@ -889,7 +953,9 @@
 
 		// arrow depends on keepTogether in order to work
 		if (!this.isModifierRequired(this.modifiers.arrow, this.modifiers.keepTogether)) {
-			console.warn("WARNING: keepTogether modifier is required by arrow modifier in order to work, be sure to include it before arrow!");
+			console.warn(
+				"WARNING: keepTogether modifier is required by arrow modifier in order to work, be sure to include it before arrow!"
+			);
 			return data;
 		}
 
@@ -1037,7 +1103,9 @@
 	function getOffsetParent(element) {
 		// NOTE: 1 DOM access here
 		var offsetParent = element.offsetParent;
-		return offsetParent === root.document.body || !offsetParent ? root.document.documentElement : offsetParent;
+		return offsetParent === root.document.body || !offsetParent
+			? root.document.documentElement
+			: offsetParent;
 	}
 
 	/**
@@ -1110,7 +1178,10 @@
 		Object.keys(styles).forEach(function (prop) {
 			var unit = "";
 			// add unit if the value is numeric and is one of the following
-			if (["width", "height", "top", "right", "bottom", "left"].indexOf(prop) !== -1 && is_numeric(styles[prop])) {
+			if (
+				["width", "height", "top", "right", "bottom", "left"].indexOf(prop) !== -1 &&
+				is_numeric(styles[prop])
+			) {
 				unit = "px";
 			}
 			element.style[prop] = styles[prop] + unit;
@@ -1219,7 +1290,9 @@
 		var prefixes = ["", "ms", "webkit", "moz", "o"];
 
 		for (var i = 0; i < prefixes.length; i++) {
-			var toCheck = prefixes[i] ? prefixes[i] + property.charAt(0).toUpperCase() + property.slice(1) : property;
+			var toCheck = prefixes[i]
+				? prefixes[i] + property.charAt(0).toUpperCase() + property.slice(1)
+				: property;
 			if (typeof root.document.body.style[toCheck] !== "undefined") {
 				return toCheck;
 			}

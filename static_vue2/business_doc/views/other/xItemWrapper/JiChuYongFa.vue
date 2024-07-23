@@ -1,18 +1,16 @@
 <template>
 	<div>
 		<xMd md="用插槽的方式处理特殊的输入控件，使用单独的rules用于校验" />
-		<xForm col="3" id="xItemWrapper-JiChuYongFa">
-			<xItemWrapper label="单独校验" :rules="rules">
-				<template #controller>
-					<div class="flex middle xItemWrapper-JiChuYongFa_some-class">
-						<xInput v-model="form.a" />
-						-
-						<xInput v-model="form.b" />
-						-
-						<xInput v-model="form.c" />
-					</div>
-				</template>
-			</xItemWrapper>
+		<xForm col="3" id="xItem-JiChuYongFa">
+			<xItem label="单独校验" :rules="rules">
+				<div class="flex middle xItem-JiChuYongFa_some-class">
+					<xInput v-model="form.a" />
+					-
+					<xInput v-model="form.b" />
+					-
+					<xInput v-model="form.c" />
+				</div>
+			</xItem>
 		</xForm>
 		<xBtn :configs="configsBtn" />
 	</div>
@@ -54,7 +52,7 @@ export default async function () {
 }
 </script>
 <style lang="less">
-.xItemWrapper-JiChuYongFa_some-class {
+.xItem-JiChuYongFa_some-class {
 	width: 132px;
 }
 </style>

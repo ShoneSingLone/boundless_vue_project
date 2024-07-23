@@ -8,14 +8,21 @@
 			@mouseleave="startTimer()"
 			@click="click"
 			role="alert">
-			<i class="el-notification__icon" :class="[typeClass, iconClass]" v-if="type || iconClass"> </i>
+			<i
+				class="el-notification__icon"
+				:class="[typeClass, iconClass]"
+				v-if="type || iconClass">
+			</i>
 			<div class="el-notification__group" :class="{ 'is-with-icon': typeClass || iconClass }">
 				<h2 class="el-notification__title" v-text="title"></h2>
 				<div class="el-notification__content" v-show="message">
 					<p v-if="dangerouslyUseHTMLString" v-html="message"></p>
 					<xRender v-else :render="message" />
 				</div>
-				<div class="el-notification__closeBtn el-icon-close" v-if="showClose" @click.stop="close"></div>
+				<div
+					class="el-notification__closeBtn el-icon-close"
+					v-if="showClose"
+					@click.stop="close"></div>
 			</div>
 		</div>
 	</transition>

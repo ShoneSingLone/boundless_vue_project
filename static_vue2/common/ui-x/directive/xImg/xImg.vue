@@ -48,7 +48,11 @@ export default async function () {
 
 	const isScroll = (el, vertical = false) => {
 		const determinedDirection = vertical !== null && vertical !== undefined;
-		const overflow = determinedDirection ? (vertical ? getStyle(el, "overflow-y") : getStyle(el, "overflow-x")) : getStyle(el, "overflow");
+		const overflow = determinedDirection
+			? vertical
+				? getStyle(el, "overflow-y")
+				: getStyle(el, "overflow-x")
+			: getStyle(el, "overflow");
 
 		return overflow.match(/(scroll|auto|overlay)/);
 	};
@@ -68,7 +72,12 @@ export default async function () {
 			containerRect = container.getBoundingClientRect();
 		}
 
-		return elRect.top < containerRect.bottom && elRect.bottom > containerRect.top && elRect.right > containerRect.left && elRect.left < containerRect.right;
+		return (
+			elRect.top < containerRect.bottom &&
+			elRect.bottom > containerRect.top &&
+			elRect.right > containerRect.left &&
+			elRect.left < containerRect.right
+		);
 	};
 
 	const getScrollContainer = (el, vertical = false) => {
@@ -255,9 +264,13 @@ export default async function () {
 					case ObjectFit.NONE:
 						return { width: "auto", height: "auto" };
 					case ObjectFit.CONTAIN:
-						return imageAspectRatio < containerAspectRatio ? { width: "auto" } : { height: "auto" };
+						return imageAspectRatio < containerAspectRatio
+							? { width: "auto" }
+							: { height: "auto" };
 					case ObjectFit.COVER:
-						return imageAspectRatio < containerAspectRatio ? { height: "auto" } : { width: "auto" };
+						return imageAspectRatio < containerAspectRatio
+							? { height: "auto" }
+							: { width: "auto" };
 					default:
 						return {};
 				}

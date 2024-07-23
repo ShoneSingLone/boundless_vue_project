@@ -1,17 +1,14 @@
+const { fs, path, _, execCmd } = require("../preprocess.utils");
 const mime = require("mime-types");
-const bodyparser = require("koa-bodyparser");
-const fs = require("fs");
-const _ = require("lodash");
-const path = require("path");
 const cheerio = require("cheerio");
-const { SERVER_CONFIGS } = require("./server.configs");
+const { APP_CONFIGS } = require("./server.configs");
+
+execCmd(`npm run vsws`);
 
 exports.appUseKoaAssets = function (app) {
 	/**
 	 * Koa Middlewares
 	 */
-
-	app.use(bodyparser());
 
 	/* 处理静态资源 */
 	app.use(async (ctx, next) => {
@@ -86,8 +83,6 @@ exports.appUseKoaAssets = function (app) {
 				if (fs.existsSync(targetPath)) {
 					return [targetPath, "application/json"];
 				}
-				console.error("NOT FOUND");
-				console.error(targetPath);
 				return ["", ""];
 			})();
 
@@ -121,13 +116,37 @@ exports.appUseKoaAssets = function (app) {
 							APP_NAME = name;
 						}
 
-						const { _URL_PREFIX_4_DEV } = SERVER_CONFIGS[APP_NAME] || {};
+						const { _URL_PREFIX_4_DEV } = APP_CONFIGS[APP_NAME] || {};
 
 						/* 配置 yapi mock 地址 */
 						if (_URL_PREFIX_4_DEV) {
-							$("#app").after(`<script only-use-in-dev-model>window._URL_PREFIX_4_DEV="${_URL_PREFIX_4_DEV}";</script>`);
+							$("#app").after(`<script only-use-in-dev-model="">
+							let _URL_PREFIX_4_DEV = "";
+							Object.defineProperty(window, "_URL_PREFIX_4_DEV", {
+								get() {
+									return _URL_PREFIX_4_DEV||"${_URL_PREFIX_4_DEV}"
+								},
+								set(newValue) {
+									_URL_PREFIX_4_DEV = newValue
+									console.log("🚀 ~ set ~ _URL_PREFIX_4_DEV in only-use-in-dev-model:", _URL_PREFIX_4_DEV);
+								},
+							});
+						</script>`);
+						} else {
+							$("#app").after(`<script only-use-in-dev-model="">
+							if (location.hostname === "localhost") {
+								Object.defineProperty(window, "_URL_PREFIX_MO", {
+									get() {
+										return "use_yapi_proxy"
+									},
+									set(newValue) {
+										debugger;
+									},
+								});
+							}
+						</script>`);
 						}
-						console.log("🚀 middleware.appUseKoaAssets.js handleIndexHtml:", APP_NAME, _URL_PREFIX_4_DEV);
+						console.log("🚀 middleware.appUseKoaAssets.js APP_CONFIGS:", APP_NAME, _URL_PREFIX_4_DEV);
 
 						ctx.body = $.html();
 					}
@@ -154,7 +173,7 @@ exports.appUseKoaAssets = function (app) {
 
 			/*  [assetsPath, assetsName] = String(ctx.path).match((/^\/rest\/(.*)/)) || []; let isDone = false; if (assetsPath) { ctx.status = 200; ctx.set("Content-Type", "application/json"); ctx.body = { code: "200", data: {}, vmConfigInfos: [{ regionName: "4", cloudInfraName: "3", cloudInfraId: "2", regionId: 1 }] }; isDone = await (async () => { const HANDLER_MAP = { conditions: handleConditions, saleInfo: handleSaleInfo, selled: handleSelled, one_price: handleOnePrice, syncDBData: handleSyncDBData }; const handler = HANDLER_MAP[assetsName]; if (handler) { return await handler({ buildingCollection, ctx }); } else { return false; } })(); } */
 			next();
-			console.log("miss: ", targetPath);
+			// console.log("middleware.appUseKoaAssets", this);
 		} catch (error) {
 			console.error(error);
 		}

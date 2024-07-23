@@ -1,11 +1,10 @@
 <template>
 	<div id="app" v-xloading="APP.isLoading">
 		<AppHeader />
-		<main class="AppLayoutMain">
+		<main class="x-app-layout-main">
 			<AppLeft class="AppLayoutLeft" />
 			<div class="AppLayoutContent">
 				<RouterView />
-				<!-- <div class="height100" v-loading="true" v-else>loading...</div> -->
 			</div>
 		</main>
 	</div>

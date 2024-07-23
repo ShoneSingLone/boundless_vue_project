@@ -1,47 +1,80 @@
 <script lang="ts">
-export default async function (options = {}) {
-	Vue.prototype.$xUiConfigs = _.merge({
-		size: options.size || "",
-		zIndex: options.zIndex || 2e3
-	});
+export default async function ({
+	PRIVATE_GLOBAL,
+	size,
+	zIndex,
+	bootstrap,
+	x_table_vir_empty_component,
+	x_switch_width,
+	x_page_title_back_icon,
+	x_item_is_show_item_colon,
+	x_modal_close_icon,
+	x_pagination_pagination_component,
+	x_pagination_position
+}) {
+	((/* ui 默认配置 */) => {
+		/* tableVir empty 的默认组件地址 */
+		PRIVATE_GLOBAL.x_ui_size = size || "small";
+		PRIVATE_GLOBAL.x_ui_z_index = zIndex || 2e3;
+		PRIVATE_GLOBAL.x_table_vir_empty_component = x_table_vir_empty_component;
+		PRIVATE_GLOBAL.x_switch_width = x_switch_width || 40;
+		PRIVATE_GLOBAL.x_page_title_back_icon = x_page_title_back_icon || "icon_back";
+		PRIVATE_GLOBAL.x_item_is_show_item_colon = x_item_is_show_item_colon || false;
+		PRIVATE_GLOBAL.x_modal_close_icon = x_modal_close_icon || "icon_close";
+		PRIVATE_GLOBAL.x_pagination_pagination_component =
+			x_pagination_pagination_component || "PrivatePagination";
+		PRIVATE_GLOBAL.x_pagination_position = x_pagination_position || "end";
+	})();
 	/* @ts-ignore */
 	window._api = window._api || {};
 	/* @ts-ignore */
 	window._opts = window._opts || {};
 
-	/* 全局 */
-	await Promise.all([
-		/* 基础工具类 */
-		_.$importVue("/common/ui-x/common/xUIcomponetUtils.vue"),
-		Promise.all(
-			_.map(
-				[
-					"/common/ui-x/directive/directive.install.vue",
-					"/common/ui-x/directive/xtips/xtips.vue",
-					"/common/ui-x/directive/ripple.vue",
-					"/common/ui-x/directive/xloading.vue",
-					"/common/ui-x/directive/xmove.vue"
-				],
-				url => _.$importVue(url)
-			)
+	/* 全局 _xUtils */
+	await _.$importVue("/common/ui-x/common/xUIcomponetUtils.vue");
+	/* 基础工具类 */
+	await Promise.all(
+		_.map(
+			[
+				"/common/ui-x/directive/directive.install.vue",
+				"/common/ui-x/directive/xtips/xtips.vue",
+				"/common/ui-x/directive/ripple.vue",
+				"/common/ui-x/directive/xloading.vue",
+				"/common/ui-x/directive/xmove.vue"
+			],
+			url => _.$importVue(url)
 		)
-	]);
-	if (_.isFunction(options.bootstrap)) {
-		await options.bootstrap(window._useXui);
+	);
+
+	if (_.isFunction(bootstrap)) {
+		const { _xUtils } = PRIVATE_GLOBAL;
+		await bootstrap(_xUtils);
 	}
 
 	await (async function lazyLoadAllComponents() {
 		const ALL_COMPONENTS = await _.$importVue("/common/ui-x/allComponents.vue");
 		const loadComponentByImportVue = async componentpath => {
 			const componentName = _.last(componentpath.split("/"));
-			if (["xDropdownMenu", "xDropdown", "xBtn"].includes(componentName)) {
+			if (
+				["xDropdownMenu", "xDropdown", "xBtn", "xTooltip", "xPopover"].includes(
+					componentName
+				)
+			) {
 				/* xBtn 多个地方用到，但是异步加载会有bug:骨架屏不刷新 */
 				const component = await _.$importVue(`/common/ui-x/${componentpath}.vue`);
+				setComponentName(component, componentName);
+				/* @ts-ignore */
 				Vue.component(componentName, component);
 			} else {
 				/* 懒加载组件 */
+				/* @ts-ignore */
 				Vue.component(componentName, async () => {
+					// if (componentName === "xCheckbox") {
+					// 	debugger;
+					// }
 					const component = await _.$importVue(`/common/ui-x/${componentpath}.vue`);
+					setComponentName(component, componentName);
+					/* @ts-ignore */
 					if (/^xCell/.test(componentName)) {
 						/**
 						 * props: ["row", "configs"], row,index,configs,prop 包含当前行、列、下标、配置信息
@@ -53,8 +86,15 @@ export default async function (options = {}) {
 				});
 			}
 		};
-
-		_.each(ALL_COMPONENTS, loadComponentByImportVue);
+		await Promise.all(_.map(ALL_COMPONENTS, loadComponentByImportVue));
+		function setComponentName(component, componentName) {
+			if (!component.componentName) {
+				component.componentName = componentName;
+			}
+			if (!component.name) {
+				component.name = componentName;
+			}
+		}
 	})();
 
 	function setDataTipsShowWhenHover() {
@@ -64,14 +104,20 @@ export default async function (options = {}) {
 			try {
 				var $ele = $(this);
 				var width = $ele.width();
-				var $child = $(`<span style="opacity:0;position:absolute;z-index:-1;"></span>`).appendTo($("body")).text($ele.text());
+				var $child = $(`<span style="opacity:0;position:absolute;z-index:-1;"></span>`)
+					.appendTo($("body"))
+					.text($ele.text());
 				var widthChild = $child.width();
 				$child.remove();
 				if (width < widthChild - 2) {
-					const vlayerIndex = layer.tips(`<div style="overflow: auto;">${$ele.text()}</div>`, this, {
-						tips: [1, "#fff"],
-						time: 1000 * 60 * 1
-					});
+					const vlayerIndex = layer.tips(
+						`<div style="overflow: auto;">${$ele.text()}</div>`,
+						this,
+						{
+							tips: [1, "#fff"],
+							time: 1000 * 60 * 1
+						}
+					);
 					$ele.attr("data-tips", vlayerIndex);
 				}
 			} catch (e) {
@@ -105,6 +151,7 @@ export default async function (options = {}) {
 
 	await (async () => {
 		/* 设置样式 */
+
 		await _.$importVue("/common/ui-x/theme/theme.default.vue");
 		async function setThemeCss() {
 			const currentTheme = $("html").attr("data-theme");

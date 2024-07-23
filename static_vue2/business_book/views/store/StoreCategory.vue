@@ -1,7 +1,13 @@
 <template>
 	<div class="store-shelf">
 		<shelf-title :title="shelfCategory.title"></shelf-title>
-		<scroll :top="0" :bottom="scrollBottom" class="store-shelf-scroll-wrapper" @onScroll="onScroll" ref="scroll" v-if="isShowList">
+		<scroll
+			:top="0"
+			:bottom="scrollBottom"
+			class="store-shelf-scroll-wrapper"
+			@onScroll="onScroll"
+			ref="scroll"
+			v-if="isShowList">
 			<shelf-list :top="42" :data="shelfCategory.itemList"></shelf-list>
 		</scroll>
 		<div class="store-shelf-empty-view" v-else>

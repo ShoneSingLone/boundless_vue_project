@@ -10,7 +10,11 @@ export default async function () {
 			});
 			this.innerComponentConfigs = innerComponentConfigs;
 			return function () {
-				_.$val(innerComponentConfigs, "payload", _.merge(innerComponentConfigs.payload, this.configs));
+				_.$val(
+					innerComponentConfigs,
+					"payload",
+					_.merge(innerComponentConfigs.payload, this.configs)
+				);
 				return h("xItem", {
 					configs: innerComponentConfigs,
 					value: privateModel.value,

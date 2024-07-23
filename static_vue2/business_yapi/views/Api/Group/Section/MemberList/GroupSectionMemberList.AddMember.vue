@@ -53,7 +53,7 @@ export default async function ({ onOk }) {
 				};
 			},
 			cptFormData() {
-				return _.$pickValueFromConfigs(this.form);
+				return _.$pickFormValues(this.form);
 			},
 			btnOk() {
 				const vm = this;
@@ -72,7 +72,7 @@ export default async function ({ onOk }) {
 						const { add_members, exist_members } = data;
 						const addLength = add_members.length;
 						const existLength = exist_members.length;
-						_.$msgSuccess(`新增 ${addLength} 人， ${existLength} 人已存在`);
+						_.$msg(`新增 ${addLength} 人， ${existLength} 人已存在`);
 						// 添加成功后重新获取分组成员列表
 						await onOk();
 						vm.closeModal();
@@ -96,7 +96,12 @@ export default async function ({ onOk }) {
 						custom_field1_enable: custom_field1.enable || false,
 						custom_field1_name: custom_field1.name || ""
 					},
-					order: ["currGroupName", "currGroupDesc", "custom_field1_enable", "custom_field1_name"]
+					order: [
+						"currGroupName",
+						"currGroupDesc",
+						"custom_field1_enable",
+						"custom_field1_name"
+					]
 				});
 			},
 			renderDeleteGroup() {
@@ -126,7 +131,11 @@ export default async function ({ onOk }) {
 										},
 										[
 											h("div", { staticClass: "card-danger-content" }, [
-												h("p", [i18n("分组一旦删除，将无法恢复数据，请慎重操作！")]),
+												h("p", [
+													i18n(
+														"分组一旦删除，将无法恢复数据，请慎重操作！"
+													)
+												]),
 												h("p", [i18n("只有超级管理员有权限删除分组。")])
 											]),
 											h("div", { staticClass: "flex end" }, [
