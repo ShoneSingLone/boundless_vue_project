@@ -1,0 +1,16 @@
+node_modules
+.idea
+ventose
+dist
+ast.json
+vscode.workspace/**.code-workspace
+out
+preprocess/genDocMd/ast.left.json
+node_modules.rar
+**/new_token.txt
+preprocess/uploadFileToRemote/privateCofnigs.js
+preprocess/uploadFileToRemote/zips
+/privateConfigs_MoTokenDataCofnigs.js
+vscode.workspace/
+pull.bat
+push.bat

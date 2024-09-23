@@ -1,0 +1,202 @@
+<script lang="ts">
+export default async function () {
+	const user = {
+		icon: "_icon_menu_user",
+		menuCode: "accounts",
+		href: "/user",
+		label: i18n("用户管理"),
+		children: [
+			{
+				label: i18n("添加"),
+				DO_NOT_SHOW_IN_MENU: true,
+				href: "/user/add"
+			},
+			{
+				label: i18n("编辑"),
+				DO_NOT_SHOW_IN_MENU: true,
+				href: "/user/edit"
+			}
+		]
+	};
+	const security = {
+		icon: "_icon_menu_role",
+		href: "/asd",
+		menuCode: "security",
+		DO_NOT_TO: true,
+		label: i18n("安全管理"),
+		children: [
+			{
+				href: "/role",
+				menuCode: "security:role",
+				label: i18n("角色管理")
+			}
+		]
+	};
+	const role = {
+		icon: "_icon_menu_role",
+		href: "/role",
+		menuCode: "role",
+		label: i18n("角色管理"),
+		children: [
+			{
+				label: i18n("添加"),
+				DO_NOT_SHOW_IN_MENU: true,
+				href: "/role/add"
+			},
+			{
+				label: i18n("编辑"),
+				DO_NOT_SHOW_IN_MENU: true,
+				href: "/role/edit"
+			}
+		]
+	};
+	const dept = {
+		icon: "_icon_menu_dept",
+		menuCode: "department",
+		href: "/dept",
+		label: i18n("部门管理"),
+		children: [
+			{
+				label: i18n("添加"),
+				DO_NOT_SHOW_IN_MENU: true,
+				href: "/dept/add"
+			},
+			{
+				label: i18n("编辑"),
+				DO_NOT_SHOW_IN_MENU: true,
+				href: "/dept/edit"
+			}
+		]
+	};
+
+	// const system_setting = {
+	// 	icon: "_system_setting",
+	// 	href: "/system_setting",
+	// 	DO_NOT_TO: true,
+	// 	label: i18n("系统设置"),
+	// 	children: []
+	// };
+	const system_monitoring = {
+		icon: "_system_setting",
+		href: "/monitoring",
+		menuCode: "selfMonitor",
+		DO_NOT_TO: false,
+		label: i18n("系统自监控"),
+		children: []
+	};
+
+	const security_adjust = {
+		icon: "_icon_menu_security_adjust",
+		href: "/security_adjust",
+		menuCode: "audit",
+		DO_NOT_TO: true,
+		label: i18n("审计管理"),
+		children: [
+			{
+				label: i18n("数据库管理"),
+				href: "/security_adjust/database_management",
+				menuCode: "agent"
+			},
+			{
+				label: i18n("探针管理"),
+				href: "/security_adjust/probe_management",
+				menuCode: "agent"
+			},
+			{
+				label: i18n("策略管理"),
+				href: "/security_adjust/policy_management",
+				menuCode: "audit:strategy",
+				children: [
+					{
+						label: i18n("查看"),
+						DO_NOT_SHOW_IN_MENU: true,
+						href: "/security_adjust/policy_management/view"
+					},
+					{
+						label: i18n("白名单"),
+						DO_NOT_SHOW_IN_MENU: true,
+						href: "/security_adjust/policy_management/white_list"
+					},
+					{
+						label: i18n("编辑"),
+						DO_NOT_SHOW_IN_MENU: true,
+						href: "/role/edit"
+					}
+				]
+			},
+			{
+				label: i18n("日志检索"),
+				href: "/security_adjust/log_retrieval",
+				menuCode: "audit:auditLog"
+			},
+			{
+				label: i18n("用户行为轨迹"),
+				href: "/security_adjust/user_behavior_trajectory",
+				menuCode: "audit:userBehavior"
+			},
+			{ label: i18n("备份管理"), href: "/security_adjust/backup_management" },
+			{
+				label: i18n("报警管理"),
+				href: "/security_adjust/alarm_management",
+				menuCode: "audit:warning"
+			},
+			{
+				label: i18n("离线流量分析"),
+				href: "/security_adjust/offline_traffic_analysis",
+				menuCode: "audit:offlineTraffic"
+			}
+		]
+	};
+
+	const system_manager = {
+		icon: "icon_report",
+		label: i18n("系统管理"),
+		href: "/1",
+		menuCode: "system_manage",
+		DO_NOT_TO: true,
+		children: [
+			{
+				label: i18n("菜单管理"),
+				href: "/menu",
+				menuCode: "system_manage:menu"
+			},
+			{
+				menuCode: "system_manage:accounts",
+				href: "/user",
+				label: i18n("用户管理")
+			},
+			{
+				menuCode: "system_manage:department",
+				href: "/dept",
+				label: i18n("部门管理")
+			}
+		]
+	};
+
+	const home = {
+		icon: "_home",
+		label: i18n("首页"),
+		href: "/home",
+		menuCode: "frontPage"
+	};
+	const menu = {
+		icon: "_menu",
+		label: i18n("菜单管理"),
+		href: "/menu",
+		menuCode: "menu"
+	};
+
+	return [
+		home,
+		system_monitoring,
+		// user,
+		// dept,
+		// role,
+		security,
+		// menu,
+		security_adjust,
+		// system_setting,
+		system_manager
+	];
+}
+</script>

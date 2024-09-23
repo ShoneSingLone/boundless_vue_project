@@ -1,0 +1,9 @@
+<svg class="icon" style="width: 1em;height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+    viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12196">
+    <path
+        d="M1024 512.15l-20.78-20.78-20.94-20.94L511.85 0l-41.72 41.72 470.43 470.43-470.14 470.13 41.72 41.72 470.14-470.14v0.01l20.95-20.95 20.77-20.77z"
+        fill="var(--el-color-primary)" p-id="12197"></path>
+    <path
+        d="M512.15 553.87l20.95-20.95 20.77-20.77-20.78-20.78-20.94-20.94L41.72 0 0 41.72l470.43 470.43L0.29 982.28 42.01 1024l470.14-470.14z"
+        fill="#515151" p-id="12198"></path>
+</svg>
