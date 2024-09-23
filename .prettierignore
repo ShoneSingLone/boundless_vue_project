@@ -1,0 +1,7 @@
+*.min.js
+static_assets/libs
+static_assets/i18n
+public/monaco
+TinyVue.*
+zh-CN.js
+en-US.js

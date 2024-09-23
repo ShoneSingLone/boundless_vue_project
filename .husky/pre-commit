@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# commitmsg="$(git status)"
+# npm run githooks:pre-commit "$0" "$commitmsg"
+npm run githooks:pre-commit 

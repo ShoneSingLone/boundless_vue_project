@@ -1,0 +1,90 @@
+[
+	{
+		"prop": "omit",
+		"count": 1
+	},
+	{
+		"prop": "some",
+		"count": 1
+	},
+	{
+		"prop": "isObject",
+		"count": 1
+	},
+	{
+		"prop": "isUndefined",
+		"count": 2
+	},
+	{
+		"prop": "uniqBy",
+		"count": 3
+	},
+	{
+		"prop": "first",
+		"count": 3
+	},
+	{
+		"prop": "cloneDeep",
+		"count": 4
+	},
+	{
+		"prop": "findIndex",
+		"count": 4
+	},
+	{
+		"prop": "debounce",
+		"count": 5
+	},
+	{
+		"prop": "reduce",
+		"count": 5
+	},
+	{
+		"prop": "isPlainObject",
+		"count": 5
+	},
+	{
+		"prop": "filter",
+		"count": 6
+	},
+	{
+		"prop": "isBoolean",
+		"count": 7
+	},
+	{
+		"prop": "merge",
+		"count": 8
+	},
+	{
+		"prop": "isString",
+		"count": 9
+	},
+	{
+		"prop": "each",
+		"count": 10
+	},
+	{
+		"prop": "every",
+		"count": 10
+	},
+	{
+		"prop": "isNumber",
+		"count": 13
+	},
+	{
+		"prop": "isArray",
+		"count": 16
+	},
+	{
+		"prop": "find",
+		"count": 18
+	},
+	{
+		"prop": "map",
+		"count": 21
+	},
+	{
+		"prop": "isFunction",
+		"count": 27
+	}
+]
