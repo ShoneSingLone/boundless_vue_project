@@ -368,33 +368,39 @@
 		url = $resolvePath(url);
 		return new Promise(async (resolve, reject) => {
 			const key = camelCase(url);
-			let collection = $loadText.pendding[key];
-			if (!collection) {
-				$loadText.pendding[key] = collection = [];
+			let collection = $loadText.pending[key];
+
+			if ((typeof collection) === 'string') {
+				return resolve(collection);
 			}
 
-			if (typeof collection === "array" && collection.length) {
+			if (!collection) {
+				$loadText.pending[key] = collection = [];
+			}
+
+			if (Array.isArray(collection) && collection.length) {
 				/* 如果是数组，且已经发送请求 */
-				$loadText.pendding[key].push({ resolve, reject });
-			} else if ((typeof collection) === 'string') {
-				resolve(collection);
+				$loadText.pending[key].push({ resolve, reject });
 			} else {
-				$loadText.pendding[key] = [{ resolve, reject }];
+				$loadText.pending[key] = [{ resolve, reject }];
 				try {
-					const _url = $resolvePath(url);
 					/* 保证只运行一次请求 */
-					const res = await execXHR(_url);
-					const OLD_RESOLVE = $loadText.pendding[key];
-					$loadText.pendding[key] = res;
-					OLD_RESOLVE.forEach(({ resolve }) => resolve(res));
+					const res = await execXHR(url);
+					const OLD_RESOLVE = $loadText.pending[key];
+					if (Array.isArray(OLD_RESOLVE)) {
+						OLD_RESOLVE.forEach(({ resolve }) => resolve(res));
+					} else {
+						debugger;
+					}
+					$loadText.pending[key] = res;
 				} catch (error) {
 					debugger;
-					$loadText.pendding[key].forEach(({ reject }) => reject(error));
+					$loadText.pending[key].forEach(({ reject }) => reject(error));
 				}
 			}
 		});
 	}
-	$loadText.pendding = {};
+	$loadText.pending = {};
 
 	const $loadTextCacheify = async function (url) {
 		const key = camelCase(url);
