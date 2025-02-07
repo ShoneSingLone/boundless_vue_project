@@ -76,13 +76,6 @@ export default async function () {
 							vm.getTableData({ page: 1 });
 						}
 					}
-					// {
-					// 	label: "重置",
-					// 	icon: "_icon_reset",
-					// 	onClick() {
-					// 		_.resetForm(vm.formSearch);
-					// 	}
-					// }
 				],
 				oprBtnArrayRight: [
 					{
@@ -157,9 +150,10 @@ export default async function () {
 						{
 							prop: "active",
 							label: "操作",
+							width: 280,
 							cellRenderer({ cellData, rowData }) {
-								return h("div", { class: "flex middle center" }, [
-									h("xBtn", {
+								return hDiv({ class: "flex middle center" }, [
+									hxBtn({
 										configs: {
 											preset: "text",
 											label: "编辑",
@@ -177,7 +171,7 @@ export default async function () {
 											}
 										}
 									}),
-									h("xBtn", {
+									hxBtn({
 										configs: {
 											preset: "text",
 											label: "删除",
@@ -185,6 +179,15 @@ export default async function () {
 											disabled: rowData.status === 0,
 											onClick() {
 												return vm.deleteUser(rowData);
+											}
+										}
+									}),
+									hxBtn({
+										configs: {
+											preset: "text",
+											label: "重置密码",
+											onClick() {
+												return vm.handleResetPassword(rowData);
 											}
 										}
 									})
@@ -207,6 +210,21 @@ export default async function () {
 			}
 		},
 		methods: {
+			async handleResetPassword(row) {
+				await _.$confirm({
+					title: "提示",
+					content: `是否确认重置密码？`
+				});
+				const { code, msg } = await _api.admin_db_audit.xdsUserResetPwd({
+					...row
+				});
+				if (code === 0) {
+					_.$msgSuccess(msg);
+					this.getTableData();
+				} else {
+					_.$msgError(msg);
+				}
+			},
 			async handleGetXdsOptionsUserStatus() {
 				this.userStatus = await _api.admin_db_audit.xdsOptionsUserStatus();
 			},
@@ -240,9 +258,13 @@ export default async function () {
 			async deleteUser(userInfo) {
 				try {
 					await _.$confirm_important(`确认删除用户${userInfo.name}？`);
-					await _api.admin_db_audit.xdsUserId(userInfo.id);
-					_.$msg(`执行成功`);
-					this.getTableData();
+					const { code, msg } = await _api.admin_db_audit.xdsUserId(userInfo.id);
+					if (code === 0) {
+						_.$msgSuccess(msg);
+						this.getTableData();
+					} else {
+						_.$msgError(msg);
+					}
 				} catch (error) {
 					if (error) {
 						_.$msgError(error?.msg || error);

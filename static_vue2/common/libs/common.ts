@@ -11,7 +11,6 @@
 			set(privateGlobal, prop, val) {
 				if (privateGlobal[prop]) {
 					alert(`PRIVATE_GLOBAL ${prop} 重复`);
-					debugger;
 				} else {
 					privateGlobal[prop] = val;
 					return true;
@@ -19,6 +18,25 @@
 			}
 		}
 	);
+
+	/* @typescriptDeclare (paramName: any): string */
+	_.$getRawQueryParamFromSearch = function getRawQueryParamFromSearch(paramName) {
+		// 获取查询字符串部分
+		let search = location.search;
+		if (search.startsWith("?")) {
+			search = search.slice(1);
+		}
+		// 分割成多个参数对
+		let pairs = search.split("&");
+		for (let pair of pairs) {
+			let [key, value] = pair.split("=");
+			if (key === paramName) {
+				// 直接返回原始值，不进行解码
+				return value;
+			}
+		}
+		return null;
+	};
 
 	/**
 	 * 构造树型结构数据
@@ -78,7 +96,7 @@
 		tableConfigs.columns.splice(index, 1, item);
 	};
 
-	/* @ts-ignore */
+	/* @ts-ignore @declared*/
 	_.$pickFromArray = function (columns, propsArray, prop = "prop") {
 		/* @ts-ignore */
 		if (!_.$isArrayFill(propsArray) || !_.$isArrayFill(columns)) {
@@ -141,7 +159,7 @@
 	/* @typescriptDeclare (tree:any[],handler:any,options?:{children:string})=>void */
 	_.$traverse = function (tree, handler, options, propString = "") {
 		const childrenName = options?.children || "children";
-		if (_.$isArrayFill(tree)) {
+		if (!_.isEmpty(tree)) {
 			let len = tree.length - 1;
 			let i = len;
 
@@ -154,7 +172,7 @@
 				} else {
 					const index = _.findIndex(tree, node);
 					if (~index) {
-						if (_.$isArrayFill(node[childrenName])) {
+						if (!_.isEmpty(node[childrenName])) {
 							node[childrenName] = _.$traverse(
 								node[childrenName],
 								handler,
@@ -358,13 +376,6 @@
 	})();
 
 	/**
-	 * 获取对象的值
-	 */
-	/*@typescriptDeclare (obj:object,key:string)=>string */
-	_.$handleSetFormValue = (obj, key) => {
-		return obj[`${key}`] || "";
-	};
-	/**
 	 * //将空字符串转换为null
 	 * @param str
 	 * @return {null|*}
@@ -430,13 +441,14 @@
 	};
 
 	/**
-	 * 浅-判断对象值是否相同
+	 * 判断对象值是否相同,将Function转为字符串比较
+	 * 执行深比较来确定两个值是否相等。对于对象和数组，它会递归地比较它们的属性和元素，而不仅仅是检查引用是否相同。
 	 * @param {*} a
 	 * @param {*} b
 	 * @returns
 	 */
 	/* @typescriptDeclare (a:object,b:object)=>boolean */
-	_.$eqObj = (a, b) => {
+	_.$isEqualByObjVal = (a, b) => {
 		if (Object.keys(a).length !== Object.keys(b).length) {
 			return false;
 		}
@@ -447,7 +459,7 @@
 				if (_a !== _b) {
 					return false;
 				}
-			} else if (!_.eq(a[key], b[key])) {
+			} else if (!_.isEqual(a[key], b[key])) {
 				return false;
 			}
 		}
@@ -477,14 +489,14 @@
 			if (!Vue.hasOwn(options, "disabled")) {
 				options.disabled = false;
 			}
+
+			if (_.isArray(options.columns)) {
+				options.columns.push({
+					/* TODO: 最后一列的数据被吞了？*/
+				});
+			}
 			return options;
 		};
-
-		function SetAddAll(targetSet, sourceSet) {
-			for (const item of sourceSet) {
-				targetSet.add(item);
-			}
-		}
 
 		/* ((((((((((((((((((((((coltypes))))))))))))))))))))))  */
 		window.defTable.colExpandArrow = (options = {}) => {
@@ -526,12 +538,12 @@
 							const old = Array.from(tableConfigs.data.set);
 							if (tableConfigs.data.set.size < tableConfigs.data.list.length) {
 								_.each(tableConfigs.data.list, i =>
-									tableConfigs.data.set.add(i[by])
+									tableConfigs.data.set.add(_.$val(i, by))
 								);
 								tableConfigs.data.set = new Set(Array.from(tableConfigs.data.set));
 							} else {
 								_.each(tableConfigs.data.list, i =>
-									tableConfigs.data.set.delete(i[by])
+									tableConfigs.data.set.delete(_.$val(i, by))
 								);
 								tableConfigs.data.set = new Set(Array.from(tableConfigs.data.set));
 							}
@@ -567,7 +579,7 @@
 
 					const { rowData } = params;
 					const tableConfigs = getConfigs();
-					const isChecked = tableConfigs.data.set.has(rowData[by]);
+					const isChecked = tableConfigs.data.set.has(_.$val(rowData, by));
 					let disabledTips = "";
 					let isDisabled = (() => {
 						if (_.isFunction(disabled)) {
@@ -596,9 +608,9 @@
 									const old = Array.from(tableConfigs.data.set);
 
 									if (value) {
-										tableConfigs.data.set.add(rowData[by]);
+										tableConfigs.data.set.add(_.$val(rowData, by));
 									} else {
-										tableConfigs.data.set.delete(rowData[by]);
+										tableConfigs.data.set.delete(_.$val(rowData, by));
 									}
 									/* vue2 未对set map 做响应式支持？？？ */
 									tableConfigs.data.set = _.clone(tableConfigs.data.set);
@@ -629,7 +641,7 @@
 				cellRenderer: params => {
 					const { rowData } = params;
 					const tableConfigs = getConfigs();
-					const isChecked = tableConfigs.data.set.has(rowData[by]);
+					const isChecked = tableConfigs.data.set.has(_.$val(rowData, by));
 					let disabledTips = "";
 					let isDisabled = (() => {
 						if (_.isFunction(disabled)) {
@@ -658,7 +670,7 @@
 								onChange(value) {
 									const old = Array.from(tableConfigs.data.set);
 
-									const id = rowData[by];
+									const id = _.$val(rowData, by);
 									if (value) {
 										tableConfigs.data.set = new Set([id]);
 									} else {
@@ -681,7 +693,7 @@
 		window.defTable.colActions = ({ cellRenderer, width, fixed = "right" }) => {
 			const columnDefaultConfigs = {
 				prop: "COL_ACTIONS",
-				label: i18n("COL_ACTIONS"),
+				label: i18n("操作"),
 				fixed,
 				width,
 				headerCellRenderer(_props) {
@@ -818,19 +830,22 @@
 		};
 	}
 
-	/**
-	 * 将一个url转换为VueRouter使用的a标签href
-	 * @param {*} urlLike
-	 * @param {*} query
-	 * @returns
-	 */
-	/* @typescriptDeclare (urlLike:string, query:object) => string */
-	_.$aHashLink = (urlLike, query) => {
-		const { url } = transToUrl(urlLike, query);
-		const targetUrl = new URL(location.href, location.origin);
-		targetUrl.hash = url.href.replace(url.origin, "");
-		return targetUrl.href;
-	};
+	(() => {
+		/**
+		 * 将一个url转换为VueRouter使用的a标签href
+		 * @param {*} urlLike
+		 * @param {*} query
+		 * @returns
+		 */
+		/* @typescriptDeclare (urlLike:string, query?:object) => string */
+		_.$aHashLink = (urlLike, query = {}) => {
+			const { url } = transToUrl(urlLike, query);
+			const targetUrl = new URL(location.href, location.origin);
+			targetUrl.hash = url.href.replace(url.origin, "");
+			return targetUrl.href;
+		};
+		Vue.prototype.$aHashLink = _.$aHashLink;
+	})();
 
 	/**
 	 * 设置主题
@@ -839,9 +854,7 @@
 	/* @typescriptDeclare (theme:string)=>void */
 	_.$setAppTheme = function (theme) {
 		$("html").attr("data-theme", theme || "");
-		Vue.prototype.$X_APP_THEME = theme;
-		Vue.forceUpdate();
-		$(window).trigger("xUiThemeChange", theme);
+		$(window).trigger("x_ui_theme_change", theme);
 	};
 
 	_.$valueEquals = (a, b) => {
@@ -875,9 +888,17 @@
 		const viewRectBottom = viewRectTop + container.clientHeight;
 
 		if (top < viewRectTop) {
-			container.scrollTop = top;
+			container.scrollTo({
+				top: top,
+				behavior: "smooth"
+			});
+			// container.scrollTop = top;
 		} else if (bottom > viewRectBottom) {
-			container.scrollTop = bottom - container.clientHeight;
+			container.scrollTo({
+				top: bottom - container.clientHeight,
+				behavior: "smooth"
+			});
+			// container.scrollTop = bottom - container.clientHeight;
 		}
 	};
 
@@ -1136,6 +1157,7 @@
 	 * @param {*} wait time
 	 * @returns
 	 */
+	/* @typescriptDeclare (vm:any, fn:Function, wait:number)=>any */
 	_.$asyncDebounce = (vm, func, delay = 1000) => {
 		let timer;
 		let promise;
@@ -1224,7 +1246,10 @@
 
 	/**
 	 * 确认信息
-	 * @param {*} options
+	 * @param {*} options {
+	 * title:string,
+	 * content:vNode or string
+	 * }
 	 * @returns
 	 */
 	/* @typescriptDeclare (options?:any)=>Promise<any> */
@@ -1262,6 +1287,11 @@
 				isDelete
 			});
 
+			/* 在弹窗中，可以获取到modalVm，调用forceUpdate，强制刷新弹窗内容 */
+			if (_.isFunction(options.setModalVm)) {
+				options.setModalVm({ modalVm });
+			}
+
 			modalVm.$on("hook:beforeDestroy", () => {
 				/* 如果点击关闭按钮，不会主动调用promise的终态 */
 				if (modalVm.isClickCloseIcon) {
@@ -1277,6 +1307,7 @@
 	 * @param {*} options
 	 * @returns
 	 */
+	/* @typescriptDeclare (options?:any)=>Promise<any> */
 	_.$confirm_important = (options = {}) => {
 		if (_.isString(options)) {
 			options = {
@@ -1310,50 +1341,53 @@
 		 * @returns
 		 */
 		/* @typescriptDeclare (title:string,options?:any)=>Promise<any> */
-		_.$msgError = msg => {
-			if (!msg) {
+		_.$msgError = tipsInfo => {
+			if (!tipsInfo) {
 				return;
 			}
-			console.log("🚀 ERROR: ", msg);
+			console.log("🚀 ERROR: ", tipsInfo);
 			/*如果返回的是一個對象，且对象status为200，则不提示*/
-			if (_.isPlainObject(msg)) {
+			if (_.isPlainObject(tipsInfo)) {
 				/* @ts-ignore */
-				if (msg.status === 200) {
+				if (tipsInfo.status === 200) {
 					return;
 				}
 				/* @ts-ignore */
-				if (_.isString(msg.error)) {
+				if (_.isString(tipsInfo.error)) {
 					/* @ts-ignore */
-					msg = msg.error;
+					tipsInfo = tipsInfo.error;
 					/* @ts-ignore */
-				} else if (_.isString(msg.responseJSON?.detailArgs)) {
+				} else if (_.isString(tipsInfo.responseJSON?.detailArgs)) {
 					/* @ts-ignore */
-					msg = msg.responseJSON.detailArgs;
+					tipsInfo = tipsInfo.responseJSON.detailArgs;
 					/* @ts-ignore */
-				} else if (_.isString(msg.responseText)) {
+				} else if (_.isString(tipsInfo.responseText)) {
 					/* @ts-ignore */
-					msg = msg.responseText;
+					tipsInfo = tipsInfo.responseText;
 					/* @ts-ignore */
-				} else if (_.isString(msg.message)) {
+				} else if (_.isString(tipsInfo.message)) {
 					/* @ts-ignore */
-					msg = msg.message;
+					tipsInfo = tipsInfo.message;
+				} else if (_.isString(tipsInfo.msg)) {
+					/* @ts-ignore */
+					tipsInfo = tipsInfo.msg;
 				}
 			} else {
 				try {
 					const _msg = JSON.parse(_msg);
 					if (_msg?.responseJSON?.detailArgs) {
-						msg = _msg?.responseJSON?.detailArgs;
+						tipsInfo = _msg?.responseJSON?.detailArgs;
 					} else if (_msg?.responseText) {
-						msg = _msg.responseText;
+						tipsInfo = _msg.responseText;
 					} else if (_msg?.message) {
-						msg = _msg.message;
+						tipsInfo = _msg.message;
 					}
 				} catch (error) {}
 			}
 
 			return _.$notify.error({
 				title: i18n("错误"),
-				message: msg
+				message: tipsInfo
 			});
 		};
 	})();
@@ -1375,50 +1409,6 @@
 				title: title,
 				_VueCtor: WindowVueCtor,
 				...options
-			});
-		};
-	})();
-
-	(() => {
-		const logEnsure = _.throttle(function (fnString, count) {
-			console.log("🚀:ensure", count, "\n", fnString);
-		}, 1000 * 2);
-
-		/**
-		 *
-		 * @param {*} fnGetValue 执行此函数，直到返回真值
-		 * @param {*} duration 默认为0即不断尝试；若给定时间，未在给定时间内完成，则失败
-		 * @returns
-		 */
-		/* @typescriptDeclare (fnGetValue:(()=>Promise<any>)|(()=>any), duration?:number) =>Promise<any> */
-		_.$ensure = async (fnGetValue, duration = 0, gap = 64) => {
-			var fnString = fnGetValue.toString();
-			return new Promise(async (resolve, reject) => {
-				let timer,
-					exeCount = 0;
-
-				/*如果超时*/
-				if (duration) {
-					setTimeout(() => {
-						if (timer) {
-							clearTimeout(timer);
-						}
-						logEnsure(fnString, exeCount);
-						reject(new Error("ensure timeout"));
-					}, duration);
-				}
-
-				(async function exeFnGetValue() {
-					const value = await fnGetValue();
-					/*始终执行一次*/
-					logEnsure(fnString, ++exeCount);
-					if (!!value) {
-						timer && clearTimeout(timer);
-						resolve(value);
-					} else {
-						timer = setTimeout(exeFnGetValue, gap);
-					}
-				})();
 			});
 		};
 	})();
@@ -1601,6 +1591,7 @@
 				console.error(error);
 			}
 		};
+		_.$GenComponentOptions.optionsSets = new Set();
 
 		/**
 		 * 全局单例：同步
@@ -1650,7 +1641,7 @@
 		 * @param styleSourceCode
 		 */
 		_.$preprocessCssByless = async function (styleSourceCode) {
-			const { render } = await _.$appendScript("/common/libs/less.min.js", "less");
+			const { render } = await _.$appendScript("/common/libs/min/less.js", "less");
 			let cssContent = await new Promise(resolve => {
 				render(_.$resolveCssAssetsPath(styleSourceCode), {}, (error, cssContent) => {
 					if (error) {
@@ -1666,9 +1657,13 @@
 		};
 
 		_.$sourceCodeSFC = async function ({ resolvedURL, sourceCode }) {
+			const init = () => {
+				$appendSfcStyle(VUE_COMPONENTS_CACHE[resolvedURL].styleSourceCode, resolvedURL);
+			};
 			/* @descript 非开发模式下，如果已经加载，直接返回，否则每次都获取最新的代码 */
 			/* @declare { scritpSourceCode, templateSourceCode, styleSourceCode } */
 			if (!IS_DEV && VUE_COMPONENTS_CACHE[resolvedURL]) {
+				init();
 				return VUE_COMPONENTS_CACHE[resolvedURL];
 			}
 
@@ -1677,7 +1672,7 @@
 			}
 			/* 缓存 */
 			VUE_COMPONENTS_CACHE[resolvedURL] = VueLoader(sourceCode);
-			$appendSfcStyle(VUE_COMPONENTS_CACHE[resolvedURL].styleSourceCode, resolvedURL);
+			init();
 			return VUE_COMPONENTS_CACHE[resolvedURL];
 		};
 
@@ -1731,13 +1726,15 @@
 				return Promise.all(_.map(url, _url => _.$importVue(_url)));
 			}
 			const resolvedURL = _.$resolvePath(url);
+			_.$importVue.urlSets.add(url);
 			return _.$sfcVueObject({ resolvedURL, payload });
 		};
+		_.$importVue.urlSets = new Set();
 
 		_.$sfcVueObject = async function ({ resolvedURL, payload, sourceCode }) {
 			/* hmr使用sourceCode不用发请求获取源码， */
 			payload = payload || {};
-			/* 切换页面时的动效 */
+			/* 切换页面时的动效 _.$importVue.Nprogress*/
 			_.$importVue?.Nprogress?.start?.();
 			try {
 				/* 源文件加载之后会有缓存，但是payload会有变化 */
@@ -1762,6 +1759,9 @@
 					ComponentOptions.parent = payload?.parent;
 				}
 				ComponentOptions.FILE_URL = resolvedURL;
+				if (_.isFunction(ComponentOptions.onLoadSFC)) {
+					ComponentOptions.onLoadSFC();
+				}
 				return ComponentOptions;
 			} catch (error) {
 				if (error == 404) {
@@ -2051,7 +2051,6 @@
 		 */
 		_.$resetFormValues = function (xItemFormConfigsArray) {
 			xItemFormConfigsArray = xItemConfigsBy(xItemFormConfigsArray);
-
 			_.each(xItemFormConfigsArray, configs => {
 				if (_.isFunction(configs.resetValue)) {
 					configs.resetValue();
@@ -2093,6 +2092,9 @@
 					if (configs.value !== undefined) {
 						_params[prop] = configs.value;
 					}
+					if (configs.selectValue !== undefined) {
+						_params[`${prop}_selectValue`] = configs.selectValue;
+					}
 					return _params;
 				},
 				{}
@@ -2120,13 +2122,25 @@
 				const item = _.find(options, { value });
 				if (item) {
 					return item;
-				} else {
-					console.error("getSelectedItemFrom miss options or value");
 				}
-			} else {
-				console.error("getSelectedItemFrom miss options or value");
 			}
+			console.error("getSelectedItemFrom miss options or value");
 			return { value: "", label: "", labelKey: "" };
+		};
+
+		/**
+		 * 只要value不是undefined，就返回value，否则用默认值
+		 * @param value
+		 * @param defaultValue
+		 * @returns
+		 */
+		/* @typescriptDeclare (value: any, defaultValue: any) => any */
+		_.$valOrDefault = function (value, defaultValue) {
+			if (value === undefined) {
+				return defaultValue;
+			} else {
+				return value;
+			}
 		};
 
 		/**

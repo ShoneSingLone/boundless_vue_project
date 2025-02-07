@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const pathD = _n.getPathD(__dirname);
 
-const targetDir = pathD(`../static_vue2`);
+const targetDir = pathD(`../../static_vue2`);
 
 const record = {};
 const usedFile = new Set();
@@ -14,8 +14,9 @@ async function scanFile(fileurl) {
 	let execResult;
 	while ((execResult = reg.exec(content))) {
 		let [, fnName] = execResult;
-		record[fnName] = record[fnName] || 0;
-		record[fnName]++;
+		record[fnName] = record[fnName] || { count: 0, files: new Set() };
+		record[fnName].count++;
+		record[fnName].files.add(fileurl);
 		if (path.extname(fileurl) !== ".vue") usedFile.add(fileurl);
 	}
 }
@@ -26,11 +27,20 @@ async function scanFile(fileurl) {
 	const [, files] = await _n.asyncAllDirAndFile([targetDir]);
 	let file;
 	while ((file = files.pop())) {
-		if (["common.js", "echarts.min.js", "index.js", "jquery-3.7.0.min.js", "less.js", "lodash.js"].includes(path.basename(file))) {
+		if (
+			[
+				"common.js",
+				"echarts.min.js",
+				"index.js",
+				"jquery-3.7.0.min.js",
+				"less.js",
+				"lodash.js"
+			].includes(path.basename(file))
+		) {
 			continue;
 		}
 
-		if ([`.js`, ".vue"].includes(path.extname(file))) {
+		if ([`.js`, ".vue", ".ts"].includes(path.extname(file))) {
 			await scanFile(file);
 		}
 	}
@@ -44,7 +54,9 @@ async function scanFile(fileurl) {
 		JSON.stringify(
 			_n.filter(
 				_n.sortBy(
-					_n.map(record, (count, prop) => ({ prop, count })),
+					_n.map(record, ({ count, files }, prop) => {
+						return { prop, count, files: Array.from(files) };
+					}),
 					["count"]
 				),
 				({ prop }) => !/^\$/.test(prop)

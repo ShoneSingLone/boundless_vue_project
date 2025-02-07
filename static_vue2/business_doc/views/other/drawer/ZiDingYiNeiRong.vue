@@ -5,11 +5,11 @@
 		<xBtn preset="text" @click="dialog = true">打开嵌套 Form 的 Drawer</xBtn>
 		<xDrawer title="我嵌套了表格!" :visible.sync="table" direction="rtl" size="50%">
 			<xCard>
-				<el-table :data="gridData">
+				<!-- <el-table :data="gridData">
 					<el-table-column property="date" label="日期" width="150"></el-table-column>
 					<el-table-column property="name" label="姓名" width="200"></el-table-column>
 					<el-table-column property="address" label="地址"></el-table-column>
-				</el-table>
+				</el-table> -->
 			</xCard>
 		</xDrawer>
 
@@ -21,18 +21,21 @@
 			custom-class="demo-drawer"
 			ref="drawer">
 			<div class="demo-drawer__content">
-				<el-form :model="form">
-					<el-form-item label="活动名称" :label-width="formLabelWidth">
-						<el-input v-model="form.name" autocomplete="off"></el-input>
-					</el-form-item>
-					<el-form-item label="活动区域" :label-width="formLabelWidth">
-						<el-select v-model="form.region" placeholder="请选择活动区域">
-							<el-option label="区域一" value="shanghai"></el-option>
-							<el-option label="区域二" value="beijing"></el-option>
-						</el-select>
-					</el-form-item>
-				</el-form>
-				<div class="demo-drawer__footer">
+				<xForm :col="1">
+					<xItem :configs="{ label: '活动名称' }" v-model="form.name" />
+					<xItem
+						:configs="{
+							label: '活动区域',
+							itemType: 'xItemSelect',
+							options: [
+								{ label: '区域一', value: 'shanghai' },
+								{ label: '区域二', value: 'beijing' }
+							]
+						}"
+						v-model="form.name" />
+				</xForm>
+
+				<div class="demo-drawer__footer flex center width100 mt">
 					<xBtn @click="cancelForm">取 消</xBtn>
 					<xBtn preset="primary" @click="$refs.drawer.closeDrawer()" :loading="loading">{{
 						loading ? "提交中 ..." : "确 定"

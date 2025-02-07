@@ -4,7 +4,7 @@
 	</xDialog>
 </template>
 <script lang="ts">
-export default async function ({ item, id }) {
+export default async function ({ item, id, uri }) {
 	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 	return defineComponent({
 		inject: ["APP"],
@@ -22,7 +22,7 @@ export default async function ({ item, id }) {
 			videoSrc() {
 				/* `https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4` */
 				return Vue._common_utils.appendToken(
-					_.$ajax.urlWrapper(`/api/resource/video?id=${id}`)
+					_.$ajax.urlWrapper(`/api/resource/video?id=${id}&uri=${uri}`)
 				);
 			}
 		},

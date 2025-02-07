@@ -2,7 +2,6 @@ const { fs, path, _, val } = require("../preprocess.utils");
 const { getI18NContent } = require("./i18n.utils");
 const [APP_NAME] = process.argv.slice(2);
 
-
 const I18N_CONTENT = getI18NContent(APP_NAME);
 const LOG_PROPS_SET = new Set();
 /* 对应语言文件 */
@@ -29,7 +28,10 @@ try {
 		TraversalObject(I18N_CONTENT);
 		const content = JSON.stringify(targetContent);
 		const targetFilePath = `../../static_vue2/business_${APP_NAME}/i18n/${fileName}.js`;
-		fs.writeFileSync(path.resolve(__dirname, targetFilePath), `window.i18n.options = ${content}`);
+		fs.writeFileSync(
+			path.resolve(__dirname, targetFilePath),
+			`window.i18n.options = ${content}`
+		);
 	});
 	console.log("🚀count: ", LOG_PROPS_SET.size);
 } catch (err) {

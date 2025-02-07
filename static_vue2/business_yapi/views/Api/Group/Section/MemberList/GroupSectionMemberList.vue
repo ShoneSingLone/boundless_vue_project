@@ -1,9 +1,12 @@
 <template>
-	<div class="flex1 vertical mt" style="height: 1px; position: relative" v-if="isShow">
-		<div style="overflow: hidden; position: absolute; width: 100%; height: 100%">
-			<xTableVir :columns="columns" :data="APP.groupMemberList" v-if="isShow" />
-		</div>
-	</div>
+	<xBlock
+		class="flex1 mt"
+		style="height: 1px; position: relative"
+		:bodyClass="{ height100: true, flex: 1 }"
+		v-if="isShow">
+		<!-- 成员列表 -->
+		<xTableVir :columns="columns" :data="APP.groupMemberList" v-if="isShow" />
+	</xBlock>
 </template>
 <script lang="ts">
 export default async function () {
@@ -32,10 +35,10 @@ export default async function () {
 						prop: `a`,
 						label: `b`,
 						headerCellRenderer() {
-							return h("span", [`成员 ${vm.APP.groupMemberList.length} 人`]);
+							return hSpan([`成员 ${vm.APP.groupMemberList.length} 人`]);
 						},
 						cellRenderer: ({ rowData }) => {
-							return h("div", { staticClass: "flex middle", key: rowData.uid }, [
+							return hDiv({ staticClass: "flex middle", key: rowData.uid }, [
 								h("xItem", {
 									staticClass: "mr4 ml4",
 									configs: {
@@ -47,6 +50,7 @@ export default async function () {
 								h(
 									"span",
 									{
+										style: "width: 150px;",
 										staticClass: "pointer",
 										async onClick() {
 											const Component = await _.$importVue(
@@ -72,28 +76,30 @@ export default async function () {
 					{
 						prop: `b`,
 						label: `b`,
-						width: 200,
+						width: 256,
 						headerCellRenderer() {
-							return h("xBtn", {
-								vIf: vm.cptAuth,
-								configs: {
-									label: "添加成员",
-									preset: "blue",
-									icon: "el-icon-plus",
-									onClick: vm.addMember
-								}
-							});
+							return hDiv({ class: "flex end width100" }, [
+								hxBtn({
+									vIf: vm.cptAuth,
+									configs: {
+										label: "添加成员",
+										preset: "blue",
+										icon: "el-icon-plus",
+										onClick: vm.addMember
+									}
+								})
+							]);
 						},
 						cellRenderer({ rowData, rowIndex }) {
 							if (vm.cptAuth) {
-								return h("div", { staticClass: "flex middle width100" }, [
+								return hDiv({ staticClass: "flex middle width100" }, [
 									h("xItem", {
 										configs: vm.item_role,
 										value: rowData.role,
 										payload: { rowIndex, rowData },
 										class: "mr8"
 									}),
-									h("xBtn", {
+									hxBtn({
 										configs: {
 											icon: "el-icon-delete",
 											preset: "danger",
@@ -111,7 +117,7 @@ export default async function () {
 								};
 								// 非管理员可以看到权限 但无法修改
 
-								return h("div", { staticClass: "flex middle width100" }, [
+								return hDiv({ staticClass: "flex middle width100" }, [
 									ROLE_MAP[rowData.role]
 								]);
 							}
@@ -173,7 +179,7 @@ export default async function () {
 		computed: {
 			cptAvatarUrl(id) {
 				return Vue._common_utils.appendToken(
-					`${window._URL_PREFIX_4_DEV || ""}/api/user/avatar?uid=${id}`
+					`${window._AJAX_URL_PREFIX || ""}/api/user/avatar?uid=${id}`
 				);
 			},
 			isShow() {

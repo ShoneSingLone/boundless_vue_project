@@ -52,7 +52,7 @@ export default async function () {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .xItem_controller {
 	> .xItemSlider {
 		width: var(--xItem-slider-width, 100%);

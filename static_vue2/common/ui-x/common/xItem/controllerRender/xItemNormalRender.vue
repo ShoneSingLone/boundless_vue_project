@@ -6,20 +6,23 @@ export default async function () {
 
 		const xItem_controllerProps = {
 			...CONFIGS,
-			readonly: CONFIGS.readonly,
+			readonly: vm.cptReadonly,
 			disabled: vm.cptDisabled,
 			attrs: {
 				...vm.cpt_bindProps.attrs,
+				readonly: vm.cptReadonly,
 				disabled: vm.cptDisabled,
 				queryData: vm.cptDepdata
 			},
 			props: {
 				...vm.cpt_bindProps.props,
+				readonly: vm.cptReadonly,
 				disabled: vm.cptDisabled,
 				queryData: vm.cptDepdata
 			},
 			configs: {
 				...CONFIGS,
+				readonly: vm.cptReadonly,
 				disabled: vm.cptDisabled,
 				options: vm.cpt_options
 			},
@@ -50,7 +53,7 @@ export default async function () {
 
 		const controllerWrapperProps = {
 			class: {
-				xItem_controller: true,
+				"xItem_controller overflow-hidden": true,
 				"el-form-item is-error": !!vm.errorTips
 			}
 		};
@@ -83,7 +86,7 @@ export default async function () {
 			);
 		}
 
-		return h("div", xItemWrapperProps, [
+		return hDiv(xItemWrapperProps, [
 			h(
 				"div",
 				{
@@ -107,7 +110,7 @@ export default async function () {
 								},
 								["*"]
 							),
-							h("span", { staticClass: "xItem_label-text" }, [
+							hSpan({ staticClass: "xItem_label-text" }, [
 								"X_ITEM_LABEL_IS_EMPTY" === vm.cpt_label ? "" : vm.cpt_label
 							]),
 							h(
@@ -136,7 +139,7 @@ export default async function () {
 						]
 					),
 					/* controller */
-					h("div", controllerWrapperProps, controllerChildren),
+					hDiv(controllerWrapperProps, controllerChildren),
 
 					/* 校验错误提示 */
 					h(
@@ -157,7 +160,7 @@ export default async function () {
 				]
 			),
 			/* 信息提示 */
-			h("div", { vIf: vm.calMsg(), staticClass: "xItem-msg mt4" }, [vm.calMsg()])
+			hDiv({ vIf: vm.calMsg(), staticClass: "xItem-msg mt4" }, [vm.calMsg()])
 		]);
 	};
 }

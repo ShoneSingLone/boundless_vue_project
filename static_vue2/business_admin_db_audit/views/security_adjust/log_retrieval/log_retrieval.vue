@@ -12,15 +12,25 @@
 						:collapse="isAdvancedSearchCollapse"
 						@change="handleAdvancedSearchCollapse">
 						<xBlock class="mt">
-							<xForm col="5">
-								<xItem
-									:configs="item"
-									v-for="item in formSearch"
-									:key="item.label" />
+							<xForm col="5" ref="formSearch">
+								<template v-for="item in formSearch">
+									<xItem
+										:configs="item"
+										v-if="item.label !== '时间'"
+										:key="item.label" />
+									<xItem
+										v-else
+										style="
+											--xItem-wrapper-width: 400px;
+											--xItem-label-width: 60px;
+										"
+										:configs="formSearch.time" />
+								</template>
+
 								<div class="flex end width100" span="full">
 									<xBtn preset="primary" @click="getTableData({ page: 1 })"
-										>查询</xBtn
-									>
+										>查询
+									</xBtn>
 									<xBtn @click="resetSearchForm">重置</xBtn>
 								</div>
 							</xForm>
@@ -55,7 +65,8 @@ export default async function () {
 		mounted() {
 			this.getTableData();
 		},
-		data(vm) {
+		data() {
+			const vm = this;
 			return {
 				isAdvancedSearchCollapse: true,
 				oprBtnArrayRight: [
@@ -66,7 +77,27 @@ export default async function () {
 							vm.handleGetXdsAuditLogExcel();
 						}
 					},
-					{ label: "生成报表", icon: "_edit", onClick() {} }
+					{
+						label: "生成报表",
+						icon: "_edit",
+						onClick() {
+							vm.handlexdsAuditLogReport();
+						}
+					},
+					{
+						label: "上报",
+						preset: "primary",
+						onClick() {
+							_.$openModal({
+								title: i18n("日志上报"),
+								parent: vm,
+								url: "@/views/security_adjust/log_retrieval/log_retrieval_upload_dialog.vue",
+								onClick() {
+									vm.getTableData({ page: 1 });
+								}
+							});
+						}
+					}
 				],
 				formSearch: defItems({
 					// accessTime: { label: "访问时间", value: "" },
@@ -145,6 +176,11 @@ export default async function () {
 						value: "",
 						resetValue() {
 							this.value = "";
+						},
+						itemType: "xItemSelect",
+						options: [],
+						async once() {
+							this.options = await _api.admin_db_audit.xdsOptionsRisk();
 						}
 					},
 					matchStrategy: {
@@ -192,9 +228,14 @@ export default async function () {
 					queryReturnRows: {
 						label: "响应行数",
 						value: "",
-						resetValue() {
-							this.value = "";
-						}
+						resetValue: ""
+					},
+					time: {
+						label: "时间",
+						itemType: "xItemDaterange",
+						value: [],
+						clearable: true,
+						resetValue: null
 					}
 				}),
 				configsTable: defTable({
@@ -225,12 +266,58 @@ export default async function () {
 						{ prop: "interfaceUrl", label: "URL" },
 						{ prop: "serverId", label: "服务端IP" },
 						{ prop: "serverMac", label: "服务端MAC" },
+						{ prop: "matchNumber", label: "匹配策略数" },
+						{ prop: "rule", label: "敏感字段规则" },
+						{ prop: "category", label: "敏感字段类型" },
+						{ prop: "level", label: "敏感字段级别" },
 						{ prop: "serverHostName", label: "服务端主机名" },
-						{ prop: "serverUserName", label: "用户名" },
-						{ prop: "serverPort", label: "端口号" },
-						{ prop: "databaseIp", label: "数据库IP" },
-						{ prop: "databaseMac", label: "数据库MAC" },
-						{ prop: "databaseInstance", label: "数据库实例" }
+						{ prop: "serverUserName", label: "服务端操作系统用户名" },
+						{ prop: "serverPort", label: "服务端端口号" },
+						{
+							prop: "a",
+							label: "操作",
+							// width: 100,
+							cellRenderer: ({ rowData }) => {
+								return h(
+									"xBtn",
+									{
+										configs: {
+											preset: "text",
+											async onClick() {
+												await _.$openModal({
+													title: "告警详情",
+													url: "@/views/security_adjust/log_retrieval/log_retrieval_dialog.vue",
+													row: rowData
+												});
+											}
+										}
+									},
+									"查询详情"
+								);
+							}
+						}
+						// { prop: "databaseUserName", label: "数据库用户名" },
+						// { prop: "databaseIp", label: "数据库IP" },
+						// { prop: "databasePort", label: "数据库端口" },
+						// { prop: "databaseMac", label: "数据库MAC" },
+						// { prop: "databaseInstance", label: "数据库实例" },
+						// { prop: "tableName", label: "表名" },
+						// { prop: "column", label: "列名" },
+						// { prop: "operationType", label: "操作类型" },
+						// { prop: "sqlContent", label: "SQL内容" },
+						// { prop: "sqlResult", label: "SQL结果内容" },
+						// { prop: "executionTime", label: "执行时间" },
+						// { prop: "responseStatus", label: "响应状态" },
+						// { prop: "affectRows", label: "影响行数" },
+						// { prop: "queryReturnRows", label: "查询返回行" },
+						// { prop: "matchStrategy", label: "匹配策略" },
+						// { prop: "riskLevel", label: "风险等级" },
+						// { prop: "viewName", label: "视图名称" },
+						// { prop: "triggerName", label: "触发器名称" },
+						// { prop: "indexName", label: "索引名称" },
+						// { prop: "sequenceName", label: "序列名称" },
+						// { prop: "storedProcedureName", label: "存储过程名称" },
+						// { prop: "fileName", label: "文件名称" }
 					]
 				})
 			};
@@ -255,11 +342,26 @@ export default async function () {
 				const res = await _api.admin_db_audit.xdsAuditLogExcel({});
 				console.log(res);
 			},
+			async handlexdsAuditLogReport() {
+				await _.$confirm({
+					title: "提示",
+					content: `是否确认生成报表？`
+				});
+				const res = await _api.admin_db_audit.xdsAuditLogReport({});
+			},
 			async getTableData(pagination) {
 				try {
 					_.$loading(true);
 					const { page, size } = _.$setPagination(this.configsTable, pagination);
 					const obj = _.$pickFormValues(this.formSearch);
+					if (Array.isArray(obj.time) && obj.time.length > 0) {
+						let seletTime = [
+							dayjs(obj.time?.[0]).format("YYYY-MM-DD HH:mm:ss"),
+							dayjs(obj.time?.[1]).format("YYYY-MM-DD HH:mm:ss")
+						];
+						obj.startTime = seletTime[0];
+						obj.endTime = seletTime[1];
+					}
 					console.log("obj", obj);
 					const queryData = {
 						...obj,
@@ -283,7 +385,7 @@ export default async function () {
 				}
 			},
 			resetSearchForm() {
-				_.$resetFormValues(this.formSearch);
+				_.$resetFormValues(this.$refs.formSearch);
 			}
 		}
 	});

@@ -39,11 +39,12 @@
 						<slot name="suffix"></slot>
 						<i class="el-input__icon" v-if="suffixIcon" :class="suffixIcon"> </i>
 					</template>
-					<i
+					<xIcon
 						v-if="showClear"
-						class="el-input__icon el-icon-circle-close el-input__clear"
+						icon="circle-close"
+						class="el-input__icon el-input__suffix-inner_x-icon el-icon-circle-close el-input__clear"
 						@mousedown.prevent
-						@click="clear"></i>
+						@click="clear" />
 					<i
 						v-if="showPwdVisible"
 						class="el-input__icon el-icon-view el-input__clear"
@@ -220,7 +221,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				return _.merge({}, this.textareaCalcStyle, { resize: this.resize });
 			},
 			inputSize() {
-				return this.size || this._elFormItemSize || PRIVATE_GLOBAL.x_ui_size;
+				return this.size || this._elFormItemSize || PRIVATE_GLOBAL.x_ui.size;
 			},
 			inputDisabled() {
 				return this.disabled || (this.elForm || {}).disabled;
@@ -309,7 +310,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 							[vNode]
 						);
 					} else {
-						return h("div", { staticClass: "x-iniput__prepend" }, [vNode]);
+						return hDiv({ staticClass: "x-iniput__prepend" }, [vNode]);
 					}
 				}
 				return null;
@@ -475,6 +476,449 @@ export default async function ({ PRIVATE_GLOBAL }) {
 }
 </script>
 <style lang="less">
+.el-input {
+	position: relative;
+	font-size: 14px;
+	display: inline-block;
+	width: 100%;
+}
+
+.el-input::-webkit-scrollbar {
+	z-index: 11;
+	width: 6px;
+}
+
+.el-input::-webkit-scrollbar:horizontal {
+	height: 6px;
+}
+
+.el-input::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	width: 6px;
+	background: #b4bccc;
+}
+
+.el-input::-webkit-scrollbar-corner {
+	background: #fff;
+}
+
+.el-input::-webkit-scrollbar-track {
+	background: #fff;
+}
+
+.el-input::-webkit-scrollbar-track-piece {
+	background: #fff;
+	width: 6px;
+}
+
+.el-input {
+	.el-input__clear {
+		color: var(--el-text-color-disabled);
+		font-size: 14px;
+		cursor: pointer;
+		-webkit-transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+		transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+		width: 14px;
+		height: 14px;
+
+		&:hover {
+			color: var(--el-text-color-secondary);
+		}
+	}
+
+	.el-input__count {
+		height: 100%;
+		display: -webkit-inline-box;
+		display: -ms-inline-flexbox;
+		display: inline-flex;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center;
+		color: var(--el-text-color-secondary);
+		font-size: 12px;
+
+		.el-input__count-inner {
+			background: #fff;
+			line-height: initial;
+			display: inline-block;
+			padding: 0 5px;
+		}
+	}
+}
+
+.el-input__inner {
+	-webkit-appearance: none;
+	background-color: #fff;
+	background-image: none;
+	border-radius: var(--border-radius);
+	border: 1px solid #dcdfe6;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	color: var(--el-text-color-regular);
+	display: inline-block;
+	font-size: inherit;
+	height: 40px;
+	line-height: 40px;
+	outline: 0;
+	padding: 0 15px;
+	-webkit-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+	transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+	width: 100%;
+}
+
+.el-input__prefix,
+.el-input__suffix {
+	position: absolute;
+	top: 0;
+	-webkit-transition: all 0.3s;
+	height: 100%;
+	color: var(--el-text-color-disabled);
+	text-align: center;
+}
+
+.el-input__inner::-ms-reveal {
+	display: none;
+}
+
+.el-input__inner::-webkit-input-placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-input__inner:-ms-input-placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-input__inner::-ms-input-placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-input__inner::placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-input__inner:hover {
+	border-color: var(--el-text-color-disabled);
+}
+
+.el-input.is-active .el-input__inner,
+.el-input__inner:focus {
+	border-color: var(--el-color-primary);
+	outline: 0;
+}
+
+.el-input__suffix {
+	right: 5px;
+	transition: all 0.3s;
+}
+
+.el-input__suffix-inner {
+	pointer-events: all;
+	height: 100%;
+}
+
+.el-input__prefix {
+	left: 5px;
+	transition: all 0.3s;
+}
+
+.el-input__icon {
+	height: 100%;
+	width: 25px;
+	text-align: center;
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+	line-height: 40px;
+}
+
+.el-input__icon:after {
+	content: "";
+	height: 100%;
+	width: 0;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.el-input__validateIcon {
+	pointer-events: none;
+}
+
+.el-input.is-disabled .el-input__inner {
+	background-color: var(--el-fill-color-light);
+	border-color: #e4e7ed;
+	color: var(--el-text-color-disabled);
+	cursor: not-allowed;
+}
+
+.el-input.is-disabled .el-input__inner::-webkit-input-placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-input.is-disabled .el-input__inner:-ms-input-placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-input.is-disabled .el-input__inner::-ms-input-placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-input.is-disabled .el-input__inner::placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-input.is-disabled .el-input__icon {
+	cursor: not-allowed;
+}
+
+.el-link,
+.el-transfer-panel__filter .el-icon-circle-close {
+	cursor: pointer;
+}
+
+.el-input.is-exceed .el-input__inner {
+	border-color: var(--el-color-error);
+}
+
+.el-input.is-exceed .el-input__suffix .el-input__count {
+	color: var(--el-color-error);
+}
+
+.el-input--suffix .el-input__inner {
+	padding-right: 30px;
+}
+
+.el-input--prefix .el-input__inner {
+	padding-left: 30px;
+}
+
+.el-input--medium {
+	font-size: 14px;
+}
+
+.el-input--medium .el-input__inner {
+	height: 36px;
+	line-height: 36px;
+}
+
+.el-input--medium .el-input__icon {
+	line-height: 36px;
+}
+
+.el-input--small {
+	font-size: 13px;
+}
+
+.el-input--small .el-input__inner {
+	height: var(--ui-height);
+	line-height: var(--ui-height);
+}
+
+.el-input--small .el-input__icon {
+	line-height: var(--ui-height);
+}
+
+.el-input--mini {
+	font-size: 12px;
+}
+
+.el-input--mini .el-input__inner {
+	height: 28px;
+	line-height: 28px;
+}
+
+.el-input--mini .el-input__icon {
+	line-height: 28px;
+}
+
+.el-input-group {
+	line-height: normal;
+	display: inline-table;
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+.el-input-group > .el-input__inner {
+	vertical-align: middle;
+	display: table-cell;
+}
+
+.el-input-group__append,
+.el-input-group__prepend {
+	background-color: var(--el-fill-color-light);
+	color: var(--el-text-color-secondary);
+	display: flex;
+	align-items: center;
+	position: relative;
+	border: 1px solid #dcdfe6;
+	border-radius: var(--border-radius);
+	padding: 0 20px;
+	white-space: nowrap;
+}
+
+.el-input-group--prepend .el-input__inner,
+.el-input-group__append {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.el-input-group--append .el-input__inner,
+.el-input-group__prepend {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.el-input-group__append:focus,
+.el-input-group__prepend:focus {
+	outline: 0;
+}
+
+.el-input-group__append .el-button,
+.el-input-group__append .el-select,
+.el-input-group__prepend .el-button,
+.el-input-group__prepend .el-select {
+	display: inline-block;
+	// margin: -10px -20px;
+}
+
+.el-input-group__append button.el-button,
+.el-input-group__append div.el-select .el-input__inner,
+.el-input-group__append div.el-select:hover .el-input__inner,
+.el-input-group__prepend button.el-button,
+.el-input-group__prepend div.el-select .el-input__inner,
+.el-input-group__prepend div.el-select:hover .el-input__inner {
+	border-color: transparent;
+	background-color: transparent;
+	color: inherit;
+	border-top: 0;
+	border-bottom: 0;
+}
+
+.el-input-group__append .el-button,
+.el-input-group__append .el-input,
+.el-input-group__prepend .el-button,
+.el-input-group__prepend .el-input {
+	font-size: inherit;
+}
+
+.el-input-group__prepend {
+	border-right: 0;
+}
+
+.el-input-group__append {
+	border-left: 0;
+}
+
+.el-input-group--append .el-select .el-input.is-focus .el-input__inner,
+.el-input-group--prepend .el-select .el-input.is-focus .el-input__inner {
+	border-color: transparent;
+}
+
+.el-textarea {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	vertical-align: bottom;
+	font-size: 14px;
+}
+
+.el-textarea__inner {
+	display: block;
+	resize: vertical;
+	padding: 5px 15px;
+	line-height: 1.5;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	font-size: inherit;
+	color: var(--el-text-color-regular);
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #dcdfe6;
+	border-radius: var(--border-radius);
+	-webkit-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+	transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.el-textarea__inner::-webkit-input-placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-textarea__inner:-ms-input-placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-textarea__inner::-ms-input-placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-textarea__inner::placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-textarea__inner:hover {
+	border-color: var(--el-text-color-disabled);
+}
+
+.el-textarea__inner:focus {
+	outline: 0;
+	border-color: var(--el-color-primary);
+}
+
+.el-textarea .el-input__count {
+	color: var(--el-text-color-secondary);
+	background: #fff;
+	position: absolute;
+	font-size: 12px;
+	bottom: 5px;
+	right: 10px;
+}
+
+.el-textarea.is-disabled .el-textarea__inner {
+	background-color: var(--el-fill-color-light);
+	border-color: #e4e7ed;
+	color: var(--el-text-color-disabled);
+	cursor: not-allowed;
+}
+
+.el-textarea.is-disabled .el-textarea__inner::-webkit-input-placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-textarea.is-disabled .el-textarea__inner:-ms-input-placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-textarea.is-disabled .el-textarea__inner::-ms-input-placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-textarea.is-disabled .el-textarea__inner::placeholder {
+	color: var(--el-text-color-disabled);
+}
+
+.el-textarea.is-exceed .el-textarea__inner {
+	border-color: var(--el-color-error);
+}
+
+.el-textarea.is-exceed .el-input__count {
+	color: var(--el-color-error);
+}
+.el-input__inner::-ms-clear {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+.el-form-item.is-error .el-input__inner,
+.el-form-item.is-error .el-input__inner:focus,
+.el-form-item.is-error .el-textarea__inner,
+.el-form-item.is-error .el-textarea__inner:focus,
+.el-message-box__input input.invalid,
+.el-message-box__input input.invalid:focus {
+	border-color: var(--el-color-error);
+	background-color: var(--xItem-error-bg);
+}
+
 .xItem {
 	--xItem-prepend-width: 72px;
 	.el-input__prefix,
@@ -501,8 +945,8 @@ export default async function ({ PRIVATE_GLOBAL }) {
 
 	.x-iniput__append,
 	.x-iniput__prepend {
-		height: 32px;
-		line-height: 32px;
+		height: var(--ui-height);
+		line-height: var(--ui-height);
 		> * {
 			margin: auto;
 		}
@@ -510,23 +954,29 @@ export default async function ({ PRIVATE_GLOBAL }) {
 }
 
 .xItem-wrapper[data-form-item-type="xItemInput"] {
-	.xItem_controller.is-error {
-		.el-input-group--prepend {
-			border: 1px solid var(--el-color-error);
-			border-radius: var(--border-radius);
-			.el-input-group__append,
-			.el-input-group__prepend {
-				border: unset;
-			}
-
-			.el-input-group__prepend-sub {
-				border: 1px solid transparent;
-				// border-color: var(--el-color-error);
-				+ .el-input__inner {
+	.xItem_controller {
+		&.is-error {
+			.el-input-group--prepend {
+				border: 1px solid var(--el-color-error);
+				border-radius: var(--border-radius);
+				.el-input-group__append,
+				.el-input-group__prepend {
 					border: unset;
-					border-left: 1px solid #dcdfe6;
+				}
+
+				.el-input-group__prepend-sub {
+					border: 1px solid transparent;
+					// border-color: var(--el-color-error);
+					+ .el-input__inner {
+						border: unset;
+						border-left: 1px solid #dcdfe6;
+					}
 				}
 			}
+		}
+
+		> .xInput {
+			flex: 1;
 		}
 	}
 }
@@ -534,6 +984,12 @@ export default async function ({ PRIVATE_GLOBAL }) {
 .el-input-group__prepend-sub {
 	> div[data-form-item-type="xItemSelect"] {
 		margin: 0 -20px;
+	}
+}
+
+.el-input {
+	.el-input__suffix-inner_x-icon {
+		height: 100%;
 	}
 }
 </style>

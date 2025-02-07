@@ -8,6 +8,8 @@
 			<xCard class="card-as-condition-panel mb">
 				<div class="flex">
 					<xItem :configs="formSearch.strategyName" />
+					<xItem :configs="formSearch.ip" />
+					<xItem :configs="formSearch.port" />
 					<xItem :configs="formSearch.risk" />
 					<xItem
 						style="--xItem-wrapper-width: 400px; --xItem-label-width: 60px"
@@ -42,6 +44,8 @@ export default async function () {
 						options: []
 					},
 					risk: { label: "风险级别", value: "", itemType: "xItemSelect", options: [] },
+					ip: { label: "IP", value: "" },
+					port: { label: "端口", value: "" },
 					time: { label: "时间", itemType: "xItemDaterange", value: [] }
 				}),
 				oprBtnArray: [

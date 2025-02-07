@@ -12,4 +12,6 @@ alarmThresholdUpdate(args?:any):Promise<any>
 alarmConfig(args?:any):Promise<any>
 alarmConfigUpdate(args?:any):Promise<any>
 alarmAllLists(args?:any):Promise<any>
+uploadFile(args?:any):Promise<any>
+updateFile(args?:any):Promise<any>
 };

@@ -44,4 +44,7 @@ export default async function () {
 	display: flex;
 	flex-flow: row nowrap;
 }
+.data-list-id-number {
+	font-size: 10px;
+}
 </style>

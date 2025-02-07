@@ -1,6 +1,10 @@
 <template>
 	<xDialog style="width: 70vw">
-		<probe_management style="height: 600px" :dialog="true" ref="probeManagementRef" />
+		<probe_management
+			style="height: 600px"
+			:dialog="true"
+			ref="probeManagementRef"
+			:agentId="agentId" />
 		<template #footer>
 			<div class="flex center width100">
 				<xBtn :configs="btnOk" />
@@ -22,6 +26,9 @@ export default async function ({ row, parent }) {
 				_.$importVue("@/views/security_adjust/probe_management/probe_management.vue")
 		},
 		computed: {
+			agentId() {
+				return row?.agentId ?? "";
+			},
 			btnOk() {
 				const vm = this;
 				return {
@@ -33,6 +40,7 @@ export default async function ({ row, parent }) {
 				};
 			}
 		},
+		async mounted() {},
 		methods: {
 			async handleBindxdsDatabaseAssetsPage() {
 				if (Object.keys(this.$refs.probeManagementRef.selected).length <= 0) {
@@ -44,7 +52,7 @@ export default async function ({ row, parent }) {
 				};
 				const { code, msg } = await _api.admin_db_audit.xdsDatabaseAssetsPage(obj);
 				if (code === 0) {
-					_.$msg(msg);
+					_.$msgSuccess(msg);
 					parent.getTableData();
 					this.closeModal();
 				} else {

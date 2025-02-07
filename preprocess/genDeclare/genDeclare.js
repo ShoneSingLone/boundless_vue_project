@@ -6,7 +6,7 @@ const makeReg = require("./reg");
 const makeRules = require("./rules");
 const makeComponents = require("./components");
 const makeGlobalLodash = require("./scanLodashDefine");
-const scanAdminConsoleDefine = require('./scanAdminConsoleDefine');
+const scanAdminConsoleDefine = require("./scanAdminConsoleDefine");
 if (action === "api") {
 	makeApi({ APP_NAME });
 } else if (action === "opts") {

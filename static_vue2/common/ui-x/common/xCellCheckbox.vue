@@ -15,7 +15,7 @@ export default async function () {
 					"payload",
 					_.merge(innerComponentConfigs.payload, this.configs)
 				);
-				return h("xItem", {
+				return hxItem({
 					configs: innerComponentConfigs,
 					value: privateModel.value,
 					size: "mini"

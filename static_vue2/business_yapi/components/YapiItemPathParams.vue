@@ -1,19 +1,19 @@
 <template>
-	<div class="flex middle vertical">
+	<xBlock class="width100">
 		<div v-for="(item, index) in value" :key="index" class="flex middle mt8">
 			<xInput :value="item.name" class="mr" />
 			<xInput
-				:value="item.example"
+				:value="item.example || ''"
 				placeholder="参数实例"
 				@input="$event => changeExample($event, index)"
 				class="mr" />
 			<xInput
-				:value="item.desc"
+				:value="item.desc || ''"
 				placeholder="备注"
 				@input="$event => changeDesc($event, index)"
 				class="mr" />
 		</div>
-	</div>
+	</xBlock>
 </template>
 
 <script lang="ts">
@@ -21,17 +21,16 @@ export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	return defineComponent({
 		mixins: [mixins],
-		inject: ["APP"],
-		props: ["value", "options", "configs"],
-		computed: {},
 		methods: {
 			changeExample(example, index) {
-				this.value[index].example = example;
-				this.mixin_value = [...this.value];
+				const _value = _.cloneDeep(this.mixin_value);
+				_value[index].example = example;
+				this.mixin_value = [..._value];
 			},
 			changeDesc(desc, index) {
-				this.value[index].desc = desc;
-				this.mixin_value = [...this.value];
+				const _value = _.cloneDeep(this.mixin_value);
+				_value[index].desc = desc;
+				this.mixin_value = [..._value];
 			}
 		}
 	});

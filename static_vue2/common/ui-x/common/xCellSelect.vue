@@ -77,9 +77,9 @@ export default async function () {
 			}
 		},
 		render() {
-			/* const vNodeChild = (function () { if (Vue._CurrentCellId.value === vm._uid) { return h("xItem", { configs: vm.configsSelectComponent, size: "mini", value: vm.privateModel, onChange: val => vm.privateModel = val }); } return this.label || "___"; })(); return h("div", { attrs: { "data-x-cell-id": vm._uid, }, class: "width100 height100", onMouseenter(event) { try { const { currentTarget } = event; Vue._CurrentCellId.value = Number(currentTarget.dataset.ghCellId); } catch (error) { } } }, [vNodeChild]); */
+			/* const vNodeChild = (function () { if (Vue._CurrentCellId.value === vm._uid) { return hxItem( { configs: vm.configsSelectComponent, size: "mini", value: vm.privateModel, onChange: val => vm.privateModel = val }); } return this.label || "___"; })(); return hDiv( { attrs: { "data-x-cell-id": vm._uid, }, class: "width100 height100", onMouseenter(event) { try { const { currentTarget } = event; Vue._CurrentCellId.value = Number(currentTarget.dataset.ghCellId); } catch (error) { } } }, [vNodeChild]); */
 			const vm = this;
-			return h("xItem", {
+			return hxItem({
 				configs: {
 					...vm.configsMerged,
 					itemType: "xItemSelect"

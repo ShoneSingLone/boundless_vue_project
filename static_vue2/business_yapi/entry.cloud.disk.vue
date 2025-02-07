@@ -109,8 +109,8 @@ export default async function () {
 						}
 
 						if (vm.user.isLogin) {
-							const { data: allUser } = await _api.yapi.userSearch({});
-							vm.allUser = allUser;
+							const { data: all_user } = await _api.yapi.userSearch({});
+							vm.all_user = all_user;
 
 							/* TODO: 跳转到首页 或者应用*/
 							if (["/resource", "/transfer", "/me"].includes(vm.$route.path)) {
@@ -174,7 +174,6 @@ export default async function () {
 					_id: "",
 					isLogin: false,
 					isLDAP: false,
-					userName: null,
 					uid: null,
 					loginState: LOADING_STATUS,
 					breadcrumb: [],
@@ -199,18 +198,21 @@ export default async function () {
 						name: this.homeListSearchKey || ""
 					};
 					const { data } = await _api.yapi.resourceCloudDiskFileList(params);
-					this.mSetResources(data);
+					this.resourceList = data;
+					this.mSetResources();
 				} catch (error) {
 					console.error(error);
 				} finally {
 					_.$loading(false);
 				}
 			},
-			mSetResources(resourceList) {
+			mSetResources() {
 				const vm = this;
+				let { resourceList } = vm;
+				resourceList = resourceList || [];
 				const resource = _.groupBy(resourceList, "isdir");
-				const sort = resourceList =>
-					_.map(resourceList, item => {
+				const sort = (groupedResourceArray = []) => {
+					return _.map(groupedResourceArray, item => {
 						let type = "none";
 
 						if (item.isdir) {
@@ -224,7 +226,6 @@ export default async function () {
 							type = "video";
 						} else if (/^audio/.test(item.type)) {
 							type = "audio";
-						} else {
 						}
 
 						return {
@@ -246,6 +247,7 @@ export default async function () {
 							return 0;
 						}
 					});
+				};
 				const dirs = sort(resource[1]);
 				const unDirs = sort(resource[0]);
 				this.resourceList = [...dirs, ...unDirs];
@@ -405,7 +407,7 @@ export default async function () {
 					isLDAP: !!userInfo.ladp,
 					role: userInfo ? userInfo.role : null,
 					loginState: isLogin ? MEMBER_STATUS : GUEST_STATUS,
-					userName: userInfo ? userInfo.username : null,
+					username: userInfo ? userInfo.username : null,
 					uid: userInfo ? isLogin : null,
 					type: userInfo ? userInfo.type : null,
 					study: userInfo ? userInfo.study : false
@@ -425,7 +427,7 @@ export default async function () {
 						this._setUser({
 							isLogin: false,
 							loginState: GUEST_STATUS,
-							userName: null,
+							username: null,
 							uid: null,
 							role: "",
 							type: ""

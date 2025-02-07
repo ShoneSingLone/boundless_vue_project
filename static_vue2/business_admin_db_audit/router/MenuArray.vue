@@ -19,14 +19,16 @@ export default async function () {
 		]
 	};
 	const security = {
-		icon: "_icon_menu_role",
+		icon: "_aqgl",
+		iconDefault: "_aqgl",
+		iconActive: "_agql-active",
 		href: "/asd",
 		menuCode: "security",
 		DO_NOT_TO: true,
 		label: i18n("安全管理"),
 		children: [
 			{
-				href: "/role",
+				href: "/asd/role",
 				menuCode: "security:role",
 				label: i18n("角色管理")
 			}
@@ -77,7 +79,9 @@ export default async function () {
 	// 	children: []
 	// };
 	const system_monitoring = {
-		icon: "_system_setting",
+		icon: "_xtzjk",
+		iconDefault: "_xtzjk",
+		iconActive: "_xtzjk-active",
 		href: "/monitoring",
 		menuCode: "selfMonitor",
 		DO_NOT_TO: false,
@@ -86,7 +90,9 @@ export default async function () {
 	};
 
 	const security_adjust = {
-		icon: "_icon_menu_security_adjust",
+		icon: "_sjgl",
+		iconDefault: "_sjgl",
+		iconActive: "_sjgl-active",
 		href: "/security_adjust",
 		menuCode: "audit",
 		DO_NOT_TO: true,
@@ -130,6 +136,11 @@ export default async function () {
 				menuCode: "audit:auditLog"
 			},
 			{
+				label: i18n("敏感字段管理"),
+				href: "/security_adjust/sensitive_field_management",
+				menuCode: "audit:auditLog"
+			},
+			{
 				label: i18n("用户行为轨迹"),
 				href: "/security_adjust/user_behavior_trajectory",
 				menuCode: "audit:userBehavior"
@@ -141,7 +152,7 @@ export default async function () {
 				menuCode: "audit:warning"
 			},
 			{
-				label: i18n("离线流量分析"),
+				label: i18n("流量提取配置"),
 				href: "/security_adjust/offline_traffic_analysis",
 				menuCode: "audit:offlineTraffic"
 			}
@@ -149,25 +160,27 @@ export default async function () {
 	};
 
 	const system_manager = {
-		icon: "icon_report",
+		icon: "_xtgl",
+		iconDefault: "_xtgl",
+		iconActive: "_xtgl-active",
 		label: i18n("系统管理"),
-		href: "/1",
+		href: "/system_manage",
 		menuCode: "system_manage",
 		DO_NOT_TO: true,
 		children: [
 			{
 				label: i18n("菜单管理"),
-				href: "/menu",
+				href: "/system_manage/menu",
 				menuCode: "system_manage:menu"
 			},
 			{
 				menuCode: "system_manage:accounts",
-				href: "/user",
+				href: "/system_manage/user",
 				label: i18n("用户管理")
 			},
 			{
 				menuCode: "system_manage:department",
-				href: "/dept",
+				href: "/system_manage/dept",
 				label: i18n("部门管理")
 			}
 		]
@@ -175,6 +188,8 @@ export default async function () {
 
 	const home = {
 		icon: "_home",
+		iconDefault: "_home",
+		iconActive: "_home-active",
 		label: i18n("首页"),
 		href: "/home",
 		menuCode: "frontPage"
@@ -188,13 +203,15 @@ export default async function () {
 
 	return [
 		home,
+		security_adjust,
+		security,
 		system_monitoring,
 		// user,
 		// dept,
 		// role,
-		security,
+
 		// menu,
-		security_adjust,
+
 		// system_setting,
 		system_manager
 	];

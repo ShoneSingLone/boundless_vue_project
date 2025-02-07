@@ -1,28 +1,34 @@
 <template>
 	<div>
 		<xMd :md="md" />
-		<xDropdown>
-			<xBtn preset="primary">
-				更多菜单<i class="el-icon-arrow-down el-icon--right"></i>
-			</xBtn>
-			<xDropdownMenu slot="dropdown">
-				<xDropdownItem>黄金糕</xDropdownItem>
-				<xDropdownItem>狮子头</xDropdownItem>
-				<xDropdownItem>螺蛳粉</xDropdownItem>
-				<xDropdownItem>双皮奶</xDropdownItem>
-				<xDropdownItem>蚵仔煎</xDropdownItem>
-			</xDropdownMenu>
-		</xDropdown>
-		<xDropdown split-button preset="blue" @click="handleClick">
-			更多菜单
-			<xDropdownMenu slot="dropdown">
-				<xDropdownItem>黄金糕</xDropdownItem>
-				<xDropdownItem>狮子头</xDropdownItem>
-				<xDropdownItem>螺蛳粉</xDropdownItem>
-				<xDropdownItem>双皮奶</xDropdownItem>
-				<xDropdownItem>蚵仔煎</xDropdownItem>
-			</xDropdownMenu>
-		</xDropdown>
+		<div class="flex middle">
+			<xDropdown>
+				<xBtn preset="primary">
+					<div class="flex middle">
+						<span class="mr4">更多菜单</span>
+						<xIcon icon="arrow-down" />
+					</div>
+				</xBtn>
+				<xDropdownMenu slot="dropdown">
+					<xDropdownItem>黄金糕</xDropdownItem>
+					<xDropdownItem>狮子头</xDropdownItem>
+					<xDropdownItem>螺蛳粉</xDropdownItem>
+					<xDropdownItem>双皮奶</xDropdownItem>
+					<xDropdownItem>蚵仔煎</xDropdownItem>
+				</xDropdownMenu>
+			</xDropdown>
+			<xGap l />
+			<xDropdown split-button preset="primary" @click="handleClick">
+				更多菜单
+				<xDropdownMenu slot="dropdown">
+					<xDropdownItem>黄金糕</xDropdownItem>
+					<xDropdownItem>狮子头</xDropdownItem>
+					<xDropdownItem>螺蛳粉</xDropdownItem>
+					<xDropdownItem>双皮奶</xDropdownItem>
+					<xDropdownItem>蚵仔煎</xDropdownItem>
+				</xDropdownMenu>
+			</xDropdown>
+		</div>
 	</div>
 </template>
 <script lang="ts">

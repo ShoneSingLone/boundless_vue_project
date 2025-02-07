@@ -110,7 +110,7 @@ export default async function () {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .xItemCidr,
 .xItemCidr__contaienr {
 	display: inline-block;

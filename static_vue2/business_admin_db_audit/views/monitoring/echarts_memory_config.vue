@@ -6,11 +6,11 @@ export default async function () {
 		echarts_memory_config: {
 			initOptions(props) {
 				return {
-					title: {
-						text: "内存",
-						top: "10%",
-						left: "3%"
-					},
+					// title: {
+					// 	text: "内存",
+					// 	top: "10%",
+					// 	left: "3%"
+					// },
 					tooltip: {
 						show: true,
 						trigger: "item",
@@ -74,9 +74,6 @@ export default async function () {
 		echarts_warring_config: {
 			initOptions(props) {
 				return {
-					title: {
-						text: "告警比例图"
-					},
 					tooltip: {
 						trigger: "item"
 					},
@@ -125,11 +122,11 @@ export default async function () {
 		echarts_cpu_config: {
 			initOptions(props) {
 				return {
-					title: {
-						text: "CPU利用率",
-						top: "10%",
-						left: "3%"
-					},
+					// title: {
+					// 	text: "CPU利用率",
+					// 	top: "10%",
+					// 	left: "3%"
+					// },
 					tooltip: {
 						show: true,
 						trigger: "item",
@@ -193,13 +190,17 @@ export default async function () {
 		echarts_disk_use_config: {
 			initOptions(props) {
 				return {
-					title: {
-						text: "磁盘使用率",
-						top: "5%",
-						left: "3%"
-					},
+					// title: {
+					// 	text: "磁盘使用率",
+					// 	top: "5%",
+					// 	left: "3%"
+					// },
 					grid: {
-						bottom: "50"
+						top: "3%",
+						left: "3%",
+						right: "4%",
+						bottom: "2%",
+						containLabel: true
 					},
 					xAxis: {
 						type: "category",
@@ -229,22 +230,23 @@ export default async function () {
 		echarts_network_config: {
 			initOptions(props) {
 				return {
-					title: {
-						text: "网络吞吐率",
-						top: "5%",
-						left: "3%"
-					},
+					// title: {
+					// 	text: "网络吞吐率",
+					// 	top: "5%",
+					// 	left: "3%"
+					// },
 					tooltip: {
 						trigger: "axis"
 					},
-					legend: {
-						data: ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
-						top: "3%"
-					},
+					// legend: {
+					// 	data: [],
+					// 	top: "3%"
+					// },
 					grid: {
+						top: "3%",
 						left: "3%",
 						right: "4%",
-						bottom: "3%",
+						bottom: "2%",
 						containLabel: true
 					},
 					xAxis: {
@@ -281,16 +283,23 @@ export default async function () {
 		echarts_disk_config: {
 			initOptions(props) {
 				return {
-					title: {
-						text: "磁盘",
-						top: "5%",
-						left: "3%"
-					},
+					// title: {
+					// 	text: "磁盘",
+					// 	top: "5%",
+					// 	left: "3%"
+					// },
 					legend: {
 						top: "5%",
 						right: "5%"
 					},
 					tooltip: {},
+					grid: {
+						// top:'3%',
+						left: "3%",
+						right: "4%",
+						bottom: "2%",
+						containLabel: true
+					},
 					xAxis: [
 						{
 							type: "category",

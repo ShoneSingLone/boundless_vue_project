@@ -20,7 +20,12 @@
 	</section>
 </template>
 <script lang="ts">
-export default async function () {
+export default async function ({ PRIVATE_GLOBAL }) {
+	const USE_BACKUP = "启用";
+	const UNUSE_BACKUP = "未启用";
+	const NO_BACKUP = "无备份数据";
+	const HAS_BACKUP = "备份数据";
+
 	return defineComponent({
 		inject: ["APP", "inject_project"],
 		components: {
@@ -34,15 +39,40 @@ export default async function () {
 		provide() {
 			return { inject_project_interface_section: this };
 		},
-		data() {
-			const vm = this;
-
+		data(vm) {
+			const genReferenceContent = (title, item) => {
+				const { value } = item;
+				const { length } = value || [];
+				return hDiv({ class: "flex middle width100" }, [
+					hDiv(title),
+					hxTag(
+						{
+							vIf: length,
+							class: "ml4 mr4",
+							closable: true,
+							onClose() {
+								item.value = [];
+							}
+						},
+						[length]
+					),
+					// hxIcon({ icon: "arrow_triangle-right" })
+					hxIcon({ icon: "_icon_filter" })
+				]);
+			};
 			const catid = {
 				prop: "catid",
-				label: i18n("接口分类"),
+				label: i18n("分类"),
 				width: 150,
+				headerCellRenderer() {
+					return genHeaderCellVNode({
+						propName: "CatIdheaderCell",
+						formProp: "catid",
+						label: "接口分类"
+					});
+				},
 				cellRenderer({ rowData }) {
-					const label = _.find(vm.inject_project.allCategory, {
+					const label = _.find(vm.inject_project.all_category, {
 						_id: rowData.catid
 					}).name;
 					return label;
@@ -51,31 +81,56 @@ export default async function () {
 
 			const title = {
 				prop: "title",
-				label: i18n("接口名称"),
+				label: i18n("名称"),
+				width: 300,
 				cellRenderer({ rowData }) {
-					return hLink({
-						label: rowData.title,
-						title: rowData.title,
-						style: "text-align:left;",
-						href: _.$aHashLink("/api/project", {
-							...vm.$route.query,
-							interfaceType: "interface",
-							interfaceId: rowData._id
-						})
-					});
+					return hDiv([
+						hLink({
+							label: `${rowData.title}`,
+							title: rowData.title,
+							style: "text-align:left;",
+							href: _.$aHashLink("/api/project", {
+								...vm.$route.query,
+								interfaceType: "interface",
+								interfaceId: rowData._id,
+								project_interface_tab: "preview"
+							})
+						}),
+						hDiv({ class: "data-list-id-number" }, [`${rowData._id}`])
+					]);
 				}
 			};
 
 			const method = {
 				prop: "method",
 				label: i18n("请求方法"),
-				width: 100
+				width: 150,
+				headerCellRenderer() {
+					return genHeaderCellVNode({
+						propName: "MethodheaderCell",
+						formProp: "method",
+						label: "请求方法"
+					});
+				},
+				cellRenderer({ cellData }) {
+					const item = _.find(_opts.yapi.httpMethod, { value: cellData });
+					if (item) {
+						return hxTag(
+							{
+								type: item.type,
+								color: item.color,
+								textColor: item.textColor
+							},
+							[item.label]
+						);
+					}
+				}
 			};
 
 			const path = {
 				prop: "path",
 				width: 300,
-				label: i18n("接口路径"),
+				label: i18n("路径"),
 				cellRenderer: params => {
 					const { rowData } = params;
 					const { value: search } = vm.form.path;
@@ -83,22 +138,24 @@ export default async function () {
 					if (search) {
 						const other = String(rowData.path).split(search);
 						if (other.length > 1) {
-							const childrenVnod = [];
-							_.each(other, (content, index) => {
-								childrenVnod.push(content);
-								if (index !== other.length - 1) {
-									childrenVnod.push(
-										h(
-											"span",
-											{
-												staticClass: `highlight-path`
-											},
-											[search]
-										)
-									);
-								}
-							});
-							return h("div", childrenVnod);
+							return ((/* 设置高亮 */) => {
+								const childrenVnod = [];
+								_.each(other, (content, index) => {
+									childrenVnod.push(content);
+									if (index !== other.length - 1) {
+										childrenVnod.push(
+											h(
+												"span",
+												{
+													staticClass: `highlight-path`
+												},
+												[search]
+											)
+										);
+									}
+								});
+								return hDiv(childrenVnod);
+							})();
 						}
 					}
 					return rowData.path;
@@ -115,15 +172,25 @@ export default async function () {
 				prop: "isProxy",
 				label: i18n("转发"),
 				width: 150,
+				headerCellRenderer() {
+					return genHeaderCellVNode({
+						propName: "ProxyHeaderCell",
+						formProp: "witchEnv",
+						label: "转发环境"
+					});
+				},
 				cellRenderer: params => {
 					const { rowData } = params;
 
 					if (rowData.isProxy) {
 						const vDom_yes = h("xTag", { type: "success" }, ["是"]);
-						const vDom_witchEnv = h("xTag", { class: "ml" }, [
+						const vDom_witchEnv = h("xTag", { class: "ellipsis mt4" }, [
 							vm.cptEnvObject[rowData.witchEnv]?.name || "--"
 						]);
-						return h("div", [vDom_yes, vDom_witchEnv]);
+						return hDiv({ class: "flex vertical width100" }, [
+							hDiv(vDom_yes),
+							hDiv(vDom_witchEnv)
+						]);
 					} else {
 						return h("xTag", { type: "info" }, ["否"]);
 					}
@@ -133,33 +200,80 @@ export default async function () {
 				prop: "isUseBackup",
 				label: i18n("启用备份数据"),
 				width: 160,
+				headerCellRenderer() {
+					return genHeaderCellVNode({
+						propName: "BackupHeaderCell",
+						formProp: "isUseBackup",
+						label: "备份数据"
+					});
+				},
 				cellRenderer: params => {
 					const { rowData } = params;
 
 					const isUseBackup = h(
 						"xTag",
 						{ type: "success", vIf: rowData.res_body_type === "backup" },
-						["是"]
+						[USE_BACKUP]
 					);
 					const hasBackupData = h(
 						"xTag",
-						{ type: "warning", class: "ml8", vIf: !rowData.isSetBackupData },
-						["无备份数据"]
+						{ type: "warning", class: "ellipsis mt4", vIf: !rowData.isSetBackupData },
+						[NO_BACKUP]
 					);
 
-					return [isUseBackup, hasBackupData];
+					return hDiv({ class: "flex vertical" }, [
+						hDiv(isUseBackup),
+						hDiv(hasBackupData)
+					]);
 				}
 			};
 
 			const maintainer = {
-				prop: "tag",
+				prop: "uid",
 				label: i18n("维护人"),
-				width: 150
+				width: 150,
+				headerCellRenderer() {
+					return genHeaderCellVNode({
+						propName: "UidHeaderCell",
+						formProp: "uid",
+						label: "维护人"
+					});
+				},
+				cellRenderer: params => {
+					const {
+						rowData: { uid }
+					} = params;
+					const user = _.find(vm.cptProjectMembers, { uid });
+
+					if (user) {
+						user.avatar = Vue._common_utils.appendToken(
+							`${window._AJAX_URL_PREFIX || ""}/api/user/avatar?uid=${uid}&usedBy=user`
+						);
+						return hDiv({ staticClass: "ellipsis flex middle" }, [
+							"asdfasdf",
+							hxIcon({
+								img: user.avatar,
+								iscache: true,
+								style: `width: 32px;height: 32px;margin-right:8px;`
+							}),
+							user.username
+						]);
+					} else {
+						return "--";
+					}
+				}
 			};
 			const tag = {
 				prop: "tag",
 				label: i18n("Tags"),
-				width: 250
+				width: 250,
+				headerCellRenderer() {
+					return genHeaderCellVNode({
+						propName: "TagsHeaderCell",
+						formProp: "tag",
+						label: "Tags"
+					});
+				}
 			};
 
 			return {
@@ -186,14 +300,14 @@ export default async function () {
 							label: "序号",
 							width: 60,
 							cellRenderer({ rowIndex }) {
-								return h("div", { style: "width:100%;text-align:right;" }, [
+								return hDiv({ style: "width:100%;text-align:right;" }, [
 									rowIndex + 1
 								]);
 							}
 						},
 						catid,
-						title,
 						method,
+						title,
 						path,
 						status,
 						maintainer,
@@ -212,96 +326,153 @@ export default async function () {
 						}
 					},
 					catid: {
-						label: "分类",
+						// label: "分类",
 						value: [],
 						clearable: true,
 						itemType: "xItemSelect",
 						multiple: true,
+						options: [],
 						once() {
 							vm.$watch(
-								() => [vm.$route.query.interfaceType, vm.$route.query.interfaceId],
-								([interfaceType, interfaceId]) => {
-									if (interfaceType === "category") {
-										this.value = [Number(interfaceId)];
-									} else {
-										this.value = [];
-									}
+								() => vm.inject_project.all_category,
+								all_category => {
+									/* this.options在wrapper中并不是响应式数据 */
+									vm.form.catid.options = _.map(all_category, row => ({
+										value: row._id,
+										label: row.name
+									}));
 								},
-								{
-									immediate: true
-								}
+								{ immediate: true }
 							);
-						},
-						options() {
-							return _.map(vm.inject_project.allCategory, row => {
-								return {
-									value: row._id,
-									label: row.name
-								};
-							});
 						},
 						onEmitValue() {
 							vm.filterList();
 						}
 					},
-					method: {
-						label: "方法",
+					uid: {
 						value: "",
-						clearable: true,
 						itemType: "xItemSelect",
+						clearable: true,
+						multiple: true,
+						options: [],
+						optonsRender({ options }) {
+							return _.map(options, option => {
+								return h(
+									"xOption",
+									{
+										class: "flex middle",
+										key: option.uid,
+										label: `${option.username}_${option.uid}`,
+										value: option.uid
+									},
+									[
+										hDiv({ style: "width:70px" }, [`ID:${option.uid}`]),
+										hDiv(`${option.username}`)
+									]
+								);
+							});
+						},
+						once() {
+							vm.$watch(
+								() => vm.cptProjectMembers,
+								options => {
+									vm.form.uid.options = _.unionBy(options, "uid");
+								},
+								{ immediate: true }
+							);
+						}
+					},
+					method: {
+						// label: "方法",
+						value: "",
+						itemType: "xItemSelect",
+						clearable: true,
 						multiple: true,
 						options: _opts.yapi.httpMethod,
+						optonsRender({ vm, options }) {
+							return _.map(options, (item, key) => {
+								return h(
+									"xOption",
+									{
+										key: item.value || item.label,
+										value: item.value,
+										label: item.label,
+										disabled: item.disabled || false
+									},
+									[
+										hxTag(
+											{
+												type: item.type,
+												color: item.color,
+												textColor: item.textColor
+											},
+											[item.label]
+										)
+									]
+								);
+							});
+						},
 						onEmitValue() {
 							vm.filterList();
 						}
 					},
 					tag: {
-						label: "Tags",
+						// label: "Tags",
 						value: [],
 						clearable: true,
 						itemType: "xItemSelect",
 						multiple: true,
-						options() {
-							return _.map(vm.inject_project.allTags, label => {
-								return {
-									value: label,
-									label
-								};
-							});
+						options: [],
+						once() {
+							vm.$watch(
+								() => vm.inject_project.all_tags,
+								all_tags => {
+									vm.form.tag.options = _.map(all_tags, label => ({
+										value: label,
+										label
+									}));
+								},
+								{ immediate: true }
+							);
 						},
 						onEmitValue() {
 							vm.filterList();
 						}
 					},
 					isUseBackup: {
-						label: "备份数据",
+						// label: "备份数据",
 						value: [],
 						clearable: true,
 						itemType: "xItemSelect",
 						multiple: true,
-						options: _.map(["是", "否", "无备份数据"], label => ({
-							label,
-							value: label
-						})),
+						options: _.map(
+							[USE_BACKUP, UNUSE_BACKUP, NO_BACKUP, HAS_BACKUP],
+							label => ({
+								label,
+								value: label
+							})
+						),
 						onEmitValue() {
 							vm.filterList();
 						}
 					},
 					witchEnv: {
-						label: "转发环境",
+						// label: "转发环境",
 						value: [],
 						clearable: true,
 						itemType: "xItemSelect",
 						multiple: true,
-						options() {
-							return _.concat(
-								[{ label: "未设置", value: "unset" }],
-								_.map(vm.APP?.cptProject?.env, row => {
-									return {
-										value: row._id,
-										label: row.name
-									};
-								})
+						options: [],
+						once() {
+							vm.$watch(
+								() => vm.APP?.cptProject?.env,
+								env => {
+									vm.form.witchEnv.options = _.concat(
+										[{ label: "未设置", value: "unset" }],
+										_.map(env, row => ({ value: row._id, label: row.name }))
+									);
+								},
+								{ immediate: true }
 							);
 						},
 						onEmitValue() {
@@ -310,8 +481,51 @@ export default async function () {
 					}
 				})
 			};
+
+			function genHeaderCellVNode({ propName, formProp, label }) {
+				return hVmSingleNode(
+					vm,
+					propName,
+					h(
+						"xPopover",
+						{
+							placement: "bottom",
+							onShow() {
+								/* 点击item，立即展示下拉项 */
+								vm[`${propName}_xSelectVm`].visible = true;
+							}
+						},
+						[
+							{
+								default() {
+									return hxItem({
+										configs: {
+											...vm.form[formProp],
+											refInnerComponent({ vm: xSelectVm }) {
+												/* mounted之后保留句柄 */
+												vm[`${propName}_xSelectVm`] = xSelectVm;
+											},
+											onEmitValue({ val }) {
+												vm.form[formProp].value = val;
+												vm.filterList();
+											}
+										},
+										value: vm.form[formProp].value || []
+									});
+								},
+								reference() {
+									return genReferenceContent(label, vm.form[formProp]);
+								}
+							}
+						]
+					)
+				);
+			}
 		},
 		computed: {
+			cptProjectMembers() {
+				return this.APP.cptProject?.members || [];
+			},
 			cptListStyle({ size: { width, height }, cptIsShowDetail }) {
 				const style = {
 					width: width + "px",
@@ -320,7 +534,8 @@ export default async function () {
 					transition: `all 0.3s ease-in`
 				};
 				if (cptIsShowDetail) {
-					style.transform = `translate(-50px, -50px)`;
+					style.filter = `blur(6px)`;
+					// style.transform = `translate(-50px, -50px)`;
 				}
 
 				return style;
@@ -362,7 +577,7 @@ export default async function () {
 			}
 		},
 		watch: {
-			"inject_project.allInterface": {
+			"inject_project.all_interface": {
 				immediate: true,
 				handler() {
 					this.filterList();
@@ -388,36 +603,68 @@ export default async function () {
 			filterList() {
 				let configsTableDataList = (() => {
 					const filterForm = _.$pickFormValues(this.form);
-					let _allInterface = _.cloneDeep(this.inject_project.allInterface);
+
+					let _allInterface = _.cloneDeep(this.inject_project.all_interface);
 					let paramKeys = Object.keys(filterForm);
 					let prop;
 					while ((prop = paramKeys.pop())) {
-						let search = filterForm[prop];
-						if (_.$isInput(search)) {
+						let searchParams = filterForm[prop];
+						if (_.$isInput(searchParams)) {
 							_allInterface = _.filter(_allInterface, i => {
 								if (prop == "status") {
-									return search.includes(i.status);
+									return searchParams.includes(i.status);
 								} else if (prop == "catid") {
-									return search.includes(i.catid);
+									return searchParams.includes(i.catid);
 								} else if (prop == "method") {
-									return search.includes(i.method);
+									return searchParams.includes(i.method);
 								} else if (prop == "tag") {
-									return _.some(i.tag, tag => search.includes(tag));
+									return _.some(i.tag, tag => searchParams.includes(tag));
+								} else if (prop == "uid") {
+									return searchParams.includes(i.uid);
 								} else if (prop == "isUseBackup") {
-									if (search.includes("是")) {
-										return i.res_body_type === "backup";
+									const _Use = searchParams.includes(USE_BACKUP);
+									const _Unuse = searchParams.includes(UNUSE_BACKUP);
+									const _Use_One = _Use || _Unuse;
+									const _Use_All = _Use && _Unuse;
+
+									const _HasBackup = searchParams.includes(HAS_BACKUP);
+									const _NoneBackup = searchParams.includes(NO_BACKUP);
+									const _Backup_One = _NoneBackup || _HasBackup;
+									const _Backup_All = _NoneBackup && _HasBackup;
+
+									const isUse = _.isEqual(i.res_body_type, "backup");
+									const isUnUse = !_.isEqual(i.res_body_type, "backup");
+									const isNoBackup = !i.isSetBackupData;
+									const isHasBackup = !!i.isSetBackupData;
+
+									const isUseOne = (_Use && isUse) || (_Unuse && isUnUse);
+									const isBackupOne =
+										(_HasBackup && isHasBackup) || (_NoneBackup && isNoBackup);
+
+									if (_Use_All && _Backup_All) {
+										/* 四个全选，都可以 */
+										return true;
 									}
-									if (search.includes("否")) {
-										return i.res_body_type !== "backup";
+									if (_Use_One && _Backup_All) {
+										/* 只看是否启用 */
+										return isUseOne;
 									}
-									if (search.includes("无备份数据")) {
-										if (!i.isSetBackupData) {
-											return true;
-										}
+									if (_Use_All && _Backup_One) {
+										/* 只看是否有备份数据 */
+										return isBackupOne;
+									}
+									if (_Use_One && _Backup_One) {
+										return isUseOne && isBackupOne;
+									}
+									if (_Use_One && isUseOne) {
+										return true;
+									}
+									if (_Backup_One && isBackupOne) {
+										return true;
 									}
 									return false;
 								} else if (prop == "witchEnv") {
-									if (search.includes("unset")) {
+									if (searchParams.includes("unset")) {
 										if (!i.witchEnv) {
 											return true;
 										}
@@ -425,17 +672,27 @@ export default async function () {
 									if (!i.isProxy) {
 										return false;
 									}
-									return search.includes(i.witchEnv);
+									return searchParams.includes(i.witchEnv);
 								} else {
-									search = _.trim(search);
+									searchParams = _.trim(searchParams);
 									return (
-										new RegExp(search, "i").test(i[prop]) ||
-										new RegExp(search, "i").test(i.title)
+										new RegExp(searchParams, "i").test(i[prop]) ||
+										new RegExp(searchParams, "i").test(i.title)
 									);
 								}
 							});
 						}
 					}
+
+					const NEED_MERGE_COLUMN_PROP = "catid";
+
+					const GroupedRowObj = _.groupBy(_allInterface, NEED_MERGE_COLUMN_PROP);
+
+					_allInterface = xTableVirNewGroupSortedRows({
+						groupedRowObj: GroupedRowObj,
+						mergeProp: NEED_MERGE_COLUMN_PROP
+					});
+
 					return _allInterface;
 				})();
 				_.$setTableData(this.configsTable, { list: configsTableDataList });

@@ -117,7 +117,7 @@ export default async function () {
 											return this.getLabelBy(prop);
 										})();
 
-										return h("div", { staticClass }, [child]);
+										return hDiv({ staticClass }, [child]);
 									},
 									/* 列 cell */
 									default: (params = {}) => {

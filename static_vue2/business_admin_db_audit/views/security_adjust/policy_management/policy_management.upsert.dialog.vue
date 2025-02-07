@@ -27,7 +27,7 @@ export default async function ({ row, parent }) {
 				form: {
 					name: {
 						value: "",
-						label: i18n("策略名称"),
+						label: i18n("策略类型名"),
 						rules: [_rules.required(), _rules.lessThan(50)]
 					}
 				}
@@ -66,7 +66,7 @@ export default async function ({ row, parent }) {
 					: _api.admin_db_audit.xdsStrategyAdd;
 				const res = await fn(obj);
 				if (res.code === 0) {
-					_.$msg(res.msg);
+					_.$msgSuccess(res.msg);
 					this.closeModal();
 					parent.getTableData({ page: 1 });
 				} else {

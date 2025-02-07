@@ -9,6 +9,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			hit: Boolean,
 			disableTransitions: Boolean,
 			color: String,
+			textColor: String,
 			size: String,
 			effect: {
 				type: String,
@@ -29,11 +30,20 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		},
 		computed: {
 			tagSize() {
-				return this.size || PRIVATE_GLOBAL.x_ui_size;
+				return this.size || PRIVATE_GLOBAL.x_ui.size;
+			},
+			cptStyle() {
+				const style = {
+					backgroundColor: this.color
+				};
+				if (this.textColor) {
+					style.color = this.textColor;
+				}
+				return style;
 			}
 		},
 		render(h) {
-			let { type, tagSize, hit, effect } = this;
+			let { type, tagSize, hit, effect, cptStyle } = this;
 			effect = effect || "empty";
 			const classes = [
 				"el-tag",
@@ -46,9 +56,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				"span",
 				{
 					class: classes,
-					style: {
-						backgroundColor: this.color
-					},
+					style: cptStyle,
 					on: {
 						click: this.handleClick
 					}

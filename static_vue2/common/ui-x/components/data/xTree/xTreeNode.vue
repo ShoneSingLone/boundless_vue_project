@@ -94,6 +94,7 @@
 		:data-key="node?.key"
 		@click.stop="handleClick"
 		@contextmenu="handleContextMenu">
+		<!-- el-tree-node__content -->
 		<div :class="ns.be('node', 'content')" :style="cptStyle">
 			<div
 				v-if="icon"

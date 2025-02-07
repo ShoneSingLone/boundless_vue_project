@@ -219,7 +219,7 @@ export default async function () {
 		},
 		render(h) {
 			const { level, cptClass } = this;
-			return h("div", {
+			return hDiv({
 				class: cptClass,
 				attrs: {
 					"data-level": level

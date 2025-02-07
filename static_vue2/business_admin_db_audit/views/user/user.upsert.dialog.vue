@@ -3,8 +3,8 @@
 		<xCard>
 			<xForm col="1" ref="form">
 				<xItem :configs="form.name" />
-				<xItem :configs="form.password" />
-				<xItem :configs="form.passwordAge" />
+				<xItem :configs="form.password" v-if="!isUpdate" />
+				<xItem :configs="form.passwordAge" v-if="!isUpdate" />
 				<xItem :configs="form.nickName" />
 				<xItem :configs="form.phone" />
 				<xItem :configs="form.sex" />
@@ -42,7 +42,12 @@ export default async function ({ row, parent }) {
 		data() {
 			return {
 				form: defItems({
-					name: { label: "用户名称", value: "", rules: [_rules.required()] },
+					name: {
+						label: "用户名称",
+						value: "",
+						rules: [_rules.required()],
+						disabled: isUpdate
+					},
 					password: { label: "密码", value: "", isPwd: true, rules: [_rules.required()] },
 					passwordAge: {
 						label: "重复密码",
@@ -51,7 +56,11 @@ export default async function ({ row, parent }) {
 						rules: [_rules.required()]
 					},
 					nickName: { label: "姓名", value: "", rules: [_rules.required()] },
-					phone: { label: "手机号", value: "", rules: [_rules.required()] },
+					phone: {
+						label: "手机号",
+						value: "",
+						rules: [_rules.required(), _rules.mobilePhone()]
+					},
 					sex: {
 						label: "性别",
 						value: "1",
@@ -133,6 +142,7 @@ export default async function ({ row, parent }) {
 						status: Number(obj.status)
 					};
 				}
+
 				const { code, msg } = await fn(obj);
 				if (code === 0) {
 					_.$msg(msg);

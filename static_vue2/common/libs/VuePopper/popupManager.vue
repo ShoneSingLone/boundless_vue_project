@@ -159,7 +159,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			configurable: true,
 			get() {
 				if (!hasInitZIndex) {
-					zIndex = zIndex || PRIVATE_GLOBAL.x_ui_z_index || 2000;
+					zIndex = zIndex || PRIVATE_GLOBAL.x_ui.z_index || 2000;
 					hasInitZIndex = true;
 				}
 				return zIndex;

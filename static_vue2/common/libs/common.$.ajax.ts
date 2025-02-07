@@ -83,21 +83,23 @@
 				return reject(response);
 			};
 
+			const CAN_NOT_COVER = ["success", "error", "url"];
+
 			const baseOptions = {
 				headers,
 				type,
 				data,
 				dataType: "json",
 				contentType: "application/json",
-				/* 不会被覆盖的参数 */
-				url: urlWrapper(url),
+				/* 不会被覆盖的参数 CAN_NOT_COVER*/
 				success,
-				error
+				error,
+				url: urlWrapper(url)
 			};
 
 			const configs = requestInjector(
 				/* url 使用处理过后的 */
-				_.merge(baseOptions, _.omit(API_OPTIONS, ["success", "error", "url"]))
+				_.merge(baseOptions, _.omit(API_OPTIONS, CAN_NOT_COVER))
 			);
 
 			return configs;
@@ -108,7 +110,16 @@
 		};
 
 		const urlWrapper = url => {
-			return `${window._URL_PREFIX_4_DEV || ""}${url}`;
+			if (/^htt/.test(url)) {
+				return url;
+			}
+			if (_.isFunction(window._AJAX_URL_PREFIX)) {
+				return window._AJAX_URL_PREFIX(url);
+			} else if (_.isString(window._AJAX_URL_PREFIX)) {
+				return `${window._AJAX_URL_PREFIX}${url}`;
+			} else {
+				return url;
+			}
 		};
 		const $ajax = {
 			urlWrapper,
@@ -135,7 +146,6 @@
 							xhr.upload.addEventListener(
 								"progress",
 								event => {
-									console.log("🚀 ~ xhr ~ event:", event);
 									callback("onprogress", event);
 								},
 								false
@@ -168,6 +178,7 @@
 				beforeSend,
 				payload,
 				resolveResult,
+				onProgress,
 				fileType = "image/jpeg"
 			}) {
 				payload = payload || {};
@@ -180,6 +191,7 @@
 						optionsWrapper({
 							url,
 							method,
+							type: method,
 							beforeSend,
 							xhrFields: {
 								responseType: "blob"
@@ -194,7 +206,7 @@
 							async success(result, state, xhr) {
 								try {
 									if (_.isFunction(resolveResult)) {
-										await resolveResult(result, state, xhr);
+										return await resolveResult(result, state, xhr);
 									} else {
 										//result:请求到的结果数据
 										//state:请求状态（success）
@@ -202,10 +214,20 @@
 										// 从Response Headers中获取fileName
 										// TODO:xhr为null
 										let header = xhr.getResponseHeader("content-disposition");
-										let fileName = header
-											.split(";")[1]
-											.split("=")[1]
-											.replace(/\"/g, "");
+
+										let fileName = (() => {
+											const kvStrArray = header?.split(";") || [];
+											const kvObject = _.reduce(
+												kvStrArray,
+												(keyVal, keyvalString) => {
+													const [key, val] = keyvalString.split("=");
+													keyVal[_.toLower(key)] = val;
+													return keyVal;
+												},
+												{}
+											);
+											return kvObject["filename"];
+										})();
 										//获取下载文件的类型
 										let type = xhr.getResponseHeader("content-type");
 										//结果数据类型处理
@@ -219,6 +241,7 @@
 											let link = document.createElement("a");
 											//文件名
 											link.download = fileName;
+											link.target = "_blank";
 											link.style.display = "none";
 											link.href = URL.createObjectURL(blob);
 											document.body.appendChild(link);
@@ -237,6 +260,17 @@
 								} finally {
 									resolve(result);
 								}
+							},
+							xhr() {
+								var xhr = new window.XMLHttpRequest();
+
+								if (_.isFunction(onProgress)) {
+									xhr.addEventListener("progress", function (event) {
+										onProgress(event);
+									});
+								}
+
+								return xhr;
 							}
 						})
 					);

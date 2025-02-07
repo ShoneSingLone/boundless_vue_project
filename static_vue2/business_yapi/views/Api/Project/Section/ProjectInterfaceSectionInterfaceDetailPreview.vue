@@ -1,52 +1,106 @@
-<style lang="less"></style>
+<style lang="less">
+#ProjectInterfaceSectionInterfaceDetailPreviewForm {
+	.xItemDesc-wrapper {
+		padding: 0;
+	}
+	.backup-response {
+		&.xItemDesc-wrapper {
+			height: 100%;
+			display: flex;
+			align-items: flex-start;
+			position: relative;
+
+			.xItemDesc-wrapper_content {
+				height: 100%;
+				position: absolute;
+				overflow: visible;
+				overflow-x: visible;
+				left: var(--xItem-label-width, 120px);
+				right: 0;
+				width: unset;
+				.markdown-wrapper,
+				.markdown-wrapper_description {
+					height: 100%;
+					* {
+						height: 100%;
+					}
+				}
+			}
+		}
+	}
+}
+</style>
 <template>
 	<div class="flex1-overflow-auto">
-		<xBtn class="mb" @click="copyTo">复制到</xBtn>
+		<div class="mb flex end">
+			<xBtnArray :configs="oprBtnArray" />
+		</div>
 		<xCard header="基本信息">
-			<xForm col="3" style="--xItem-label-width: 100px">
-				<xItemDesc
-					v-for="(item, index) in cptDescItems"
-					:key="index"
-					:item="item"
-					:span="item.span || 1" />
+			<xForm
+				style="--xItem-label-width: 100px"
+				id="ProjectInterfaceSectionInterfaceDetailPreviewForm">
+				<xItemDesc :item="cptDescItems.接口名称" span="full" />
+				<xItemDesc :item="cptDescItems.接口" span="full" />
+				<xItemDesc :item="cptDescItems.状态" />
+				<xItemDesc :item="cptDescItems.更新时间" />
+				<xItemDesc :item="cptDescItems.维护人" />
+				<xItemDesc :item="cptDescItems.分类" />
+				<xItemDesc :item="cptDescItems.Tag" span="full" />
+				<xItemDesc :item="cptDescItems.code" />
+				<xItemDesc :item="cptDescItems.备份response" class="backup-response" />
+				<xItemDesc :item="cptDescItems.useProxy" span="full" />
 			</xForm>
+			<!-- <pre>
+				<code>
+					{{ interfaceInfo }}
+				</code>
+			</pre> -->
 		</xCard>
 		<xGap t />
 		<xCard header="请求">
 			<xCard header="ReqHeaders">
 				<xForm col="1" style="--xItem-label-width: 100px">
+					<!-- cptHeadersParams:{{ cptHeadersParams }} -->
 					<YapiApiRequestBodyPreviewer :item="cptHeadersParams" />
 				</xForm>
 			</xCard>
 			<xGap t />
 			<xCard header="ReqBody">
 				<xForm col="1" style="--xItem-label-width: 100px">
-					<YapiApiRequestBodyPreviewer :item="sourceReqBodyOther" />
+					<!-- sourceReqBodyOther:{{ sourceReqBodyOther }} -->
+					<PanelReqBodyJson :value="req_body_other" :readonly="true" />
+					<!-- <YapiApiRequestBodyPreviewer :item="sourceReqBodyOther" /> -->
 				</xForm>
 			</xCard>
 		</xCard>
 		<xGap t />
-		<!-- 
-<xCard header="源数据">
+		<xCard header="描述">
+			<TuiEditor :value="{ md: interfaceInfo.desc }" :asRender="true" style="height: 400px" />
+		</xCard>
+		<!-- <xCard header="源数据">
 	<xForm col="1" style="--xItem-label-width: 100px">
 		<xItem :configs="form.source" />
 	</xForm>
-</xCard> 
--->
+</xCard> -->
 	</div>
 </template>
 <script lang="ts">
 export default async function () {
 	return defineComponent({
 		inject: ["APP", "inject_interface_section_interface_detail", "inject_project"],
+		props: ["interfaceInfo"],
+		components: {
+			PanelReqBodyJson: () => _.$importVue("@/components/PanelReqBodyJson.vue")
+		},
 		data() {
 			return {
+				req_body_other: "",
 				sourceReqHeaders: [],
 				sourceReqBodyOther: {},
 				form: defItems({
 					source: {
 						label: i18n("源数据"),
-						itemType: "YapiItemMonaco",
+						itemType: "xItemMonaco",
 						readOnly: true,
 						value: ""
 					}
@@ -54,6 +108,22 @@ export default async function () {
 			};
 		},
 		computed: {
+			oprBtnArray() {
+				const vm = this;
+				return [
+					{
+						label: i18n("复用接口"),
+						onClick() {
+							_.$openModal({
+								title: i18n("复制接口到所选项目"),
+								url: "@/components/YapiCoypInterface.dialog.vue",
+								parent: vm,
+								selected: [vm.interfaceInfo._id]
+							});
+						}
+					}
+				];
+			},
 			cptHeadersParams() {
 				if (this.sourceReqHeaders.length) {
 					return _.reduce(
@@ -78,17 +148,18 @@ export default async function () {
 				}
 			},
 			cptBackupData() {
-				const { resBackupJson } = this.cptInfo;
-				return `\`\`\`json
-${resBackupJson}
-\`\`\`
-`;
+				const { resBackupJson } = this.interfaceInfo;
+				if (resBackupJson) {
+					return `\`\`\`json\n${resBackupJson}\n\`\`\``;
+				} else {
+					return "";
+				}
 			},
-			cptCode() {
+			cptClientReqCode() {
 				try {
 					const fn = new Function("params", `return (${this.cptRequestCode})(params)`);
 					const { title, _id, up_time, path, tag, isProxy, witchEnv, method } =
-						this.cptInfo;
+						this.interfaceInfo;
 
 					if (!path) {
 						return "";
@@ -114,13 +185,10 @@ ${resBackupJson}
 					return Vue._common_utils.RequestCode.toString();
 				}
 			},
-			cptInfo() {
-				return this.inject_interface_section_interface_detail.detailInfo || {};
-			},
 			cptDescItems() {
 				const vm = this;
 				const { title, uid, up_time, path, tag, isProxy, witchEnv, method, catid } =
-					this.cptInfo || {};
+					this.interfaceInfo || {};
 
 				/* @ts-ignore */
 				const { protocol, hostname, port } = location;
@@ -130,15 +198,29 @@ ${resBackupJson}
 				);
 				const mockHref = `${protocol}//${hostname}${port ? `:${port}` : ""}/mock/${this.APP?.cptProject?._id}${apiURL}`;
 
-				return [
-					{ label: i18n("接口名称"), value: title || "--" },
-					{
+				return {
+					接口名称: {
+						label: i18n("接口名称"),
+						xItemRender() {
+							return hDiv(
+								{
+									style: {
+										"font-size": "16px",
+										"font-weight": 500,
+										"text-shadow": "0px 1px 0px rgba(255, 255, 255, 0.2)"
+									}
+								},
+								[title || "--"]
+							);
+						}
+					},
+					分类: {
 						label: i18n("分类"),
 						xItemRender() {
-							return h("xBtn", {
+							return hxBtn({
 								configs: {
 									preset: "text",
-									label: _.$val2L(catid, vm.inject_project.allCategory),
+									label: _.$val2L(catid, vm.inject_project.all_category),
 									onClick() {
 										vm.APP.routerUpsertQuery({
 											interfaceId: catid,
@@ -149,29 +231,28 @@ ${resBackupJson}
 							});
 						}
 					},
-					{
+					维护人: {
 						label: i18n("维护人"),
 						value: uid || "--",
 						xItemRender: () => {
-							const user = _.find(vm.APP.allUser, user => {
+							const user = _.find(vm.APP.all_user, user => {
 								return user.uid === uid;
 							});
 							return h("xTag", { class: "mr" }, [user?.username || uid]);
 						}
 					},
-					{ label: i18n("状态"), value: status || "--" },
-					{
+					状态: { label: i18n("状态"), value: status || "--" },
+					更新时间: {
 						label: i18n("更新时间"),
 						value: up_time || "--",
 						xItemRender: () => {
 							return _.$dateFormat(up_time);
 						}
 					},
-					{
+					接口: {
 						label: i18n("接口"),
-						value: path || "--",
-						span: "full",
 						xItemRender: () => {
+							/*
 							const vDomMockHref = (() => {
 								const btnProps = {
 									class: "ml",
@@ -186,78 +267,75 @@ ${resBackupJson}
 										}
 									}
 								};
-								return h("div", { class: "mt" }, [
+								return hDiv({ class: "mt" }, [
 									h("xTag", { class: "mr" }, ["mock地址"]),
-									h("span", [mockHref]),
-									h("xBtn", btnProps)
+									hSpan([mockHref]),
+									hxBtn(btnProps)
 								]);
 							})();
-							return h("div", [
-								h("div", [h("xTag", { class: "mr" }, [method]), h("span", [path])]),
+							return hDiv([
+								hDiv([h("xTag", { class: "mr" }, [method]), hhSpan([path])]),
 								vDomMockHref
 							]);
+							*/
+							return hDiv([h("xTag", { class: "mr" }, [method]), hSpan([path])]);
 						}
 					},
-					{
-						label: i18n("code"),
+					code: {
+						label: i18n("Client Code"),
 						value: path || "--",
-						span: "full",
 						xItemRender: () => {
 							return h("xMd", {
-								id: "cptCode",
-								md: this.cptCode,
+								id: "cptClientReqCode",
+								md: this.cptClientReqCode,
 								class: "pointer",
 								nativeOn: {
 									click: async () => {
-										try {
-											/* https://www.cnblogs.com/hellxz/p/15192573.html */
-											await _.$copyToClipboard($("#cptCode").text());
-											_.$msg("复制成功");
-										} catch (error) {
-											console.error(error);
-
-											_.$msgError("复制失败");
-										}
+										/* https://www.cnblogs.com/hellxz/p/15192573.html */
+										return _.$copyToClipboard($("#cptClientReqCode").text())
+											.then(() => _.$msg("复制成功"))
+											.catch(error => _.$msgError(error));
 									}
 								}
 							});
 						}
 					},
-					{
-						label: i18n("备份response"),
+					备份response: {
+						label: i18n("BackupJSON"),
 						value: path || "--",
-						span: "full",
 						xItemRender: () => {
-							return h("xMd", { md: this.cptBackupData });
+							if (this.cptBackupData) {
+								return h("xMd", { md: this.cptBackupData });
+							} else {
+								return hDiv("");
+							}
 						}
 					},
-					{
+					Tag: {
 						label: i18n("Tag"),
-						span: "full",
 						value: tag || "--",
 						xItemRender: () => _.map(tag, i => h("xTag", { class: "mr" }, [i]))
 					},
-					{
-						label: i18n("是否开启转发"),
+					useProxy: {
+						label: i18n("请求Proxy"),
 						value: isProxy || "--",
-						span: "full",
 						xItemRender: () => {
 							if (isProxy) {
 								const env = _.find(this.APP?.cptProject?.env, { _id: witchEnv });
-								return h("div", [
+								return hDiv([
 									h("xTag", { class: "mr" }, [env.name]),
-									h("span", [env.domain])
+									hSpan([env.domain])
 								]);
 							} else {
 								return "否";
 							}
 						}
 					}
-				];
+				};
 			}
 		},
 		watch: {
-			cptInfo: {
+			interfaceInfo: {
 				handler(val) {
 					if (val) {
 						const source = _.cloneDeep(val);
@@ -266,7 +344,10 @@ ${resBackupJson}
 							if (!source?.req_body_other) {
 								return;
 							}
-							this.sourceReqBodyOther = JSON.parse(source.req_body_other);
+							if (source.req_body_type === "json") {
+								this.sourceReqBodyOther = JSON.parse(source.req_body_other);
+								this.req_body_other = source.req_body_other;
+							}
 							this.form.source.value = JSON.stringify(source, null, 2);
 						} catch (error) {
 							_.$msgError(error);
@@ -277,15 +358,6 @@ ${resBackupJson}
 			}
 		},
 		methods: {
-			async copyTo() {
-				return _.$openModal({
-					title: i18n("复制接口"),
-					url: "@/views/Api/Project/Section/ProjectInterfaceSectionInterfaceCopyTo.dialog.vue",
-					parent: this,
-					interfaceId: this.cptInfo._id,
-					projectId: this.APP.cptProject._id
-				});
-			},
 			runInterefaceTestDialog({ mockHref, reqMethod }) {
 				return _.$openModal(
 					{
@@ -294,7 +366,7 @@ ${resBackupJson}
 						parent: this,
 						mockHref,
 						reqMethod,
-						interfaceId: this.cptInfo._id,
+						interfaceId: this.interfaceInfo._id,
 						projectId: this.APP.cptProject._id
 					},
 					{

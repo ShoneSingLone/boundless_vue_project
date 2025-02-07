@@ -20,10 +20,7 @@
 				@focus="handleFocus"
 				@blur="focusing = false">
 				<slot name="title">{{ title }}</slot>
-				<i
-					class="el-collapse-item__arrow el-icon-arrow-right"
-					:class="{ 'is-active': isActive }">
-				</i>
+				<xIcon icon="arrow-right" :class="cptClassIcon" />
 			</div>
 		</div>
 		<xCollapseTransition>
@@ -87,6 +84,9 @@ export default async function () {
 		},
 
 		computed: {
+			cptClassIcon({ isActive }) {
+				return ["el-collapse-item__arrow el-icon-arrow-right", { "is-active": isActive }];
+			},
 			isActive() {
 				return this.collapse.activeNames.indexOf(this.name) > -1;
 			}

@@ -176,7 +176,7 @@ export default async function () {
 					});
 				}
 				stateAudio.audio.src = Vue._common_utils.appendToken(
-					`${window._URL_PREFIX_4_DEV || ""}/api/resource/audio?id=${_id}`
+					`${window._AJAX_URL_PREFIX || ""}/api/resource/audio?id=${_id}`
 				);
 				(async () => {
 					navigator.mediaSession.metadata = new MediaMetadata({

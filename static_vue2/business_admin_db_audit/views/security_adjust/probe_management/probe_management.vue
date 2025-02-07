@@ -32,6 +32,10 @@ export default async function () {
 			dialog: {
 				type: Boolean,
 				default: false
+			},
+			agentId: {
+				type: String,
+				default: ""
 			}
 		},
 		async mounted() {
@@ -70,28 +74,28 @@ export default async function () {
 							});
 						}
 					},
-					{
-						label: "编辑",
-						icon: "_edit",
-						disabled: disabledWhenNoSelected,
-						isHide: vm.dialog,
-						onClick() {
-							if (vm.selected?.status === 0) {
-								_.$msgError("探针状态为等待回复，无法编辑");
-								return;
-							}
-							// 探针状态:0等待回复 1正常运行 2异常状态
-							_.$openModal({
-								title: i18n("探针新增"),
-								url: "@/views/security_adjust/probe_management/probe_management.upsert.dialog.vue",
-								parent: vm,
-								row: vm.selected,
-								onClick() {
-									// vm.getTableData();
-								}
-							});
-						}
-					},
+					// {
+					// 	label: "编辑",
+					// 	icon: "_edit",
+					// 	disabled: disabledWhenNoSelected,
+					// 	isHide: vm.dialog,
+					// 	onClick() {
+					// 		if (vm.selected?.status === 0) {
+					// 			_.$msgError("探针状态为等待回复，无法编辑");
+					// 			return;
+					// 		}
+					// 		// 探针状态:0等待回复 1正常运行 2异常状态
+					// 		_.$openModal({
+					// 			title: i18n("探针新增"),
+					// 			url: "@/views/security_adjust/probe_management/probe_management.upsert.dialog.vue",
+					// 			parent: vm,
+					// 			row: vm.selected,
+					// 			onClick() {
+					// 				// vm.getTableData();
+					// 			}
+					// 		});
+					// 	}
+					// },
 					{
 						label: "删除",
 						icon: "_btn_delete",
@@ -108,7 +112,7 @@ export default async function () {
 								if (res.code === 1) {
 									_.$msgError(res.msg);
 								} else {
-									_.$msg("删除成功");
+									_.$msgSuccess("删除成功");
 								}
 							} catch (err) {
 								_.$msgError(err);
@@ -154,6 +158,7 @@ export default async function () {
 							width: 80,
 							cellRenderer: ({ rowIndex }) => rowIndex + 1
 						},
+						{ prop: "id", label: "探针ID" },
 						{ prop: "databaseName", label: "数据库名" },
 						{ prop: "databaseType", label: "数据库类型" },
 						{ prop: "databaseIP", label: "IPv4地址" },
@@ -169,7 +174,58 @@ export default async function () {
 							}
 						},
 						{ prop: "dataSize", label: "数据量/MB" },
-						{ prop: "持续时间", label: "持续时间/min" }
+						{ prop: "持续时间", label: "持续时间/min" },
+						defTable.colActions({
+							width: 210,
+							cellRenderer({ rowData }) {
+								return hBtnWithMore({
+									children: [
+										{
+											label: "配置为探针",
+											icon: "_icon_btn_view",
+											disabled: rowData.status === 1,
+											onClick() {
+												if (rowData.status === 0) {
+													_.$msgError("探针状态为等待回复，无法设置");
+													return;
+												}
+												// 探针状态:0等待回复 1正常运行 2异常状态
+												_.$openModal({
+													title: i18n("设置探针"),
+													url: "@/views/security_adjust/probe_management/probe_management.upsert.config.dialog.vue",
+													parent: vm,
+													row: rowData,
+													onClick() {
+														// vm.getTableData();
+													}
+												});
+											}
+										},
+										{
+											label: "取消配置",
+											icon: "_delete",
+											disabled: rowData.status !== 1,
+											async onClick() {
+												await _.$confirm({
+													title: "提示",
+													content: `是否取消配置为探针？`
+												});
+												const { code, msg } =
+													await _api.admin_db_audit.xdsAgentCancel(
+														rowData
+													);
+												if (code === 0) {
+													_.$msgSuccess(msg);
+													vm.getTableData({ page: 1 });
+												} else {
+													_.$msgError(msg);
+												}
+											}
+										}
+									]
+								});
+							}
+						})
 					]
 				})
 			};
@@ -205,6 +261,9 @@ export default async function () {
 					const { list, total } = res;
 					console.log("🚀 ~ getTableData ~ list:", list);
 					_.$setTableData(this.configsTable, { list, total });
+					if (this.agentId) {
+						this.configsTable.data.set.add(this.agentId);
+					}
 				} catch (error) {
 					_.$msgError(error);
 				} finally {

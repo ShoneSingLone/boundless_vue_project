@@ -109,18 +109,14 @@ async function getResponse(params) {
 		if (xAuthToken) {
 			requestOptions.headers["X-Auth-Token"] = xAuthToken;
 		} else {
-			requestOptions.headers["X-Auth-Token"] = await asyncGetXAuthToken(
-				params.urlGetToken
-			);
+			requestOptions.headers["X-Auth-Token"] = await asyncGetXAuthToken(params.urlGetToken);
 		}
 
 		let _res = await axios(requestOptions);
 
 		/* 可能之前的token过期了，获取之后再试一次 */
 		if (typeof _res?.data === "string") {
-			requestOptions.headers["X-Auth-Token"] = await asyncGetXAuthToken(
-				params.urlGetToken
-			);
+			requestOptions.headers["X-Auth-Token"] = await asyncGetXAuthToken(params.urlGetToken);
 			_res = await axios(requestOptions);
 		}
 

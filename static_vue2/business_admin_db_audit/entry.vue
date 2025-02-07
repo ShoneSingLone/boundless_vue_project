@@ -105,6 +105,20 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				trigger: ["change", "input", "blur"]
 			};
 		};
+		_rules.isValidCIDR = () => {
+			return {
+				name: "isValidCIDR",
+				async validator({ val }) {
+					const regex =
+						/^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}\/(\d|[1-2]\d|3[0-2])$/;
+					if (regex.test(val)) {
+						return "";
+					}
+					return "请输入正确的IP地址";
+				},
+				trigger: ["change", "input", "blur"]
+			};
+		};
 	})();
 	/*  */
 	const WHITE_LIST = ["/login", "/register"];
@@ -129,6 +143,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		setup() {},
 		data() {
 			return {
+				list: [],
 				isMobile: /Mobile/gi.test(window.navigator.userAgent),
 				sidebar: {
 					isCollapse: !!(_.$lStorage["sidebarIsCollapse"] || false),
@@ -274,10 +289,119 @@ export default async function ({ PRIVATE_GLOBAL }) {
 					} else {
 						user.roles = ["ROLE_DEFAULT"];
 					}
-					user.id = user.userId;
+					// user.id = user.userId;
 					user.account = user.name;
 					user.menus = menus;
 					this._setUser(user);
+					if (window.sessionStorage.getItem(`wss-${user.id}`)) {
+						this.list = JSON.parse(window.sessionStorage.getItem("wss")) ?? [];
+					}
+					const vm = this;
+
+					await _.$sleep(500);
+					// const url = `${window.wssUrl}${user.id}`;
+					// socket.onmessage = function (event) {
+					// 	if (event.data) {
+					// 		if (event.data.includes("风险等级")) {
+					// 			const obj = JSON.parse(event?.data ?? "{}");
+					// 			vm.list.push(obj);
+					// 			window.sessionStorage.setItem(
+					// 				`wss-${user.id}`,
+					// 				JSON.stringify(vm.list)
+					// 			);
+					// 		}
+					// 	}
+					// 	console.log("Received message:", event);
+					// };
+					// // 当连接关闭时触发
+					// socket.onclose = () => {
+					// 	console.log("Connection closed");
+					// };
+					var lockReconnect = false;
+					var ws = null;
+					var wsUrl = `${window.wssUrl}${user.id}`;
+					createWebSocket(wsUrl);
+
+					function createWebSocket(url) {
+						try {
+							if ("WebSocket" in window) {
+								ws = new WebSocket(url);
+							}
+							initEventHandle();
+						} catch (e) {
+							reconnect(url);
+							console.log(e);
+						}
+					}
+
+					function initEventHandle() {
+						ws.onclose = function (ev) {
+							reconnect(wsUrl);
+							console.log(
+								"socket 断开: " + ev.code + " " + ev.reason + " " + ev.wasClean
+							);
+							console.log("socket 断开: " + ev);
+						};
+						ws.onerror = function (ev) {
+							reconnect(wsUrl);
+							console.log("llws连接错误!");
+						};
+						ws.onopen = function () {
+							heartCheck.reset().start();
+							console.log("llws连接成功!" + new Date().toLocaleString());
+						};
+						ws.onmessage = function (message) {
+							heartCheck.reset().start(); //拿到任何消息都说明当前连接是正常的
+							console.log("llws收到消息啦:" + message.data);
+							if (message.data) {
+								if (message.data.includes("风险等级")) {
+									const obj = JSON.parse(message?.data ?? "{}");
+									vm.list.push(obj);
+									window.sessionStorage.setItem(
+										`wss-${user.id}`,
+										JSON.stringify(vm.list)
+									);
+								}
+							}
+						};
+					}
+
+					// 当窗口关闭时，主动去关闭websocket连接
+					window.onbeforeunload = function () {
+						ws.close();
+					};
+
+					function reconnect(url) {
+						if (lockReconnect) return;
+						lockReconnect = true;
+						setTimeout(function () {
+							//没连接上会一直重连，设置延迟避免请求过多
+							createWebSocket(url);
+							lockReconnect = false;
+						}, 2000);
+					}
+
+					var heartCheck = {
+						timeout: 3000,
+						timeoutObj: null,
+						serverTimeoutObj: null,
+						reset: function () {
+							clearTimeout(this.timeoutObj);
+							clearTimeout(this.serverTimeoutObj);
+							return this;
+						},
+						start: function () {
+							var self = this;
+							this.timeoutObj = setTimeout(function () {
+								ws.send("ping");
+								console.log("ping!");
+								self.serverTimeoutObj = setTimeout(function () {
+									//如果超过一定时间还没重置，说明后端主动断开了
+									ws.close();
+								}, self.timeout);
+							}, this.timeout);
+						}
+					};
 				} catch (error) {
 					console.error(error);
 				} finally {
@@ -292,6 +416,8 @@ export default async function ({ PRIVATE_GLOBAL }) {
 					const res = await _api.admin_db_audit.xdsLogout();
 					if (res.code === 0) {
 						_.$lStorage["token"] = "";
+						this.list = [];
+						window.sessionStorage.removeItem(`wss-${this.user.id}`);
 						this._setUser({});
 						this.$router.push("/login");
 						_.$msg(i18n("退出成功! "));

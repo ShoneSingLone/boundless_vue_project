@@ -2,7 +2,7 @@
 export default async function () {
 	const ComponentPageRouterView = {
 		render(h) {
-			return h("div", { class: "x-page-view" }, [h("xPageContent", [h("router-view")])]);
+			return hDiv({ class: "x-page-view" }, [h("xPageContent", [h("router-view")])]);
 		}
 	};
 	const ComponentRouterView = {

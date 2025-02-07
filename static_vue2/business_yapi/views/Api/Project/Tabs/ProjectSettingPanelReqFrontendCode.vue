@@ -24,7 +24,7 @@ export default async function () {
 					editor: {
 						label: "",
 						type: "textarea",
-						itemType: "YapiItemMonaco",
+						itemType: "xItemMonaco",
 						language: "javascript",
 						value: ""
 					}

@@ -5,4 +5,5 @@ type t_options = {
 	};
 export type t_yapi = {
 httpMethod:t_options[]
+role:t_options[]
 };

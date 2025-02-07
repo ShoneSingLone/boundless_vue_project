@@ -26,7 +26,9 @@ function FunctionDeclaration(path) {
 		const parameters = path.node.params.map(param => param.name);
 		// 获取函数前的注释说明
 		const { leadingComments } = path.node;
-		const leadingCommentText = leadingComments ? leadingComments.map(item => removeSpacesAsterisksAndNewlines(item.value)).join(",") : "";
+		const leadingCommentText = leadingComments
+			? leadingComments.map(item => removeSpacesAsterisksAndNewlines(item.value)).join(",")
+			: "";
 		// 获取函数内部的注释
 		const innerComments = path.node.body.body[0].leadingComments;
 		console.log("Function Name:", functionName);
@@ -81,7 +83,11 @@ traverse(ast, {
 				const parameters = right.params.map(param => param.name);
 				console.log("参数列表:", parameters);
 				const { leadingComments } = right;
-				const leadingCommentText = leadingComments ? leadingComments.map(item => removeSpacesAsterisksAndNewlines(item.value)).join(",") : "";
+				const leadingCommentText = leadingComments
+					? leadingComments
+							.map(item => removeSpacesAsterisksAndNewlines(item.value))
+							.join(",")
+					: "";
 				console.log("函数前的注释说明:", leadingCommentText);
 				const innerComments = right.body.body?.[0]?.leadingComments;
 				if (innerComments) {

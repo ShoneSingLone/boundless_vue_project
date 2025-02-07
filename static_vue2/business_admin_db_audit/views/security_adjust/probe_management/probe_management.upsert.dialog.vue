@@ -2,12 +2,12 @@
 	<xDialog>
 		<xForm col="1" ref="form">
 			<xItem :configs="form.deptId" />
-			<xItem :configs="form.databaseName" />
 			<xItem :configs="form.databaseType" />
 			<xItem :configs="form.databaseIP" />
 			<xItem :configs="form.port" />
-			<xItem :configs="form.databaseUsername" />
-			<xItem :configs="form.databasePassword" />
+			<xItem :configs="form.databaseName" />
+			<xItem :configs="form.databaseUsername" v-if="form.databaseType.value !== 'redis'" />
+			<xItem :configs="form.databasePassword" v-if="form.databaseType.value !== 'redis'" />
 			<xItem :configs="form.description" />
 		</xForm>
 		<template #footer>
@@ -31,8 +31,7 @@ export default async function ({ row }) {
 					databaseName: {
 						value: "",
 						label: i18n("数据库名"),
-						disabled: isUpdate,
-						rules: [_rules.required(), _rules.lessThan(50)]
+						disabled: isUpdate
 					},
 					databaseType: {
 						value: "",
@@ -40,7 +39,7 @@ export default async function ({ row }) {
 						disabled: isUpdate,
 						itemType: "xItemSelect",
 						options: [],
-						rules: [_rules.required(), _rules.lessThan(50)]
+						rules: [_rules.required()]
 					},
 					deptId: {
 						value: "",
@@ -48,7 +47,7 @@ export default async function ({ row }) {
 						disabled: isUpdate,
 						itemType: "xItemSelect",
 						options: [],
-						rules: [_rules.required(), _rules.lessThan(50)]
+						rules: [_rules.required()]
 					},
 					databaseIP: {
 						value: "",
@@ -61,27 +60,24 @@ export default async function ({ row }) {
 						label: i18n("端口号"),
 						disabled: isUpdate,
 						isNumber: true,
-						rules: [_rules.required(), _rules.lessThan(50)]
+						rules: [_rules.required()]
 					},
 					databaseUsername: {
 						value: "",
 						label: i18n("数据库用户名"),
-						disabled: isUpdate,
-						rules: [_rules.required(), _rules.lessThan(50)]
+						disabled: isUpdate
 					},
 					databasePassword: {
 						value: "",
 						label: i18n("数据库用户密码"),
 						disabled: isUpdate,
-						isPwd: true,
-						rules: [_rules.required(), _rules.lessThan(50)]
+						isPwd: true
 					},
 					description: {
 						value: "",
 						label: i18n("探针描述"),
 						type: "textarea",
-						disabled: isUpdate,
-						rules: [_rules.lessThan(50)]
+						disabled: isUpdate
 					}
 				})
 			};

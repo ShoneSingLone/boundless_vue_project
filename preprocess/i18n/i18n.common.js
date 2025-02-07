@@ -1,5 +1,8 @@
-/*node makeLanguageFile.js */
-module.exports = {
+/*node makeLanguageFile.js */ module.exports = {
+	错误: ["错误", "Error"],
+	操作: ["操作", "Operation"],
+	查询: ["查询", "Search"],
+	提示: ["提示", "Message"],
 	info: ["信息", "info"],
 	Operation: ["操作", "Operation"],
 	sun: ["星期天", "Sun"],
@@ -136,5 +139,35 @@ module.exports = {
 	ruleMsgWordLessThan: ["字数应少于{size}", "Word count should be less than {size}"],
 	__success: ["{action} 成功!", "{action} successfully!"],
 	__failed: ["{action} 失败!", "{action} failed!"],
-
+	请输入部门名称: ["请输入部门名称", "Please enter the department name"],
+	请输入菜单名称: ["请输入菜单名称", "Please enter the menu name"],
+	请输入字符: ["请输入字符", "Please enter characters"],
+	状态: ["状态", "state"],
+	时间范围: ["时间范围", "Time range"],
+	立即申请: ["立即申请", "Apply Now"],
+	关闭: ["关闭", "close"],
+	请输入服务名称: ["请输入服务名称", "Please enter the service name"],
+	配置费用: ["配置费用", "Configuration cost"],
+	当前配置: ["当前配置", "currently allocated"],
+	小时: ["小时", "hour"],
+	选择服务: ["选择服务", "Select Service"],
+	跳转: ["跳转", "Jump to"],
+	提交成功: ["提交成功", "Submitted successfully"],
+	查看订单: ["查看订单", "View orders"],
+	返回列表: ["返回列表", "Return to List"],
+	生成表达式: ["生成表达式", "Generate expression"],
+	URL: ["URL", "URL"],
+	更多: ["更多", "more"],
+	重置: ["重置", "Reset"],
+	是: ["是", "yes"],
+	否: ["否", "no"],
+	暂无数据: ["暂无数据", "No data available at the moment"],
+	高级搜索: ["高级搜索", "Advanced Search"],
+	请输入正确的手机号码: ["请输入正确的手机号码", "Please enter the correct phone number"],
+	必填项: ["必填项", "Required "],
+	请输入Email: ["请输入Email", "Please enter your email address"],
+	"以小写英文字母或数字开头，并且只包含字母、数字或者-": [
+		"以小写英文字母或数字开头，并且只包含字母、数字或者-",
+		"Starting with a lowercase English letter or number and containing only letters, numbers, or-"
+	]
 };

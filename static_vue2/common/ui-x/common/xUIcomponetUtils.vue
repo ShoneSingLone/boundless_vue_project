@@ -1195,8 +1195,66 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	})();
 
 	/*****************************************/
+	const DEFAULT_DELAY = 200;
+	const DEFAULT_DISTANCE = 0;
+	/*****************************************/
+
 	(function () {
+		const getOffsetTop = el => {
+			let offset = 0;
+			let parent = el;
+
+			while (parent) {
+				offset += parent.offsetTop;
+				parent = parent.offsetParent;
+			}
+
+			return offset;
+		};
+
+		const getOffsetTopDistance = (el, containerEl) => {
+			return Math.abs(getOffsetTop(el) - getOffsetTop(containerEl));
+		};
+
 		_xUtils = {
+			DEFAULT_DELAY,
+			DEFAULT_DISTANCE,
+			getOffsetTop,
+			getOffsetTopDistance,
+			getScrollOptions(el, instance) {
+				const attributes = {
+					delay: {
+						type: Number,
+						default: DEFAULT_DELAY
+					},
+					distance: {
+						type: Number,
+						default: DEFAULT_DISTANCE
+					},
+					disabled: {
+						type: Boolean,
+						default: false
+					},
+					immediate: {
+						type: Boolean,
+						default: true
+					},
+					up: {
+						type: Boolean,
+						default: false
+					}
+				};
+
+				return Object.entries(attributes).reduce((acm, [name, option]) => {
+					const { type, default: defaultValue } = option;
+					const attrVal = el.getAttribute(`infinite-scroll-${name}`);
+					let value = _.$isInput(attrVal) ? attrVal : defaultValue;
+					value = value === "false" ? false : value;
+					value = type(value);
+					acm[name] = Number.isNaN(value) ? defaultValue : value;
+					return acm;
+				}, {});
+			},
 			RepeatClick: {
 				bind(el, binding, vnode) {
 					let interval = null;

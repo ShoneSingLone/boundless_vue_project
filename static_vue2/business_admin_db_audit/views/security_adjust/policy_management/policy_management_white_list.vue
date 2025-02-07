@@ -117,28 +117,28 @@ export default async function () {
 													}
 												});
 											}
-										},
-										{
-											label: "删除",
-											icon: "_delete",
-											disabled: rowData.status === 0,
-											async onClick() {
-												await _.$confirm({
-													title: "提示",
-													content: `是否确认删除所选数据？`
-												});
-												const { code, msg } =
-													await _api.admin_db_audit.xdsWhitelistId({
-														id: rowData.id
-													});
-												if (code === 0) {
-													_.$msg(msg);
-												} else {
-													_.$msgError(msg);
-												}
-												vm.getTableData({ page: 1 });
-											}
 										}
+										// {
+										// 	label: "删除",
+										// 	icon: "_delete",
+										// 	disabled: rowData.status === 0,
+										// 	async onClick() {
+										// 		await _.$confirm({
+										// 			title: "提示",
+										// 			content: `是否确认删除所选数据？`
+										// 		});
+										// 		const { code, msg } =
+										// 			await _api.admin_db_audit.xdsWhitelistId({
+										// 				id: rowData.id
+										// 			});
+										// 		if (code === 0) {
+										// 			_.$msg(msg);
+										// 		} else {
+										// 			_.$msgError(msg);
+										// 		}
+										// 		vm.getTableData({ page: 1 });
+										// 	}
+										// }
 									]
 								});
 							}

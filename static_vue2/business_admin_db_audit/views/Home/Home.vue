@@ -14,12 +14,19 @@
 			</xRow>
 			<xRow :gutter="16" class="mt">
 				<xCol :span="12">
-					<xCard style="height: 260px">
-						<RecentSevenDays ref="RecentSevenDays" :dataList="warningData" />
+					<xCard style="height: 300px">
+						<div style="display: grid; grid-template-columns: 1fr 1fr">
+							<div>
+								<RecentSevenDays ref="RecentSevenDays" :dataList="warningData" />
+							</div>
+							<div>
+								<AlertStatistics ref="AlertStatistics" />
+							</div>
+						</div>
 					</xCard>
 				</xCol>
 				<xCol :span="12">
-					<xCard style="height: 260px">
+					<xCard style="height: 300px">
 						<div class="flex height100">
 							<div class="width50percent">
 								<Top10OfTheHotLibraries
@@ -52,10 +59,15 @@
 				</xCol>
 				<xCol :span="12">
 					<xCard style="height: 600px">
-						<!--						<template #header>-->
-						<!--							<span class="chart-card-header">告警统计</span>-->
-						<!--						</template>-->
-						<AlertStatistics ref="AlertStatistics" />
+						<template #header>
+							<span class="chart-card-header">实时报警信息</span>
+						</template>
+						<div class="mt8" style="height: 500px">
+							<xTableVir
+								class="no-shadow xDataGrid-in-card"
+								:columns="configsTable.columns"
+								:data="configsTable.data.list" />
+						</div>
 					</xCard>
 				</xCol>
 			</xRow>
@@ -76,6 +88,7 @@ export default async function () {
 			Top10OfTheHotLibraries: () =>
 				_.$importVue("@/views/Home/charts/Top10OfTheHotLibraries.vue")
 		},
+		async created() {},
 		async mounted() {
 			try {
 				await this.handleGetXdsAuditLogFrontpage();
@@ -86,14 +99,36 @@ export default async function () {
 			}
 		},
 		data() {
+			const vm = this;
 			return {
 				time: _.$dateFormat(),
 				IPData: {},
 				databaseData: {},
 				operationTypeData: {},
 				tableNameData: {},
-				warningData: {}
+				warningData: {},
+				configsTable: defTable({
+					isHideQuery: true,
+					isHideFilter: true,
+					data: {
+						list: []
+					},
+					columns: [
+						{ prop: "风险等级", label: "风险等级" },
+						{ prop: "匹配策略", label: "匹配策略" },
+						{ prop: "匹配策略", label: "报警时间" }
+					]
+				})
 			};
+		},
+		watch: {
+			"APP.list": {
+				immediate: true,
+				deep: true,
+				handler(newValue, oldValue) {
+					this.configsTable.data.list = newValue;
+				}
+			}
 		},
 		methods: {
 			async handleGetXdsAuditLogFrontpage() {

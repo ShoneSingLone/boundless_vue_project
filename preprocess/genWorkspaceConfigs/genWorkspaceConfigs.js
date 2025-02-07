@@ -26,7 +26,10 @@ const targetJson = {
 		if (_app_name) {
 			const _targetJson = _.cloneDeep(targetJson);
 			_targetJson.settings["files.exclude"][`**/business_${_app_name}`] = false;
-			fs.writeFileSync(path.resolve(__dirname, `../../vscode.workspace/n2one_${_app_name}.code-workspace`), JSON.stringify(_targetJson, null, 4));
+			fs.writeFileSync(
+				path.resolve(__dirname, `../../vscode.workspace/n2one_${_app_name}.code-workspace`),
+				JSON.stringify(_targetJson, null, 4)
+			);
 		}
 	});
 })();

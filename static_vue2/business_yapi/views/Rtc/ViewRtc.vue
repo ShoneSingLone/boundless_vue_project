@@ -21,7 +21,7 @@
 <template>
 	<div class="height100 flex vertical" id="ViewRtc">
 		<div class="flex midd x-padding">
-			<xTag>{{ userName }}</xTag>
+			<xTag>{{ username }}</xTag>
 			<xGap l />
 			<template v-for="(item, index) in items">
 				<a :href="item[1]" :key="item[0]"> {{ item[0] }} </a>
@@ -36,8 +36,8 @@ export default async function () {
 	return defineComponent({
 		inject: ["APP"],
 		computed: {
-			userName() {
-				return this.APP.user.userName || this.APP.user.username;
+			username() {
+				return this.APP.user.username || this.APP.user.username;
 			},
 			items() {
 				return [

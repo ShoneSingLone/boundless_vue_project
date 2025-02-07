@@ -1,7 +1,7 @@
 <template>
 	<xDialog>
 		<xForm col="1" ref="form">
-			<xItem v-for="(value, key) of form" :label="key" :key="key">
+			<xItem v-for="(value, key) of form" :label="value.label" :key="key">
 				{{ value.value }}
 			</xItem>
 		</xForm>
@@ -39,10 +39,32 @@ export default async function ({ row, warringStatus, parent }) {
 			}
 		},
 		mounted() {
+			const mapDict = {
+				strategyName: "策略名称",
+				risk: "风险级别",
+				status: "告警状态",
+				warningDetail: "告警详情"
+			};
 			if (row && Object.keys(row)) {
 				this.form = defItems(
 					Object.keys(row).reduce((config, key) => {
-						config[`${key}`] = { label: key, value: row[key] };
+						if (!Object.keys(mapDict).includes(key)) {
+							return config;
+						}
+						config[`${key}`] = { label: mapDict[`${key}`], value: row[key] };
+						if (key === "status") {
+							const label =
+								warringStatus.find(item => Number(item.value) === row[key])
+									?.label ?? row[key];
+							config[`${key}`] = { label: mapDict[`${key}`], value: label };
+						}
+						if (key === "risk") {
+							const label =
+								_opts.admin_db_audit.warringLevel.find(
+									item => item.value === row[key]
+								)?.label ?? row[key];
+							config[`${key}`] = { label: mapDict[`${key}`], value: label };
+						}
 						return config;
 					}, {})
 				);

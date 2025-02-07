@@ -52,10 +52,10 @@ export default async function () {
 						icon: "_btn_delete",
 						disabled: disabledWhenNoSelected,
 						async onClick() {
-							if (vm.selected?.status === 0) {
-								_.$msgError("策略状态为等待回复，无法编辑");
-								return;
-							}
+							// if (vm.selected?.status === 0) {
+							// 	_.$msgError("策略状态为等待回复，无法编辑");
+							// 	return;
+							// }
 							await _.$confirm({
 								title: "提示",
 								content: `是否确认删除吗？`
@@ -74,12 +74,12 @@ export default async function () {
 				],
 				oprBtnArrayRight: [
 					{
-						label: "添加策略",
+						label: "添加策略类型",
 						preset: "primary",
 						icon: "_add",
 						onClick() {
 							_.$openModal({
-								title: i18n("添加策略"),
+								title: i18n("添加策略类型"),
 								parent: vm,
 								url: "@/views/security_adjust/policy_management/policy_management.upsert.dialog.vue",
 								onClick() {
@@ -88,22 +88,22 @@ export default async function () {
 							});
 						}
 					},
-					{
-						label: "编辑",
-						icon: "_edit",
-						disabled: disabledWhenNoSelected,
-						onClick() {
-							_.$openModal({
-								title: i18n("编辑策略"),
-								row: vm.selected,
-								parent: vm,
-								url: "@/views/security_adjust/policy_management/policy_management.upsert.dialog.vue",
-								onClick() {
-									vm.getTableData();
-								}
-							});
-						}
-					},
+					// {
+					// 	label: "编辑",
+					// 	icon: "_edit",
+					// 	disabled: disabledWhenNoSelected,
+					// 	onClick() {
+					// 		_.$openModal({
+					// 			title: i18n("编辑策略"),
+					// 			row: vm.selected,
+					// 			parent: vm,
+					// 			url: "@/views/security_adjust/policy_management/policy_management.upsert.dialog.vue",
+					// 			onClick() {
+					// 				vm.getTableData();
+					// 			}
+					// 		});
+					// 	}
+					// },
 					{
 						label: "刷新",
 						icon: "_refresh",
@@ -140,22 +140,22 @@ export default async function () {
 							width: 80,
 							cellRenderer: ({ rowIndex }) => rowIndex + 1
 						},
-						{ prop: "name", label: "策略名" },
+						{ prop: "name", label: "策略类型" },
 						defTable.colActions({
 							width: 210,
 							cellRenderer({ rowData }) {
 								return hBtnWithMore({
 									children: [
 										{
-											label: "查看规则",
+											label: "查看策略",
 											icon: "_icon_btn_view",
 											onClick() {
 												vm.$router.push({
 													path: "/security_adjust/policy_management/view",
 													query: {
 														id: rowData.id,
-														strategyName: rowData.name,
-														status: rowData.status
+														strategyName: rowData.name
+														// status: rowData.status
 													}
 												});
 											}
@@ -163,7 +163,7 @@ export default async function () {
 										{
 											label: "删除",
 											icon: "_delete",
-											disabled: rowData.status === 0,
+											// disabled: rowData.status === 0,
 											async onClick() {
 												await _.$confirm({
 													title: "提示",

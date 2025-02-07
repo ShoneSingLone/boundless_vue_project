@@ -1,6 +1,6 @@
 const { fs, path, _ } = require("../preprocess.utils");
 
-const TARGET_FILE_ARRAY = [path.resolve(__dirname, "../../static_vue2/common/libs/common.js")];
+const TARGET_FILE_ARRAY = [path.resolve(__dirname, "../../static_vue2/common/libs/common.ts")];
 
 /**
  * @description asdfasdf

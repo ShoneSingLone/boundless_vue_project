@@ -221,7 +221,7 @@ export default async function () {
 										"div",
 										{ staticClass: "flex middle width100 desc-input" },
 										[
-											h("span", [rowData.desc || "--"]),
+											hSpan([rowData.desc || "--"]),
 											h("xIcon", {
 												icon: "edit",
 												staticClass: "ViewAllProject-edit-icon ml pointer",

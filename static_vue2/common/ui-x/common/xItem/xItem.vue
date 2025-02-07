@@ -31,6 +31,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		name: "xItem",
 		componentName: "xItem",
 		props: [
+			"readonly",
 			"configs",
 			"value",
 			"payload",
@@ -160,20 +161,60 @@ export default async function ({ PRIVATE_GLOBAL }) {
 					return !!vm.cptConfigs?.disabled;
 				}
 			});
+			let cptReadonly = computed(() => {
+				if (vm.readonly || vm.cptConfigs?.attrs?.readonly) {
+					return true;
+				}
+				if (_.isFunction(vm.cptConfigs?.readonly)) {
+					return vm.cptConfigs.readonly.call(vm.cptConfigs, {
+						xItem: vm,
+						val: vm.p_value
+					});
+				} else {
+					return !!vm.cptConfigs?.readonly;
+				}
+			});
+
+			(() => {
+				let timmer;
+				onMounted(() => {
+					/* FIXED: xItem xItem_controller overflow-hidden 高度产生滑动条 */
+					if (cptConfigs.value.KEEP_SCROLL_TOP_0) {
+						timmer = setInterval(() => {
+							try {
+								const xItem_controller = $(this.$el).find(".xItem_controller");
+								if (xItem_controller[0]) {
+									const scrollTop = xItem_controller[0].scrollTop;
+									if (scrollTop !== 0) {
+										xItem_controller[0].scrollTop = 0;
+									}
+								}
+							} catch (e) {}
+						}, 50);
+					}
+				});
+				onBeforeUnmount(() => {
+					timmer && clearInterval(timmer);
+				});
+			})();
 
 			onMounted(() => {
+				/* TODO:优化逻辑 */
 				Vue._X_ITEM_VM_S[this.cpt_id] = this;
 				if (cptConfigs.value?.once) {
 					cptConfigs.value.once.call(cptConfigs.value, { xItem: this });
 				}
 				if (cptConfigs.value.style) {
-					this.$watch("cptConfigs.style", this.setStyle);
+					this.$watch("cptConfigs.style", this.updateStyle);
 				}
 				if (cptConfigs.value.attrs) {
 					this.$watch("cptConfigs.attrs", this.setAttrs);
 				}
 				if (cptConfigs.value.multiple) {
 					this.$watch("cptConfigs.multiple", this.setAttrs);
+				}
+				if (cptConfigs.value.placeholder) {
+					this.$watch("cptConfigs.placeholder", this.setAttrs);
 				}
 				if (cptConfigs.value.value !== undefined) {
 					this.$watch("cptConfigs.value", this.emitValueChange);
@@ -183,7 +224,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				}
 				this.$watch("p_value", this.emitValueChange, { deep: true });
 
-				this.setStyle();
+				this.updateStyle();
 				this.setProps();
 				this.setAttrs();
 				this.setListeners();
@@ -201,11 +242,15 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				refItemLabel: sizer,
 				privateState,
 				cptDisabled,
+				cptReadonly,
 				cpt_options,
 				cptDepdata,
 				cptPlaceholder,
 				cptConfigs
 			};
+		},
+		onUpdate() {
+			console.log("xItem onUpdate");
 		},
 		computed: {
 			cptIsShowItemColon() {
@@ -347,7 +392,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			calMsg() {
 				/* msg之前一直是计算属性，但是msg可用作为render函数，里面的组件可能是懒加载，懒加载完成后触发update，由于计算属性的缓存机制无法更新，所以改用方法tips */
 				if (_.isString(this.cptConfigs?.msg) && this.cptConfigs?.msg) {
-					return h("div", { staticClass: "xItem-msg-content" }, [this.cptConfigs.msg]);
+					return hDiv({ staticClass: "xItem-msg-content" }, [this.cptConfigs.msg]);
 				}
 				if (_.isFunction(this.cptConfigs?.msg)) {
 					return this.cptConfigs.msg.call(this.cptConfigs, { xItem: this });
@@ -448,7 +493,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				}
 				return this.errorTips;
 			},
-			setStyle() {
+			updateStyle() {
 				this.p_style = (() => {
 					return _.merge(
 						{
@@ -508,7 +553,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		render() {
 			if (!this.cptConfigs) debugger;
 
-			/* 只读模式 */
+			/* TODO:只读模式 */
 			if (this.readOnlyAs) {
 				if (_xItem_lazyLoadRender.ReadonlyAsRender) {
 					return _xItem_lazyLoadRender.ReadonlyAsRender.call(this);
@@ -534,8 +579,8 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			}
 
 			/* 骨架 */
-			return h("div", { staticClass: "el-skeleton is-animated " }, [
-				h("div", {
+			return hDiv({ staticClass: "el-skeleton is-animated " }, [
+				hDiv({
 					staticClass: "el-skeleton__item el-skeleton__p el-skeleton__paragraph"
 				})
 			]);
@@ -574,7 +619,13 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			display: flex;
 			flex-flow: row nowrap;
 			align-items: center;
-			overflow: hidden !important;
+
+			> [disabled="disabled"] {
+				// opacity: 0.5;
+				&:hover {
+					cursor: not-allowed;
+				}
+			}
 			.after-flex1 + * {
 				flex: 1;
 			}

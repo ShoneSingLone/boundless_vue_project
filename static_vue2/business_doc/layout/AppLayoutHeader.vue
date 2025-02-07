@@ -29,7 +29,7 @@ export default async function () {
 					options: [
 						{
 							label: "默认",
-							value: "默认"
+							value: "common"
 						},
 						{
 							label: "tiny",

@@ -102,7 +102,7 @@ export default async function () {
 						}
 					: {};
 
-			return h("span", {
+			return hSpan({
 				class: avatarClass,
 				style: sizeStyle,
 				children: this.renderAvatar()

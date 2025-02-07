@@ -10,12 +10,14 @@ import {
 	t_xUtils,
 	t_xTableVirNewGroupSortedRows
 } from "./types/business/_xUtils/index.d";
-import { i_defItems } from "./types/xUI/t_xItemConfigs.d";
+import { i_defItem, i_defItems } from "./types/xUI/t_xItemConfigs.d";
 import { t_adminTools } from "./types/business/_AdminConsole";
 
 import {
 	reactive as t_reactive,
+	// VueConstructor as t_Vue,
 	CreateElement,
+	h_CreateElement,
 	defineComponent as t_defineComponent,
 	onMounted as t_onMounted,
 	onUnmounted as t_onUnmounted,
@@ -40,7 +42,6 @@ import { t_defTable } from "./types/xUI/t_tableConfigs";
 declare global {
 	// const Vue: t_Vue;
 	const $: any;
-	const dayjs: dayjs;
 	const _: t_lodash;
 	const _api: t_api;
 	const _opts: t_opts;
@@ -51,7 +52,7 @@ declare global {
 
 	/* window */
 	const defItems: i_defItems;
-	const defItem: any;
+	const defItem: i_defItem;
 	const defTable: t_defTable;
 
 	/* 国际化 */
@@ -89,6 +90,8 @@ declare global {
 	const onBeforeUnmount: typeof t_onBeforeUnmount;
 	const onBeforeMount: typeof t_onBeforeMount;
 	const isObject: (obj: any) => boolean;
+	/** 查找vm叫componentName的祖先 */
+	const injectVm: (vm: object, componentName: string) => object;
 	/**
 	 * 判断对象是否有属性
 	 */
@@ -97,15 +100,27 @@ declare global {
 	/* h 函数 start */
 	const h: CreateElement;
 	/** html tag:xTableVir 扩展行的包裹元素，有特定的样式类 x-table-vir-expand-row */
-	const hTableExpandRow: (innerDom: any, props?: object) => VNode;
+	const hTableExpandRow: h_CreateElement;
 	/** html tag:div */
-	const hDiv: (innerDom: any, props?: object) => VNode;
+	const hDiv: h_CreateElement;
 	/** html tag:span */
-	const hSpan: (innerDom: any, props?: object) => VNode;
+	const hSpan: h_CreateElement;
+	/** xUI tag:xBtn */
+	const hxBtn: h_CreateElement;
+	/** xUI tag:xIcon */
+	const hxIcon: h_CreateElement;
+	/** xUI tag:xTag */
+	const hxTag: h_CreateElement;
+	/** xUI tag:xItem */
+	const hxItem: h_CreateElement;
+	/*
+	 * 在组件生命周期内，涉及循环渲染，用于隔离循环渲染的VNode,(Code Hacks xTableVir设计待优化)
+	 */
+	const hVmSingleNode: (vm, prop: string, node: VNode) => VNode;
 	/*
 	 * v-xtips的h渲染函数简写方法，支持hover
 	 */
-	const hTipsHover: (t_xTipsHover) => object;
+	const hTipsHover: (options: t_xTipsHover) => object;
 	/**
 	 * 根据value从options里获取label，用xTag展示，如果options里面提供xTag配置信息，会用对应的形式展示
 	 */
@@ -133,6 +148,7 @@ declare global {
 
 	/**
 	 * xTableVir合并row的数据必须经过预处理，得到rowspan相关数据
+	 * 其余每一列的合并项以递归的方式处理
 	 */
 	const xTableVirNewGroupSortedRows: (options: t_xTableVirNewGroupSortedRows) => object[];
 	/**

@@ -6,18 +6,9 @@
 			<div class="edit-title">基本信息</div>
 			<div class="form-wrapper">
 				<xForm col="1">
-					<xItem :configs="form.name" />
-					<xItem :configs="form.roleId" />
-					<xItem :configs="form.deptId" />
+					<xItem :configs="form.nickName" />
+					<xItem :configs="form.sex" />
 					<xItem :configs="form.phone" />
-					<xItem :configs="form.账号有效时间" />
-					<xItem :configs="form.账号状态" />
-				</xForm>
-			</div>
-			<div class="edit-title mt">其他</div>
-			<div class="form-wrapper pt">
-				<xForm>
-					<xItem :configs="form.remarks" span="full" />
 				</xForm>
 			</div>
 			<div class="form-wrapper mt">
@@ -36,52 +27,15 @@ export default async function () {
 		data(vm) {
 			return {
 				form: defItems({
-					userName: { label: "用户名称", value: "", rules: [_rules.required()] },
-					name: { label: "账号", value: "", rules: [_rules.required()] },
-					phone: { label: "电话", value: "", rules: [_rules.required()] },
-					deptId: {
-						label: "部门",
-						value: "",
-						rules: [_rules.required()],
-						itemType: "xItemSelect",
-						options: [],
-						async once() {
-							const { data = [] } = await _api.admin_db_audit.xdsDepartmentPage({
-								pageSize: 500,
-								pageNum: 1
-							});
-							const [all] = data;
-							this.options = all?.children?.map?.(item => ({
-								label: item.deptName,
-								value: item.id
-							}));
-						}
+					nickName: { label: "昵称", value: "", rules: [] },
+					sex: {
+						label: "性别",
+						value: "1",
+						itemType: "xItemRadioGroup",
+						minWidth: 80,
+						options: _opts.admin_db_audit.sex
 					},
-					roleId: {
-						label: "角色",
-						value: "",
-						rules: [_rules.required()],
-						itemType: "xItemSelect",
-						options: [],
-						async once() {
-							const { data = [] } = await _api.admin_db_audit.xdsRoleAll();
-							const options = _.map(data, ({ id, roleName }) => ({
-								label: roleName,
-								value: id
-							}));
-							this.options = options;
-						}
-					},
-					登陆密码: { label: "登陆密码", value: "", rules: [_rules.required()] },
-					账号状态: {
-						label: "账号状态",
-						value: true,
-						itemType: "xItemSwitch",
-						activeText: "正常",
-						inactiveText: "禁用"
-					},
-					账号有效时间: { label: "账号有效时间", value: "", rules: [_rules.required()] },
-					remarks: { value: "", label: "备注", type: "textarea" }
+					phone: { label: "手机号", value: "", rules: [_rules.mobilePhone()] }
 				})
 			};
 		},
@@ -91,7 +45,24 @@ export default async function () {
 				return {
 					label: "保存",
 					preset: "primary",
-					async onClick() {}
+					async onClick() {
+						try {
+							_.$loading(true);
+							const params = _.merge(vm.APP.user, _.$pickFormValues(vm.form));
+							const { code, msg } =
+								await _api.admin_db_audit.xdsUserEditPersonal(params);
+							if (code === 0) {
+								_.$msg(msg);
+								vm.goBack();
+							} else {
+								_.$msgError(msg);
+							}
+						} catch (error) {
+							console.error(error);
+						} finally {
+							_.$loading(false);
+						}
+					}
 				};
 			},
 			btnCancel() {
@@ -108,17 +79,13 @@ export default async function () {
 			"APP.user": {
 				immediate: true,
 				handler(user) {
-					const item = _.find(this.form.deptId.options, { value: user.deptId });
-					_.$setFormValues(this.form, user);
-					if (!item) {
-						(async () => {
-							await _.$ensure(() => this.form.deptId.options.length);
-							this.form.deptId.options.unshift({
-								label: user.deptName,
-								value: user.deptId
-							});
-						})();
-					}
+					_.$setFormValues(
+						this.form,
+						_.merge(user, {
+							nickName: user.userName,
+							sex: String(user.sex)
+						})
+					);
 				}
 			}
 		},

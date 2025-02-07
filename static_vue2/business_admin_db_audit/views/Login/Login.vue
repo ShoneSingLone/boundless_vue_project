@@ -13,21 +13,23 @@
 					<span class="mess">User login</span>
 				</div>
 				<div class="loginBoxMainRightUserType">
-					<xTabs v-model="username">
-						<xTabPane label="审计管理员" name="admin"> </xTabPane>
-						<xTabPane label="系统管理员" name="系统管理员"> </xTabPane>
-						<xTabPane label="安全管理员" name="安全管理员"> </xTabPane>
-					</xTabs>
+					<!--					<xTabs v-model="username">-->
+					<!--						<xTabPane label="审计管理员" name="admin"> </xTabPane>-->
+					<!--						<xTabPane label="系统管理员" name="系统管理员"> </xTabPane>-->
+					<!--						<xTabPane label="安全管理员" name="安全管理员"> </xTabPane>-->
+					<!--					</xTabs>-->
 				</div>
 				<div class="loginBoxMainRightForm">
 					<xInput
 						class="loginBoxMainRightFormItem"
 						v-model="username"
+						@enter="submit"
 						placeholder="请输入用户名" />
 					<xGap t="36" />
 					<xInput
 						class="loginBoxMainRightFormItem"
 						v-model="password"
+						@enter="submit"
 						type="password"
 						placeholder="请输入密码" />
 					<xGap t="36" />
@@ -35,6 +37,7 @@
 						<xInput
 							class="loginBoxMainRightFormItem loginBoxMainRightFormItemCode"
 							v-model="code"
+							@enter="submit"
 							placeholder="请输入右侧验证码" />
 						<span style="width: 20px"></span>
 						<div class="image" @click="handleGetXdsVerifyCode">
@@ -42,7 +45,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="loginBoxMainRightRules">
+				<div class="loginBoxMainRightRules" style="visibility: hidden">
 					<span class="check"></span>
 					<span class="text_7">我已阅读并同意</span>
 					<span class="text_8">隐私权政策</span>

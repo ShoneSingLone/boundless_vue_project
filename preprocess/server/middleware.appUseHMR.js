@@ -9,7 +9,10 @@ exports.appUseHMR = function (ioWs) {
 			if (extname === ".vue") {
 				try {
 					const content = fs.readFileSync(filename, "utf-8");
-					ioWs.broadcast("hmr", { filename: filename.replace("static_vue2", ""), content });
+					ioWs.broadcast("hmr", {
+						filename: filename.replace("static_vue2", ""),
+						content
+					});
 				} catch (error) {
 					console.error(error);
 				}

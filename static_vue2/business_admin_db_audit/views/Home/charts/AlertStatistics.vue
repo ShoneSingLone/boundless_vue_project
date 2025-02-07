@@ -1,7 +1,7 @@
 <style lang="less"></style>
 <template>
 	<div>
-		<div class="height100 flex" style="height: 600px">
+		<div class="height100 flex" style="height: 260px">
 			<div class="flex1 width50percent">
 				<xChart :dataset="PieChartData" :configs="echarts_warring_config" />
 			</div>

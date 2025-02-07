@@ -27,7 +27,7 @@ export default async function () {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .table-cell-wrap {
 	display: flex;
 	flex-wrap: wrap;

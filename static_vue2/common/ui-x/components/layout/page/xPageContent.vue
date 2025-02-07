@@ -6,6 +6,7 @@
 	display: flex;
 	flex-flow: column nowrap;
 	height: 100%;
+	width: 100%;
 	justify-content: center;
 	> .page-body {
 		background-color: transparent;

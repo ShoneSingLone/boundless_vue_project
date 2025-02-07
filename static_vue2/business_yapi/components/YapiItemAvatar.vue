@@ -1,12 +1,10 @@
 <template>
-	<div class="avatar-uploader flex middle" v-bind="$attrs">
-		<xAvatar :src="cptAvatarUrl" @click.native="handleClick" />
-		<input
-			type="file"
-			accept="image/*"
-			ref="uploader"
-			style="display: none"
-			@change="handleChange" />
+	<div class="avatar-uploader flex middle YapiItemAvatar" v-bind="$attrs">
+		<xIcon
+			:img="cptAvatarUrl"
+			iscache="true"
+			@click.native="handleClick"
+			:class="cptClassAvatar" />
 	</div>
 </template>
 
@@ -30,8 +28,16 @@ export default async function () {
 			this.$on("updateAvatar", this.updateAvatar);
 		},
 		computed: {
+			cptClassAvatar() {
+				return {
+					pointer: !this.cptDisabled,
+					"project-avatar": true
+				};
+			},
 			cptDisabled() {
-				return this.$attrs.disabled || this.configs.disabled || false;
+				return (
+					this.$attrs.readonly || this.$attrs.disabled || this.configs.disabled || false
+				);
 			},
 			cptUsedBy() {
 				return this.configs.usedBy || "";
@@ -40,7 +46,7 @@ export default async function () {
 				return (
 					this.imageUrl ||
 					Vue._common_utils.appendToken(
-						`${window._URL_PREFIX_4_DEV || ""}/api/user/avatar?uid=${this.value}&usedBy=${this.cptUsedBy}`
+						`${window._AJAX_URL_PREFIX || ""}/api/user/avatar?uid=${this.value}&usedBy=${this.cptUsedBy}`
 					)
 				);
 			}
@@ -62,25 +68,17 @@ export default async function () {
 					this.imageUrl = imageUrl;
 				}
 			},
-			handleClick: _.debounce(function (event) {
-				if (this.$attrs.readonly) {
+			handleClick: _.debounce(async function (event) {
+				if (this.cptDisabled) {
 					return;
 				}
 				event.stopPropagation();
 				event.preventDefault();
-				if (this.cptDisabled) {
-					return;
-				}
-				$(this.$refs.uploader).click();
-			}, 300),
-			async handleChange(event) {
-				if (this.cptDisabled) {
-					return;
-				}
+				const [file] = await _.$openFileSelector({ accept: "image/*" });
 				try {
-					if (event.target.files[0]) {
+					if (file) {
 						// Get this url from response in real world.
-						const basecode = await getBase64(_.first(event.target.files));
+						const basecode = await getBase64(file);
 						this.imageUrl = basecode;
 						await this.uploadAvatar(basecode);
 						this.syncAllItem(this.imageUrl);
@@ -88,7 +86,7 @@ export default async function () {
 				} catch (error) {
 					_.$msgError(error);
 				}
-			},
+			}, 300),
 			async uploadAvatar(basecode) {
 				_.$loading(true);
 				try {
@@ -122,13 +120,20 @@ export default async function () {
 </script>
 
 <style lang="less">
-.xItem-wrapper[data-form-item-type="YapiItemAvatar"] {
-	// width: var(--xitem-avatar-width, 32px);
-	// height: var(--xitem-avatar-height, 32px);
-	span.el-avatar {
-		display: inline-block;
-		width: var(--xitem-avatar-width, 32px);
-		height: var(--xitem-avatar-height, 32px);
+.YapiItemAvatar {
+	.project-avatar {
+		width: 32px;
+		height: 32px;
+	}
+
+	.xItem-wrapper[data-form-item-type="YapiItemAvatar"] {
+		// width: var(--xitem-avatar-width, 32px);
+		// height: var(--xitem-avatar-height, 32px);
+		span.el-avatar {
+			display: inline-block;
+			width: var(--xitem-avatar-width, 32px);
+			height: var(--xitem-avatar-height, 32px);
+		}
 	}
 }
 </style>

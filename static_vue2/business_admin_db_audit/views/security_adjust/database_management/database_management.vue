@@ -6,6 +6,16 @@
 		</xPageTitle>
 		<xPageContent style="padding-top: 0">
 			<xTablebar :configs="configsTable">
+				<!--				<template #left>-->
+				<!--					<xRow style="display: flex">-->
+				<!--						<xItem :configs="queryData.IPRange" />-->
+				<!--						<xItem label="端口范围">-->
+				<!--							<xItem :configs="queryData.startPort" />-->
+				<!--							<x-divider style="width: 100px" class="line" />-->
+				<!--							<xItem :configs="queryData.endPort" />-->
+				<!--						</xItem>-->
+				<!--					</xRow>-->
+				<!--				</template>-->
 				<template #right>
 					<xBtnArray :configs="oprBtnArrayRight" style="margin-left: 30px" />
 				</template>
@@ -23,7 +33,7 @@ export default async function () {
 		name: "database_management",
 		inject: ["APP"],
 		async mounted() {
-			await this.handleGetOptionsDatabaseType();
+			// await this.handleGetOptionsDatabaseType();
 			await this.getTableData();
 		},
 		data(vm) {
@@ -33,15 +43,44 @@ export default async function () {
 			};
 			return {
 				queryData: defItems({
-					databaseName: {
-						value: "",
-						label: i18n("数据库名")
+					IPRange: {
+						value: "127.0.0.1/24",
+						label: i18n("IP范围"),
+						placeholder: "127.0.0.1/24",
+						rules: [_rules.isValidCIDR()]
 					},
-					databaseType: {
-						value: "",
-						label: i18n("数据库类型"),
-						itemType: "xItemSelect",
-						options: []
+					startPort: {
+						value: 0,
+						label: "",
+						itemType: "xItemInput",
+						rules: [
+							_rules.validator(({ val }) => {
+								const reg = /^\d+$/;
+								if (!reg.test(val)) {
+									return "请输入数字!";
+								}
+								if (val < 0 || val > 65535) {
+									return "请输入正确的端口号";
+								}
+								return "";
+							})
+						]
+					},
+					endPort: {
+						value: 65535,
+						itemType: "xItemInput",
+						rules: [
+							_rules.validator(({ val }) => {
+								const reg = /^\d+$/;
+								if (!reg.test(val)) {
+									return "请输入数字!";
+								}
+								if (val < 0 || val > 65535) {
+									return "请输入正确的端口号";
+								}
+								return "";
+							})
+						]
 					}
 				}),
 				oprBtnArray: [
@@ -100,8 +139,23 @@ export default async function () {
 				],
 				oprBtnArrayRight: [
 					{
-						label: "刷新",
+						label: "更新配置",
 						icon: "_refresh",
+						onClick() {
+							_.$openModal({
+								title: "关联探针",
+								url: "@/views/security_adjust/database_management/database_management_update_dialog.vue",
+								parent: vm,
+								onOk() {
+									console.log("1");
+								}
+							});
+						}
+					},
+					{
+						label: "开始检索",
+						icon: "_refresh",
+						preset: "primary",
 						onClick() {
 							vm.getTableData({ page: 1 });
 						}
@@ -110,6 +164,7 @@ export default async function () {
 				configsTable: defTable({
 					isHideQuery: true,
 					isHideFilter: true,
+					// isHidePagination: true,
 					onQuery(pagination) {
 						vm.getTableData(pagination);
 					},
@@ -117,11 +172,11 @@ export default async function () {
 						set: new Set(),
 						list: []
 					},
-					pagination: {
-						page: 1,
-						total: 0,
-						size: 10
-					},
+					// pagination: {
+					// 	page: 1,
+					// 	total: 0,
+					// 	size: 10
+					// },
 					columns: [
 						defTable.colSingle({
 							by: "id",
@@ -169,6 +224,9 @@ export default async function () {
 			};
 		},
 		computed: {
+			cptPortValue() {
+				return [this.queryData.startPort.value, this.queryData.endPort.value];
+			},
 			selected() {
 				const selectedIds = Array.from(this.configsTable.data.set);
 				if (_.$isArrayFill(selectedIds)) {
@@ -180,6 +238,7 @@ export default async function () {
 			}
 		},
 		methods: {
+			handleChangeStartPort(value) {},
 			async handleGetOptionsDatabaseType() {
 				this.queryData.databaseType.options =
 					await _api.admin_db_audit.xdsOptionsDatabaseType();
@@ -190,15 +249,14 @@ export default async function () {
 					_.$loading(true);
 					const { page, size } = _.$setPagination(this.configsTable, pagination);
 					const queryData = {
-						pageSize: size,
-						pageNum: page,
-						databaseType: this.queryData.databaseType.value,
-						databaseName: this.queryData.databaseName.value
+						IPRange: this.queryData.IPRange.value,
+						startPort: this.queryData.startPort.value,
+						endPort: this.queryData.endPort.value
 					};
 					const res = await _api.admin_db_audit.xdsDatabaseAssetsPage(queryData);
 					const { data, total } = res;
 					console.log("res", data);
-					_.$setTableData(this.configsTable, { list: data, total: data.length });
+					_.$setTableData(this.configsTable, { list: data });
 				} catch (error) {
 					_.$msgError(error);
 				} finally {

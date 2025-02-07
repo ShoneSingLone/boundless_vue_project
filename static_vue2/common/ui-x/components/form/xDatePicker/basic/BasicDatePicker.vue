@@ -598,7 +598,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			},
 
 			pickerSize() {
-				return this.size || this._elFormItemSize || PRIVATE_GLOBAL.x_ui_size;
+				return this.size || this._elFormItemSize || PRIVATE_GLOBAL.x_ui.size;
 			},
 
 			pickerDisabled() {
@@ -895,7 +895,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				this.picker.resetView && this.picker.resetView();
 
 				this.$nextTick(() => {
-					this.picker.adjustSpinners && this.picker.adjustSpinners();
+					this.picker?.adjustSpinners && this.picker.adjustSpinners();
 				});
 			},
 

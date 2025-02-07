@@ -13,7 +13,10 @@
 			</xRow>
 			<xRow :gutter="16" class="mt">
 				<xCol :span="6">
-					<xCard style="height: 260px">
+					<xCard style="height: 300px">
+						<template #header>
+							<span class="chart-card-header">内存利用率</span>
+						</template>
 						<div class="flex height100">
 							<xChart
 								:configs="echarts_memory_config"
@@ -23,14 +26,20 @@
 					</xCard>
 				</xCol>
 				<xCol :span="6">
-					<xCard style="height: 260px">
+					<xCard style="height: 300px">
+						<template #header>
+							<span class="chart-card-header">CPU利用率</span>
+						</template>
 						<div class="flex height100">
 							<xChart :dataset="cpuData" :configs="echarts_cpu_config" />
 						</div>
 					</xCard>
 				</xCol>
 				<xCol :span="12">
-					<xCard style="height: 260px">
+					<xCard style="height: 300px">
+						<template #header>
+							<span class="chart-card-header">磁盘使用率</span>
+						</template>
 						<xChart :dataset="diskUse" :configs="echarts_disk_use_config" />
 					</xCard>
 				</xCol>
@@ -38,10 +47,16 @@
 			<xRow :gutter="16" class="mt">
 				<xCol :span="12" class="flex vertical" style="height: 600px">
 					<xCard class="flex1">
+						<template #header>
+							<span class="chart-card-header">网络吞吐率</span>
+						</template>
 						<xChart :dataset="MonitorNetwork" :configs="echarts_network_config" />
 					</xCard>
 					<xGap t />
 					<xCard class="flex1">
+						<template #header>
+							<span class="chart-card-header">磁盘</span>
+						</template>
 						<xChart :dataset="diskIO" :configs="echarts_disk_config" />
 					</xCard>
 				</xCol>
@@ -103,21 +118,37 @@ export default async function () {
 						{ prop: "bitesRead", label: "磁盘读取速率" },
 						{ prop: "bitesWrite", label: "磁盘写入速率" }
 					]
-				})
+				}),
+				timer: null
 			};
 		},
-		mounted() {
-			this.handleInit();
+		async mounted() {
+			await this.handleInit();
+			await this.handleClearTime();
+			this.timer = setInterval(() => {
+				this.handleInit();
+			}, 60000);
+		},
+		beforeDestroy() {
+			this.handleClearTime();
 		},
 		methods: {
+			async handleClearTime() {
+				if (this.timer) {
+					clearInterval(this.timer);
+					this.timer = null;
+				}
+			},
 			async handleInit() {
 				try {
+					_.$loading(true);
 					await this.handleGetXdsSelfMonitorMemory();
 					await this.handleGetXdsSelfMonitorDisk();
 					await this.handleGetxdsSelfMonitorDiskIo();
 					await this.handleGetXdsSelfMonitorCpu();
 					await this.handleGetXdsSelfMonitorNetwork();
 					await this.handlexdsSelfMonitorProcess();
+					_.$loading(false);
 				} catch (err) {
 					console.log("err", err);
 				}

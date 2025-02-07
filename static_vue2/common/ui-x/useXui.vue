@@ -5,6 +5,7 @@ export default async function ({
 	zIndex,
 	bootstrap,
 	x_table_vir_empty_component,
+	x_table_vir_empty_component_icon,
 	x_switch_width,
 	x_page_title_back_icon,
 	x_item_is_show_item_colon,
@@ -14,9 +15,14 @@ export default async function ({
 }) {
 	((/* ui 默认配置 */) => {
 		/* tableVir empty 的默认组件地址 */
-		PRIVATE_GLOBAL.x_ui_size = size || "small";
-		PRIVATE_GLOBAL.x_ui_z_index = zIndex || 2e3;
+		PRIVATE_GLOBAL.x_ui = {
+			theme: "",
+			size: size || "small",
+			z_index: zIndex || 2e3
+		};
 		PRIVATE_GLOBAL.x_table_vir_empty_component = x_table_vir_empty_component;
+		PRIVATE_GLOBAL.x_table_vir_empty_component_icon =
+			x_table_vir_empty_component_icon || "icon_no_data";
 		PRIVATE_GLOBAL.x_switch_width = x_switch_width || 40;
 		PRIVATE_GLOBAL.x_page_title_back_icon = x_page_title_back_icon || "icon_back";
 		PRIVATE_GLOBAL.x_item_is_show_item_colon = x_item_is_show_item_colon || false;
@@ -31,6 +37,180 @@ export default async function ({
 	/* @ts-ignore */
 	window._opts = window._opts || {};
 
+	(function (/* common h render  */) {
+		const useH = tag => (props, innerContent) => h(tag, props, innerContent);
+
+		const hDiv = useH("div");
+		PRIVATE_GLOBAL.hDiv = hDiv;
+
+		const hSpan = useH("span");
+		PRIVATE_GLOBAL.hSpan = hSpan;
+
+		const hxBtn = useH("xBtn");
+		PRIVATE_GLOBAL.hxBtn = hxBtn;
+
+		const hxIcon = useH("xIcon");
+		PRIVATE_GLOBAL.hxIcon = hxIcon;
+
+		const hxTag = useH("xTag");
+		PRIVATE_GLOBAL.hxTag = hxTag;
+
+		const hxItem = useH("xItem");
+		PRIVATE_GLOBAL.hxItem = hxItem;
+
+		PRIVATE_GLOBAL.hTableExpandRow = children =>
+			hDiv({ class: "x-table-vir-expand-row" }, children);
+
+		PRIVATE_GLOBAL.hTipsHover = ({ msg, content, placement }) => {
+			content =
+				content ||
+				function () {
+					return hSpan(msg);
+				};
+			placement = placement || "right-start";
+			return {
+				name: "xtips",
+				value: {
+					content,
+					trigger: "hover",
+					placement
+				}
+			};
+		};
+		PRIVATE_GLOBAL.hVmSingleNode = (vm, prop, vNode) => {
+			vm.____hVmSingleNode = vm.____hVmSingleNode || {};
+
+			const vmProp = vm.____hVmSingleNode;
+			if (!vmProp[prop]) {
+				const ID = _.$genId("hVmSingleNode");
+				vmProp[prop] = h({
+					template: `<span id="${ID}"/>`,
+					mounted() {
+						new Vue({
+							el: `#${ID}`,
+							methods: {
+								rerender() {
+									this.vIf = false;
+									this.$nextTick(() => {
+										this.vIf = true;
+									});
+								}
+							},
+							data() {
+								return {
+									vIf: true
+								};
+							},
+							render() {
+								if (this.vIf) {
+									if (_.isFunction(vNode)) {
+										return vNode({ vm: this });
+									} else {
+										return vNode;
+									}
+								}
+								return null;
+							}
+						});
+					}
+				});
+			}
+			return vmProp[prop];
+		};
+		PRIVATE_GLOBAL.hVal2Tag = (value, options) => {
+			let item = { label: value, type: "" };
+			item =
+				_.find(options, item => {
+					return _.$isSame(item.value, value);
+				}) || item;
+			if (item.type) {
+				return h("xTag", { type: item.type }, [item.label]);
+			} else if (item.listClass) {
+				return h("xTag", { type: item.listClass }, [item.label]);
+			}
+			return hDiv({}, [item.label]);
+		};
+
+		PRIVATE_GLOBAL.hEllipsis = content => {
+			return hDiv({ staticClass: "ellipsis", attrs: { title: content } }, [content]);
+		};
+
+		PRIVATE_GLOBAL.hBtnWithMore = props => {
+			return h("xColActionAndMore", props);
+		};
+
+		PRIVATE_GLOBAL.hTipsDel = tipsString => {
+			return hDiv([
+				hSpan({
+					staticClass: "el-icon-warning",
+					style: "color:var(--ti-base-color-error-3)"
+				}),
+				hSpan({ staticClass: "ml4" }, tipsString)
+			]);
+		};
+
+		PRIVATE_GLOBAL.hLink = props => {
+			return h(
+				"a",
+				mergeProps4h([
+					{},
+					props,
+					{
+						props,
+						attrs: props,
+						class: "el-button el-button--text el-button--small ellipsis cell-link text-align-left"
+					}
+				]),
+				[props.label]
+			);
+		};
+
+		((/* xTableVir相关 */) => {
+			function xTableVirModifyCellsHeight({ mergeProp, columns, cells, rowData, calStyle }) {
+				if (_.isEmpty(columns)) {
+					return cells;
+				}
+				const mergeIndex = _.findIndex(columns, { prop: mergeProp });
+				const rowSpanProp = `${mergeProp}_row_span`;
+
+				if (_.isNumber(rowData[rowSpanProp])) {
+					const rowSpan = rowData[rowSpanProp];
+
+					cells[mergeIndex] = cloneVNode(cells[mergeIndex], {
+						style: calStyle({ rowSpan })
+					});
+				}
+				return cells;
+			}
+
+			function setCurrentRowSpan({ rows, mergeProp }) {
+				const allRowSpan = rows.length;
+				return _.map(rows, (row, index) => {
+					/* @ts-ignore */
+					const rowSpan = allRowSpan - index;
+					row[`${mergeProp}_row_span`] = rowSpan;
+					return row;
+				});
+			}
+
+			function xTableVirNewGroupSortedRows({ groupedRowObj, mergeProp, sortBy }) {
+				sortBy = sortBy || Number;
+				const keys = _.sortBy(Object.keys(groupedRowObj), sortBy);
+				/*  */
+				let dataGroupSorted = [];
+				_.each(keys, key => {
+					let currentArray = groupedRowObj[key];
+					currentArray = setCurrentRowSpan({ rows: currentArray, mergeProp });
+					dataGroupSorted = dataGroupSorted.concat(currentArray);
+				});
+				return dataGroupSorted;
+			}
+
+			PRIVATE_GLOBAL.xTableVirNewGroupSortedRows = xTableVirNewGroupSortedRows;
+			PRIVATE_GLOBAL.xTableVirModifyCellsHeight = xTableVirModifyCellsHeight;
+		})();
+	})();
+
 	/* 全局 _xUtils */
 	await _.$importVue("/common/ui-x/common/xUIcomponetUtils.vue");
 	/* 基础工具类 */
@@ -40,6 +220,7 @@ export default async function ({
 				"/common/ui-x/directive/directive.install.vue",
 				"/common/ui-x/directive/xtips/xtips.vue",
 				"/common/ui-x/directive/ripple.vue",
+				"/common/ui-x/directive/infinitescroll.vue",
 				"/common/ui-x/directive/xloading.vue",
 				"/common/ui-x/directive/xmove.vue"
 			],
@@ -55,28 +236,25 @@ export default async function ({
 	await (async function lazyLoadAllComponents() {
 		const ALL_COMPONENTS = await _.$importVue("/common/ui-x/allComponents.vue");
 		const loadComponentByImportVue = async componentpath => {
-			const componentName = _.last(componentpath.split("/"));
-			if (
-				["xDropdownMenu", "xDropdown", "xBtn", "xTooltip", "xPopover"].includes(
-					componentName
-				)
-			) {
+			const NEED_FIRST_LOAD = ["xDropdownMenu", "xDropdown", "xBtn", "xTooltip", "xPopover"];
+			const component_name = _.last(componentpath.split("/"));
+			if (NEED_FIRST_LOAD.includes(component_name)) {
 				/* xBtn 多个地方用到，但是异步加载会有bug:骨架屏不刷新 */
 				const component = await _.$importVue(`/common/ui-x/${componentpath}.vue`);
-				setComponentName(component, componentName);
+				setComponentName(component, component_name);
 				/* @ts-ignore */
-				Vue.component(componentName, component);
+				Vue.component(component_name, component);
 			} else {
 				/* 懒加载组件 */
 				/* @ts-ignore */
-				Vue.component(componentName, async () => {
+				Vue.component(component_name, async () => {
 					// if (componentName === "xCheckbox") {
 					// 	debugger;
 					// }
 					const component = await _.$importVue(`/common/ui-x/${componentpath}.vue`);
-					setComponentName(component, componentName);
+					setComponentName(component, component_name);
 					/* @ts-ignore */
-					if (/^xCell/.test(componentName)) {
+					if (/^xCell/.test(component_name)) {
 						/**
 						 * props: ["row", "configs"], row,index,configs,prop 包含当前行、列、下标、配置信息
 						 * xCell****的组件 用于列表的cell，每一个默认有带有row configs props
@@ -139,143 +317,467 @@ export default async function ({
 	})();
 
 	await (async () => {
-		/* 设置样式 */
+		async function onThemeChange() {
+			const theme = $("html").attr("data-theme") || "common";
+			await _.$importVue("/common/ui-x/theme/theme.default.vue");
 
-		await _.$importVue("/common/ui-x/theme/theme.default.vue");
-		async function setThemeCss() {
-			const currentTheme = $("html").attr("data-theme");
-			if (currentTheme === "tiny") {
-				await _.$importVue("/common/ui-x/theme/theme.tiny.vue");
+			if (onThemeChange.theme === theme) {
+				return;
 			}
+
+			/* 如果不需要预设的样式 */
+			if (theme === "nostyle") {
+				return;
+			}
+
+			onThemeChange.theme = theme;
+			const $styleArray = $(`[id*="staticcommonuiXthemestyle"]`);
+			await _.$importVue(`/common/ui-x/theme/style.${theme}.vue`);
+
+			_.each($styleArray, style => {
+				const { id } = style;
+				if (!new RegExp(`${theme}vue&`).test(id)) {
+					$(style).remove();
+				}
+			});
+
+			PRIVATE_GLOBAL.x_ui.theme = theme;
+			$(window).trigger("x_ui_theme_change");
 		}
-		await setThemeCss();
 
-		$(window).on("xUiThemeChange", setThemeCss);
-	})();
+		$(window).on("x_ui_theme_change", onThemeChange);
 
-	(function (/* common h render  */) {
-		const useH = tag => {
-			return (innerContent, props = {}) => {
-				if (!_.isArray(innerContent)) {
-					innerContent = [innerContent];
-				}
-				return h(tag, props, innerContent);
-			};
-		};
-
-		const hDiv = useH("div");
-		const hSpan = useH("span");
-
-		PRIVATE_GLOBAL.hDiv = hDiv;
-		PRIVATE_GLOBAL.hTableExpandRow = children =>
-			hDiv(children, { class: "x-table-vir-expand-row" });
-		PRIVATE_GLOBAL.hSpan = hSpan;
-
-		PRIVATE_GLOBAL.hTipsHover = ({ msg, content, placement }) => {
-			content =
-				content ||
-				function () {
-					return hSpan(msg);
-				};
-			placement = placement || "right-start";
-			return {
-				name: "xtips",
-				value: {
-					content,
-					trigger: "hover",
-					placement
-				}
-			};
-		};
-
-		PRIVATE_GLOBAL.hVal2Tag = (value, options) => {
-			let item = { label: value, type: "" };
-			item =
-				_.find(options, item => {
-					return _.$isSame(item.value, value);
-				}) || item;
-			if (item.type) {
-				return h("xTag", { type: item.type }, [item.label]);
-			} else if (item.listClass) {
-				return h("xTag", { type: item.listClass }, [item.label]);
-			}
-			return h("div", {}, [item.label]);
-		};
-
-		PRIVATE_GLOBAL.hEllipsis = content => {
-			return h("div", { staticClass: "ellipsis", attrs: { title: content } }, [content]);
-		};
-
-		PRIVATE_GLOBAL.hBtnWithMore = props => {
-			return h("xColActionAndMore", props);
-		};
-
-		PRIVATE_GLOBAL.hTipsDel = tipsString => {
-			return h("div", [
-				hSpan("", {
-					staticClass: "el-icon-warning",
-					style: "color:var(--ti-base-color-error-3)"
-				}),
-				hSpan(tipsString, { staticClass: "ml4" })
-			]);
-		};
-
-		PRIVATE_GLOBAL.hLink = props => {
-			return h(
-				"a",
-				_.merge({}, props, {
-					props,
-					attrs: props,
-					class: "el-button el-button--text el-button--small ellipsis cell-link text-align-left"
-				}),
-				[props.label]
-			);
-		};
-
-		((/* xTableVir相关 */) => {
-			function xTableVirModifyCellsHeight({ mergeProp, columns, cells, rowData, calStyle }) {
-				if (_.isEmpty(columns)) {
-					return cells;
-				}
-				const mergeIndex = _.findIndex(columns, { prop: mergeProp });
-				const rowSpanProp = `${mergeProp}_row_span`;
-
-				if (_.isNumber(rowData[rowSpanProp])) {
-					const rowSpan = rowData[rowSpanProp];
-
-					cells[mergeIndex] = cloneVNode(cells[mergeIndex], {
-						style: calStyle({ rowSpan })
-					});
-				}
-				return cells;
-			}
-
-			function setCurrentRowSpan({ rows, mergeProp }) {
-				const allRowSpan = rows.length;
-				return _.map(rows, (row, index) => {
-					/* @ts-ignore */
-					const rowSpan = allRowSpan - index;
-					row[`${mergeProp}_row_span`] = rowSpan;
-					return row;
-				});
-			}
-
-			function xTableVirNewGroupSortedRows({ groupedRowObj, mergeProp, sortBy }) {
-				sortBy = sortBy || Number;
-				const keys = _.sortBy(Object.keys(groupedRowObj), sortBy);
-				/*  */
-				let dataGroupSorted = [];
-				_.each(keys, key => {
-					let currentArray = groupedRowObj[key];
-					currentArray = setCurrentRowSpan({ rows: currentArray, mergeProp });
-					dataGroupSorted = dataGroupSorted.concat(currentArray);
-				});
-				return dataGroupSorted;
-			}
-
-			PRIVATE_GLOBAL.xTableVirNewGroupSortedRows = xTableVirNewGroupSortedRows;
-			PRIVATE_GLOBAL.xTableVirModifyCellsHeight = xTableVirModifyCellsHeight;
-		})();
+		onThemeChange();
 	})();
 }
 </script>
+
+<style lang="less">
+.el-time-spinner__wrapper .el-scrollbar__wrap:not(.el-scrollbar__wrap--hidden-default) {
+	padding-bottom: 15px;
+}
+.el-picker-panel,
+.el-table-filter {
+	-webkit-box-shadow: var(--normal-box-shadow);
+}
+
+.el-scrollbar__thumb {
+	position: relative;
+	display: block;
+	width: 0;
+	height: 0;
+	cursor: pointer;
+	border-radius: inherit;
+	background-color: var(--ui-thumb-hover);
+	transition: 0.3s background-color;
+	&:hover {
+		background-color: var(--ui-thumb);
+	}
+}
+
+.el-card,
+.el-message {
+	border-radius: var(--border-radius);
+	/* overflow: hidden; */
+}
+
+.el-pagination--small .arrow.disabled,
+.el-table .el-table__cell.is-hidden > *,
+.el-table .hidden-columns,
+.el-table--hidden {
+	visibility: hidden;
+}
+
+.el-dropdown .el-dropdown-selfdefine:focus:active,
+.el-dropdown .el-dropdown-selfdefine:focus:not(.focusing),
+.el-message__closeBtn:focus,
+.el-message__content:focus,
+.el-popover:focus,
+.el-popover:focus:active,
+.el-popover__reference:focus:hover,
+.el-popover__reference:focus:not(.focusing),
+.el-rate:active,
+.el-rate:focus,
+.el-tooltip:focus:hover,
+.el-tooltip:focus:not(.focusing),
+.el-upload-list__item.is-success:active,
+.el-upload-list__item.is-success:not(.focusing):focus {
+	outline-width: 0;
+}
+
+.el-input__suffix,
+.el-tree.is-dragging .el-tree-node__content * {
+	pointer-events: none;
+}
+
+[class*=" el-icon-"],
+[class^="el-icon-"] {
+	font-family: element-icons !important;
+	speak: none;
+	font-style: normal;
+	font-weight: 400;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	vertical-align: baseline;
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.el-date-table,
+.el-table th.el-table__cell {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+}
+
+.el-drawer,
+.el-empty,
+.el-result {
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+}
+
+@keyframes v-modal-in {
+	0% {
+		opacity: 0;
+	}
+}
+
+@keyframes v-modal-out {
+	100% {
+		opacity: 0;
+	}
+}
+
+.el-dropdown-menu,
+.el-menu--collapse .el-submenu .el-menu {
+	z-index: 10;
+	box-shadow: var(--normal-box-shadow);
+}
+
+.el-popover,
+.el-radio-button:first-child:last-child .el-radio-button__inner {
+	border-radius: var(--border-radius);
+}
+
+.el-select .el-tag__close.el-icon-close::before {
+	display: block;
+	-webkit-transform: translate(0, 0.5px);
+	transform: translate(0, 0.5px);
+}
+
+@keyframes v-modal-in {
+	0% {
+		opacity: 0;
+	}
+}
+
+@keyframes v-modal-out {
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes msgbox-fade-in {
+	0% {
+		-webkit-transform: translate3d(0, -20px, 0);
+		transform: translate3d(0, -20px, 0);
+		opacity: 0;
+	}
+
+	100% {
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
+}
+
+@keyframes msgbox-fade-out {
+	0% {
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
+
+	100% {
+		-webkit-transform: translate3d(0, -20px, 0);
+		transform: translate3d(0, -20px, 0);
+		opacity: 0;
+	}
+}
+
+@keyframes slideInRight-enter {
+	0% {
+		opacity: 0;
+		-webkit-transform-origin: 0 0;
+		transform-origin: 0 0;
+		-webkit-transform: translateX(100%);
+		transform: translateX(100%);
+	}
+
+	to {
+		opacity: 1;
+		-webkit-transform-origin: 0 0;
+		transform-origin: 0 0;
+		-webkit-transform: translateX(0);
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideInRight-leave {
+	0% {
+		-webkit-transform-origin: 0 0;
+		transform-origin: 0 0;
+		-webkit-transform: translateX(0);
+		transform: translateX(0);
+		opacity: 1;
+	}
+
+	100% {
+		-webkit-transform-origin: 0 0;
+		transform-origin: 0 0;
+		-webkit-transform: translateX(100%);
+		transform: translateX(100%);
+		opacity: 0;
+	}
+}
+
+@keyframes slideInLeft-enter {
+	0% {
+		opacity: 0;
+		-webkit-transform-origin: 0 0;
+		transform-origin: 0 0;
+		-webkit-transform: translateX(-100%);
+		transform: translateX(-100%);
+	}
+
+	to {
+		opacity: 1;
+		-webkit-transform-origin: 0 0;
+		transform-origin: 0 0;
+		-webkit-transform: translateX(0);
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideInLeft-leave {
+	0% {
+		-webkit-transform-origin: 0 0;
+		transform-origin: 0 0;
+		-webkit-transform: translateX(0);
+		transform: translateX(0);
+		opacity: 1;
+	}
+
+	100% {
+		-webkit-transform-origin: 0 0;
+		transform-origin: 0 0;
+		-webkit-transform: translateX(-100%);
+		transform: translateX(-100%);
+		opacity: 0;
+	}
+}
+
+@keyframes loading-rotate {
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes loading-dash {
+	0% {
+		stroke-dasharray: 1, 200;
+		stroke-dashoffset: 0;
+	}
+
+	50% {
+		stroke-dasharray: 90, 150;
+		stroke-dashoffset: -40px;
+	}
+
+	100% {
+		stroke-dasharray: 90, 150;
+		stroke-dashoffset: -120px;
+	}
+}
+
+@keyframes progress {
+	0% {
+		background-position: 0 0;
+	}
+
+	100% {
+		background-position: 32px 0;
+	}
+}
+
+@keyframes rotate {
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes dash {
+	0% {
+		stroke-dasharray: 1, 150;
+		stroke-dashoffset: 0;
+	}
+
+	50% {
+		stroke-dasharray: 90, 150;
+		stroke-dashoffset: -35;
+	}
+
+	100% {
+		stroke-dasharray: 90, 150;
+		stroke-dashoffset: -124;
+	}
+}
+
+@keyframes viewer-fade-in {
+	0% {
+		-webkit-transform: translate3d(0, -20px, 0);
+		transform: translate3d(0, -20px, 0);
+		opacity: 0;
+	}
+
+	100% {
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
+}
+
+@keyframes viewer-fade-out {
+	0% {
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
+
+	100% {
+		-webkit-transform: translate3d(0, -20px, 0);
+		transform: translate3d(0, -20px, 0);
+		opacity: 0;
+	}
+}
+
+@keyframes el-drawer-fade-in {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes rtl-drawer-in {
+	0% {
+		-webkit-transform: translate(100%, 0);
+		transform: translate(100%, 0);
+	}
+
+	100% {
+		-webkit-transform: translate(0, 0);
+		transform: translate(0, 0);
+	}
+}
+
+@keyframes rtl-drawer-out {
+	0% {
+		-webkit-transform: translate(0, 0);
+		transform: translate(0, 0);
+	}
+
+	100% {
+		-webkit-transform: translate(100%, 0);
+		transform: translate(100%, 0);
+	}
+}
+
+@keyframes ltr-drawer-in {
+	0% {
+		-webkit-transform: translate(-100%, 0);
+		transform: translate(-100%, 0);
+	}
+
+	100% {
+		-webkit-transform: translate(0, 0);
+		transform: translate(0, 0);
+	}
+}
+
+@keyframes ltr-drawer-out {
+	0% {
+		-webkit-transform: translate(0, 0);
+		transform: translate(0, 0);
+	}
+
+	100% {
+		-webkit-transform: translate(-100%, 0);
+		transform: translate(-100%, 0);
+	}
+}
+
+@keyframes ttb-drawer-in {
+	0% {
+		-webkit-transform: translate(0, -100%);
+		transform: translate(0, -100%);
+	}
+
+	100% {
+		-webkit-transform: translate(0, 0);
+		transform: translate(0, 0);
+	}
+}
+
+@keyframes ttb-drawer-out {
+	0% {
+		-webkit-transform: translate(0, 0);
+		transform: translate(0, 0);
+	}
+
+	100% {
+		-webkit-transform: translate(0, -100%);
+		transform: translate(0, -100%);
+	}
+}
+
+@keyframes btt-drawer-in {
+	0% {
+		-webkit-transform: translate(0, 100%);
+		transform: translate(0, 100%);
+	}
+
+	100% {
+		-webkit-transform: translate(0, 0);
+		transform: translate(0, 0);
+	}
+}
+
+@keyframes btt-drawer-out {
+	0% {
+		-webkit-transform: translate(0, 0);
+		transform: translate(0, 0);
+	}
+
+	100% {
+		-webkit-transform: translate(0, 100%);
+		transform: translate(0, 100%);
+	}
+}
+
+@keyframes el-skeleton-loading {
+	0% {
+		background-position: 100% 50%;
+	}
+
+	100% {
+		background-position: 0 50%;
+	}
+}
+</style>

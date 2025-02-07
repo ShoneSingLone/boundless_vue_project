@@ -17,7 +17,7 @@ export default async function () {
 				}
 			},
 			propName: {
-				type: String
+				type: [String, Number]
 			}
 		},
 		inject: {
@@ -53,11 +53,11 @@ export default async function () {
 			},
 			cptType() {
 				if (this.item.type === "array") {
-					return h("div", { class: "YapiApiRequestBodyPreviewer-prop-name mr" }, [
+					return hDiv({ class: "YapiApiRequestBodyPreviewer-prop-name mr" }, [
 						`${this.item.items.type}[]`
 					]);
 				}
-				return h("div", { class: "YapiApiRequestBodyPreviewer-prop-name mr" }, [
+				return hDiv({ class: "YapiApiRequestBodyPreviewer-prop-name mr" }, [
 					this.item.type
 				]);
 			}
@@ -65,14 +65,14 @@ export default async function () {
 		render() {
 			if (this.item.type === "object") {
 				this.required = this.item.required;
-				return h("div", { col: 2 }, [
-					h("div", { class: "flex middle" }, [this.item.title]),
+				return hDiv({ col: 2 }, [
+					hDiv({ class: "flex middle" }, [this.item.title]),
 					..._.map(this.item.properties, (property, prop) => {
 						return h("YapiApiRequestBodyPreviewer", { item: property, propName: prop });
 					})
 				]);
 			}
-			return h("div", { class: "flex middle" }, [
+			return hDiv({ class: "flex middle" }, [
 				this.cptTitle,
 				this.cptType,
 				this.item.description

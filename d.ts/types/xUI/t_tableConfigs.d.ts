@@ -15,8 +15,10 @@ type t_data = {
 type t_column = {
 	isShow?: boolean;
 	prop: string;
+	/* 必填，用于filter过滤展示 */
 	label: string;
 	cellRenderer?: (params: t_cellRendererParams) => VNode | string | number;
+	headerCellRenderer?: (params: t_header_cellRendererParams) => VNode | string | number;
 };
 type t_colMultiple = {
 	/**
@@ -39,6 +41,22 @@ type t_cellRendererParams = {
 	isScrolling: false;
 	rowData: object;
 	rowIndex: number;
+};
+type t_header_cellRendererParams = {
+	columns: any[];
+	column: object;
+	columnIndex: number;
+	headerIndex: number;
+	style: any;
+	ns: any;
+	sortBy: any;
+	sortState: any;
+	headerCellProps: any;
+	onColumnSorted: any;
+	attrs: any;
+	on: any;
+	scopedSlots: any;
+	class: any;
 };
 
 type t_colOprations = {

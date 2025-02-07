@@ -57,9 +57,9 @@ export default async function () {
 						}
 					},
 					[
-						h("span", { staticClass: "mr", staticStyle: "display:flex" }, [node.label]),
-						h("span", [
-							h("xBtn", {
+						hSpan({ staticClass: "mr", staticStyle: "display:flex" }, [node.label]),
+						hSpan([
+							hxBtn({
 								icon: "_delete",
 								preset: "text",
 								on: {
@@ -68,7 +68,7 @@ export default async function () {
 									}
 								}
 							}),
-							h("xBtn", {
+							hxBtn({
 								icon: "_add",
 								preset: "text",
 								class: "mr",

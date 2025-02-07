@@ -59,7 +59,7 @@ export default async function () {
 					}
 				},
 				[
-					h("div", {
+					hDiv({
 						ref: "thumb",
 						class: "el-scrollbar__thumb",
 						style,

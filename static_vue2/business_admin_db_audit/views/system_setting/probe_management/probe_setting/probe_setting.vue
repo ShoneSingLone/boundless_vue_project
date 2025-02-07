@@ -99,7 +99,7 @@ export default async function () {
 							prop: "active",
 							label: "启用/关闭",
 							cellRenderer({ cellData, rowData }) {
-								return h("div", { class: "flex middle center" }, [
+								return hDiv({ class: "flex middle center" }, [
 									h("xSwitch", {
 										class: "mr",
 										value: cellData,

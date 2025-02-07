@@ -88,11 +88,9 @@ export default async function () {
 						value: p.proxyHostPort || "",
 						label: "代理服务器地址",
 						tips: () =>
-							h("div", [
-								h("div", [
-									"如果请求需要使用VPN，则需要有一台开启VPN的PC作为代理机。"
-								]),
-								h("div", [
+							hDiv([
+								hDiv(["如果请求需要使用VPN，则需要有一台开启VPN的PC作为代理机。"]),
+								hDiv([
 									"利用",
 									h(
 										"a",
@@ -146,7 +144,7 @@ export default async function () {
 									"xAlert",
 									{ type: "error", showIcon: true, closable: false },
 									[
-										h("div", { class: "flex vertical" }, [
+										hDiv({ class: "flex vertical" }, [
 											h(
 												"div",
 												{
@@ -173,7 +171,7 @@ export default async function () {
 									await vm.APP.updateGroupList();
 									vm.$router.push({
 										path: "/api/group",
-										query: _.pick(vm.$route.query, ["groupId"])
+										query: {}
 									});
 									_.$msg("删除成功");
 								} else {
@@ -198,7 +196,43 @@ export default async function () {
 					onClick: async () => {
 						_.$openModal(
 							{
-								title: i18n("管理转发环境"),
+								title() {
+									return h({
+										template: `
+<div class="flex middle">
+	{{i18n("管理转发环境")}}			
+	<xPopover placement="top-start"  width="600" trigger="hover">
+		<xMd :md="mdTips" />
+        <xIcon icon="tips" slot="reference"/>
+    </xPopover>
+</div>`,
+										data() {
+											return {
+												mdTips: `
+- 新增时，不需要填写\`_id\`；保存之后会带出来
+- \`cookie\` 也在\`header\`中,value为cookie的值
+
+> 环境变量数据结构如下：
+\`\`\`js
+[
+        {
+			"name" : "local",
+			"domain" : "http://127.0.0.1",
+            "header" : [
+                { "name" : "x-auth-token", "value" : "*******" },
+                { "name" : "Cookie", "value" : "key=val;key2=val2" }
+            ],
+            "global" : [
+                { "name" : "token", "value" : "######" }
+            ]
+        }
+]
+\`\`\`
+`
+											};
+										}
+									});
+								},
 								url: "@/components/YapiItemProxyEnvManager.vue",
 								parent: this
 							},

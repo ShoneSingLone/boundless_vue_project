@@ -38,6 +38,7 @@
 		<template v-else>
 			<slot></slot>
 			<slot name="title"></slot>
+			<xRender :render="titleRender" />
 		</template>
 	</li>
 </template>
@@ -53,6 +54,10 @@ export default async function () {
 		mixins: [xMenuMixin],
 		props: {
 			itemRender: {
+				type: Function,
+				default: null
+			},
+			titleRender: {
 				type: Function,
 				default: null
 			},

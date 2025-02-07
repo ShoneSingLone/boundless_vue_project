@@ -42,7 +42,7 @@ module.exports = async function () {
 				return onlyHandleJs(filePath, fileProp);
 			})
 		);
-		console.log("🚀:", "Identifier", JSON.stringify(Object.keys(Identifier), null, 2));
+		console.log("🚀: Identifier", JSON.stringify(Object.keys(Identifier), null, 2));
 	} catch (error) {
 		console.error(error);
 	} finally {
@@ -52,17 +52,20 @@ module.exports = async function () {
 			`import _ = require("./index");
 			declare module "./index" {
 				interface LoDashStatic {${_n
-				.map(vars, (val, prop) => {
-					const desc = val[3];
-					val[3] = "";
-					val.pop();
-					return desc || `${prop}:any`;
-				})
-				.join(";\r\n")}
+					.map(vars, (val, prop) => {
+						const desc = val[3];
+						val[3] = "";
+						val.pop();
+						return desc || `${prop}:any`;
+					})
+					.join(";\r\n")}
             }
         }`
 		);
-		const definitionPath = path.resolve(__dirname, "../../preprocess/vscode.definitions/scanLodashDefine.js");
+		const definitionPath = path.resolve(
+			__dirname,
+			"../../preprocess/vscode.definitions/scanLodashDefine.js"
+		);
 		await _n.asyncWriteFile(
 			definitionPath,
 			`module.exports = ${JSON.stringify(
@@ -121,7 +124,8 @@ async function onlyHandleJs(filePath, fileProp) {
 
 			const [desc, type] = comments.map(comment => comment.value);
 			if (String(type).includes("@typescriptDeclare")) {
-				Identifier[functionName][3] = `/*${desc}*/\r\n${functionName}: ${type.replace("@typescriptDeclare", "")}`;
+				Identifier[functionName][3] =
+					`/*${desc}*/\r\n${functionName}: ${type.replace("@typescriptDeclare", "")}`;
 			}
 		} catch (error) {
 			console.error(error);
@@ -138,26 +142,37 @@ async function onlyHandleJs(filePath, fileProp) {
 				return;
 			}
 			const prop = functionName.substring(2);
-
-			vars[prop] = handleDefinition(NodePath);
-
-			if (["FunctionExpression", "ArrowFunctionExpression", "NewExpression", "ObjectExpression"].includes(right.type)) {
-				const comments = NodePath.parent?.leadingComments;
-				if (comments) {
-					const [desc, type] = comments.map(comment => comment.value);
-					if (String(type).includes("@typescriptDeclare")) {
-						vars[prop][3] = `/*${desc}*/\r\n${prop}: ${type.replace("@typescriptDeclare", "")}`;
-					}
-				}
-			} else if (right.name) {
-				/* right.type === "Identifier" */
-				console.log("right.name:", right.name);
-				const def = Identifier[right.name];
-				if (def) {
-					vars[prop] = def;
-				}
+			const comments = NodePath.parent?.leadingComments || [];
+			if (String(comments?.[0]?.value).includes("@declared")) {
+				console.log(functionName, "🚀 ~ AssignmentExpression ~ @declared:");
 			} else {
-				console.log("right.type", right.type);
+				vars[prop] = handleDefinition(NodePath);
+
+				if (
+					[
+						"FunctionExpression",
+						"ArrowFunctionExpression",
+						"NewExpression",
+						"ObjectExpression"
+					].includes(right.type)
+				) {
+					if (comments) {
+						const [desc, type] = comments.map(comment => comment.value);
+						if (String(type).includes("@typescriptDeclare")) {
+							vars[prop][3] =
+								`/*${desc}*/\r\n${prop}: ${type.replace("@typescriptDeclare", "")}`;
+						}
+					}
+				} else if (right.name) {
+					/* right.type === "Identifier" */
+					console.log("right.name:", right.name);
+					const def = Identifier[right.name];
+					if (def) {
+						vars[prop] = def;
+					}
+				} else {
+					console.log("right.type", right.type);
+				}
 			}
 		} else {
 			// console.log("left.type", left.type, left.name);

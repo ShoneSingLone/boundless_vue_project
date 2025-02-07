@@ -1,11 +1,27 @@
 <template>
 	<xDialog>
 		<xForm col="1" ref="form">
-			<xItem :configs="form.ruleName" />
-			<xItem :configs="form.featureName" />
-			<xItem :configs="form.featureValue" />
-			<xItem :configs="form.predicate" />
-			<xItem :configs="form.priority" />
+			<xItem :configs="form.strategyName" v-if="!isUpdate" />
+			<xItem :configs="form.priority" v-if="!isUpdate" />
+			<xItem :configs="form.风险等级" v-if="!isUpdate" />
+			<div class="flex middle width100 mt" v-if="!isUpdate">
+				规则
+				<xGap f />
+				<xBtn :configs="btnAppend" />
+			</div>
+			<xForm col="1">
+				<ruleItem
+					v-for="(item, index) in actionList"
+					:item="item"
+					:index="index"
+					:predicateList="predicateList"
+					:JointList="JointList"
+					:FeatureList="FeatureList"
+					:key="item._hash"
+					:isUpdates="isUpdates"
+					@update:item="item => updateItem({ index, item })"
+					@remove="remove({ index })" />
+			</xForm>
 		</xForm>
 		<template #footer>
 			<div class="flex center width100">
@@ -19,56 +35,90 @@
 <script lang="ts">
 export default async function ({ row, parent }) {
 	const isUpdate = !!row;
+	const newItem = () => ({ _hash: _.$genId() });
 	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 	return defineComponent({
 		props: useDialogProps(),
 		async mounted() {
-			if (row && Object.keys(row).length > 0) {
-				this.form.ruleName.value = row.ruleName;
-				this.form.featureName.value = row.featureName;
-				this.form.featureValue.value = row.featureValue;
-				this.form.predicate.value = row.predicate;
-				this.form.priority.value = row.priority;
-			}
+			await this.handleGetXdsOptionsRisk();
+			await this.handleGetXdsOptionsJoint();
 			await this.handleGetXdsOptionsPredicate();
+			await this.handleGetXdsOptionsFeature();
+			if (row && Object.keys(row).length > 0) {
+				this.actionList = row.rules;
+				this.isUpdates = true;
+			}
+		},
+		components: {
+			// MenuActionItem: () => _.$importVue("@/views/Menu/MenuActionItem.vue"),
+			ruleItem: () => _.$importVue("@/views/security_adjust/policy_management/ruleItem.vue")
 		},
 		data() {
 			return {
+				FeatureList: [],
+				isUpdates: false,
+				JointList: [],
+				actionList: [],
 				form: {
-					ruleName: {
+					strategyName: {
 						value: "",
-						label: i18n("规则名"),
+						label: i18n("策略名"),
 						rules: [_rules.required(), _rules.lessThan(50)]
 					},
-					featureName: {
-						value: "",
-						label: i18n("特征名"),
-						rules: [_rules.required(), _rules.lessThan(50)]
-					},
-					featureValue: {
-						value: "",
-						label: i18n("特征值"),
-						disabled: isUpdate,
-						rules: [_rules.required(), _rules.lessThan(50)]
-					},
-					predicate: {
-						value: "",
-						label: i18n("谓词"),
-						disabled: isUpdate,
-						itemType: "xItemSelect",
-						options: [],
-						rules: [_rules.required(), _rules.lessThan(50)]
-					},
+					// featureName: {
+					// 	value: "",
+					// 	label: i18n("特征名"),
+					// 	rules: [_rules.required(), _rules.lessThan(50)]
+					// },
+					// featureValue: {
+					// 	value: "",
+					// 	label: i18n("特征值"),
+					// 	disabled: isUpdate,
+					// 	rules: [_rules.required(), _rules.lessThan(50)]
+					// },
+					// predicate: {
+					// 	value: "",
+					// 	label: i18n("谓词"),
+					// 	disabled: isUpdate,
+					// 	itemType: "xItemSelect",
+					// 	options: [],
+					// 	rules: [_rules.required(), _rules.lessThan(50)]
+					// },
 					priority: {
 						value: "",
 						label: i18n("优先级"),
 						disabled: isUpdate,
 						rules: [_rules.required(), _rules.lessThan(50)]
+					},
+					风险等级: {
+						value: "",
+						label: i18n("风险等级"),
+						disabled: isUpdate,
+						itemType: "xItemSelect",
+						options: [],
+						rules: [_rules.required()]
 					}
 				}
 			};
 		},
 		computed: {
+			btnAppend() {
+				const vm = this;
+				return {
+					label: "添加一行",
+					icon: "_add",
+					preset: "primary",
+					async onClick() {
+						vm.actionList.push({
+							...newItem(),
+							featureName: "",
+							featureValue: "",
+							predicate: "",
+							joint: ""
+						});
+					}
+				};
+			},
 			isUpdate() {
 				return !!row;
 			},
@@ -84,8 +134,27 @@ export default async function ({ row, parent }) {
 			}
 		},
 		methods: {
+			updateItem({ index, item }) {
+				this.actionList.splice(index, 1, item);
+			},
+			remove({ index, item }) {
+				// const actionList = _.cloneDeep(this.actionList);
+				// _.remove(actionList, x => x._hash === item._hash);
+				// this.actionList = actionList;
+				this.actionList.splice(index, 1);
+			},
+			async handleGetXdsOptionsRisk() {
+				this.form.风险等级.options = await _api.admin_db_audit.xdsOptionsRisk();
+			},
+			async handleGetXdsOptionsJoint() {
+				this.JointList = await _api.admin_db_audit.xdsOptionsJoint();
+			},
+			async handleGetXdsOptionsFeature() {
+				this.FeatureList = await _api.admin_db_audit.xdsOptionsFeature();
+			},
 			async handleGetXdsOptionsPredicate() {
-				this.form.predicate.options = await _api.admin_db_audit.xdsOptionsPredicate();
+				this.predicateList = await _api.admin_db_audit.xdsOptionsPredicate();
+				// this.form.predicate.options =
 			},
 			async onClickOk() {
 				const [error] = await _.$validateForm(this.$el);
@@ -102,12 +171,16 @@ export default async function ({ row, parent }) {
 				}
 				obj = {
 					...obj,
-					strategyName: this.$route.query.strategyName,
-					id: this.$route.query.id
+					// strategyName: this.$route.query.strategyName,
+					strategyTypeName: this.$route.query.strategyName,
+					id: this.$route.query.id,
+					expressions: this.actionList,
+					rules: this.actionList
 				};
 				const { code, msg } = await fn(obj);
 				if (code === 0) {
 					_.$msg(msg);
+					parent.getTableData({ page: 1 });
 					this.closeModal();
 				} else {
 					_.$msgError(msg);

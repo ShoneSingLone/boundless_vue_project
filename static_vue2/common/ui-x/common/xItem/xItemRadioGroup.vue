@@ -3,7 +3,7 @@ export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	return {
 		mixins: [mixins],
-		props: ["value", "configs", "options"],
+		props: ["options"],
 		data() {
 			return {
 				col: 4
@@ -16,6 +16,10 @@ export default async function () {
 				};
 			},
 			cptDisabled() {
+				if (this.configs?.disabled) {
+					return true;
+				}
+
 				if (hasOwn(this.$attrs, "disabled")) {
 					return this.$attrs.disabled;
 				}
@@ -52,19 +56,19 @@ export default async function () {
 						label = renderOption.call(vm.configs, item);
 					}
 
-					return h("div", {}, [
+					return hDiv({}, [
 						h(
 							"xRadio",
 							{
 								label: value,
 								key: value,
-								value: this.mixin_value,
-								disabled: this.cptDisabled,
+								value: vm.mixin_value,
+								disabled: vm.cptDisabled,
 								staticClass: "flex middle",
 								nativeOn: {
 									click: () => {
-										if (!this.cptDisabled) {
-											this.mixin_value = value;
+										if (!vm.cptDisabled) {
+											vm.mixin_value = value;
 										}
 									}
 								}
@@ -92,6 +96,7 @@ export default async function () {
 					"xBtnGroup",
 					_.map(this.selectOptions, item => {
 						const props = {
+							disabled: this.cptDisabled,
 							onClick: () => {
 								this.mixin_value = item.value;
 							}
@@ -99,7 +104,7 @@ export default async function () {
 						if (item.value === this.value) {
 							props.preset = "blue";
 						}
-						return h("xBtn", props, [item.label]);
+						return hxBtn(props, [item.label]);
 					})
 				);
 			}

@@ -82,7 +82,7 @@ export default async function () {
 			if (this.hideOnSinglePage && (!this.internalPageCount || this.internalPageCount === 1))
 				return null;
 
-			let template = h("div", {
+			let template = hDiv({
 				class: [
 					"admin-pagination flex middle center",
 					{ "is-background": this.background, "admin-pagination--small": this.small }
@@ -107,7 +107,7 @@ export default async function () {
 				total: h("total", {})
 			};
 			const components = layout.split(",").map(item => item.trim());
-			const rightWrapper = h("div", {
+			const rightWrapper = hDiv({
 				class: "admin-pagination__rightwrapper"
 			});
 			let haveRightWrapper = false;
@@ -175,7 +175,7 @@ export default async function () {
 			Total: {
 				render(h) {
 					if (_.isNumber(this.$parent.total)) {
-						return h("span", {
+						return hSpan({
 							class: "admin-pagination__total",
 							children: [
 								this.$parent.currentPage && `第 ${this.$parent.currentPage} 页/`,

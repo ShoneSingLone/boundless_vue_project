@@ -50,7 +50,7 @@ export default async function () {
 		render() {
 			const vm = this;
 			let opts = vm.configs?.col?.componentOptions?.search?.options ?? [];
-			return h("div", { class: "select-search" }, [
+			return hDiv({ class: "select-search" }, [
 				h(
 					"el-select",
 					{
@@ -72,7 +72,7 @@ export default async function () {
 						})
 					]
 				),
-				h("xItem", {
+				hxItem({
 					configs: {
 						...(vm.configs?.col?.componentOptions || {}),
 						itemType: "xItemSelect",

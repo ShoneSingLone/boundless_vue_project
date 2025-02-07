@@ -60,8 +60,9 @@ export default async function () {
 			],
 			probeStatus: [
 				{ label: "等待回复", value: 0 },
-				{ label: "正常运行 ", value: 1 },
-				{ label: "异常状态", value: 2 }
+				{ label: "已配置为探针 ", value: 1 },
+				{ label: "未配置为探针", value: 2 },
+				{ label: "超时未响应", value: 4 }
 			],
 			warringLevel: [
 				{ label: "低风险", value: 1 },

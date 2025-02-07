@@ -1,24 +1,13 @@
 <script lang="ts">
-export default async function ({ PRIVATE_GLOBAL, TRIGGER_EVENT_NAME, onConnection }) {
+export default async function ({
+	PRIVATE_GLOBAL,
+	TRIGGER_EVENT_NAME,
+	onConnection,
+	namespace = "/ws"
+}) {
 	if (!window.io) {
-		(function (f) {
-			if (typeof exports === "object" && typeof module !== "undefined") {
-				module.exports = f();
-			} else if (typeof define === "function" && define.amd) {
-				define([], f);
-			} else {
-				var g;
-				if (typeof window !== "undefined") {
-					g = window;
-				} else if (typeof global !== "undefined") {
-					g = global;
-				} else if (typeof self !== "undefined") {
-					g = self;
-				} else {
-					g = this;
-				}
-				g.io = f();
-			}
+		(function (SocketIo) {
+			window.io = SocketIo();
 		})(function () {
 			var define, module, exports;
 			return (function e(t, n, r) {
@@ -8647,7 +8636,7 @@ export default async function ({ PRIVATE_GLOBAL, TRIGGER_EVENT_NAME, onConnectio
 	}
 
 	const { protocol, host } = location;
-	const websocketURL = `${protocol}//${host}/ws`;
+	const websocketURL = `${host}${namespace}`;
 	var ws = window.io(websocketURL);
 	ws.on("connection", payload => {
 		onConnection({ id: payload.id });

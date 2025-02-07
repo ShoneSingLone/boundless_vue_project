@@ -63,7 +63,6 @@ export default async function () {
 					const { height, ...exceptHeightStyle } = style || {};
 					const _measured = unref(measured);
 					return hDiv(
-						ColumnCells,
 						mergeProps4h([
 							{
 								ref: rowRef,
@@ -73,12 +72,12 @@ export default async function () {
 							},
 							attrs,
 							unref(eventHandlers)
-						])
+						]),
+						ColumnCells
 					);
 				}
 
 				return hDiv(
-					ColumnCells,
 					mergeProps4h([
 						attrs,
 						{
@@ -88,7 +87,8 @@ export default async function () {
 							attrs
 						},
 						unref(eventHandlers)
-					])
+					]),
+					ColumnCells
 				);
 			};
 		}

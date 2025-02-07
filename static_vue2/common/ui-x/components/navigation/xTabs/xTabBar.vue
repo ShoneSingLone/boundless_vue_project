@@ -21,8 +21,10 @@ export default async function () {
 					let style = {};
 					let offset = 0;
 					let tabSize = 0;
-					const sizeName =
-						["top", "bottom"].indexOf(this.cptPosition) !== -1 ? "width" : "height";
+					const sizeName = ["top", "bottom", "center"].includes(this.cptPosition)
+						? "width"
+						: "height";
+
 					const sizeDir = sizeName === "width" ? "x" : "y";
 					_.every(this.tabs, (tab, index) => {
 						let $el = _.find(this.$parent.$refs.tabs, _tab => {

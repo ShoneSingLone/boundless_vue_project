@@ -55,16 +55,13 @@
 		<xPageHeader @back="goBack" style="margin: 15px 20px 0" />
 		<xPageContent>
 			<div class="mainBox">
-				<div class="mainBoxLeft">
-					<div class="headerClass">
-						<xBtn preset="text" @click="handleUpload" class="uploadBtn">上传头像</xBtn>
+				<div class="mainBoxRight flex vertical">
+					<div class="title flex middle">
+						基本信息
+						<xGap f />
+						<xBtn preset="primary" icon="edit" @click="handleJump">编辑个人资料</xBtn>
 					</div>
-					<div class="name">{{ APP.user.userName }}</div>
-					<xBtn preset="primary" icon="edit" @click="handleJump">编辑个人资料</xBtn>
-				</div>
-				<div class="mainBoxRight">
-					<div class="title">基本信息</div>
-					<div class="infoMess">
+					<div class="infoMess flex1">
 						<table-cell :limit="1">
 							<table-cell-item
 								v-for="item of infoList"
@@ -74,11 +71,8 @@
 							</table-cell-item>
 						</table-cell>
 					</div>
-					<div class="title">其他</div>
-					<div class="infoMess">
-						<table-cell :limit="1">
-							<table-cell-item label="备注"> 备注 </table-cell-item>
-						</table-cell>
+					<div class="width100 flex center">
+						<xBtn preset="primary" @click="modifyPwd">修改密码</xBtn>
 					</div>
 				</div>
 			</div>
@@ -94,6 +88,8 @@ export default async function () {
 				imageUrl: "",
 				infoList: [
 					{ label: "账号", value: "", key: "name" },
+					{ label: "昵称", value: "", key: "userName" },
+					{ label: "性别", value: "", key: "sex" },
 					{ label: "角色", value: "", key: "roleName" },
 					{ label: "部门", value: "", key: "deptName" },
 					{ label: "电话", value: "", key: "phone" },
@@ -109,7 +105,11 @@ export default async function () {
 			async handleGetUserInfo() {
 				let { data } = await _api.admin_db_audit.xdsLoginInfo();
 				this.infoList.forEach(item => {
-					item.value = data.user[item.key];
+					if (item.key === "sex") {
+						item.value = _.$val2L(data.user[item.key], _opts.admin_db_audit.sex);
+					} else {
+						item.value = data.user[item.key];
+					}
 				});
 				console.log("data", data.user);
 			},
@@ -131,6 +131,13 @@ export default async function () {
 			handleJump() {
 				this.$router.push({
 					path: "/my/edit"
+				});
+			},
+			modifyPwd() {
+				_.$openModal({
+					title: `修改密码`,
+					url: "@/views/my/my_pwd.dialog.vue",
+					parent: this
 				});
 			}
 		}

@@ -71,6 +71,7 @@ declare module "./index" {
 				method?: "get" | "post";
 				beforeSend?: Function;
 				handleResult?: Function;
+				onProgress?: Function;
 				payload?: object;
 			}) => Promise<any>;
 			post: (url: string, options?: { data: object }) => Promise<any>;

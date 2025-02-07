@@ -34,7 +34,7 @@ export default async function ({ refreshTableData, listData }) {
 							prop: "_id",
 							width: 60,
 							cellRenderer({ rowIndex }) {
-								return h("div", [rowIndex + 1]);
+								return hDiv([rowIndex + 1]);
 							}
 						},
 						{

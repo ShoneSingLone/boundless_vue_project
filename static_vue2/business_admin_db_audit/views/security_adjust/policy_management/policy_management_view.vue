@@ -36,6 +36,7 @@ export default async function () {
 			this.id = this.$route.query.id;
 			await this.handleGetXdsOptionsRuleStatus();
 			await this.handleGetXdsOptionsPredicate();
+			await this.handleGetXdsOptionsRisk();
 			await this.getTableData();
 		},
 		data(vm) {
@@ -44,6 +45,7 @@ export default async function () {
 			};
 			return {
 				predicate: [],
+				Risk: [],
 				RuleStatus: [],
 				id: "",
 				oprBtnArray: [
@@ -56,18 +58,26 @@ export default async function () {
 				],
 				oprBtnArrayRight: [
 					{
-						label: "添加规则",
+						label: "添加策略",
 						preset: "primary",
 						icon: "_add",
-						disabled: vm.$route.query.status === "0",
+						// disabled: vm.$route.query.status === "0",
 						onClick() {
 							_.$openModal({
-								title: i18n("添加规则"),
+								title: i18n("添加策略"),
+								parent: vm,
 								url: "@/views/security_adjust/policy_management/policy_management_view.upsert.dialog.vue",
 								onClick() {
 									vm.getTableData();
 								}
 							});
+						}
+					},
+					{
+						label: "刷新",
+						preset: "primary",
+						onClick() {
+							vm.getTableData({ page: 1 });
 						}
 					}
 				],
@@ -100,56 +110,76 @@ export default async function () {
 							width: 80,
 							cellRenderer: ({ rowIndex }) => rowIndex + 1
 						},
-						{ prop: "ruleName", label: "规则名" },
-						{ prop: "featureName", label: "特征名" },
-						{ prop: "featureValue", label: "特征值" },
-						{
-							prop: "predicate",
-							label: "谓词",
-							cellRenderer({ rowData }) {
-								const item =
-									vm.predicate.find(item => item.value === rowData.predicate) ??
-									{};
-								return h("span", item.label);
-							}
-						},
+						{ prop: "strategyName", label: "策略名" },
 						{ prop: "priority", label: "优先级" },
 						{
-							prop: "status",
-							label: "配置状态",
+							prop: "riskLevel",
+							label: "风险等级",
 							cellRenderer({ rowData }) {
 								const item =
-									vm.RuleStatus.find(
-										item => Number(item.value) === rowData.status
-									) ?? {};
-								return h("span", item.label);
+									vm.Risk.find(item => item.value == rowData.riskLevel) ?? {};
+								return hSpan(item.label);
 							}
 						},
+						{
+							prop: "expressions",
+							label: "表达式",
+							cellRenderer({ rowData }) {
+								return h("xBtn", {
+									configs: {
+										preset: "text",
+										label: "查看表达式",
+										async onClick() {
+											_.$openModal({
+												title: i18n("表达式详情"),
+												row: rowData,
+												url: "@/views/security_adjust/policy_management/policy_management_view.upsert.dialog.vue",
+												onClick() {
+													vm.getTableData();
+												}
+											});
+										}
+									}
+								});
+							}
+						},
+
+						// {
+						// 	prop: "status",
+						// 	label: "配置状态",
+						// 	cellRenderer({ rowData }) {
+						// 		const item =
+						// 			vm.RuleStatus.find(
+						// 				item => Number(item.value) === rowData.status
+						// 			) ?? {};
+						// 		return hSpan(item.label);
+						// 	}
+						// },
 						defTable.colActions({
 							width: 210,
 							cellRenderer({ rowData }) {
 								return hBtnWithMore({
 									children: [
-										{
-											label: "编辑",
-											icon: "_icon_btn_view",
-											disabled: rowData.status !== 1,
-											onClick() {
-												_.$openModal({
-													title: i18n("修改规则"),
-													row: rowData,
-													parent: vm,
-													url: "@/views/security_adjust/policy_management/policy_management_view.upsert.dialog.vue",
-													onClick() {
-														vm.getTableData();
-													}
-												});
-											}
-										},
+										// {
+										// 	label: "编辑",
+										// 	icon: "_icon_btn_view",
+										// 	// disabled: rowData.status !== 1,
+										// 	onClick() {
+										// 		_.$openModal({
+										// 			title: i18n("修改规则"),
+										// 			row: rowData,
+										// 			parent: vm,
+										// 			url: "@/views/security_adjust/policy_management/policy_management_view.upsert.dialog.vue",
+										// 			onClick() {
+										// 				vm.getTableData();
+										// 			}
+										// 		});
+										// 	}
+										// },
 										{
 											label: "删除",
 											icon: "_delete",
-											disabled: rowData.status !== 1,
+											// disabled: rowData.status !== 1,
 											async onClick() {
 												await _.$confirm({
 													title: "提示",
@@ -160,10 +190,10 @@ export default async function () {
 														rowData
 													);
 												if (code === 0) {
-													_.msgSuccess(msg);
+													_.$msgSuccess(msg);
 													vm.getTableData({ page: 1 });
 												} else {
-													_.msgError(msg);
+													_.$msgError(msg);
 												}
 											}
 										}
@@ -177,10 +207,13 @@ export default async function () {
 		},
 		computed: {
 			cptHeaderContent() {
-				return `策略名:${this.$route.query.strategyName}`;
+				return `策略类型名: ${this.$route.query.strategyName}`;
 			}
 		},
 		methods: {
+			async handleGetXdsOptionsRisk() {
+				this.Risk = await _api.admin_db_audit.xdsOptionsRisk();
+			},
 			async handleGetXdsOptionsRuleStatus() {
 				this.RuleStatus = await _api.admin_db_audit.xdsOptionsRuleStatus();
 			},
@@ -191,10 +224,15 @@ export default async function () {
 				try {
 					_.$loading(true);
 					const { page, size } = _.$setPagination(this.configsTable, pagination);
-					const res = await _api.admin_db_audit.xdsStrategyPageId({
-						id: this.id
+					const {
+						data: { list: res, total = 0 }
+					} = await _api.admin_db_audit.xdsStrategyPageId({
+						id: this.id,
+						pageNum: page,
+						pageSize: size
 					});
-					_.$setTableData(this.configsTable, { list: res });
+
+					_.$setTableData(this.configsTable, { list: res, total });
 					console.log(res);
 				} catch (error) {
 					_.$msgError(error);

@@ -127,7 +127,7 @@ export default async function () {
 							childrenArray.unshift(
 								h("xIcon", { icon: item.icon, class: "mr8 NavbarBreadcrumb-icon" })
 							);
-							childrenArray = [h("div", { class: "flex middle" }, childrenArray)];
+							childrenArray = [hDiv({ class: "flex middle" }, childrenArray)];
 						}
 					}
 

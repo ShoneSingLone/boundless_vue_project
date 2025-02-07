@@ -6,7 +6,7 @@ export default async function () {
 	);
 	const { PreprocessHTML } = await _.$importVue("@/components/TuiEditor/MkitTheme.vue");
 	return defineComponent({
-		props: ["value", "asRender"],
+		props: ["value", "asRender", "imgrange" /* jquery选择器，find范围内的图片 */],
 		model: {
 			prop: "value",
 			emit: "change"
@@ -106,11 +106,21 @@ export default async function () {
 				}
 			},
 			/*  */
-			showImg(index) {
-				const $md = $(this.$refs.refViewer);
-				const imgList = $md.find("img");
+			showImg(imgSrc) {
+				let $md = (() => {
+					if (this.imgrange) {
+						return $(this.imgrange);
+					} else {
+						return $(this.$refs.refViewer);
+					}
+				})();
+
+				const imgList = $md.find("[data-x-mkit-wrapper-index]").find("img");
+				const urlList = _.map(imgList, img => img.src);
+				const index = _.findIndex(urlList, url => _.isEqual(url, imgSrc));
+
 				_.$previewImgs({
-					urlList: _.map(imgList, img => img.src),
+					urlList,
 					index
 				});
 			},
@@ -118,7 +128,7 @@ export default async function () {
 				const { target } = event;
 				const $ele = $(target).parents(".x-mkit-wrapper[data-x-mkit-wrapper-index]");
 				if ($ele && $ele.length) {
-					this.showImg(Number($ele.attr("data-x-mkit-wrapper-index")));
+					this.showImg($ele.find("img").attr("src"));
 				}
 			},
 			/*  */
@@ -150,7 +160,7 @@ export default async function () {
 							const [_, id] = String(destination).match(/^_id:(\d+)/) || [];
 							if (id) {
 								return Vue._common_utils.appendToken(
-									`${window._URL_PREFIX_4_DEV || ""}/api/resource/get?id=${id}`
+									`${window._AJAX_URL_PREFIX || ""}/api/resource/get?id=${id}`
 								);
 							} else {
 								return destination;
@@ -217,7 +227,7 @@ export default async function () {
 						});
 						/* vmTuiEditor初始化 */
 						vm.vmTuiEditorDone = true;
-						vm.emitModelValueDebounce = _.debounce(vm.emitModelValue, 1000);
+						vm.emitModelValueDebounce = _.debounce(vm.emitModelValue, 400);
 						vm.setHtmlDebounce = _.debounce(vm.setHtml, 100);
 						const className = `sync_${vm._uid}`;
 						vm.raw$selector = `.${className}`;
@@ -231,6 +241,9 @@ export default async function () {
 								style: { backgroundImage: "none" }
 							}
 						);
+						vm.vmTuiEditor.on("keydown", function (type, event) {
+							vm.$emit("keydown", { type, event });
+						});
 					})();
 				} catch (error) {
 					console.error(error);
@@ -254,13 +267,13 @@ export default async function () {
 				style: "position:relative;height:100%;width:100%;z-index:1;padding:var(--note-normal-padding,var(--ui-one));"
 			};
 
-			return h("div", { class: "flex1-overflow-auto" }, [
+			return hDiv({ class: "flex1-overflow-auto" }, [
 				/*viewer html*/
-				h("div", viewerProps, [
-					h("div", { ref: "refViewer", staticClass: "toastui-viewer-contents" })
+				hDiv(viewerProps, [
+					hDiv({ ref: "refViewer", staticClass: "toastui-viewer-contents" })
 				]),
 				/*tuiEdior*/
-				h("div", {
+				hDiv({
 					id: vm._uid,
 					ref: "container",
 					class: { flex1: true, "display-none": vm.readonly },

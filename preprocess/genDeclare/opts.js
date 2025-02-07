@@ -3,12 +3,14 @@ const traverse = require("@babel/traverse").default;
 const parser = require("@babel/parser");
 async function genAppOpts(APP_NAME) {
 	try {
-
 		let propertyName,
 			optsDeclare = [];
 
 		// 读取文件内容
-		const optsFilePath = path.resolve(__dirname, `../../static_vue2/business_${APP_NAME}/utils/opts.vue`);
+		const optsFilePath = path.resolve(
+			__dirname,
+			`../../static_vue2/business_${APP_NAME}/utils/opts.vue`
+		);
 		const code = fs.readFileSync(optsFilePath, "utf-8");
 		const { scritpSourceCode } = VueLoader(code);
 
@@ -33,7 +35,11 @@ async function genAppOpts(APP_NAME) {
 				const parameters = path.node.params.map(param => param.name);
 				// 获取函数前的注释说明
 				const { leadingComments } = path.node;
-				const leadingCommentText = leadingComments ? leadingComments.map(item => removeSpacesAsterisksAndNewlines(item.value)).join(",") : "";
+				const leadingCommentText = leadingComments
+					? leadingComments
+							.map(item => removeSpacesAsterisksAndNewlines(item.value))
+							.join(",")
+					: "";
 				// 获取函数内部的注释
 				const innerComments = path.node.body.body[0].leadingComments;
 				console.log("Function Name:", functionName);
@@ -109,8 +115,12 @@ ${optsDeclare.join("\r\n")}
 			"utf-8"
 		);
 
-		const dirs = await fs.promises.readdir(path.resolve(__dirname, `../../d.ts/types/business/_opts`));
-		const alloptsFile = dirs.filter(dir => dir !== "index.d.ts").map(dir => dir.replace(".d.ts", ""));
+		const dirs = await fs.promises.readdir(
+			path.resolve(__dirname, `../../d.ts/types/business/_opts`)
+		);
+		const alloptsFile = dirs
+			.filter(dir => dir !== "index.d.ts")
+			.map(dir => dir.replace(".d.ts", ""));
 		const importArray = alloptsFile.map(propertyName => {
 			return `import {t_${propertyName}} from "./${propertyName}.d";`;
 		});
@@ -123,13 +133,10 @@ ${optsDeclare.join("\r\n")}
 			`${importArray.join("\r\n")}\r\nexport type t_opts = {\r\n\t${declareArray.join("\r\n")}
 };`
 		);
-
 	} catch (error) {
 		console.error(`🚀 ${APP_NAME} miss opts`);
 	}
-};
-
-
+}
 
 module.exports = ({ APP_NAME, APP_NAME_ARRAY }) => {
 	if (APP_NAME) {

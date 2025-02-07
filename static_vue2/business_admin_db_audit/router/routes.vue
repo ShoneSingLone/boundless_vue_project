@@ -24,7 +24,7 @@ export default async function () {
 			redirect: "/home",
 			children: [
 				_.$newRoute("/home", "@/views/Home/Home.vue"),
-				_.$newRoute("/menu", "@/views/Menu/ViewMenu.vue"),
+				_.$newRoute("/system_manage/menu", "@/views/Menu/ViewMenu.vue"),
 				_.$newRoute("/system_setting", ComponentRouterView, {
 					children: [
 						_.$newRoute("/system_setting/probe_management", ComponentRouterView, {
@@ -132,21 +132,25 @@ export default async function () {
 						_.$newRoute(
 							"/security_adjust/offline_traffic_analysis",
 							"@/views/security_adjust/offline_traffic_analysis/offline_traffic_analysis.vue"
+						),
+						_.$newRoute(
+							"/security_adjust/sensitive_field_management",
+							"@/views/security_adjust/sensitive_field_management/sensitive_field_management.vue"
 						)
 					]
 				}),
 				/* 用户管理 */
-				_.$newRoute("/user", "@/views/user/user.vue"),
-				_.$newRoute("/user/add", "@/views/user/user_edit.vue"),
-				_.$newRoute("/user/edit", "@/views/user/user_edit.vue"),
+				_.$newRoute("/system_manage/user", "@/views/user/user.vue"),
+				_.$newRoute("/system_manage/user/add", "@/views/user/user_edit.vue"),
+				_.$newRoute("/system_manage/user/edit", "@/views/user/user_edit.vue"),
 				/* 角色管理 */
-				_.$newRoute("/role", "@/views/role/role.vue"),
-				_.$newRoute("/role/add", "@/views/role/role_edit.vue"),
-				_.$newRoute("/role/edit", "@/views/role/role_edit.vue"),
+				_.$newRoute("/asd/role", "@/views/role/role.vue"),
+				_.$newRoute("/asd/role/add", "@/views/role/role_edit.vue"),
+				_.$newRoute("/asd/role/edit", "@/views/role/role_edit.vue"),
 				/* 部门管理 */
-				_.$newRoute("/dept", "@/views/dept/dept.vue"),
-				_.$newRoute("/dept/add", "@/views/dept/dept_edit.vue"),
-				_.$newRoute("/dept/edit", "@/views/dept/dept_edit.vue"),
+				_.$newRoute("/system_manage/dept", "@/views/dept/dept.vue"),
+				_.$newRoute("/system_manage/dept/add", "@/views/dept/dept_edit.vue"),
+				_.$newRoute("/system_manage/dept/edit", "@/views/dept/dept_edit.vue"),
 				/* 系统自监控 */
 				_.$newRoute("/monitoring", "@/views/monitoring/monitoring.vue")
 			]

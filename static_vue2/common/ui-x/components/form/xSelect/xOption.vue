@@ -7,6 +7,7 @@
 		:class="cptOptionClass">
 		<slot>
 			<span>{{ currentLabel }}</span>
+			<xIcon icon="check" v-if="itemSelected" class="x-select-selected-icon" />
 		</slot>
 	</li>
 </template>
@@ -39,8 +40,7 @@ export default async function () {
 		},
 
 		computed: {
-			cptOptionClass() {
-				const { itemSelected, disabled, groupDisabled, limitReached, hover } = this;
+			cptOptionClass({ itemSelected, disabled, groupDisabled, limitReached, hover }) {
 				return {
 					selected: itemSelected,
 					"is-disabled": disabled || groupDisabled || limitReached,

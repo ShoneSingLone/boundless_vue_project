@@ -5,7 +5,7 @@
 			<NavbarBreadcrumb />
 		</xPageTitle>
 		<xPageContent style="padding-top: 0">
-			<div class="flex height100">
+			<div class="flex">
 				<xCard class="flex1 mr">
 					<template #header>
 						<div class="flex">
@@ -30,7 +30,7 @@
 						<xItem label="类型"> SFTP </xItem>
 						<div class="mt">SSH配置</div>
 						<xItem :configs="SFTPForm.ip" />
-						<xItem :configs="SFTPForm.ip" />
+						<!--						<xItem :configs="SFTPForm.ip" />-->
 						<xItem :configs="SFTPForm.port" />
 						<xItem :configs="SFTPForm.userName" />
 						<xItem :configs="SFTPForm.password" style="--xItem-wrapper-width: 600px" />

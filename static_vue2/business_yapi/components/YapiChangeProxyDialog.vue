@@ -1,10 +1,12 @@
 <style lang="less"></style>
 <template>
-	<xDialog style="height: 400px">
+	<xDialog style="min-height: 100px">
 		<xForm ref="form" :style="labelStyle" col="1">
 			<xItem :configs="form.isProxy" />
-			<xItem :configs="form.witchEnv" v-if="form.isProxy.value" />
-			<xItem :configs="form.res_body_type" span="full" v-else />
+			<transition>
+				<xItem :configs="form.witchEnv" v-if="form.isProxy.value" />
+				<xItem :configs="form.res_body_type" span="full" v-else />
+			</transition>
 		</xForm>
 		<template #footer>
 			<xBtn :configs="btnOk" />
@@ -69,7 +71,7 @@ export default async function ({ selected, callBack }) {
 							await vm.update(id);
 						}
 
-						vm.inject_project.getInterfaceList();
+						vm.inject_project.get_interface_list();
 						vm.closeModal();
 					}
 				};

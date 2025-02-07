@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="el-select-dropdown el-popper"
+		class="xSelectDropdown el-select-dropdown el-popper"
 		:class="[{ 'is-multiple': $parent.multiple }, popperClass]"
 		:style="{ minWidth: minWidth }">
 		<slot></slot>
@@ -61,4 +61,8 @@ export default async function () {
 	});
 }
 </script>
-<style lang="less"></style>
+<style lang="less">
+.xSelectDropdown {
+	min-width: var(--xSelectDropdown-min-width, 0);
+}
+</style>

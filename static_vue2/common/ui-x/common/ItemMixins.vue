@@ -131,7 +131,7 @@ export default async function () {
 
 				const cptChildren = computed(() => {
 					if (_.isFunction(vm.$vSlots?.default)) {
-						return h("span", vm.$vSlots.default());
+						return hSpan(vm.$vSlots.default());
 					}
 					if (vm.$vSlots?.TYPE_IS_VNODE) {
 						return vm.$vSlots;

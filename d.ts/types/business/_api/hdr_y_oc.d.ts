@@ -14,4 +14,7 @@ modifyManageConfigure(args?:any):Promise<any>
 getManageVersion(args?:any):Promise<any>
 restHdrYManageGetSysAdminUser(args?:any):Promise<any>
 deleteTenant(args?:any):Promise<any>
+};riverList(args?:any):Promise<any>
+DriverRegister(args?:any):Promise<any>
+DriverUnRegister(args?:any):Promise<any>
 };

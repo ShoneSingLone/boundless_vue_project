@@ -155,7 +155,7 @@ export default async function () {
 					},
 					[
 						h("xIcon", { icon: data.icon }),
-						h("div", { staticClass: "node-name" }, [data.group_name]),
+						hDiv({ staticClass: "node-name" }, [data.group_name]),
 						h("xIcon", {
 							icon: "currentLocation",
 							staticClass: "node-icon-current",

@@ -24,7 +24,7 @@ export default async function () {
 								placement: "top"
 							},
 							[
-								h("span", { class: "flex" }, [
+								hSpan({ class: "flex" }, [
 									h("xIcon", { icon: "msg", staticClass: "mr" }),
 									_.$dateFormat(date)
 								])
@@ -43,8 +43,8 @@ export default async function () {
 					prop: "operations",
 					label: "Operations",
 					cellRenderer: ({ cellData }) => [
-						h("xBtn", { preset: "blue" }, ["Edit"]),
-						h("xBtn", { preset: "blue" }, ["Delete"])
+						hxBtn({ preset: "blue" }, ["Edit"]),
+						hxBtn({ preset: "blue" }, ["Delete"])
 					],
 					width: 150,
 					align: "center"

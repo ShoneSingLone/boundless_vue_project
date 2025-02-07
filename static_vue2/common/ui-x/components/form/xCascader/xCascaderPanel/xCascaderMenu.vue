@@ -68,7 +68,7 @@ export default async function () {
 				hoverZone.innerHTML = "";
 			},
 			renderEmptyText(h) {
-				return h("div", {
+				return hDiv({
 					class: "el-cascader-menu__empty-text",
 					children: i18n("el.cascader.noData")
 				});

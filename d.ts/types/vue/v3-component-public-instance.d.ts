@@ -1,4 +1,4 @@
-import { DebuggerEvent, ShallowUnwrapRef, UnwrapNestedRefs } from "./v3-generated";
+wimport { DebuggerEvent, ShallowUnwrapRef, UnwrapNestedRefs } from "./v3-generated";
 import { UnionToIntersection } from "./common";
 
 import { Vue, VueConstructor } from "./vue";

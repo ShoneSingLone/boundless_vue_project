@@ -127,7 +127,7 @@ export default async function () {
 					_.$loading(true);
 					try {
 						// 向后端请求路由数据
-						const res = await _api.admin_db_audit.getRouters();
+						const res = await _api.adminNormal.getRouters();
 						const routes_append = filterRoutes(res.data);
 						const routes_dynamic = filterDynamicRoutes();
 						storePermission.appendRoutes([

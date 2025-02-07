@@ -2,14 +2,16 @@ const { fs, path, VueLoader, _n } = require("../../preprocess/preprocess.utils")
 const traverse = require("@babel/traverse").default;
 const parser = require("@babel/parser");
 
-
 async function genAppApi(APP_NAME) {
 	try {
 		let propertyName,
 			apiDeclare = [];
 
 		// 读取文件内容
-		const apiFilePath = path.resolve(__dirname, `../../static_vue2/business_${APP_NAME}/utils/api.vue`);
+		const apiFilePath = path.resolve(
+			__dirname,
+			`../../static_vue2/business_${APP_NAME}/utils/api.vue`
+		);
 		const code = fs.readFileSync(apiFilePath, "utf-8");
 		const { scritpSourceCode } = VueLoader(code);
 
@@ -35,7 +37,11 @@ async function genAppApi(APP_NAME) {
 				const parameters = path.node.params.map(param => param.name);
 				// 获取函数前的注释说明
 				const { leadingComments } = path.node;
-				const leadingCommentText = leadingComments ? leadingComments.map(item => removeSpacesAsterisksAndNewlines(item.value)).join(",") : "";
+				const leadingCommentText = leadingComments
+					? leadingComments
+							.map(item => removeSpacesAsterisksAndNewlines(item.value))
+							.join(",")
+					: "";
 				// 获取函数内部的注释
 				const innerComments = path.node.body.body[0].leadingComments;
 				console.log("Function Name:", functionName);
@@ -86,8 +92,11 @@ async function genAppApi(APP_NAME) {
 						const comments = propertie.leadingComments;
 						const dts = `${propertie.key.name}(args?:any):Promise<any>`;
 						if (comments) {
-							const [desc] = comments.map(comment => comment.value);
-							if (desc) {
+							const [desc, defineType] = comments.map(comment => comment.value);
+							if (String(defineType).includes("@typescriptDeclare")) {
+								const customDefine = `/*${desc}*/\r\n${propertie.key.name}: ${defineType.replace("@typescriptDeclare", "")}`;
+								return customDefine;
+							} else if (desc) {
 								return `/*${desc}*/\r\n${dts}`;
 							}
 						}
@@ -106,8 +115,12 @@ ${apiDeclare.join("\r\n")}
 			"utf-8"
 		);
 
-		const dirs = await fs.promises.readdir(path.resolve(__dirname, `../../d.ts/types/business/_api`));
-		const allApiFile = dirs.filter(dir => dir !== "index.d.ts").map(dir => dir.replace(".d.ts", ""));
+		const dirs = await fs.promises.readdir(
+			path.resolve(__dirname, `../../d.ts/types/business/_api`)
+		);
+		const allApiFile = dirs
+			.filter(dir => dir !== "index.d.ts")
+			.map(dir => dir.replace(".d.ts", ""));
 		const importArray = allApiFile.map(propertyName => {
 			return `import {t_${propertyName}} from "./${propertyName}.d";`;
 		});
@@ -120,12 +133,10 @@ ${apiDeclare.join("\r\n")}
 			`${importArray.join("\r\n")}\r\nexport type t_api = {\r\n\t${declareArray.join("\r\n")}
 };`
 		);
-
 	} catch (error) {
 		console.error(`🚀 ${APP_NAME} miss api`);
 	}
 }
-
 
 module.exports = ({ APP_NAME, APP_NAME_ARRAY }) => {
 	if (APP_NAME) {

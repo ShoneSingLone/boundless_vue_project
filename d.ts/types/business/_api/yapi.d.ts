@@ -4,7 +4,7 @@ i18nTranslate(args?:any):Promise<any>
 i18nUpsertOne(args?:any):Promise<any>
 i18nGetList(args?:any):Promise<any>
 wikiResetMenuOrder(args?:any):Promise<any>
-wikiUpsertOne(args?:any):Promise<any>
+wiki_upsert_one(args?:any):Promise<any>
 saveImgByBase64(args?:any):Promise<any>
 wikiDetail(args?:any):Promise<any>
 /**
@@ -33,7 +33,7 @@ interface_del_by_ids(args?:any):Promise<any>
 interface_up(args?:any):Promise<any>
 interface_upsert(args?:any):Promise<any>
 interface_add(args?:any):Promise<any>
-interfaceAddCat(args?:any):Promise<any>
+interface_add_cat(args?:any):Promise<any>
 interfaceUpCat(args?:any):Promise<any>
 interface_usecase_upsert(args?:any):Promise<any>
 interface_copy_to_project(args?:any):Promise<any>
@@ -66,7 +66,17 @@ groupGetMemberListBy(args?:any):Promise<any>
 /* user */
 uploadAvatar(args?:any):Promise<any>
 userById(args?:any):Promise<any>
+/**
+				 *  根据id删除一个用户
+				 *  https://yapi.ghca.dev/#/api/project?projectId=354&groupId=448&projectTabName=%E6%8E%A5%E5%8F%A3&project_interface_tab=preview&interfaceType=interface&interfaceId=35661/#/api/project?projectId=354&groupId=448&interfaceType=interface&interfaceId=35661&project_interface_tab=preview&project_setting_tab=3&projectTabName=接口
+				 */
+userDel(args?:any):Promise<any>
 userSearch(args?:any):Promise<any>
+/**
+				 *  修改用户密码
+				 *  https://yapi.ghca.dev/#/api/project?projectId=354&groupId=448&projectTabName=%E6%8E%A5%E5%8F%A3&project_interface_tab=preview&project_setting_tab=7&interfaceType=interface&interfaceId=37400/#/api/project?projectId=354&groupId=448&interfaceType=interface&interfaceId=37400&project_interface_tab=preview&project_setting_tab=3&projectTabName=接口
+				 */
+userChangePassword(args?:any):Promise<any>
 /**
 				 * 获取用户状态
 				 */
@@ -75,4 +85,9 @@ userLogin(args?:any):Promise<any>
 userLogout(args?:any):Promise<any>
 postNewVarifyCode(args?:any):Promise<any>
 userReg(args?:any):Promise<any>
+/**
+				 *  用户角色,只有管理员有权限修改
+				 *  https://yapi.ghca.dev/#/api/project?projectId=354&groupId=448&projectTabName=%E6%8E%A5%E5%8F%A3&project_interface_tab=preview&project_setting_tab=7&interfaceType=interface&interfaceId=37401/#/api/project?projectId=354&groupId=448&interfaceType=interface&interfaceId=37401&project_interface_tab=preview&project_setting_tab=3&projectTabName=接口
+				 */
+userUpdate(args?:any):Promise<any>
 };

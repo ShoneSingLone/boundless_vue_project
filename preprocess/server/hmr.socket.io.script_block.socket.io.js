@@ -124,14 +124,18 @@
 									if (uri) {
 										uri = parseuri(uri);
 										opts.hostname = uri.host;
-										opts.secure = uri.protocol == "https" || uri.protocol == "wss";
+										opts.secure =
+											uri.protocol == "https" || uri.protocol == "wss";
 										opts.port = uri.port;
 										if (uri.query) opts.query = uri.query;
 									} else if (opts.host) {
 										opts.hostname = parseuri(opts.host).host;
 									}
 
-									this.secure = null != opts.secure ? opts.secure : global.location && "https:" == location.protocol;
+									this.secure =
+										null != opts.secure
+											? opts.secure
+											: global.location && "https:" == location.protocol;
 
 									if (opts.hostname && !opts.port) {
 										// if no port is specified manually, use the protocol default
@@ -139,12 +143,22 @@
 									}
 
 									this.agent = opts.agent || false;
-									this.hostname = opts.hostname || (global.location ? location.hostname : "localhost");
-									this.port = opts.port || (global.location && location.port ? location.port : this.secure ? 443 : 80);
+									this.hostname =
+										opts.hostname ||
+										(global.location ? location.hostname : "localhost");
+									this.port =
+										opts.port ||
+										(global.location && location.port
+											? location.port
+											: this.secure
+												? 443
+												: 80);
 									this.query = opts.query || {};
-									if ("string" == typeof this.query) this.query = parseqs.decode(this.query);
+									if ("string" == typeof this.query)
+										this.query = parseqs.decode(this.query);
 									this.upgrade = false !== opts.upgrade;
-									this.path = (opts.path || "/engine.io").replace(/\/$/, "") + "/";
+									this.path =
+										(opts.path || "/engine.io").replace(/\/$/, "") + "/";
 									this.forceJSONP = !!opts.forceJSONP;
 									this.jsonp = false !== opts.jsonp;
 									this.forceBase64 = !!opts.forceBase64;
@@ -158,10 +172,17 @@
 									this.rememberUpgrade = opts.rememberUpgrade || false;
 									this.binaryType = null;
 									this.onlyBinaryUpgrades = opts.onlyBinaryUpgrades;
-									this.perMessageDeflate = false !== opts.perMessageDeflate ? opts.perMessageDeflate || {} : false;
+									this.perMessageDeflate =
+										false !== opts.perMessageDeflate
+											? opts.perMessageDeflate || {}
+											: false;
 
-									if (true === this.perMessageDeflate) this.perMessageDeflate = {};
-									if (this.perMessageDeflate && null == this.perMessageDeflate.threshold) {
+									if (true === this.perMessageDeflate)
+										this.perMessageDeflate = {};
+									if (
+										this.perMessageDeflate &&
+										null == this.perMessageDeflate.threshold
+									) {
 										this.perMessageDeflate.threshold = 1024;
 									}
 
@@ -172,12 +193,18 @@
 									this.cert = opts.cert || null;
 									this.ca = opts.ca || null;
 									this.ciphers = opts.ciphers || null;
-									this.rejectUnauthorized = opts.rejectUnauthorized === undefined ? null : opts.rejectUnauthorized;
+									this.rejectUnauthorized =
+										opts.rejectUnauthorized === undefined
+											? null
+											: opts.rejectUnauthorized;
 
 									// other options for Node.js client
 									var freeGlobal = typeof global == "object" && global;
 									if (freeGlobal.global === freeGlobal) {
-										if (opts.extraHeaders && Object.keys(opts.extraHeaders).length > 0) {
+										if (
+											opts.extraHeaders &&
+											Object.keys(opts.extraHeaders).length > 0
+										) {
 											this.extraHeaders = opts.extraHeaders;
 										}
 									}
@@ -278,7 +305,11 @@
 								 */
 								Socket.prototype.open = function () {
 									var transport;
-									if (this.rememberUpgrade && Socket.priorWebsocketSuccess && this.transports.indexOf("websocket") != -1) {
+									if (
+										this.rememberUpgrade &&
+										Socket.priorWebsocketSuccess &&
+										this.transports.indexOf("websocket") != -1
+									) {
 										transport = "websocket";
 									} else if (0 === this.transports.length) {
 										// Emit error on next tick so it can be listened to
@@ -316,7 +347,10 @@
 									var self = this;
 
 									if (this.transport) {
-										debug("clearing existing transport %s", this.transport.name);
+										debug(
+											"clearing existing transport %s",
+											this.transport.name
+										);
 										this.transport.removeAllListeners();
 									}
 
@@ -356,7 +390,9 @@
 
 									function onTransportOpen() {
 										if (self.onlyBinaryUpgrades) {
-											var upgradeLosesBinary = !this.supportsBinary && self.transport.supportsBinary;
+											var upgradeLosesBinary =
+												!this.supportsBinary &&
+												self.transport.supportsBinary;
 											failed = failed || upgradeLosesBinary;
 										}
 										if (failed) return;
@@ -370,13 +406,19 @@
 												self.upgrading = true;
 												self.emit("upgrading", transport);
 												if (!transport) return;
-												Socket.priorWebsocketSuccess = "websocket" == transport.name;
+												Socket.priorWebsocketSuccess =
+													"websocket" == transport.name;
 
-												debug('pausing current transport "%s"', self.transport.name);
+												debug(
+													'pausing current transport "%s"',
+													self.transport.name
+												);
 												self.transport.pause(function () {
 													if (failed) return;
 													if ("closed" == self.readyState) return;
-													debug("changing transport and sending upgrade packet");
+													debug(
+														"changing transport and sending upgrade packet"
+													);
 
 													cleanup();
 
@@ -415,7 +457,11 @@
 
 										freezeTransport();
 
-										debug('probe transport "%s" failed because of error: %s', name, err);
+										debug(
+											'probe transport "%s" failed because of error: %s',
+											name,
+											err
+										);
 
 										self.emit("upgradeError", error);
 									}
@@ -432,7 +478,11 @@
 									//When the socket is upgraded while we're probing
 									function onupgrade(to) {
 										if (transport && to.name != transport.name) {
-											debug('"%s" works - aborting "%s"', to.name, transport.name);
+											debug(
+												'"%s" works - aborting "%s"',
+												to.name,
+												transport.name
+											);
 											freezeTransport();
 										}
 									}
@@ -465,13 +515,18 @@
 								Socket.prototype.onOpen = function () {
 									debug("socket open");
 									this.readyState = "open";
-									Socket.priorWebsocketSuccess = "websocket" == this.transport.name;
+									Socket.priorWebsocketSuccess =
+										"websocket" == this.transport.name;
 									this.emit("open");
 									this.flush();
 
 									// we check for `readyState` in case an `open`
 									// listener already closed the socket
-									if ("open" == this.readyState && this.upgrade && this.transport.pause) {
+									if (
+										"open" == this.readyState &&
+										this.upgrade &&
+										this.transport.pause
+									) {
 										debug("starting upgrade probes");
 										for (var i = 0, l = this.upgrades.length; i < l; i++) {
 											this.probe(this.upgrades[i]);
@@ -487,7 +542,11 @@
 
 								Socket.prototype.onPacket = function (packet) {
 									if ("opening" == this.readyState || "open" == this.readyState) {
-										debug('socket receive: type "%s", data "%s"', packet.type, packet.data);
+										debug(
+											'socket receive: type "%s", data "%s"',
+											packet.type,
+											packet.data
+										);
 
 										this.emit("packet", packet);
 
@@ -516,7 +575,10 @@
 												break;
 										}
 									} else {
-										debug('packet received with socket readyState "%s"', this.readyState);
+										debug(
+											'packet received with socket readyState "%s"',
+											this.readyState
+										);
 									}
 								};
 
@@ -573,7 +635,10 @@
 									var self = this;
 									clearTimeout(self.pingIntervalTimer);
 									self.pingIntervalTimer = setTimeout(function () {
-										debug("writing ping packet - expecting pong within %sms", self.pingTimeout);
+										debug(
+											"writing ping packet - expecting pong within %sms",
+											self.pingTimeout
+										);
 										self.ping();
 										self.onHeartbeat(self.pingTimeout);
 									}, self.pingInterval);
@@ -620,8 +685,16 @@
 								 */
 
 								Socket.prototype.flush = function () {
-									if ("closed" != this.readyState && this.transport.writable && !this.upgrading && this.writeBuffer.length) {
-										debug("flushing %d packets in socket", this.writeBuffer.length);
+									if (
+										"closed" != this.readyState &&
+										this.transport.writable &&
+										!this.upgrading &&
+										this.writeBuffer.length
+									) {
+										debug(
+											"flushing %d packets in socket",
+											this.writeBuffer.length
+										);
 										this.transport.send(this.writeBuffer);
 										// keep track of current length of writeBuffer
 										// splice writeBuffer and callbackBuffer on `drain`
@@ -640,7 +713,11 @@
 								 * @api public
 								 */
 
-								Socket.prototype.write = Socket.prototype.send = function (msg, options, fn) {
+								Socket.prototype.write = Socket.prototype.send = function (
+									msg,
+									options,
+									fn
+								) {
 									this.sendPacket("message", msg, options, fn);
 									return this;
 								};
@@ -666,7 +743,10 @@
 										options = null;
 									}
 
-									if ("closing" == this.readyState || "closed" == this.readyState) {
+									if (
+										"closing" == this.readyState ||
+										"closed" == this.readyState
+									) {
 										return;
 									}
 
@@ -752,7 +832,11 @@
 								 */
 
 								Socket.prototype.onClose = function (reason, desc) {
-									if ("opening" == this.readyState || "open" == this.readyState || "closing" == this.readyState) {
+									if (
+										"opening" == this.readyState ||
+										"open" == this.readyState ||
+										"closing" == this.readyState
+									) {
 										debug('socket close with reason: "%s"', reason);
 										var self = this;
 
@@ -796,11 +880,21 @@
 								Socket.prototype.filterUpgrades = function (upgrades) {
 									var filteredUpgrades = [];
 									for (var i = 0, j = upgrades.length; i < j; i++) {
-										if (~index(this.transports, upgrades[i])) filteredUpgrades.push(upgrades[i]);
+										if (~index(this.transports, upgrades[i]))
+											filteredUpgrades.push(upgrades[i]);
 									}
 									return filteredUpgrades;
 								};
-							}).call(window, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								window,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{
 							"./transport": 4,
@@ -1015,7 +1109,8 @@
 											port = isSSL ? 443 : 80;
 										}
 
-										xd = opts.hostname != location.hostname || port != opts.port;
+										xd =
+											opts.hostname != location.hostname || port != opts.port;
 										xs = opts.secure != isSSL;
 									}
 
@@ -1030,7 +1125,16 @@
 										return new JSONP(opts);
 									}
 								}
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{
 							"./polling-jsonp": 6,
@@ -1186,7 +1290,9 @@
 									}
 									this.script = script;
 
-									var isUAgecko = "undefined" != typeof navigator && /gecko/i.test(navigator.userAgent);
+									var isUAgecko =
+										"undefined" != typeof navigator &&
+										/gecko/i.test(navigator.userAgent);
 
 									if (isUAgecko) {
 										setTimeout(function () {
@@ -1241,13 +1347,19 @@
 											try {
 												self.form.removeChild(self.iframe);
 											} catch (e) {
-												self.onError("jsonp polling iframe removal error", e);
+												self.onError(
+													"jsonp polling iframe removal error",
+													e
+												);
 											}
 										}
 
 										try {
 											// ie6 dynamic iframes with target="" support (thanks Chris Lambacher)
-											var html = '<iframe src="javascript:0" name="' + self.iframeId + '">';
+											var html =
+												'<iframe src="javascript:0" name="' +
+												self.iframeId +
+												'">';
 											iframe = document.createElement(html);
 										} catch (e) {
 											iframe = document.createElement("iframe");
@@ -1282,7 +1394,16 @@
 										this.iframe.onload = complete;
 									}
 								};
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{ "./polling": 8, "component-inherit": 16 }
 					],
@@ -1331,7 +1452,9 @@
 											port = isSSL ? 443 : 80;
 										}
 
-										this.xd = opts.hostname != global.location.hostname || port != opts.port;
+										this.xd =
+											opts.hostname != global.location.hostname ||
+											port != opts.port;
 										this.xs = opts.secure != isSSL;
 									} else {
 										this.extraHeaders = opts.extraHeaders;
@@ -1497,7 +1620,10 @@
 												xhr.setDisableHeaderCheck(true);
 												for (var i in this.extraHeaders) {
 													if (this.extraHeaders.hasOwnProperty(i)) {
-														xhr.setRequestHeader(i, this.extraHeaders[i]);
+														xhr.setRequestHeader(
+															i,
+															this.extraHeaders[i]
+														);
 													}
 												}
 											}
@@ -1511,9 +1637,15 @@
 										if ("POST" == this.method) {
 											try {
 												if (this.isBinary) {
-													xhr.setRequestHeader("Content-type", "application/octet-stream");
+													xhr.setRequestHeader(
+														"Content-type",
+														"application/octet-stream"
+													);
 												} else {
-													xhr.setRequestHeader("Content-type", "text/plain;charset=UTF-8");
+													xhr.setRequestHeader(
+														"Content-type",
+														"text/plain;charset=UTF-8"
+													);
 												}
 											} catch (e) {}
 										}
@@ -1637,7 +1769,9 @@
 									try {
 										var contentType;
 										try {
-											contentType = this.xhr.getResponseHeader("Content-Type").split(";")[0];
+											contentType = this.xhr
+												.getResponseHeader("Content-Type")
+												.split(";")[0];
 										} catch (e) {}
 										if (contentType === "application/octet-stream") {
 											data = this.xhr.response;
@@ -1646,15 +1780,25 @@
 												data = this.xhr.responseText;
 											} else {
 												try {
-													data = String.fromCharCode.apply(null, new Uint8Array(this.xhr.response));
+													data = String.fromCharCode.apply(
+														null,
+														new Uint8Array(this.xhr.response)
+													);
 												} catch (e) {
 													var ui8Arr = new Uint8Array(this.xhr.response);
 													var dataArray = [];
-													for (var idx = 0, length = ui8Arr.length; idx < length; idx++) {
+													for (
+														var idx = 0, length = ui8Arr.length;
+														idx < length;
+														idx++
+													) {
 														dataArray.push(ui8Arr[idx]);
 													}
 
-													data = String.fromCharCode.apply(null, dataArray);
+													data = String.fromCharCode.apply(
+														null,
+														dataArray
+													);
 												}
 											}
 										}
@@ -1673,7 +1817,11 @@
 								 */
 
 								Request.prototype.hasXDR = function () {
-									return "undefined" !== typeof global.XDomainRequest && !this.xs && this.enablesXDR;
+									return (
+										"undefined" !== typeof global.XDomainRequest &&
+										!this.xs &&
+										this.enablesXDR
+									);
 								};
 
 								/**
@@ -1698,7 +1846,11 @@
 									if (global.attachEvent) {
 										global.attachEvent("onunload", unloadHandler);
 									} else if (global.addEventListener) {
-										global.addEventListener("beforeunload", unloadHandler, false);
+										global.addEventListener(
+											"beforeunload",
+											unloadHandler,
+											false
+										);
 									}
 								}
 
@@ -1709,7 +1861,16 @@
 										}
 									}
 								}
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{
 							"./polling": 8,
@@ -1880,7 +2041,10 @@
 									if ("open" == this.readyState) {
 										this.poll();
 									} else {
-										debug('ignoring poll - transport state "%s"', this.readyState);
+										debug(
+											'ignoring poll - transport state "%s"',
+											this.readyState
+										);
 									}
 								}
 							};
@@ -1955,7 +2119,11 @@
 								query = parseqs.encode(query);
 
 								// avoid port if default for schema
-								if (this.port && (("https" == schema && this.port != 443) || ("http" == schema && this.port != 80))) {
+								if (
+									this.port &&
+									(("https" == schema && this.port != 443) ||
+										("http" == schema && this.port != 80))
+								) {
 									port = ":" + this.port;
 								}
 
@@ -1965,7 +2133,14 @@
 								}
 
 								var ipv6 = this.hostname.indexOf(":") !== -1;
-								return schema + "://" + (ipv6 ? "[" + this.hostname + "]" : this.hostname) + port + this.path + query;
+								return (
+									schema +
+									"://" +
+									(ipv6 ? "[" + this.hostname + "]" : this.hostname) +
+									port +
+									this.path +
+									query
+								);
 							};
 						},
 						{
@@ -2080,7 +2255,9 @@
 										opts.headers = this.extraHeaders;
 									}
 
-									this.ws = BrowserWebSocket ? new WebSocket(uri) : new WebSocket(uri, protocols, opts);
+									this.ws = BrowserWebSocket
+										? new WebSocket(uri)
+										: new WebSocket(uri, protocols, opts);
 
 									if (this.ws.binaryType === undefined) {
 										this.supportsBinary = false;
@@ -2126,7 +2303,10 @@
 								 * @api private
 								 */
 
-								if ("undefined" != typeof navigator && /iPad|iPhone|iPod/i.test(navigator.userAgent)) {
+								if (
+									"undefined" != typeof navigator &&
+									/iPad|iPhone|iPod/i.test(navigator.userAgent)
+								) {
 									WS.prototype.onData = function (data) {
 										var self = this;
 										setTimeout(function () {
@@ -2151,38 +2331,50 @@
 									var total = packets.length;
 									for (var i = 0, l = total; i < l; i++) {
 										(function (packet) {
-											parser.encodePacket(packet, self.supportsBinary, function (data) {
-												if (!BrowserWebSocket) {
-													// always create a new object (GH-437)
-													var opts = {};
-													if (packet.options) {
-														opts.compress = packet.options.compress;
-													}
+											parser.encodePacket(
+												packet,
+												self.supportsBinary,
+												function (data) {
+													if (!BrowserWebSocket) {
+														// always create a new object (GH-437)
+														var opts = {};
+														if (packet.options) {
+															opts.compress = packet.options.compress;
+														}
 
-													if (self.perMessageDeflate) {
-														var len = "string" == typeof data ? global.Buffer.byteLength(data) : data.length;
-														if (len < self.perMessageDeflate.threshold) {
-															opts.compress = false;
+														if (self.perMessageDeflate) {
+															var len =
+																"string" == typeof data
+																	? global.Buffer.byteLength(data)
+																	: data.length;
+															if (
+																len <
+																self.perMessageDeflate.threshold
+															) {
+																opts.compress = false;
+															}
 														}
 													}
-												}
 
-												//Sometimes the websocket has already been closed but the browser didn't
-												//have a chance of informing us about it yet, in that case send will
-												//throw an error
-												try {
-													if (BrowserWebSocket) {
-														// TypeError is thrown when passing the second argument on Safari
-														self.ws.send(data);
-													} else {
-														self.ws.send(data, opts);
+													//Sometimes the websocket has already been closed but the browser didn't
+													//have a chance of informing us about it yet, in that case send will
+													//throw an error
+													try {
+														if (BrowserWebSocket) {
+															// TypeError is thrown when passing the second argument on Safari
+															self.ws.send(data);
+														} else {
+															self.ws.send(data, opts);
+														}
+													} catch (e) {
+														debug(
+															"websocket closed before onclose event"
+														);
 													}
-												} catch (e) {
-													debug("websocket closed before onclose event");
-												}
 
-												--total || done();
-											});
+													--total || done();
+												}
+											);
 										})(packets[i]);
 									}
 
@@ -2232,7 +2424,11 @@
 									var port = "";
 
 									// avoid port if default for schema
-									if (this.port && (("wss" == schema && this.port != 443) || ("ws" == schema && this.port != 80))) {
+									if (
+										this.port &&
+										(("wss" == schema && this.port != 443) ||
+											("ws" == schema && this.port != 80))
+									) {
 										port = ":" + this.port;
 									}
 
@@ -2254,7 +2450,14 @@
 									}
 
 									var ipv6 = this.hostname.indexOf(":") !== -1;
-									return schema + "://" + (ipv6 ? "[" + this.hostname + "]" : this.hostname) + port + this.path + query;
+									return (
+										schema +
+										"://" +
+										(ipv6 ? "[" + this.hostname + "]" : this.hostname) +
+										port +
+										this.path +
+										query
+									);
 								};
 
 								/**
@@ -2265,9 +2468,24 @@
 								 */
 
 								WS.prototype.check = function () {
-									return !!WebSocket && !("__initialize" in WebSocket && this.name === WS.prototype.name);
+									return (
+										!!WebSocket &&
+										!(
+											"__initialize" in WebSocket &&
+											this.name === WS.prototype.name
+										)
+									);
 								};
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{
 							"../transport": 4,
@@ -2297,7 +2515,10 @@
 
 								// XMLHttpRequest can be disabled on IE
 								try {
-									if ("undefined" != typeof XMLHttpRequest && (!xdomain || hasCORS)) {
+									if (
+										"undefined" != typeof XMLHttpRequest &&
+										(!xdomain || hasCORS)
+									) {
 										return new XMLHttpRequest();
 									}
 								} catch (e) {}
@@ -2306,7 +2527,11 @@
 								// because loading bar keeps flashing when using jsonp-polling
 								// https://github.com/yujiosaka/socke.io-ie8-loading-example
 								try {
-									if ("undefined" != typeof XDomainRequest && !xscheme && enablesXDR) {
+									if (
+										"undefined" != typeof XDomainRequest &&
+										!xscheme &&
+										enablesXDR
+									) {
 										return new XDomainRequest();
 									}
 								} catch (e) {}
@@ -2415,8 +2640,10 @@
 
 									for (i = 0; i < len; i += 3) {
 										base64 += chars[bytes[i] >> 2];
-										base64 += chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
-										base64 += chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
+										base64 +=
+											chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
+										base64 +=
+											chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
 										base64 += chars[bytes[i + 2] & 63];
 									}
 
@@ -2473,7 +2700,11 @@
 								 * Create a blob builder even when vendor prefixes exist
 								 */
 
-								var BlobBuilder = global.BlobBuilder || global.WebKitBlobBuilder || global.MSBlobBuilder || global.MozBlobBuilder;
+								var BlobBuilder =
+									global.BlobBuilder ||
+									global.WebKitBlobBuilder ||
+									global.MSBlobBuilder ||
+									global.MozBlobBuilder;
 
 								/**
 								 * Check if Blob constructor is supported
@@ -2508,7 +2739,10 @@
 								 * Check if BlobBuilder is supported
 								 */
 
-								var blobBuilderSupported = BlobBuilder && BlobBuilder.prototype.append && BlobBuilder.prototype.getBlob;
+								var blobBuilderSupported =
+									BlobBuilder &&
+									BlobBuilder.prototype.append &&
+									BlobBuilder.prototype.getBlob;
 
 								/**
 								 * Helper function that maps ArrayBufferViews to ArrayBuffers
@@ -2526,7 +2760,13 @@
 											// include the subarray region from the underlying buffer
 											if (chunk.byteLength !== buf.byteLength) {
 												var copy = new Uint8Array(chunk.byteLength);
-												copy.set(new Uint8Array(buf, chunk.byteOffset, chunk.byteLength));
+												copy.set(
+													new Uint8Array(
+														buf,
+														chunk.byteOffset,
+														chunk.byteLength
+													)
+												);
 												buf = copy.buffer;
 											}
 
@@ -2555,14 +2795,25 @@
 
 								module.exports = (function () {
 									if (blobSupported) {
-										return blobSupportsArrayBufferView ? global.Blob : BlobConstructor;
+										return blobSupportsArrayBufferView
+											? global.Blob
+											: BlobConstructor;
 									} else if (blobBuilderSupported) {
 										return BlobBuilderConstructor;
 									} else {
 										return undefined;
 									}
 								})();
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{}
 					],
@@ -2608,7 +2859,10 @@
 							 * @api public
 							 */
 
-							Emitter.prototype.on = Emitter.prototype.addEventListener = function (event, fn) {
+							Emitter.prototype.on = Emitter.prototype.addEventListener = function (
+								event,
+								fn
+							) {
 								this._callbacks = this._callbacks || {};
 								(this._callbacks[event] = this._callbacks[event] || []).push(fn);
 								return this;
@@ -2758,13 +3012,23 @@
 							exports.save = save;
 							exports.load = load;
 							exports.useColors = useColors;
-							exports.storage = "undefined" != typeof chrome && "undefined" != typeof chrome.storage ? chrome.storage.local : localstorage();
+							exports.storage =
+								"undefined" != typeof chrome && "undefined" != typeof chrome.storage
+									? chrome.storage.local
+									: localstorage();
 
 							/**
 							 * Colors.
 							 */
 
-							exports.colors = ["lightseagreen", "forestgreen", "goldenrod", "dodgerblue", "darkorchid", "crimson"];
+							exports.colors = [
+								"lightseagreen",
+								"forestgreen",
+								"goldenrod",
+								"dodgerblue",
+								"darkorchid",
+								"crimson"
+							];
 
 							/**
 							 * Currently only WebKit-based Web Inspectors, Firefox >= v31,
@@ -2779,10 +3043,13 @@
 								return (
 									"WebkitAppearance" in document.documentElement.style ||
 									// is firebug? http://stackoverflow.com/a/398120/376773
-									(window.console && (console.firebug || (console.exception && console.table))) ||
+									(window.console &&
+										(console.firebug ||
+											(console.exception && console.table))) ||
 									// is firefox >= v31?
 									// https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
-									(navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31)
+									(navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) &&
+										parseInt(RegExp.$1, 10) >= 31)
 								);
 							}
 
@@ -2804,12 +3071,21 @@
 								var args = arguments;
 								var useColors = this.useColors;
 
-								args[0] = (useColors ? "%c" : "") + this.namespace + (useColors ? " %c" : " ") + args[0] + (useColors ? "%c " : " ") + "+" + exports.humanize(this.diff);
+								args[0] =
+									(useColors ? "%c" : "") +
+									this.namespace +
+									(useColors ? " %c" : " ") +
+									args[0] +
+									(useColors ? "%c " : " ") +
+									"+" +
+									exports.humanize(this.diff);
 
 								if (!useColors) return args;
 
 								var c = "color: " + this.color;
-								args = [args[0], c, "color: inherit"].concat(Array.prototype.slice.call(args, 1));
+								args = [args[0], c, "color: inherit"].concat(
+									Array.prototype.slice.call(args, 1)
+								);
 
 								// the final "%c" is somewhat tricky, because there could be other
 								// arguments passed either before or after the %c, so we need to
@@ -2840,7 +3116,11 @@
 							function log() {
 								// this hackery is required for IE8/9, where
 								// the `console.log` function doesn't have 'apply'
-								return "object" === typeof console && console.log && Function.prototype.apply.call(console.log, console, arguments);
+								return (
+									"object" === typeof console &&
+									console.log &&
+									Function.prototype.apply.call(console.log, console, arguments)
+								);
 							}
 
 							/**
@@ -2981,8 +3261,10 @@
 									prevTime = curr;
 
 									// add the `color` if not set
-									if (null == self.useColors) self.useColors = exports.useColors();
-									if (null == self.color && self.useColors) self.color = selectColor();
+									if (null == self.useColors)
+										self.useColors = exports.useColors();
+									if (null == self.color && self.useColors)
+										self.color = selectColor();
 
 									var args = Array.prototype.slice.call(arguments);
 
@@ -2995,26 +3277,30 @@
 
 									// apply any `formatters` transformations
 									var index = 0;
-									args[0] = args[0].replace(/%([a-z%])/g, function (match, format) {
-										// if we encounter an escaped % then don't increase the array index
-										if (match === "%%") return match;
-										index++;
-										var formatter = exports.formatters[format];
-										if ("function" === typeof formatter) {
-											var val = args[index];
-											match = formatter.call(self, val);
+									args[0] = args[0].replace(
+										/%([a-z%])/g,
+										function (match, format) {
+											// if we encounter an escaped % then don't increase the array index
+											if (match === "%%") return match;
+											index++;
+											var formatter = exports.formatters[format];
+											if ("function" === typeof formatter) {
+												var val = args[index];
+												match = formatter.call(self, val);
 
-											// now we need to remove `args[index]` since it's inlined in the `format`
-											args.splice(index, 1);
-											index--;
+												// now we need to remove `args[index]` since it's inlined in the `format`
+												args.splice(index, 1);
+												index--;
+											}
+											return match;
 										}
-										return match;
-									});
+									);
 
 									if ("function" === typeof exports.formatArgs) {
 										args = exports.formatArgs.apply(self, args);
 									}
-									var logFn = enabled.log || exports.log || console.log.bind(console);
+									var logFn =
+										enabled.log || exports.log || console.log.bind(console);
 									logFn.apply(self, args);
 								}
 
@@ -3045,7 +3331,9 @@
 									if (!split[i]) continue; // ignore empty strings
 									namespaces = split[i].replace(/\*/g, ".*?");
 									if (namespaces[0] === "-") {
-										exports.skips.push(new RegExp("^" + namespaces.substr(1) + "$"));
+										exports.skips.push(
+											new RegExp("^" + namespaces.substr(1) + "$")
+										);
 									} else {
 										exports.names.push(new RegExp("^" + namespaces + "$"));
 									}
@@ -3187,7 +3475,12 @@
 								 * @api private
 								 */
 
-								exports.encodePacket = function (packet, supportsBinary, utf8encode, callback) {
+								exports.encodePacket = function (
+									packet,
+									supportsBinary,
+									utf8encode,
+									callback
+								) {
 									if ("function" == typeof supportsBinary) {
 										callback = supportsBinary;
 										supportsBinary = false;
@@ -3198,7 +3491,10 @@
 										utf8encode = null;
 									}
 
-									var data = packet.data === undefined ? undefined : packet.data.buffer || packet.data;
+									var data =
+										packet.data === undefined
+											? undefined
+											: packet.data.buffer || packet.data;
 
 									if (global.ArrayBuffer && data instanceof ArrayBuffer) {
 										return encodeArrayBuffer(packet, supportsBinary, callback);
@@ -3216,7 +3512,9 @@
 
 									// data fragment is optional
 									if (undefined !== packet.data) {
-										encoded += utf8encode ? utf8.encode(String(packet.data)) : String(packet.data);
+										encoded += utf8encode
+											? utf8.encode(String(packet.data))
+											: String(packet.data);
 									}
 
 									return callback("" + encoded);
@@ -3224,7 +3522,8 @@
 
 								function encodeBase64Object(packet, callback) {
 									// packet data is an object { base64: true, data: dataAsBase64String }
-									var message = "b" + exports.packets[packet.type] + packet.data.data;
+									var message =
+										"b" + exports.packets[packet.type] + packet.data.data;
 									return callback(message);
 								}
 
@@ -3257,7 +3556,12 @@
 									var fr = new FileReader();
 									fr.onload = function () {
 										packet.data = fr.result;
-										exports.encodePacket(packet, supportsBinary, true, callback);
+										exports.encodePacket(
+											packet,
+											supportsBinary,
+											true,
+											callback
+										);
 									};
 									return fr.readAsArrayBuffer(packet.data);
 								}
@@ -3268,7 +3572,11 @@
 									}
 
 									if (dontSendBlobs) {
-										return encodeBlobAsArrayBuffer(packet, supportsBinary, callback);
+										return encodeBlobAsArrayBuffer(
+											packet,
+											supportsBinary,
+											callback
+										);
 									}
 
 									var length = new Uint8Array(1);
@@ -3298,7 +3606,10 @@
 
 									var b64data;
 									try {
-										b64data = String.fromCharCode.apply(null, new Uint8Array(packet.data));
+										b64data = String.fromCharCode.apply(
+											null,
+											new Uint8Array(packet.data)
+										);
 									} catch (e) {
 										// iPhone Safari doesn't let you apply with typed arrays
 										var typed = new Uint8Array(packet.data);
@@ -3323,7 +3634,10 @@
 									// String data
 									if (typeof data == "string" || data === undefined) {
 										if (data.charAt(0) == "b") {
-											return exports.decodeBase64Packet(data.substr(1), binaryType);
+											return exports.decodeBase64Packet(
+												data.substr(1),
+												binaryType
+											);
 										}
 
 										if (utf8decode) {
@@ -3399,7 +3713,11 @@
 								 * @api private
 								 */
 
-								exports.encodePayload = function (packets, supportsBinary, callback) {
+								exports.encodePayload = function (
+									packets,
+									supportsBinary,
+									callback
+								) {
 									if (typeof supportsBinary == "function") {
 										callback = supportsBinary;
 										supportsBinary = null;
@@ -3412,7 +3730,10 @@
 											return exports.encodePayloadAsBlob(packets, callback);
 										}
 
-										return exports.encodePayloadAsArrayBuffer(packets, callback);
+										return exports.encodePayloadAsArrayBuffer(
+											packets,
+											callback
+										);
 									}
 
 									if (!packets.length) {
@@ -3424,9 +3745,14 @@
 									}
 
 									function encodeOne(packet, doneCallback) {
-										exports.encodePacket(packet, !isBinary ? false : supportsBinary, true, function (message) {
-											doneCallback(null, setLengthHeader(message));
-										});
+										exports.encodePacket(
+											packet,
+											!isBinary ? false : supportsBinary,
+											true,
+											function (message) {
+												doneCallback(null, setLengthHeader(message));
+											}
+										);
 									}
 
 									map(packets, encodeOne, function (err, results) {
@@ -3464,7 +3790,11 @@
 
 								exports.decodePayload = function (data, binaryType, callback) {
 									if (typeof data != "string") {
-										return exports.decodePayloadAsBinary(data, binaryType, callback);
+										return exports.decodePayloadAsBinary(
+											data,
+											binaryType,
+											callback
+										);
 									}
 
 									if (typeof binaryType === "function") {
@@ -3501,9 +3831,16 @@
 											}
 
 											if (msg.length) {
-												packet = exports.decodePacket(msg, binaryType, true);
+												packet = exports.decodePacket(
+													msg,
+													binaryType,
+													true
+												);
 
-												if (err.type == packet.type && err.data == packet.data) {
+												if (
+													err.type == packet.type &&
+													err.data == packet.data
+												) {
 													// parser error in individual packet - ignoring payload
 													return callback(err, 0, 1);
 												}
@@ -3604,32 +3941,44 @@
 
 								exports.encodePayloadAsBlob = function (packets, callback) {
 									function encodeOne(packet, doneCallback) {
-										exports.encodePacket(packet, true, true, function (encoded) {
-											var binaryIdentifier = new Uint8Array(1);
-											binaryIdentifier[0] = 1;
-											if (typeof encoded === "string") {
-												var view = new Uint8Array(encoded.length);
-												for (var i = 0; i < encoded.length; i++) {
-													view[i] = encoded.charCodeAt(i);
+										exports.encodePacket(
+											packet,
+											true,
+											true,
+											function (encoded) {
+												var binaryIdentifier = new Uint8Array(1);
+												binaryIdentifier[0] = 1;
+												if (typeof encoded === "string") {
+													var view = new Uint8Array(encoded.length);
+													for (var i = 0; i < encoded.length; i++) {
+														view[i] = encoded.charCodeAt(i);
+													}
+													encoded = view.buffer;
+													binaryIdentifier[0] = 0;
 												}
-												encoded = view.buffer;
-												binaryIdentifier[0] = 0;
-											}
 
-											var len = encoded instanceof ArrayBuffer ? encoded.byteLength : encoded.size;
+												var len =
+													encoded instanceof ArrayBuffer
+														? encoded.byteLength
+														: encoded.size;
 
-											var lenStr = len.toString();
-											var lengthAry = new Uint8Array(lenStr.length + 1);
-											for (var i = 0; i < lenStr.length; i++) {
-												lengthAry[i] = parseInt(lenStr[i]);
-											}
-											lengthAry[lenStr.length] = 255;
+												var lenStr = len.toString();
+												var lengthAry = new Uint8Array(lenStr.length + 1);
+												for (var i = 0; i < lenStr.length; i++) {
+													lengthAry[i] = parseInt(lenStr[i]);
+												}
+												lengthAry[lenStr.length] = 255;
 
-											if (Blob) {
-												var blob = new Blob([binaryIdentifier.buffer, lengthAry.buffer, encoded]);
-												doneCallback(null, blob);
+												if (Blob) {
+													var blob = new Blob([
+														binaryIdentifier.buffer,
+														lengthAry.buffer,
+														encoded
+													]);
+													doneCallback(null, blob);
+												}
 											}
-										});
+										);
 									}
 
 									map(packets, encodeOne, function (err, results) {
@@ -3646,7 +3995,11 @@
 								 * @api public
 								 */
 
-								exports.decodePayloadAsBinary = function (data, binaryType, callback) {
+								exports.decodePayloadAsBinary = function (
+									data,
+									binaryType,
+									callback
+								) {
 									if (typeof binaryType === "function") {
 										callback = binaryType;
 										binaryType = null;
@@ -3680,7 +4033,10 @@
 										var msg = sliceBuffer(bufferTail, 0, msgLength);
 										if (isString) {
 											try {
-												msg = String.fromCharCode.apply(null, new Uint8Array(msg));
+												msg = String.fromCharCode.apply(
+													null,
+													new Uint8Array(msg)
+												);
 											} catch (e) {
 												// iPhone Safari doesn't let you apply to typed arrays
 												var typed = new Uint8Array(msg);
@@ -3697,10 +4053,23 @@
 
 									var total = buffers.length;
 									buffers.forEach(function (buffer, i) {
-										callback(exports.decodePacket(buffer, binaryType, true), i, total);
+										callback(
+											exports.decodePacket(buffer, binaryType, true),
+											i,
+											total
+										);
 									});
 								};
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{
 							"./keys": 20,
@@ -3786,7 +4155,13 @@
 											}
 
 											for (var key in obj) {
-												if (Object.prototype.hasOwnProperty.call(obj, key) && _hasBinary(obj[key])) {
+												if (
+													Object.prototype.hasOwnProperty.call(
+														obj,
+														key
+													) &&
+													_hasBinary(obj[key])
+												) {
 													return true;
 												}
 											}
@@ -3797,7 +4172,16 @@
 
 									return _hasBinary(data);
 								}
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{ isarray: 24 }
 					],
@@ -3812,7 +4196,9 @@
 							 */
 
 							try {
-								module.exports = typeof XMLHttpRequest !== "undefined" && "withCredentials" in new XMLHttpRequest();
+								module.exports =
+									typeof XMLHttpRequest !== "undefined" &&
+									"withCredentials" in new XMLHttpRequest();
 							} catch (err) {
 								// if XMLHttp support is disabled in IE then it will throw
 								// when trying to create
@@ -3887,7 +4273,10 @@
 							function parse(str) {
 								str = "" + str;
 								if (str.length > 10000) return;
-								var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(str);
+								var match =
+									/^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(
+										str
+									);
 								if (!match) return;
 								var n = parseFloat(match[1]);
 								var type = (match[2] || "ms").toLowerCase();
@@ -3954,7 +4343,13 @@
 							 */
 
 							function long(ms) {
-								return plural(ms, d, "day") || plural(ms, h, "hour") || plural(ms, m, "minute") || plural(ms, s, "second") || ms + " ms";
+								return (
+									plural(ms, d, "day") ||
+									plural(ms, h, "hour") ||
+									plural(ms, m, "minute") ||
+									plural(ms, s, "second") ||
+									ms + " ms"
+								);
 							}
 
 							/**
@@ -3981,7 +4376,8 @@
 
 								var rvalidchars = /^[\],:{}\s]*$/;
 								var rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g;
-								var rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
+								var rvalidtokens =
+									/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
 								var rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g;
 								var rtrimLeft = /^\s+/;
 								var rtrimRight = /\s+$/;
@@ -3998,11 +4394,27 @@
 										return JSON.parse(data);
 									}
 
-									if (rvalidchars.test(data.replace(rvalidescape, "@").replace(rvalidtokens, "]").replace(rvalidbraces, ""))) {
+									if (
+										rvalidchars.test(
+											data
+												.replace(rvalidescape, "@")
+												.replace(rvalidtokens, "]")
+												.replace(rvalidbraces, "")
+										)
+									) {
 										return new Function("return " + data)();
 									}
 								};
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{}
 					],
@@ -4022,7 +4434,10 @@
 								for (var i in obj) {
 									if (obj.hasOwnProperty(i)) {
 										if (str.length) str += "&";
-										str += encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]);
+										str +=
+											encodeURIComponent(i) +
+											"=" +
+											encodeURIComponent(obj[i]);
 									}
 								}
 
@@ -4060,7 +4475,22 @@
 							var re =
 								/^(?:(?![^:@]+:[^:@\/]*@)(http|https|ws|wss):\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?((?:[a-f0-9]{0,4}:){2,7}[a-f0-9]{0,4}|[^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/;
 
-							var parts = ["source", "protocol", "authority", "userInfo", "user", "password", "host", "port", "relative", "path", "directory", "file", "query", "anchor"];
+							var parts = [
+								"source",
+								"protocol",
+								"authority",
+								"userInfo",
+								"user",
+								"password",
+								"host",
+								"port",
+								"relative",
+								"path",
+								"directory",
+								"file",
+								"query",
+								"anchor"
+							];
 
 							module.exports = function parseuri(str) {
 								var src = str,
@@ -4068,7 +4498,10 @@
 									e = str.indexOf("]");
 
 								if (b != -1 && e != -1) {
-									str = str.substring(0, b) + str.substring(b, e).replace(/:/g, ";") + str.substring(e, str.length);
+									str =
+										str.substring(0, b) +
+										str.substring(b, e).replace(/:/g, ";") +
+										str.substring(e, str.length);
 								}
 
 								var m = re.exec(str || ""),
@@ -4081,8 +4514,13 @@
 
 								if (b != -1 && e != -1) {
 									uri.source = src;
-									uri.host = uri.host.substring(1, uri.host.length - 1).replace(/;/g, ":");
-									uri.authority = uri.authority.replace("[", "").replace("]", "").replace(/;/g, ":");
+									uri.host = uri.host
+										.substring(1, uri.host.length - 1)
+										.replace(/;/g, ":");
+									uri.authority = uri.authority
+										.replace("[", "")
+										.replace("]", "")
+										.replace(/;/g, ":");
 									uri.ipv6uri = true;
 								}
 
@@ -4100,12 +4538,19 @@
 									var freeExports = typeof exports == "object" && exports;
 
 									// Detect free variable `module`
-									var freeModule = typeof module == "object" && module && module.exports == freeExports && module;
+									var freeModule =
+										typeof module == "object" &&
+										module &&
+										module.exports == freeExports &&
+										module;
 
 									// Detect free variable `global`, from Node.js or Browserified code,
 									// and use it as `root`
 									var freeGlobal = typeof global == "object" && global;
-									if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal) {
+									if (
+										freeGlobal.global === freeGlobal ||
+										freeGlobal.window === freeGlobal
+									) {
 										root = freeGlobal;
 									}
 
@@ -4122,12 +4567,20 @@
 										var extra;
 										while (counter < length) {
 											value = string.charCodeAt(counter++);
-											if (value >= 0xd800 && value <= 0xdbff && counter < length) {
+											if (
+												value >= 0xd800 &&
+												value <= 0xdbff &&
+												counter < length
+											) {
 												// high surrogate, and there is a next character
 												extra = string.charCodeAt(counter++);
 												if ((extra & 0xfc00) == 0xdc00) {
 													// low surrogate
-													output.push(((value & 0x3ff) << 10) + (extra & 0x3ff) + 0x10000);
+													output.push(
+														((value & 0x3ff) << 10) +
+															(extra & 0x3ff) +
+															0x10000
+													);
 												} else {
 													// unmatched surrogate; only append this code unit, in case the next
 													// code unit is the high surrogate of a surrogate pair
@@ -4151,7 +4604,9 @@
 											value = array[index];
 											if (value > 0xffff) {
 												value -= 0x10000;
-												output += stringFromCharCode(((value >>> 10) & 0x3ff) | 0xd800);
+												output += stringFromCharCode(
+													((value >>> 10) & 0x3ff) | 0xd800
+												);
 												value = 0xdc00 | (value & 0x3ff);
 											}
 											output += stringFromCharCode(value);
@@ -4161,14 +4616,20 @@
 
 									function checkScalarValue(codePoint) {
 										if (codePoint >= 0xd800 && codePoint <= 0xdfff) {
-											throw Error("Lone surrogate U+" + codePoint.toString(16).toUpperCase() + " is not a scalar value");
+											throw Error(
+												"Lone surrogate U+" +
+													codePoint.toString(16).toUpperCase() +
+													" is not a scalar value"
+											);
 										}
 									}
 
 									/*--------------------------------------------------------------------------*/
 
 									function createByte(codePoint, shift) {
-										return stringFromCharCode(((codePoint >> shift) & 0x3f) | 0x80);
+										return stringFromCharCode(
+											((codePoint >> shift) & 0x3f) | 0x80
+										);
 									}
 
 									function encodeCodePoint(codePoint) {
@@ -4179,15 +4640,21 @@
 										var symbol = "";
 										if ((codePoint & 0xfffff800) == 0) {
 											// 2-byte sequence
-											symbol = stringFromCharCode(((codePoint >> 6) & 0x1f) | 0xc0);
+											symbol = stringFromCharCode(
+												((codePoint >> 6) & 0x1f) | 0xc0
+											);
 										} else if ((codePoint & 0xffff0000) == 0) {
 											// 3-byte sequence
 											checkScalarValue(codePoint);
-											symbol = stringFromCharCode(((codePoint >> 12) & 0x0f) | 0xe0);
+											symbol = stringFromCharCode(
+												((codePoint >> 12) & 0x0f) | 0xe0
+											);
 											symbol += createByte(codePoint, 6);
 										} else if ((codePoint & 0xffe00000) == 0) {
 											// 4-byte sequence
-											symbol = stringFromCharCode(((codePoint >> 18) & 0x07) | 0xf0);
+											symbol = stringFromCharCode(
+												((codePoint >> 18) & 0x07) | 0xf0
+											);
 											symbol += createByte(codePoint, 12);
 											symbol += createByte(codePoint, 6);
 										}
@@ -4265,7 +4732,8 @@
 										if ((byte1 & 0xf0) == 0xe0) {
 											byte2 = readContinuationByte();
 											byte3 = readContinuationByte();
-											codePoint = ((byte1 & 0x0f) << 12) | (byte2 << 6) | byte3;
+											codePoint =
+												((byte1 & 0x0f) << 12) | (byte2 << 6) | byte3;
 											if (codePoint >= 0x0800) {
 												checkScalarValue(codePoint);
 												return codePoint;
@@ -4279,7 +4747,11 @@
 											byte2 = readContinuationByte();
 											byte3 = readContinuationByte();
 											byte4 = readContinuationByte();
-											codePoint = ((byte1 & 0x0f) << 0x12) | (byte2 << 0x0c) | (byte3 << 0x06) | byte4;
+											codePoint =
+												((byte1 & 0x0f) << 0x12) |
+												(byte2 << 0x0c) |
+												(byte3 << 0x06) |
+												byte4;
 											if (codePoint >= 0x010000 && codePoint <= 0x10ffff) {
 												return codePoint;
 											}
@@ -4314,7 +4786,11 @@
 
 									// Some AMD build optimizers, like r.js, check for specific condition patterns
 									// like the following:
-									if (typeof define == "function" && typeof define.amd == "object" && define.amd) {
+									if (
+										typeof define == "function" &&
+										typeof define.amd == "object" &&
+										define.amd
+									) {
 										define(function () {
 											return utf8;
 										});
@@ -4327,7 +4803,8 @@
 											var object = {};
 											var hasOwnProperty = object.hasOwnProperty;
 											for (var key in utf8) {
-												hasOwnProperty.call(utf8, key) && (freeExports[key] = utf8[key]);
+												hasOwnProperty.call(utf8, key) &&
+													(freeExports[key] = utf8[key]);
 											}
 										}
 									} else {
@@ -4335,7 +4812,16 @@
 										root.utf8 = utf8;
 									}
 								})(this);
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{}
 					],
@@ -4343,7 +4829,10 @@
 						function (_dereq_, module, exports) {
 							"use strict";
 
-							var alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_".split(""),
+							var alphabet =
+									"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_".split(
+										""
+									),
 								length = 64,
 								map = {},
 								seed = 0,
@@ -4461,7 +4950,11 @@
 								var id = parsed.id;
 								var path = parsed.path;
 								var sameNamespace = cache[id] && path in cache[id].nsps;
-								var newConnection = opts.forceNew || opts["force new connection"] || false === opts.multiplex || sameNamespace;
+								var newConnection =
+									opts.forceNew ||
+									opts["force new connection"] ||
+									false === opts.multiplex ||
+									sameNamespace;
 
 								var io;
 
@@ -4706,7 +5199,11 @@
 
 							Manager.prototype.maybeReconnectOnOpen = function () {
 								// Only try to reconnect if it's the first time we're connecting
-								if (!this.reconnecting && this._reconnection && this.backoff.attempts === 0) {
+								if (
+									!this.reconnecting &&
+									this._reconnection &&
+									this.backoff.attempts === 0
+								) {
 									// keeps reconnection from firing twice for the same reconnection loop
 									this.reconnect();
 								}
@@ -4803,7 +5300,9 @@
 								this.subs.push(on(socket, "pong", bind(this, "onpong")));
 								this.subs.push(on(socket, "error", bind(this, "onerror")));
 								this.subs.push(on(socket, "close", bind(this, "onclose")));
-								this.subs.push(on(this.decoder, "decoded", bind(this, "ondecoded")));
+								this.subs.push(
+									on(this.decoder, "decoded", bind(this, "ondecoded"))
+								);
 							};
 
 							/**
@@ -5194,7 +5693,11 @@
 								if (this.subs) return;
 
 								var io = this.io;
-								this.subs = [on(io, "open", bind(this, "onopen")), on(io, "packet", bind(this, "onpacket")), on(io, "close", bind(this, "onclose"))];
+								this.subs = [
+									on(io, "open", bind(this, "onopen")),
+									on(io, "packet", bind(this, "onpacket")),
+									on(io, "close", bind(this, "onclose"))
+								];
 							};
 
 							/**
@@ -5250,7 +5753,8 @@
 								var packet = { type: parserType, data: args };
 
 								packet.options = {};
-								packet.options.compress = !this.flags || false !== this.flags.compress;
+								packet.options.compress =
+									!this.flags || false !== this.flags.compress;
 
 								// event ack callback
 								if ("function" == typeof args[args.length - 1]) {
@@ -5603,11 +6107,24 @@
 									// define unique id
 									obj.id = obj.protocol + "://" + host + ":" + obj.port;
 									// define href
-									obj.href = obj.protocol + "://" + host + (loc && loc.port == obj.port ? "" : ":" + obj.port);
+									obj.href =
+										obj.protocol +
+										"://" +
+										host +
+										(loc && loc.port == obj.port ? "" : ":" + obj.port);
 
 									return obj;
 								}
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{ debug: 39, parseuri: 45 }
 					],
@@ -5652,7 +6169,10 @@
 								if (this.jitter) {
 									var rand = Math.random();
 									var deviation = Math.floor(rand * this.jitter * ms);
-									ms = (Math.floor(rand * 10) & 1) == 0 ? ms - deviation : ms + deviation;
+									ms =
+										(Math.floor(rand * 10) & 1) == 0
+											? ms - deviation
+											: ms + deviation;
 								}
 								return Math.min(ms, this.max) | 0;
 							};
@@ -5718,7 +6238,8 @@
 
 							module.exports = function (obj, fn) {
 								if ("string" == typeof fn) fn = obj[fn];
-								if ("function" != typeof fn) throw new Error("bind() requires a function");
+								if ("function" != typeof fn)
+									throw new Error("bind() requires a function");
 								var args = slice.call(arguments, 2);
 								return function () {
 									return fn.apply(obj, args.concat(slice.call(arguments)));
@@ -5769,9 +6290,13 @@
 							 * @api public
 							 */
 
-							Emitter.prototype.on = Emitter.prototype.addEventListener = function (event, fn) {
+							Emitter.prototype.on = Emitter.prototype.addEventListener = function (
+								event,
+								fn
+							) {
 								this._callbacks = this._callbacks || {};
-								(this._callbacks["$" + event] = this._callbacks["$" + event] || []).push(fn);
+								(this._callbacks["$" + event] =
+									this._callbacks["$" + event] || []).push(fn);
 								return this;
 							};
 
@@ -5932,7 +6457,9 @@
 										if (!obj) return false;
 
 										if (
-											(global.Buffer && global.Buffer.isBuffer && global.Buffer.isBuffer(obj)) ||
+											(global.Buffer &&
+												global.Buffer.isBuffer &&
+												global.Buffer.isBuffer(obj)) ||
 											(global.ArrayBuffer && obj instanceof ArrayBuffer) ||
 											(global.Blob && obj instanceof Blob) ||
 											(global.File && obj instanceof File)
@@ -5953,7 +6480,13 @@
 											}
 
 											for (var key in obj) {
-												if (Object.prototype.hasOwnProperty.call(obj, key) && _hasBinary(obj[key])) {
+												if (
+													Object.prototype.hasOwnProperty.call(
+														obj,
+														key
+													) &&
+													_hasBinary(obj[key])
+												) {
 													return true;
 												}
 											}
@@ -5964,7 +6497,16 @@
 
 									return _hasBinary(data);
 								}
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{ isarray: 43 }
 					],
@@ -6034,7 +6576,10 @@
 												newData[i] = _deconstructPacket(data[i]);
 											}
 											return newData;
-										} else if ("object" == typeof data && !(data instanceof Date)) {
+										} else if (
+											"object" == typeof data &&
+											!(data instanceof Date)
+										) {
 											var newData = {};
 											for (var key in data) {
 												newData[key] = _deconstructPacket(data[key]);
@@ -6100,7 +6645,10 @@
 										if (!obj) return obj;
 
 										// convert any blob
-										if ((global.Blob && obj instanceof Blob) || (global.File && obj instanceof File)) {
+										if (
+											(global.Blob && obj instanceof Blob) ||
+											(global.File && obj instanceof File)
+										) {
 											pendingBlobs++;
 
 											// async filereader
@@ -6140,7 +6688,16 @@
 										callback(bloblessData);
 									}
 								};
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{ "./is-buffer": 48, isarray: 43 }
 					],
@@ -6171,7 +6728,15 @@
 							 * @api public
 							 */
 
-							exports.types = ["CONNECT", "DISCONNECT", "EVENT", "BINARY_EVENT", "ACK", "BINARY_ACK", "ERROR"];
+							exports.types = [
+								"CONNECT",
+								"DISCONNECT",
+								"EVENT",
+								"BINARY_EVENT",
+								"ACK",
+								"BINARY_ACK",
+								"ERROR"
+							];
 
 							/**
 							 * Packet type `connect`.
@@ -6266,7 +6831,10 @@
 							Encoder.prototype.encode = function (obj, callback) {
 								debug("encoding packet %j", obj);
 
-								if (exports.BINARY_EVENT == obj.type || exports.BINARY_ACK == obj.type) {
+								if (
+									exports.BINARY_EVENT == obj.type ||
+									exports.BINARY_ACK == obj.type
+								) {
 									encodeAsBinary(obj, callback);
 								} else {
 									var encoding = encodeAsString(obj);
@@ -6290,7 +6858,10 @@
 								str += obj.type;
 
 								// attachments if we have them
-								if (exports.BINARY_EVENT == obj.type || exports.BINARY_ACK == obj.type) {
+								if (
+									exports.BINARY_EVENT == obj.type ||
+									exports.BINARY_ACK == obj.type
+								) {
 									str += obj.attachments;
 									str += "-";
 								}
@@ -6373,7 +6944,10 @@
 								var packet;
 								if ("string" == typeof obj) {
 									packet = decodeString(obj);
-									if (exports.BINARY_EVENT == packet.type || exports.BINARY_ACK == packet.type) {
+									if (
+										exports.BINARY_EVENT == packet.type ||
+										exports.BINARY_ACK == packet.type
+									) {
 										// binary packet's json
 										this.reconstructor = new BinaryReconstructor(packet);
 
@@ -6388,7 +6962,9 @@
 								} else if (isBuf(obj) || obj.base64) {
 									// raw binary data
 									if (!this.reconstructor) {
-										throw new Error("got binary data when not reconstructing a packet");
+										throw new Error(
+											"got binary data when not reconstructing a packet"
+										);
 									} else {
 										packet = this.reconstructor.takeBinaryData(obj);
 										if (packet) {
@@ -6419,7 +6995,10 @@
 								if (null == exports.types[p.type]) return error();
 
 								// look up attachments if type binary
-								if (exports.BINARY_EVENT == p.type || exports.BINARY_ACK == p.type) {
+								if (
+									exports.BINARY_EVENT == p.type ||
+									exports.BINARY_ACK == p.type
+								) {
 									var buf = "";
 									while (str.charAt(++i) != "-") {
 										buf += str.charAt(i);
@@ -6514,7 +7093,10 @@
 								this.buffers.push(binData);
 								if (this.buffers.length == this.reconPack.attachments) {
 									// done with buffer list
-									var packet = binary.reconstructPacket(this.reconPack, this.buffers);
+									var packet = binary.reconstructPacket(
+										this.reconPack,
+										this.buffers
+									);
 									this.finishedReconstruction();
 									return packet;
 								}
@@ -6560,9 +7142,21 @@
 								 */
 
 								function isBuf(obj) {
-									return (global.Buffer && global.Buffer.isBuffer(obj)) || (global.ArrayBuffer && obj instanceof ArrayBuffer);
+									return (
+										(global.Buffer && global.Buffer.isBuffer(obj)) ||
+										(global.ArrayBuffer && obj instanceof ArrayBuffer)
+									);
 								}
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{}
 					],
@@ -6588,16 +7182,31 @@
 									};
 
 									// Detect the `exports` object exposed by CommonJS implementations.
-									var freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports;
+									var freeExports =
+										objectTypes[typeof exports] &&
+										exports &&
+										!exports.nodeType &&
+										exports;
 
 									// Use the `global` object exposed by Node (including Browserify via
 									// `insert-module-globals`), Narwhal, and Ringo as the default context,
 									// and the `window` object in browsers. Rhino exports a `global` function
 									// instead.
 									var root = (objectTypes[typeof window] && window) || this,
-										freeGlobal = freeExports && objectTypes[typeof module] && module && !module.nodeType && typeof global == "object" && global;
+										freeGlobal =
+											freeExports &&
+											objectTypes[typeof module] &&
+											module &&
+											!module.nodeType &&
+											typeof global == "object" &&
+											global;
 
-									if (freeGlobal && (freeGlobal["global"] === freeGlobal || freeGlobal["window"] === freeGlobal || freeGlobal["self"] === freeGlobal)) {
+									if (
+										freeGlobal &&
+										(freeGlobal["global"] === freeGlobal ||
+											freeGlobal["window"] === freeGlobal ||
+											freeGlobal["self"] === freeGlobal)
+									) {
 										root = freeGlobal;
 									}
 
@@ -6612,7 +7221,8 @@
 											String = context["String"] || root["String"],
 											Object = context["Object"] || root["Object"],
 											Date = context["Date"] || root["Date"],
-											SyntaxError = context["SyntaxError"] || root["SyntaxError"],
+											SyntaxError =
+												context["SyntaxError"] || root["SyntaxError"],
 											TypeError = context["TypeError"] || root["TypeError"],
 											Math = context["Math"] || root["Math"],
 											nativeJSON = context["JSON"] || root["JSON"];
@@ -6663,14 +7273,18 @@
 											} else if (name == "json") {
 												// Indicates whether both `JSON.stringify` and `JSON.parse` are
 												// supported.
-												isSupported = has("json-stringify") && has("json-parse");
+												isSupported =
+													has("json-stringify") && has("json-parse");
 											} else {
 												var value,
-													serialized = '{"a":[1,true,false,null,"\\u0000\\b\\n\\f\\r\\t"]}';
+													serialized =
+														'{"a":[1,true,false,null,"\\u0000\\b\\n\\f\\r\\t"]}';
 												// Test `JSON.stringify`.
 												if (name == "json-stringify") {
 													var stringify = exports.stringify,
-														stringifySupported = typeof stringify == "function" && isExtended;
+														stringifySupported =
+															typeof stringify == "function" &&
+															isExtended;
 													if (stringifySupported) {
 														// A test function object with a custom `toJSON` method.
 														(value = function () {
@@ -6712,26 +7326,41 @@
 																// `[1, true, getClass, 1]` serializes as "[1,true,],". FF 3.1b3
 																// elides non-JSON values from objects and arrays, unless they
 																// define custom `toJSON` methods.
-																stringify([undef, getClass, null]) == "[null,null,null]" &&
+																stringify([
+																	undef,
+																	getClass,
+																	null
+																]) == "[null,null,null]" &&
 																// Simple serialization test. FF 3.1b1 uses Unicode escape sequences
 																// where character escape codes are expected (e.g., `\b` => `\u0008`).
 																stringify({
-																	a: [value, true, false, null, "\x00\b\n\f\r\t"]
+																	a: [
+																		value,
+																		true,
+																		false,
+																		null,
+																		"\x00\b\n\f\r\t"
+																	]
 																}) == serialized &&
 																// FF 3.1b1 and b2 ignore the `filter` and `width` arguments.
 																stringify(null, value) === "1" &&
-																stringify([1, 2], null, 1) == "[\n 1,\n 2\n]" &&
+																stringify([1, 2], null, 1) ==
+																	"[\n 1,\n 2\n]" &&
 																// JSON 2, Prototype <= 1.7, and older WebKit builds incorrectly
 																// serialize extended years.
-																stringify(new Date(-8.64e15)) == '"-271821-04-20T00:00:00.000Z"' &&
+																stringify(new Date(-8.64e15)) ==
+																	'"-271821-04-20T00:00:00.000Z"' &&
 																// The milliseconds are optional in ES 5, but required in 5.1.
-																stringify(new Date(8.64e15)) == '"+275760-09-13T00:00:00.000Z"' &&
+																stringify(new Date(8.64e15)) ==
+																	'"+275760-09-13T00:00:00.000Z"' &&
 																// Firefox <= 11.0 incorrectly serializes years prior to 0 as negative
 																// four-digit years instead of six-digit years. Credits: @Yaffle.
-																stringify(new Date(-621987552e5)) == '"-000001-01-01T00:00:00.000Z"' &&
+																stringify(new Date(-621987552e5)) ==
+																	'"-000001-01-01T00:00:00.000Z"' &&
 																// Safari <= 5.1.5 and Opera >= 10.53 incorrectly serialize millisecond
 																// values less than 1000. Credits: @Yaffle.
-																stringify(new Date(-1)) == '"1969-12-31T23:59:59.999Z"';
+																stringify(new Date(-1)) ==
+																	'"1969-12-31T23:59:59.999Z"';
 														} catch (exception) {
 															stringifySupported = false;
 														}
@@ -6749,18 +7378,22 @@
 															if (parse("0") === 0 && !parse(false)) {
 																// Simple parsing test.
 																value = parse(serialized);
-																var parseSupported = value["a"].length == 5 && value["a"][0] === 1;
+																var parseSupported =
+																	value["a"].length == 5 &&
+																	value["a"][0] === 1;
 																if (parseSupported) {
 																	try {
 																		// Safari <= 5.1.2 and FF 3.1b1 allow unescaped tabs in strings.
-																		parseSupported = !parse('"\t"');
+																		parseSupported =
+																			!parse('"\t"');
 																	} catch (exception) {}
 																	if (parseSupported) {
 																		try {
 																			// FF 4.0 and 4.0.1 allow leading `+` signs and leading
 																			// decimal points. FF 4.0, 4.0.1, and IE 9-10 also allow
 																			// certain octal literals.
-																			parseSupported = parse("01") !== 1;
+																			parseSupported =
+																				parse("01") !== 1;
 																		} catch (exception) {}
 																	}
 																	if (parseSupported) {
@@ -6768,7 +7401,8 @@
 																			// FF 4.0, 4.0.1, and Rhino 1.7R3-R4 allow trailing decimal
 																			// points. These environments, along with FF 3.1b1 and 2,
 																			// also allow trailing commas in JSON objects and arrays.
-																			parseSupported = parse("1.") !== 1;
+																			parseSupported =
+																				parse("1.") !== 1;
 																		} catch (exception) {}
 																	}
 																}
@@ -6800,14 +7434,20 @@
 												var floor = Math.floor;
 												// A mapping between the months of the year and the number of days between
 												// January 1st and the first of the respective month.
-												var Months = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+												var Months = [
+													0, 31, 59, 90, 120, 151, 181, 212, 243, 273,
+													304, 334
+												];
 												// Internal: Calculates the number of days between the Unix epoch and the
 												// first day of the given month.
 												var getDay = function (year, month) {
 													return (
 														Months[month] +
 														365 * (year - 1970) +
-														floor((year - 1969 + (month = +(month > 1))) / 4) -
+														floor(
+															(year - 1969 + (month = +(month > 1))) /
+																4
+														) -
 														floor((year - 1901 + month) / 100) +
 														floor((year - 1601 + month) / 400)
 													);
@@ -6836,7 +7476,9 @@
 															// of the ES 5.1 spec). The parenthesized expression prevents an
 															// unsafe transformation by the Closure Compiler.
 															var original = this.__proto__,
-																result = property in ((this.__proto__ = null), this);
+																result =
+																	property in
+																	((this.__proto__ = null), this);
 															// Restore the original prototype chain.
 															this.__proto__ = original;
 															return result;
@@ -6847,8 +7489,17 @@
 														// Use the `constructor` property to simulate `Object#hasOwnProperty` in
 														// other environments.
 														isProperty = function (property) {
-															var parent = (this.constructor || constructor).prototype;
-															return property in this && !(property in parent && this[property] === parent[property]);
+															var parent = (
+																this.constructor || constructor
+															).prototype;
+															return (
+																property in this &&
+																!(
+																	property in parent &&
+																	this[property] ===
+																		parent[property]
+																)
+															);
 														};
 													}
 													members = null;
@@ -6884,40 +7535,75 @@
 												// Normalize the iteration algorithm.
 												if (!size) {
 													// A list of non-enumerable properties inherited from `Object.prototype`.
-													members = ["valueOf", "toString", "toLocaleString", "propertyIsEnumerable", "isPrototypeOf", "hasOwnProperty", "constructor"];
+													members = [
+														"valueOf",
+														"toString",
+														"toLocaleString",
+														"propertyIsEnumerable",
+														"isPrototypeOf",
+														"hasOwnProperty",
+														"constructor"
+													];
 													// IE <= 8, Mozilla 1.0, and Netscape 6.2 ignore shadowed non-enumerable
 													// properties.
 													forEach = function (object, callback) {
-														var isFunction = getClass.call(object) == functionClass,
+														var isFunction =
+																getClass.call(object) ==
+																functionClass,
 															property,
 															length;
 														var hasProperty =
-															(!isFunction && typeof object.constructor != "function" && objectTypes[typeof object.hasOwnProperty] && object.hasOwnProperty) ||
+															(!isFunction &&
+																typeof object.constructor !=
+																	"function" &&
+																objectTypes[
+																	typeof object.hasOwnProperty
+																] &&
+																object.hasOwnProperty) ||
 															isProperty;
 														for (property in object) {
 															// Gecko <= 1.0 enumerates the `prototype` property of functions under
 															// certain conditions; IE does not.
-															if (!(isFunction && property == "prototype") && hasProperty.call(object, property)) {
+															if (
+																!(
+																	isFunction &&
+																	property == "prototype"
+																) &&
+																hasProperty.call(object, property)
+															) {
 																callback(property);
 															}
 														}
 														// Manually invoke the callback for each non-enumerable property.
-														for (length = members.length; (property = members[--length]); hasProperty.call(object, property) && callback(property));
+														for (
+															length = members.length;
+															(property = members[--length]);
+															hasProperty.call(object, property) &&
+															callback(property)
+														);
 													};
 												} else if (size == 2) {
 													// Safari <= 2.0.4 enumerates shadowed properties twice.
 													forEach = function (object, callback) {
 														// Create a set of iterated properties.
 														var members = {},
-															isFunction = getClass.call(object) == functionClass,
+															isFunction =
+																getClass.call(object) ==
+																functionClass,
 															property;
 														for (property in object) {
 															// Store each property name to prevent double enumeration. The
 															// `prototype` property of functions is not enumerated due to cross-
 															// environment inconsistencies.
 															if (
-																!(isFunction && property == "prototype") &&
-																!isProperty.call(members, property) &&
+																!(
+																	isFunction &&
+																	property == "prototype"
+																) &&
+																!isProperty.call(
+																	members,
+																	property
+																) &&
 																(members[property] = 1) &&
 																isProperty.call(object, property)
 															) {
@@ -6928,17 +7614,33 @@
 												} else {
 													// No bugs detected; use the standard `for...in` algorithm.
 													forEach = function (object, callback) {
-														var isFunction = getClass.call(object) == functionClass,
+														var isFunction =
+																getClass.call(object) ==
+																functionClass,
 															property,
 															isConstructor;
 														for (property in object) {
-															if (!(isFunction && property == "prototype") && isProperty.call(object, property) && !(isConstructor = property === "constructor")) {
+															if (
+																!(
+																	isFunction &&
+																	property == "prototype"
+																) &&
+																isProperty.call(object, property) &&
+																!(isConstructor =
+																	property === "constructor")
+															) {
 																callback(property);
 															}
 														}
 														// Manually invoke the callback for the `constructor` property due to
 														// cross-environment inconsistencies.
-														if (isConstructor || isProperty.call(object, (property = "constructor"))) {
+														if (
+															isConstructor ||
+															isProperty.call(
+																object,
+																(property = "constructor")
+															)
+														) {
 															callback(property);
 														}
 													};
@@ -6970,7 +7672,9 @@
 												var toPaddedString = function (width, value) {
 													// The `|| 0` expression is necessary to work around a bug in
 													// Opera <= 7.54u2 where `0 == -0`, but `String(-0) !== "0"`.
-													return (leadingZeroes + (value || 0)).slice(-width);
+													return (leadingZeroes + (value || 0)).slice(
+														-width
+													);
 												};
 
 												// Internal: Double-quotes a string `value`, replacing all ASCII control
@@ -6982,8 +7686,11 @@
 													var result = '"',
 														index = 0,
 														length = value.length,
-														useCharIndex = !charIndexBuggy || length > 10;
-													var symbols = useCharIndex && (charIndexBuggy ? value.split("") : value);
+														useCharIndex =
+															!charIndexBuggy || length > 10;
+													var symbols =
+														useCharIndex &&
+														(charIndexBuggy ? value.split("") : value);
 													for (; index < length; index++) {
 														var charCode = value.charCodeAt(index);
 														// If the character is a control character, append its Unicode or
@@ -7000,10 +7707,17 @@
 																break;
 															default:
 																if (charCode < 32) {
-																	result += unicodePrefix + toPaddedString(2, charCode.toString(16));
+																	result +=
+																		unicodePrefix +
+																		toPaddedString(
+																			2,
+																			charCode.toString(16)
+																		);
 																	break;
 																}
-																result += useCharIndex ? symbols[index] : value.charAt(index);
+																result += useCharIndex
+																	? symbols[index]
+																	: value.charAt(index);
 														}
 													}
 													return result + '"';
@@ -7011,15 +7725,41 @@
 
 												// Internal: Recursively serializes an object. Implements the
 												// `Str(key, holder)`, `JO(value)`, and `JA(value)` operations.
-												var serialize = function (property, object, callback, properties, whitespace, indentation, stack) {
-													var value, className, year, month, date, time, hours, minutes, seconds, milliseconds, results, element, index, length, prefix, result;
+												var serialize = function (
+													property,
+													object,
+													callback,
+													properties,
+													whitespace,
+													indentation,
+													stack
+												) {
+													var value,
+														className,
+														year,
+														month,
+														date,
+														time,
+														hours,
+														minutes,
+														seconds,
+														milliseconds,
+														results,
+														element,
+														index,
+														length,
+														prefix,
+														result;
 													try {
 														// Necessary for host object support.
 														value = object[property];
 													} catch (exception) {}
 													if (typeof value == "object" && value) {
 														className = getClass.call(value);
-														if (className == dateClass && !isProperty.call(value, "toJSON")) {
+														if (
+															className == dateClass &&
+															!isProperty.call(value, "toJSON")
+														) {
 															if (value > -1 / 0 && value < 1 / 0) {
 																// Dates are serialized according to the `Date#toJSON` method
 																// specified in ES 5.1 section 15.9.5.44. See section 15.9.1.15
@@ -7029,19 +7769,42 @@
 																	// seconds, and milliseconds if the `getUTC*` methods are
 																	// buggy. Adapted from @Yaffle's `date-shim` project.
 																	date = floor(value / 864e5);
-																	for (year = floor(date / 365.2425) + 1970 - 1; getDay(year + 1, 0) <= date; year++);
-																	for (month = floor((date - getDay(year, 0)) / 30.42); getDay(year, month + 1) <= date; month++);
-																	date = 1 + date - getDay(year, month);
+																	for (
+																		year =
+																			floor(date / 365.2425) +
+																			1970 -
+																			1;
+																		getDay(year + 1, 0) <= date;
+																		year++
+																	);
+																	for (
+																		month = floor(
+																			(date -
+																				getDay(year, 0)) /
+																				30.42
+																		);
+																		getDay(year, month + 1) <=
+																		date;
+																		month++
+																	);
+																	date =
+																		1 +
+																		date -
+																		getDay(year, month);
 																	// The `time` value specifies the time within the day (see ES
 																	// 5.1 section 15.9.1.2). The formula `(A % B + B) % B` is used
 																	// to compute `A modulo B`, as the `%` operator does not
 																	// correspond to the `modulo` operation for negative numbers.
-																	time = ((value % 864e5) + 864e5) % 864e5;
+																	time =
+																		((value % 864e5) + 864e5) %
+																		864e5;
 																	// The hours, minutes, seconds, and milliseconds are obtained by
 																	// decomposing the time within the day. See section 15.9.1.10.
 																	hours = floor(time / 36e5) % 24;
-																	minutes = floor(time / 6e4) % 60;
-																	seconds = floor(time / 1e3) % 60;
+																	minutes =
+																		floor(time / 6e4) % 60;
+																	seconds =
+																		floor(time / 1e3) % 60;
 																	milliseconds = time % 1e3;
 																} else {
 																	year = value.getUTCFullYear();
@@ -7050,11 +7813,20 @@
 																	hours = value.getUTCHours();
 																	minutes = value.getUTCMinutes();
 																	seconds = value.getUTCSeconds();
-																	milliseconds = value.getUTCMilliseconds();
+																	milliseconds =
+																		value.getUTCMilliseconds();
 																}
 																// Serialize extended years correctly.
 																value =
-																	(year <= 0 || year >= 1e4 ? (year < 0 ? "-" : "+") + toPaddedString(6, year < 0 ? -year : year) : toPaddedString(4, year)) +
+																	(year <= 0 || year >= 1e4
+																		? (year < 0 ? "-" : "+") +
+																			toPaddedString(
+																				6,
+																				year < 0
+																					? -year
+																					: year
+																			)
+																		: toPaddedString(4, year)) +
 																	"-" +
 																	toPaddedString(2, month + 1) +
 																	"-" +
@@ -7069,14 +7841,20 @@
 																	toPaddedString(2, seconds) +
 																	// Milliseconds are optional in ES 5.0, but required in 5.1.
 																	"." +
-																	toPaddedString(3, milliseconds) +
+																	toPaddedString(
+																		3,
+																		milliseconds
+																	) +
 																	"Z";
 															} else {
 																value = null;
 															}
 														} else if (
 															typeof value.toJSON == "function" &&
-															((className != numberClass && className != stringClass && className != arrayClass) || isProperty.call(value, "toJSON"))
+															((className != numberClass &&
+																className != stringClass &&
+																className != arrayClass) ||
+																isProperty.call(value, "toJSON"))
 														) {
 															// Prototype <= 1.6.1 adds non-standard `toJSON` methods to the
 															// `Number`, `String`, `Date`, and `Array` prototypes. JSON 3
@@ -7088,7 +7866,11 @@
 													if (callback) {
 														// If a replacement function was provided, call it to obtain the value
 														// for serialization.
-														value = callback.call(object, property, value);
+														value = callback.call(
+															object,
+															property,
+															value
+														);
 													}
 													if (value === null) {
 														return "null";
@@ -7100,7 +7882,9 @@
 													} else if (className == numberClass) {
 														// JSON numbers must be finite. `Infinity` and `NaN` are serialized as
 														// `"null"`.
-														return value > -1 / 0 && value < 1 / 0 ? "" + value : "null";
+														return value > -1 / 0 && value < 1 / 0
+															? "" + value
+															: "null";
 													} else if (className == stringClass) {
 														// Strings are double-quoted and escaped.
 														return quote("" + value);
@@ -7123,34 +7907,82 @@
 														indentation += whitespace;
 														if (className == arrayClass) {
 															// Recursively serialize array elements.
-															for (index = 0, length = value.length; index < length; index++) {
-																element = serialize(index, value, callback, properties, whitespace, indentation, stack);
-																results.push(element === undef ? "null" : element);
+															for (
+																index = 0, length = value.length;
+																index < length;
+																index++
+															) {
+																element = serialize(
+																	index,
+																	value,
+																	callback,
+																	properties,
+																	whitespace,
+																	indentation,
+																	stack
+																);
+																results.push(
+																	element === undef
+																		? "null"
+																		: element
+																);
 															}
 															result = results.length
 																? whitespace
-																	? "[\n" + indentation + results.join(",\n" + indentation) + "\n" + prefix + "]"
+																	? "[\n" +
+																		indentation +
+																		results.join(
+																			",\n" + indentation
+																		) +
+																		"\n" +
+																		prefix +
+																		"]"
 																	: "[" + results.join(",") + "]"
 																: "[]";
 														} else {
 															// Recursively serialize object members. Members are selected from
 															// either a user-specified list of property names, or the object
 															// itself.
-															forEach(properties || value, function (property) {
-																var element = serialize(property, value, callback, properties, whitespace, indentation, stack);
-																if (element !== undef) {
-																	// According to ES 5.1 section 15.12.3: "If `gap` {whitespace}
-																	// is not the empty string, let `member` {quote(property) + ":"}
-																	// be the concatenation of `member` and the `space` character."
-																	// The "`space` character" refers to the literal space
-																	// character, not the `space` {width} argument provided to
-																	// `JSON.stringify`.
-																	results.push(quote(property) + ":" + (whitespace ? " " : "") + element);
+															forEach(
+																properties || value,
+																function (property) {
+																	var element = serialize(
+																		property,
+																		value,
+																		callback,
+																		properties,
+																		whitespace,
+																		indentation,
+																		stack
+																	);
+																	if (element !== undef) {
+																		// According to ES 5.1 section 15.12.3: "If `gap` {whitespace}
+																		// is not the empty string, let `member` {quote(property) + ":"}
+																		// be the concatenation of `member` and the `space` character."
+																		// The "`space` character" refers to the literal space
+																		// character, not the `space` {width} argument provided to
+																		// `JSON.stringify`.
+																		results.push(
+																			quote(property) +
+																				":" +
+																				(whitespace
+																					? " "
+																					: "") +
+																				element
+																		);
+																	}
 																}
-															});
+															);
 															result = results.length
 																? whitespace
-																	? "{\n" + indentation + results.join(",\n" + indentation) + "\n" + prefix + "}"
+																	? "{\n" +
+																		indentation +
+																		results.join(
+																			",\n" + indentation
+																		) +
+																		"\n" +
+																		prefix +
+																		"}"
 																	: "{" + results.join(",") + "}"
 																: "{}";
 														}
@@ -7161,37 +7993,69 @@
 												};
 
 												// Public: `JSON.stringify`. See ES 5.1 section 15.12.3.
-												exports.stringify = function (source, filter, width) {
+												exports.stringify = function (
+													source,
+													filter,
+													width
+												) {
 													var whitespace, callback, properties, className;
 													if (objectTypes[typeof filter] && filter) {
-														if ((className = getClass.call(filter)) == functionClass) {
+														if (
+															(className = getClass.call(filter)) ==
+															functionClass
+														) {
 															callback = filter;
 														} else if (className == arrayClass) {
 															// Convert the property names array into a makeshift set.
 															properties = {};
 															for (
-																var index = 0, length = filter.length, value;
+																var index = 0,
+																	length = filter.length,
+																	value;
 																index < length;
 																value = filter[index++],
-																	((className = getClass.call(value)), className == stringClass || className == numberClass) && (properties[value] = 1)
+																	((className =
+																		getClass.call(value)),
+																	className == stringClass ||
+																		className == numberClass) &&
+																		(properties[value] = 1)
 															);
 														}
 													}
 													if (width) {
-														if ((className = getClass.call(width)) == numberClass) {
+														if (
+															(className = getClass.call(width)) ==
+															numberClass
+														) {
 															// Convert the `width` to an integer and create a string containing
 															// `width` number of space characters.
 															if ((width -= width % 1) > 0) {
-																for (whitespace = "", width > 10 && (width = 10); whitespace.length < width; whitespace += " ");
+																for (
+																	whitespace = "",
+																		width > 10 && (width = 10);
+																	whitespace.length < width;
+																	whitespace += " "
+																);
 															}
 														} else if (className == stringClass) {
-															whitespace = width.length <= 10 ? width : width.slice(0, 10);
+															whitespace =
+																width.length <= 10
+																	? width
+																	: width.slice(0, 10);
 														}
 													}
 													// Opera <= 7.54u2 discards the values associated with empty string keys
 													// (`""`) only if they are used directly within an object member list
 													// (e.g., `!("" in { "": 1})`).
-													return serialize("", ((value = {}), (value[""] = source), value), callback, properties, whitespace, "", []);
+													return serialize(
+														"",
+														((value = {}), (value[""] = source), value),
+														callback,
+														properties,
+														whitespace,
+														"",
+														[]
+													);
 												};
 											}
 
@@ -7251,7 +8115,9 @@
 															case 44:
 																// Parse a punctuator token (`{`, `}`, `[`, `]`, `:`, or `,`) at
 																// the current position.
-																value = charIndexBuggy ? source.charAt(Index) : source[Index];
+																value = charIndexBuggy
+																	? source.charAt(Index)
+																	: source[Index];
 																Index++;
 																return value;
 															case 34:
@@ -7259,8 +8125,13 @@
 																// begin parsing the string. String tokens are prefixed with the
 																// sentinel `@` character to distinguish them from punctuators and
 																// end-of-string tokens.
-																for (value = "@", Index++; Index < length; ) {
-																	charCode = source.charCodeAt(Index);
+																for (
+																	value = "@", Index++;
+																	Index < length;
+
+																) {
+																	charCode =
+																		source.charCodeAt(Index);
 																	if (charCode < 32) {
 																		// Unescaped ASCII control characters (those with a code unit
 																		// less than the space character) are not permitted.
@@ -7269,7 +8140,10 @@
 																		// A reverse solidus (`\`) marks the beginning of an escaped
 																		// control character (including `"`, `\`, and `/`) or Unicode
 																		// escape sequence.
-																		charCode = source.charCodeAt(++Index);
+																		charCode =
+																			source.charCodeAt(
+																				++Index
+																			);
 																		switch (charCode) {
 																			case 92:
 																			case 34:
@@ -7280,7 +8154,10 @@
 																			case 102:
 																			case 114:
 																				// Revive escaped control characters.
-																				value += Unescapes[charCode];
+																				value +=
+																					Unescapes[
+																						charCode
+																					];
 																				Index++;
 																				break;
 																			case 117:
@@ -7288,15 +8165,33 @@
 																				// Advance to the first character and validate the
 																				// four-digit code point.
 																				begin = ++Index;
-																				for (position = Index + 4; Index < position; Index++) {
-																					charCode = source.charCodeAt(Index);
+																				for (
+																					position =
+																						Index + 4;
+																					Index <
+																					position;
+																					Index++
+																				) {
+																					charCode =
+																						source.charCodeAt(
+																							Index
+																						);
 																					// A valid sequence comprises four hexdigits (case-
 																					// insensitive) that form a single hexadecimal value.
 																					if (
 																						!(
-																							(charCode >= 48 && charCode <= 57) ||
-																							(charCode >= 97 && charCode <= 102) ||
-																							(charCode >= 65 && charCode <= 70)
+																							(charCode >=
+																								48 &&
+																								charCode <=
+																									57) ||
+																							(charCode >=
+																								97 &&
+																								charCode <=
+																									102) ||
+																							(charCode >=
+																								65 &&
+																								charCode <=
+																									70)
 																						)
 																					) {
 																						// Invalid Unicode escape sequence.
@@ -7304,7 +8199,14 @@
 																					}
 																				}
 																				// Revive the escaped character.
-																				value += fromCharCode("0x" + source.slice(begin, Index));
+																				value +=
+																					fromCharCode(
+																						"0x" +
+																							source.slice(
+																								begin,
+																								Index
+																							)
+																					);
 																				break;
 																			default:
 																				// Invalid escape sequence.
@@ -7316,17 +8218,32 @@
 																			// string.
 																			break;
 																		}
-																		charCode = source.charCodeAt(Index);
+																		charCode =
+																			source.charCodeAt(
+																				Index
+																			);
 																		begin = Index;
 																		// Optimize for the common case where a string is valid.
-																		while (charCode >= 32 && charCode != 92 && charCode != 34) {
-																			charCode = source.charCodeAt(++Index);
+																		while (
+																			charCode >= 32 &&
+																			charCode != 92 &&
+																			charCode != 34
+																		) {
+																			charCode =
+																				source.charCodeAt(
+																					++Index
+																				);
 																		}
 																		// Append the string as-is.
-																		value += source.slice(begin, Index);
+																		value += source.slice(
+																			begin,
+																			Index
+																		);
 																	}
 																}
-																if (source.charCodeAt(Index) == 34) {
+																if (
+																	source.charCodeAt(Index) == 34
+																) {
 																	// Advance to the next character and return the revived string.
 																	Index++;
 																	return value;
@@ -7339,24 +8256,60 @@
 																// Advance past the negative sign, if one is specified.
 																if (charCode == 45) {
 																	isSigned = true;
-																	charCode = source.charCodeAt(++Index);
+																	charCode = source.charCodeAt(
+																		++Index
+																	);
 																}
 																// Parse an integer or floating-point value.
-																if (charCode >= 48 && charCode <= 57) {
+																if (
+																	charCode >= 48 &&
+																	charCode <= 57
+																) {
 																	// Leading zeroes are interpreted as octal literals.
-																	if (charCode == 48 && ((charCode = source.charCodeAt(Index + 1)), charCode >= 48 && charCode <= 57)) {
+																	if (
+																		charCode == 48 &&
+																		((charCode =
+																			source.charCodeAt(
+																				Index + 1
+																			)),
+																		charCode >= 48 &&
+																			charCode <= 57)
+																	) {
 																		// Illegal octal literal.
 																		abort();
 																	}
 																	isSigned = false;
 																	// Parse the integer component.
-																	for (; Index < length && ((charCode = source.charCodeAt(Index)), charCode >= 48 && charCode <= 57); Index++);
+																	for (
+																		;
+																		Index < length &&
+																		((charCode =
+																			source.charCodeAt(
+																				Index
+																			)),
+																		charCode >= 48 &&
+																			charCode <= 57);
+																		Index++
+																	);
 																	// Floats cannot contain a leading decimal point; however, this
 																	// case is already accounted for by the parser.
-																	if (source.charCodeAt(Index) == 46) {
+																	if (
+																		source.charCodeAt(Index) ==
+																		46
+																	) {
 																		position = ++Index;
 																		// Parse the decimal component.
-																		for (; position < length && ((charCode = source.charCodeAt(position)), charCode >= 48 && charCode <= 57); position++);
+																		for (
+																			;
+																			position < length &&
+																			((charCode =
+																				source.charCodeAt(
+																					position
+																				)),
+																			charCode >= 48 &&
+																				charCode <= 57);
+																			position++
+																		);
 																		if (position == Index) {
 																			// Illegal trailing decimal.
 																			abort();
@@ -7365,18 +8318,34 @@
 																	}
 																	// Parse exponents. The `e` denoting the exponent is
 																	// case-insensitive.
-																	charCode = source.charCodeAt(Index);
-																	if (charCode == 101 || charCode == 69) {
-																		charCode = source.charCodeAt(++Index);
+																	charCode =
+																		source.charCodeAt(Index);
+																	if (
+																		charCode == 101 ||
+																		charCode == 69
+																	) {
+																		charCode =
+																			source.charCodeAt(
+																				++Index
+																			);
 																		// Skip past the sign following the exponent, if one is
 																		// specified.
-																		if (charCode == 43 || charCode == 45) {
+																		if (
+																			charCode == 43 ||
+																			charCode == 45
+																		) {
 																			Index++;
 																		}
 																		// Parse the exponential component.
 																		for (
 																			position = Index;
-																			position < length && ((charCode = source.charCodeAt(position)), charCode >= 48 && charCode <= 57);
+																			position < length &&
+																			((charCode =
+																				source.charCodeAt(
+																					position
+																				)),
+																			charCode >= 48 &&
+																				charCode <= 57);
 																			position++
 																		);
 																		if (position == Index) {
@@ -7386,20 +8355,38 @@
 																		Index = position;
 																	}
 																	// Coerce the parsed value to a JavaScript number.
-																	return +source.slice(begin, Index);
+																	return +source.slice(
+																		begin,
+																		Index
+																	);
 																}
 																// A negative sign may only precede numbers.
 																if (isSigned) {
 																	abort();
 																}
 																// `true`, `false`, and `null` literals.
-																if (source.slice(Index, Index + 4) == "true") {
+																if (
+																	source.slice(
+																		Index,
+																		Index + 4
+																	) == "true"
+																) {
 																	Index += 4;
 																	return true;
-																} else if (source.slice(Index, Index + 5) == "false") {
+																} else if (
+																	source.slice(
+																		Index,
+																		Index + 5
+																	) == "false"
+																) {
 																	Index += 5;
 																	return false;
-																} else if (source.slice(Index, Index + 4) == "null") {
+																} else if (
+																	source.slice(
+																		Index,
+																		Index + 4
+																	) == "null"
+																) {
 																	Index += 4;
 																	return null;
 																}
@@ -7419,7 +8406,11 @@
 														abort();
 													}
 													if (typeof value == "string") {
-														if ((charIndexBuggy ? value.charAt(0) : value[0]) == "@") {
+														if (
+															(charIndexBuggy
+																? value.charAt(0)
+																: value[0]) == "@"
+														) {
 															// Remove the sentinel `@` character.
 															return value.slice(1);
 														}
@@ -7427,7 +8418,11 @@
 														if (value == "[") {
 															// Parses a JSON array, returning a new JavaScript array.
 															results = [];
-															for (; ; hasMembers || (hasMembers = true)) {
+															for (
+																;
+																;
+																hasMembers || (hasMembers = true)
+															) {
 																value = lex();
 																// A closing square bracket marks the end of the array literal.
 																if (value == "]") {
@@ -7458,7 +8453,11 @@
 														} else if (value == "{") {
 															// Parses a JSON object, returning a new JavaScript object.
 															results = {};
-															for (; ; hasMembers || (hasMembers = true)) {
+															for (
+																;
+																;
+																hasMembers || (hasMembers = true)
+															) {
 																value = lex();
 																// A closing curly brace marks the end of the object literal.
 																if (value == "}") {
@@ -7481,10 +8480,18 @@
 																// Leading commas are not permitted, object property names must be
 																// double-quoted strings, and a `:` must separate each property
 																// name and value.
-																if (value == "," || typeof value != "string" || (charIndexBuggy ? value.charAt(0) : value[0]) != "@" || lex() != ":") {
+																if (
+																	value == "," ||
+																	typeof value != "string" ||
+																	(charIndexBuggy
+																		? value.charAt(0)
+																		: value[0]) != "@" ||
+																	lex() != ":"
+																) {
 																	abort();
 																}
-																results[value.slice(1)] = get(lex());
+																results[value.slice(1)] =
+																	get(lex());
 															}
 															return results;
 														}
@@ -7515,7 +8522,11 @@
 														// because its `Object#hasOwnProperty` implementation returns `false`
 														// for array indices (e.g., `![1, 2, 3].hasOwnProperty("0")`).
 														if (getClass.call(value) == arrayClass) {
-															for (length = value.length; length--; ) {
+															for (
+																length = value.length;
+																length--;
+
+															) {
 																update(value, length, callback);
 															}
 														} else {
@@ -7539,7 +8550,16 @@
 													}
 													// Reset the parser state.
 													Index = Source = null;
-													return callback && getClass.call(callback) == functionClass ? walk(((value = {}), (value[""] = result), value), "", callback) : result;
+													return callback &&
+														getClass.call(callback) == functionClass
+														? walk(
+																((value = {}),
+																(value[""] = result),
+																value),
+																"",
+																callback
+															)
+														: result;
 												};
 											}
 										}
@@ -7587,7 +8607,16 @@
 										});
 									}
 								}).call(this);
-							}).call(this, typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
+							}).call(
+								this,
+								typeof self !== "undefined"
+									? self
+									: typeof window !== "undefined"
+										? window
+										: typeof global !== "undefined"
+											? global
+											: {}
+							);
 						},
 						{}
 					],

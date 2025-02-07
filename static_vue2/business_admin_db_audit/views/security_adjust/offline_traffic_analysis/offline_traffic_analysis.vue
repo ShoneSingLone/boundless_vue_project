@@ -22,7 +22,7 @@
 					<xCard style="height: 300px">
 						<template #header="">
 							<div class="flex middle" style="height: 28px">
-								可用DPDK配置
+								绑定DPDK配置
 								<xGap f />
 								<xBtn :configs="btnAddPorts" />
 							</div>
@@ -50,7 +50,7 @@
 					</xCard>
 				</xCol>
 				<xCol span="12">
-					<xCard header="可用DPDK配置" style="height: 300px">
+					<xCard header="普通端口配置" style="height: 300px">
 						<xForm col="1">
 							<xItem
 								:configs="form.is_open_live_traffic"
@@ -65,14 +65,14 @@
 			</xRow>
 			<xRow gutter="8" class="mt">
 				<xCol span="12">
-					<xCard header="DPDK配置" style="height: 300px">
+					<xCard header="离线文件配置" style="height: 300px">
 						<xForm col="1">
 							<xItem
 								:configs="form.is_open_pcap_file"
 								v-model="currentConfigs.is_open_pcap_file" />
-							<xItem
-								:configs="form.file_operation"
-								v-model="currentConfigs.file_operation" />
+							<!--							<xItem-->
+							<!--								:configs="form.file_operation"-->
+							<!--								v-model="currentConfigs.file_operation" />-->
 							<xItem :configs="form.pcap_file" v-model="currentConfigs.pcap_file" />
 						</xForm>
 					</xCard>
@@ -99,34 +99,45 @@ export default async function () {
 	return defineComponent({
 		inject: ["APP"],
 		async mounted() {
-			this.updateConfigs();
+			this._init = true;
+			await this.handlexdsTrafficGetFlowStatus();
+			await this.updateConfigs();
+			this._init = false;
 		},
 		data(vm) {
 			const disabled = () => vm.cptDisabled;
+			const disableBindDpdk = () => vm.disableBindDpdk;
 			const disabled_dpdk = () => vm.cptDisabledConfigs;
 			return {
+				timeDisable: false,
 				currentConfigs: {
-					is_open_extract_flow: false,
+					is_open_extract_flow: null,
 					bind_ports: "",
 					dpdk_ports: [],
-					file_operation: false,
-					huge_pages: 0,
+					// file_operation: false,
+					file_operation: true,
+					huge_pages: 512,
 					id: 1,
 					is_config_dpdk: false,
 					is_open_dpdk: false,
 					is_open_live_traffic: false,
-					is_open_pcap_file: false,
+					is_open_pcap_file: true,
 					live_operation: false,
 					live_port: "",
-					pcap_file: "",
-					rx_queues: 0
+					pcap_file: null,
+					rx_queues: 4
 				},
 				form: defItems({
 					is_open_extract_flow: {
 						label: "是否开启流提取",
-						itemType: "xItemRadioGroup",
+						itemType: "xItemSwitch",
 						minWidth: 80,
-						options: _opts.admin_db_audit.yesOrNo
+						disabled: () => vm.timeDisable,
+						options: _opts.admin_db_audit.yesOrNo,
+						async once() {
+							// await vm.handlexdsTrafficGetFlowStatus();
+							// console.log('1',1)
+						}
 					},
 					/*  */
 					is_config_dpdk: {
@@ -138,7 +149,12 @@ export default async function () {
 					},
 					bind_ports: {
 						label: "添加绑定端口",
-						disabled,
+						disabled: () => {
+							if (disabled()) {
+								return disabled();
+							}
+							if (disableBindDpdk()) return disableBindDpdk();
+						},
 						itemType: "xItemSelect",
 						options: [],
 						async once() {
@@ -146,7 +162,8 @@ export default async function () {
 							this.options = _.map(data, _item => {
 								return {
 									label: _item.deviceName || _item.id,
-									value: _item.id,
+									// value: _item.id,
+									value: _item.deviceName,
 									_item
 								};
 							});
@@ -154,7 +171,12 @@ export default async function () {
 					},
 					huge_pages: {
 						label: "配置DPDK最大页数",
-						disabled,
+						disabled: () => {
+							if (disabled()) {
+								return disabled();
+							}
+							if (disableBindDpdk()) return disableBindDpdk();
+						},
 						isNumber: true,
 						min: 0,
 						step: 1
@@ -177,8 +199,8 @@ export default async function () {
 							const { data } = await _api.admin_db_audit.xdsTrafficDpdkList();
 							this.options = _.map(data, _item => {
 								return {
-									label: _item.dpdkPMDName || _item.id,
-									value: _item.id,
+									label: _item.dpdkPCI || _item.id,
+									value: _item.dpdkPort,
 									_item
 								};
 							});
@@ -189,6 +211,7 @@ export default async function () {
 						disabled: disabled_dpdk,
 						isNumber: true,
 						min: 0,
+						max: 64,
 						step: 1
 					},
 					/* 可用DPDK配置 是否开启实时流: 是否开启端口: 指定普通端口名 */
@@ -216,7 +239,7 @@ export default async function () {
 							this.options = _.map(data, _item => {
 								return {
 									label: _item.deviceName || _item.id,
-									value: _item.id,
+									value: _item.deviceName,
 									_item
 								};
 							});
@@ -253,7 +276,7 @@ export default async function () {
 						},
 						itemSlots: {
 							afterController() {
-								return h("xBtn", {
+								return hxBtn({
 									class: "ml8 flex middle mr8",
 									directives: [hTipsHover({ msg: "支持扩展名:.pcap .cap" })],
 									configs: vm.btnAddFile
@@ -274,22 +297,28 @@ export default async function () {
 				if (!this.currentConfigs.is_open_extract_flow) {
 					return true;
 				}
+				// “是否配置DPDK”选择为否后应该可以配置“DPDK配置”，“普通端口配置”，“离线文件配置”三个窗口的内容
 				if (!this.currentConfigs.is_config_dpdk) {
+					return false;
+				}
+				// 是否配置DPDK”选择为是后，即使“添加绑定窗口”和“配置DPDK最大页数”不为空也不能配置后续三个窗口
+				if (this.currentConfigs.is_config_dpdk) {
 					return true;
 				}
 				if (!this.currentConfigs.bind_ports) {
 					return true;
 				}
 				if (!this.currentConfigs.huge_pages) {
-					return true;
+					return false;
 				}
 				return false;
 			},
 			btnAddPorts() {
 				return {
-					label: "更新配置",
+					label: "更新端口",
 					isHide: this.cptDisabled,
 					preset: "primary",
+					disabled: this.disableBindDpdk,
 					onClick: () => this.modifyPortAndUpdateConfigs()
 				};
 			},
@@ -325,9 +354,49 @@ export default async function () {
 					preset: "primary",
 					onClick: () => this.modifyConfigsAndUpdate()
 				};
+			},
+			// 对于选项"是否配置DPDK"的逻辑改为：当选择"否"时，之后的配置可用；当选择"是"时，之后的配置不可用
+			disableBindDpdk() {
+				return !this.currentConfigs.is_config_dpdk;
+			}
+		},
+		watch: {
+			"currentConfigs.is_open_extract_flow"(newValue, oldValue) {
+				if (oldValue !== null) {
+					if (oldValue !== newValue) {
+						if (!this._init) {
+							this.handleXdsTrafficFlowSwitch(newValue);
+						}
+					}
+				}
 			}
 		},
 		methods: {
+			async handlexdsTrafficGetFlowStatus() {
+				const { code, data } = await _api.admin_db_audit.xdsTrafficGetFlowStatus();
+				this.currentConfigs.is_open_extract_flow = data;
+			},
+			async handleXdsTrafficFlowSwitch(status) {
+				this._init = false;
+				_.$loading(true);
+				const { code, msg } = await _api.admin_db_audit.xdsTrafficFlowSwitch({
+					enabled: status
+				});
+				this.timeDisable = true;
+				if (code === 0) {
+					_.$msgSuccess(msg);
+				} else {
+					_.$msgError(msg);
+				}
+				_.$loading(false);
+				if (this.timer) {
+					clearTimeout(this.timer);
+					this.timer = null;
+				}
+				this.timer = setTimeout(() => {
+					this.timeDisable = false;
+				}, 5000);
+			},
 			async modifyPortAndUpdateConfigs() {
 				_.$loading(true);
 				try {
@@ -394,14 +463,13 @@ export default async function () {
 						is_config_dpdk,
 						is_open_dpdk,
 						is_open_extract_flow,
-						is_open_live__traffic,
+						is_open_live_traffic,
 						is_open_pcap_file,
 						live_operation,
 						live_port,
 						pcap_file,
 						rx_queues
 					} = this.currentConfigs;
-
 					const res = await _api.admin_db_audit.xdsTrafficSaveConfig({
 						bind_ports,
 						dpdk_ports,
@@ -411,7 +479,7 @@ export default async function () {
 						is_config_dpdk,
 						is_open_dpdk,
 						is_open_extract_flow,
-						is_open_live__traffic,
+						is_open_live_traffic,
 						is_open_pcap_file,
 						live_operation,
 						live_port,
@@ -442,33 +510,33 @@ export default async function () {
 				const {
 					bind_ports,
 					dpdk_ports,
-					file_operation,
+					file_operation = true,
 					huge_pages,
 					is_config_dpdk,
 					is_open_dpdk,
 					is_open_extract_flow,
 					is_open_live_traffic,
-					is_open_pcap_file,
+					is_open_pcap_file = true,
 					live_operation,
 					live_port,
 					pcap_file
 				} = data;
-
 				this.currentConfigs = {
+					...this.currentConfigs,
 					is_config_dpdk: is_config_dpdk || false,
 					bind_ports: bind_ports || "",
-					huge_pages: huge_pages || 0,
+					huge_pages: huge_pages || 512,
 					/*  */
 					is_open_dpdk: is_open_dpdk || false,
 					dpdk_ports: dpdk_ports || [],
-					rx_queues: 0,
+					rx_queues: 4,
 					/*  */
 					is_open_live_traffic: is_open_live_traffic || false,
 					live_port: live_port || "",
-					is_open_extract_flow: is_open_extract_flow || false,
+					// is_open_extract_flow: is_open_extract_flow || false,
 					/*  */
-					is_open_pcap_file: is_open_pcap_file || false,
-					file_operation: file_operation || false,
+					is_open_pcap_file: is_open_pcap_file,
+					file_operation: file_operation,
 					pcap_file: pcap_file || "",
 					live_operation: live_operation || false
 				};

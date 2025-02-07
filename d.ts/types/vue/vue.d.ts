@@ -19,13 +19,39 @@ import { ExtractComputedReturns, ComponentOptionsMixin } from "./v3-component-op
 import { Directive, ObjectDirective } from "./v3-directive";
 
 export interface CreateElement {
-	(tag?: string | Component<any, any, any, any> | AsyncComponent<any, any, any, any> | (() => Component), children?: VNodeChildren): VNode;
-	(tag?: string | Component<any, any, any, any> | AsyncComponent<any, any, any, any> | (() => Component), data?: VNodeData, children?: VNodeChildren): VNode;
+	(
+		tag?:
+			| string
+			| Component<any, any, any, any>
+			| AsyncComponent<any, any, any, any>
+			| (() => Component),
+		children?: VNodeChildren
+	): VNode;
+	(
+		tag?:
+			| string
+			| Component<any, any, any, any>
+			| AsyncComponent<any, any, any, any>
+			| (() => Component),
+		data?: VNodeData,
+		children?: VNodeChildren
+	): VNode;
+}
+
+export interface h_CreateElement {
+	(children?: VNodeChildren): VNode;
+	(data?: VNodeData, children?: VNodeChildren): VNode;
 }
 
 type NeverFallback<T, D> = [T] extends [never] ? D : T;
 
-export interface Vue<Data = Record<string, any>, Props = Record<string, any>, Instance = never, Options = never, Emit = (event: string, ...args: any[]) => Vue> {
+export interface Vue<
+	Data = Record<string, any>,
+	Props = Record<string, any>,
+	Instance = never,
+	Options = never,
+	Emit = (event: string, ...args: any[]) => Vue
+> {
 	// properties with different types in defineComponent()
 	readonly $data: Data;
 	readonly $props: Props;
@@ -38,7 +64,12 @@ export interface Vue<Data = Record<string, any>, Props = Record<string, any>, In
 	// Vue 2 only or shared
 	readonly $el: Element;
 	readonly $refs: {
-		[key: string]: NeverFallback<Instance, Vue> | Vue | Element | (NeverFallback<Instance, Vue> | Vue | Element)[] | undefined;
+		[key: string]:
+			| NeverFallback<Instance, Vue>
+			| Vue
+			| Element
+			| (NeverFallback<Instance, Vue> | Vue | Element)[]
+			| undefined;
 	};
 	readonly $slots: { [key: string]: VNode[] | undefined };
 	readonly $scopedSlots: { [key: string]: NormalizedScopedSlot | undefined };
@@ -54,8 +85,16 @@ export interface Vue<Data = Record<string, any>, Props = Record<string, any>, In
 	$destroy(): void;
 	$set: typeof Vue.set;
 	$delete: typeof Vue.delete;
-	$watch(expOrFn: string, callback: (this: this, n: any, o: any) => void, options?: WatchOptions): () => void;
-	$watch<T>(expOrFn: (this: this) => T, callback: (this: this, n: T, o: T) => void, options?: WatchOptions): () => void;
+	$watch(
+		expOrFn: string,
+		callback: (this: this, n: any, o: any) => void,
+		options?: WatchOptions
+	): () => void;
+	$watch<T>(
+		expOrFn: (this: this) => T,
+		callback: (this: this, n: T, o: T) => void,
+		options?: WatchOptions
+	): () => void;
 	$on(event: string | string[], callback: Function): this;
 	$once(event: string | string[], callback: Function): this;
 	$off(event?: string | string[], callback?: Function): this;
@@ -94,7 +133,10 @@ export type ExtendedVue<
 	SetupBindings = {},
 	Mixin extends ComponentOptionsMixin = ComponentOptionsMixin,
 	Extends extends ComponentOptionsMixin = ComponentOptionsMixin
-> = VueConstructor<CombinedVueInstance<Instance, Data, Methods, Computed, Props, SetupBindings, Mixin, Extends> & Vue>;
+> = VueConstructor<
+	CombinedVueInstance<Instance, Data, Methods, Computed, Props, SetupBindings, Mixin, Extends> &
+		Vue
+>;
 
 export interface VueConfiguration {
 	silent: boolean;
@@ -122,8 +164,26 @@ export interface VueConstructor<V extends Vue = Vue> {
 		Mixin extends ComponentOptionsMixin = ComponentOptionsMixin,
 		Extends extends ComponentOptionsMixin = ComponentOptionsMixin
 	>(
-		options?: ThisTypedComponentOptionsWithArrayProps<V, Data, Methods, Computed, PropNames, SetupBindings, Mixin, Extends>
-	): CombinedVueInstance<V, Data, Methods, Computed, Record<PropNames, any>, SetupBindings, Mixin, Extends>;
+		options?: ThisTypedComponentOptionsWithArrayProps<
+			V,
+			Data,
+			Methods,
+			Computed,
+			PropNames,
+			SetupBindings,
+			Mixin,
+			Extends
+		>
+	): CombinedVueInstance<
+		V,
+		Data,
+		Methods,
+		Computed,
+		Record<PropNames, any>,
+		SetupBindings,
+		Mixin,
+		Extends
+	>;
 
 	/**
 	 * new with object props
@@ -140,13 +200,33 @@ export interface VueConstructor<V extends Vue = Vue> {
 		Mixin extends ComponentOptionsMixin = ComponentOptionsMixin,
 		Extends extends ComponentOptionsMixin = ComponentOptionsMixin
 	>(
-		options?: ThisTypedComponentOptionsWithRecordProps<V, Data, Methods, Computed, Props, SetupBindings, Mixin, Extends>
-	): CombinedVueInstance<V, Data, Methods, Computed, Record<keyof Props, any>, SetupBindings, Mixin, Extends>;
+		options?: ThisTypedComponentOptionsWithRecordProps<
+			V,
+			Data,
+			Methods,
+			Computed,
+			Props,
+			SetupBindings,
+			Mixin,
+			Extends
+		>
+	): CombinedVueInstance<
+		V,
+		Data,
+		Methods,
+		Computed,
+		Record<keyof Props, any>,
+		SetupBindings,
+		Mixin,
+		Extends
+	>;
 
 	/**
 	 * new with no props
 	 */
-	new (options?: ComponentOptions<V>): CombinedVueInstance<V, object, object, object, Record<keyof object, any>, {}>;
+	new (
+		options?: ComponentOptions<V>
+	): CombinedVueInstance<V, object, object, object, Record<keyof object, any>, {}>;
 
 	/**
 	 * extend with array props
@@ -160,25 +240,64 @@ export interface VueConstructor<V extends Vue = Vue> {
 		Mixin extends ComponentOptionsMixin = ComponentOptionsMixin,
 		Extends extends ComponentOptionsMixin = ComponentOptionsMixin
 	>(
-		options?: ThisTypedComponentOptionsWithArrayProps<V, Data, Methods, Computed, PropNames, SetupBindings, Mixin, Extends>
-	): ExtendedVue<V, Data, Methods, Computed, Record<PropNames, any>, SetupBindings, Mixin, Extends>;
+		options?: ThisTypedComponentOptionsWithArrayProps<
+			V,
+			Data,
+			Methods,
+			Computed,
+			PropNames,
+			SetupBindings,
+			Mixin,
+			Extends
+		>
+	): ExtendedVue<
+		V,
+		Data,
+		Methods,
+		Computed,
+		Record<PropNames, any>,
+		SetupBindings,
+		Mixin,
+		Extends
+	>;
 
 	/**
 	 * extend with object props
 	 */
-	extend<Data, Methods, Computed, Props, SetupBindings = {}, Mixin extends ComponentOptionsMixin = ComponentOptionsMixin, Extends extends ComponentOptionsMixin = ComponentOptionsMixin>(
-		options?: ThisTypedComponentOptionsWithRecordProps<V, Data, Methods, Computed, Props, SetupBindings, Mixin, Extends>
+	extend<
+		Data,
+		Methods,
+		Computed,
+		Props,
+		SetupBindings = {},
+		Mixin extends ComponentOptionsMixin = ComponentOptionsMixin,
+		Extends extends ComponentOptionsMixin = ComponentOptionsMixin
+	>(
+		options?: ThisTypedComponentOptionsWithRecordProps<
+			V,
+			Data,
+			Methods,
+			Computed,
+			Props,
+			SetupBindings,
+			Mixin,
+			Extends
+		>
 	): ExtendedVue<V, Data, Methods, Computed, Props, SetupBindings, Mixin, Extends>;
 
 	/**
 	 * extend with functional + array props
 	 */
-	extend<PropNames extends string = never>(definition: FunctionalComponentOptions<Record<PropNames, any>, PropNames[]>): ExtendedVue<V, {}, {}, {}, Record<PropNames, any>, {}>;
+	extend<PropNames extends string = never>(
+		definition: FunctionalComponentOptions<Record<PropNames, any>, PropNames[]>
+	): ExtendedVue<V, {}, {}, {}, Record<PropNames, any>, {}>;
 
 	/**
 	 * extend with functional + object props
 	 */
-	extend<Props>(definition: FunctionalComponentOptions<Props, RecordPropsDefinition<Props>>): ExtendedVue<V, {}, {}, {}, Props, {}>;
+	extend<Props>(
+		definition: FunctionalComponentOptions<Props, RecordPropsDefinition<Props>>
+	): ExtendedVue<V, {}, {}, {}, Props, {}>;
 
 	/**
 	 * extend with no props
@@ -198,7 +317,10 @@ export interface VueConstructor<V extends Vue = Vue> {
 
 	component(id: string): VueConstructor;
 	component<VC extends VueConstructor>(id: string, constructor: VC): VC;
-	component<Data, Methods, Computed, Props, SetupBindings>(id: string, definition: AsyncComponent<Data, Methods, Computed, Props>): ExtendedVue<V, Data, Methods, Computed, Props, SetupBindings>;
+	component<Data, Methods, Computed, Props, SetupBindings>(
+		id: string,
+		definition: AsyncComponent<Data, Methods, Computed, Props>
+	): ExtendedVue<V, Data, Methods, Computed, Props, SetupBindings>;
 	component<
 		Data,
 		Methods,
@@ -209,16 +331,60 @@ export interface VueConstructor<V extends Vue = Vue> {
 		Extends extends ComponentOptionsMixin = ComponentOptionsMixin
 	>(
 		id: string,
-		definition?: ThisTypedComponentOptionsWithArrayProps<V, Data, Methods, Computed, PropNames, SetupBindings, Mixin, Extends>
-	): ExtendedVue<V, Data, Methods, Computed, Record<PropNames, any>, SetupBindings, Mixin, Extends>;
-	component<Data, Methods, Computed, Props, SetupBindings, Mixin extends ComponentOptionsMixin = ComponentOptionsMixin, Extends extends ComponentOptionsMixin = ComponentOptionsMixin>(
+		definition?: ThisTypedComponentOptionsWithArrayProps<
+			V,
+			Data,
+			Methods,
+			Computed,
+			PropNames,
+			SetupBindings,
+			Mixin,
+			Extends
+		>
+	): ExtendedVue<
+		V,
+		Data,
+		Methods,
+		Computed,
+		Record<PropNames, any>,
+		SetupBindings,
+		Mixin,
+		Extends
+	>;
+	component<
+		Data,
+		Methods,
+		Computed,
+		Props,
+		SetupBindings,
+		Mixin extends ComponentOptionsMixin = ComponentOptionsMixin,
+		Extends extends ComponentOptionsMixin = ComponentOptionsMixin
+	>(
 		id: string,
-		definition?: ThisTypedComponentOptionsWithRecordProps<V, Data, Methods, Computed, Props, SetupBindings, Mixin, Extends>
+		definition?: ThisTypedComponentOptionsWithRecordProps<
+			V,
+			Data,
+			Methods,
+			Computed,
+			Props,
+			SetupBindings,
+			Mixin,
+			Extends
+		>
 	): ExtendedVue<V, Data, Methods, Computed, Props, SetupBindings>;
-	component<PropNames extends string>(id: string, definition: FunctionalComponentOptions<Record<PropNames, any>, PropNames[]>): ExtendedVue<V, {}, {}, {}, Record<PropNames, any>, {}>;
-	component<Props>(id: string, definition: FunctionalComponentOptions<Props, RecordPropsDefinition<Props>>): ExtendedVue<V, {}, {}, {}, Props, {}>;
+	component<PropNames extends string>(
+		id: string,
+		definition: FunctionalComponentOptions<Record<PropNames, any>, PropNames[]>
+	): ExtendedVue<V, {}, {}, {}, Record<PropNames, any>, {}>;
+	component<Props>(
+		id: string,
+		definition: FunctionalComponentOptions<Props, RecordPropsDefinition<Props>>
+	): ExtendedVue<V, {}, {}, {}, Props, {}>;
 	component(id: string, definition?: ComponentOptions<V>): ExtendedVue<V, {}, {}, {}, {}, {}>;
-	component<T extends DefineComponent<any, any, any, any, any, any, any, any>>(id: string, definition?: T): T;
+	component<T extends DefineComponent<any, any, any, any, any, any, any, any>>(
+		id: string,
+		definition?: T
+	): T;
 
 	use<T>(plugin: PluginObject<T> | PluginFunction<T>, options?: T): VueConstructor<V>;
 	use(plugin: PluginObject<any> | PluginFunction<any>, ...options: any[]): VueConstructor<V>;

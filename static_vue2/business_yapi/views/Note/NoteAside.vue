@@ -210,7 +210,7 @@ export default async function () {
 				}
 
 				try {
-					await _api.yapi.wikiUpsertOne(dragItem);
+					await _api.yapi.wiki_upsert_one(dragItem);
 					await _api.yapi.wikiResetMenuOrder({
 						order: menuOrderArray,
 						belong_type: inject_note.cptBelongType,

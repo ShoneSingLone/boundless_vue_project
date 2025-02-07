@@ -1,4 +1,7 @@
 <style lang="less">
+.menu-block-bg {
+	background-color: rgba(241, 248, 247, 1);
+}
 .openSidebar {
 	// --left-aside-width: 315px;
 	--left-aside-width: 270;
@@ -86,8 +89,10 @@
 			background: transparent;
 
 			&[data-nest-level="0"] {
-				&.open {
+				&.menu-block-bg {
 					background-color: rgba(241, 248, 247, 1);
+				}
+				&.open {
 					// width: 295px;
 					border-radius: 6px;
 					margin: auto;
@@ -199,10 +204,10 @@
 						:collapse="APP.sidebar.isCollapse"
 						v-if="isAuth(menu)"
 						:item="menu"
-						:data-menu-href="menu.href"
 						:active="checkMenuActive"
 						:key="menu.href"
 						:isDefaultOpen="false"
+						:clickItem="handleClickMenuItem"
 						folderIcon="_arrow" />
 				</template>
 			</div>
@@ -214,7 +219,47 @@ export default async function () {
 	const MenuArray = await _.$importVue("@/router/MenuArray.vue");
 	return {
 		inject: ["APP"],
+		async created() {
+			await _.$sleep(100);
+			if (_.$isArrayFill(MenuArray)) {
+				await _.$ensure(() => $("[data-nest-level=0]").length);
+				this.handleClickMenuItem({ href: this.$route.path });
+			}
+		},
 		methods: {
+			handleClickMenuItem({ href }) {
+				$(".menu-block-bg").removeClass("menu-block-bg");
+				const aLL = $(".x-sidebar-menu")
+					.find(".xMenuTreeItem")
+					.filter('[data-nest-level="0"]')
+					.find(".el-submenu__title-text");
+				$.each(aLL, function (i, item) {
+					item.style.color = "";
+					console.log("item", item);
+				});
+				const selector = `[data-href-key="${_.camelCase(href)}"]`;
+				const a = $(selector);
+				if (a.parents("[data-nest-level=0]").length > 0) {
+					const parent = a.parents("[data-nest-level=0]").attr("key");
+					this.parentIcon = parent ? parent : "/home";
+					const [c, b] = a.parents("[data-nest-level=0]").children();
+					$(c).find(".el-submenu__title-text").css("color", "#00695E");
+					$(b).addClass("menu-block-bg");
+					// $(b).find('.active').find('.el-submenu__title-text').css('color','white')
+				} else {
+					const parent = a.attr("key");
+					this.parentIcon = parent ? parent : "/home";
+
+					const [c, b] = a.children();
+					// $(c).find('.el-submenu__title-text').css('color','#00695E');
+					//
+					$(b).addClass("menu-block-bg");
+					console.log("a");
+				}
+
+				// $(c).find('.el-submenu__title-text').style('color:#00695E')
+				console.log("parent", parent);
+			},
 			isAuth({ menuCode }) {
 				return this.APP.roleMenusList.includes(menuCode);
 			},
@@ -228,9 +273,9 @@ export default async function () {
 						staticClass: "flex middle"
 					},
 					[
-						h("span", { staticClass: "mr" }, [node.label]),
-						h("span", { staticClass: "mr" }, [node._munu_level]),
-						h("span", { staticClass: "mr" }, [node._munu_id])
+						hSpan({ staticClass: "mr" }, [node.label]),
+						hSpan({ staticClass: "mr" }, [node._munu_level]),
+						hSpan({ staticClass: "mr" }, [node._munu_id])
 					]
 				);
 			},
@@ -297,6 +342,12 @@ export default async function () {
 						_.remove(nodeParent, node);
 					}
 				});
+				menuList.forEach(item => {
+					item.icon = item.iconDefault;
+					if (item.href === this.parentIcon) {
+						item.icon = item.iconActive;
+					}
+				});
 				return menuList;
 			}
 		},
@@ -304,10 +355,21 @@ export default async function () {
 			const vm = this;
 			return {
 				filterText: "",
-				isOpen: true
+				isOpen: true,
+				parentIcon: ""
 			};
 		},
-		watch: {}
+		watch: {
+			// cptMenuArray: {
+			// 	immediate: true,
+			// 	async handler(cptMenuArray) {
+			// 		if (_.$isArrayFill(cptMenuArray)) {
+			// 			await _.$ensure(() => $("[data-nest-level=0]").length);
+			// 			this.handleClickMenuItem({ href: this.$route.path });
+			// 		}
+			// 	}
+			// }
+		}
 	};
 }
 </script>

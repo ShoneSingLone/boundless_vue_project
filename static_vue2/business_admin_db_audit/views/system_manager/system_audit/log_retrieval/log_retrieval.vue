@@ -75,7 +75,15 @@ export default async function () {
 					服务端端口号: { label: "服务端端口号", value: "" },
 					数据库IP: { label: "数据库IP", value: "" },
 					数据库MAC: { label: "数据库MAC", value: "" },
-					风险等级: { label: "风险等级", value: "" },
+					风险等级: {
+						label: "风险等级",
+						value: "",
+						itemType: "xItemSelect",
+						options: [],
+						async once() {
+							this.options = await _api.admin_db_audit.xdsOptionsRisk();
+						}
+					},
 					匹配策略: { label: "匹配策略", value: "" },
 					数据库实例: { label: "数据库实例", value: "" },
 					操作内容: { label: "操作内容", value: "" },

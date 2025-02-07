@@ -32,12 +32,13 @@ export default async function () {
 						prop: `a`,
 						label: `b`,
 						headerCellRenderer() {
-							return h("span", [`成员 ${vm.cptProjectMembers.length} 人`]);
+							return hSpan([`成员 ${vm.cptProjectMembers.length} 人`]);
 						},
 						cellRenderer: ({ rowData }) => {
-							return h("div", { staticClass: "flex middle", key: rowData.uid }, [
+							return hDiv({ staticClass: "flex middle", key: rowData.uid }, [
 								h("xItem", {
 									staticClass: "mr4 ml4",
+									style: "--xItem-wrapper-width:32px;",
 									configs: {
 										value: rowData.uid || "",
 										itemType: "YapiItemAvatar",
@@ -49,32 +50,30 @@ export default async function () {
 									{
 										staticClass: "pointer",
 										async onClick() {
-											const Component = await _.$importVue(
-												"@/views/User/UserProfile.Dialog.vue",
-												{
-													parent: vm,
-													userId: rowData.uid,
-													canModifyAvatar:
-														rowData.uid === vm.APP.user._id,
-													onOk() {
-														vm.APP.updateGroupProjectList();
-													}
+											return _.$openModal({
+												title: i18n("个人中心"),
+												url: "@/views/User/UserProfile.Dialog.vue",
+												parent: vm,
+												userId: rowData.uid,
+												canModifyAvatar: rowData.uid === vm.APP.user._id,
+												onOk() {
+													vm.APP.updateGroupProjectList();
 												}
-											);
-											_.$openWindow_deprecated(i18n("个人中心"), Component);
+											});
 										}
 									},
 									[rowData.username]
-								)
+								),
+								hDiv({ class: "flex1" })
 							]);
 						}
 					},
 					{
 						prop: `b`,
 						label: `b`,
-						width: 200,
+						width: 256,
 						headerCellRenderer() {
-							return h("xBtn", {
+							return hxBtn({
 								vIf: vm.cptAuth,
 								configs: {
 									label: "添加成员",
@@ -86,14 +85,14 @@ export default async function () {
 						},
 						cellRenderer({ rowData, rowIndex }) {
 							if (vm.cptAuth) {
-								return h("div", { staticClass: "flex middle width100" }, [
+								return hDiv({ staticClass: "flex middle width100" }, [
 									h("xItem", {
 										configs: vm.item_role,
 										value: rowData.role,
 										payload: { rowIndex, rowData },
 										class: "mr8"
 									}),
-									h("xBtn", {
+									hxBtn({
 										configs: {
 											icon: "el-icon-delete",
 											preset: "danger",
@@ -111,7 +110,7 @@ export default async function () {
 								};
 								// 非管理员可以看到权限 但无法修改
 
-								return h("div", { staticClass: "flex middle width100" }, [
+								return hDiv({ staticClass: "flex middle width100" }, [
 									ROLE_MAP[rowData.role]
 								]);
 							}
@@ -172,7 +171,7 @@ export default async function () {
 			},
 			cptAvatarUrl(id) {
 				return Vue._common_utils.appendToken(
-					`${window._URL_PREFIX_4_DEV || ""}/api/user/avatar?uid=${id}`
+					`${window._AJAX_URL_PREFIX || ""}/api/user/avatar?uid=${id}`
 				);
 			}
 		},

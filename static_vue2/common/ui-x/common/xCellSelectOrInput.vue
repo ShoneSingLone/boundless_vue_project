@@ -66,7 +66,7 @@ export default async function () {
 			const vm = this;
 			let opts = vm.configs?.col?.componentOptions?.search?.options ?? [];
 
-			return h("div", { class: "select-search" }, [
+			return hDiv({ class: "select-search" }, [
 				h(
 					"el-select",
 					{
@@ -95,7 +95,7 @@ export default async function () {
 					]
 				),
 				vm.searchValue == "true"
-					? h("xItem", {
+					? hxItem({
 							configs: {
 								...(vm.configs?.col?.componentOptions || {}),
 								itemType: "xItemSelect",
@@ -105,7 +105,7 @@ export default async function () {
 							value: vm.privateModel,
 							onChange: val => (vm.privateModel = val)
 						})
-					: h("xItem", {
+					: hxItem({
 							configs: this.res.innerComponentConfigs,
 							value: this.res.privateModel,
 							size: "mini"

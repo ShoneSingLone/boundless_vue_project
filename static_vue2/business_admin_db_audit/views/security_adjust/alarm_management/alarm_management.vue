@@ -55,48 +55,99 @@
 }
 </style>
 <template>
-	<div class="x-page-view">
+	<div class="x-page-view" style="overflow-y: auto">
 		<xPageTitle>
 			<NavbarBreadcrumb />
 		</xPageTitle>
 		<xPageContent style="padding-top: 0">
-			<div class="flex mb">
-				<xCard class="flex1 mr" style="flex: 0.6">
-					<template #header>
-						<div class="flex">
-							<span> 报警设置 </span>
-						</div>
-					</template>
-					<div style="height: 250px">
-						<xTableVir
-							:columns="configsConfigTable.columns"
-							:data="configsConfigTable.data.list" />
-					</div>
-				</xCard>
-				<xCard class="flex1 mr" style="flex: 0.4">
-					<template #header>
-						<div class="flex">
-							<span> SFTP设置 </span>
-						</div>
-					</template>
-					<xForm col="1" ref="SFTPform">
-						<xItem v-for="(value, key) of SFTPForm" :configs="value" :key="key" />
-					</xForm>
-					<div style="text-align: center" class="mt">
-						<xBtn :configs="btnTestSFTP" />
-						<xBtn :configs="btnSaveSFTP" />
-					</div>
-				</xCard>
-			</div>
 			<xTablebar :configs="configsTable">
 				<template #right>
 					<xBtnArray :configs="oprBtnArrayRight" style="margin-left: 30px" />
 				</template>
 			</xTablebar>
-			<div class="x-page-content-middle mt">
+			<div class="mt" style="height: 600px">
 				<xTableVir :columns="configsTable.columns" :data="configsTable.data.list" />
 			</div>
 			<xPagination :configs="configsTable" />
+			<div></div>
+			<xCollapse v-model="activeNames" class="mt10">
+				<xCollapseItem title="报警设置" name="1">
+					<xCard class="flex1">
+						<template #header>
+							<div class="flex">
+								<span> 报警设置 </span>
+							</div>
+						</template>
+						<div style="height: 250px">
+							<xTableVir
+								:columns="configsConfigTable.columns"
+								:data="configsConfigTable.data.list" />
+						</div>
+					</xCard>
+				</xCollapseItem>
+				<xCollapseItem title="SFTP设置" name="2">
+					<xCard class="flex1">
+						<template #header>
+							<div class="flex">
+								<span> SFTP设置 </span>
+							</div>
+						</template>
+						<xForm col="1" ref="SFTPform">
+							<xItem v-for="(value, key) of SFTPForm" :configs="value" :key="key" />
+						</xForm>
+						<div style="text-align: center" class="mt">
+							<xBtn :configs="btnTestSFTP" />
+							<xBtn :configs="btnSaveSFTP" />
+						</div>
+					</xCard>
+				</xCollapseItem>
+				<xCollapseItem title="报警邮箱设置" name="3">
+					<xCard class="flex1">
+						<template #header>
+							<div
+								class="flex"
+								style="justify-content: space-between; align-items: center">
+								<span> 报警邮箱设置 </span>
+								<xBtn :configs="btnAddEmail" />
+							</div>
+						</template>
+						<div style="min-height: 250px; height: 250px">
+							<xTableVir
+								:columns="configsEmailTable.columns"
+								:data="configsEmailTable.data.list" />
+						</div>
+						<xPagination :configs="configsEmailTable" />
+					</xCard>
+				</xCollapseItem>
+			</xCollapse>
+			<!--			<div class="flex mb">-->
+			<!--				<xCard class="flex1 mr" style="flex: 0.6">-->
+			<!--					<template #header>-->
+			<!--						<div class="flex">-->
+			<!--							<span> 报警设置 </span>-->
+			<!--						</div>-->
+			<!--					</template>-->
+			<!--					<div style="height: 250px">-->
+			<!--						<xTableVir-->
+			<!--							:columns="configsConfigTable.columns"-->
+			<!--							:data="configsConfigTable.data.list" />-->
+			<!--					</div>-->
+			<!--				</xCard>-->
+			<!--				<xCard class="flex1 mr" style="flex: 0.4">-->
+			<!--					<template #header>-->
+			<!--						<div class="flex">-->
+			<!--							<span> SFTP设置 </span>-->
+			<!--						</div>-->
+			<!--					</template>-->
+			<!--					<xForm col="1" ref="SFTPform">-->
+			<!--						<xItem v-for="(value, key) of SFTPForm" :configs="value" :key="key" />-->
+			<!--					</xForm>-->
+			<!--					<div style="text-align: center" class="mt">-->
+			<!--						<xBtn :configs="btnTestSFTP" />-->
+			<!--						<xBtn :configs="btnSaveSFTP" />-->
+			<!--					</div>-->
+			<!--				</xCard>-->
+			<!--			</div>-->
 		</xPageContent>
 	</div>
 </template>
@@ -109,10 +160,12 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			await this.handleGetXdsWarningWarningConfigPage();
 			await this.getTableData();
 			await this.handleGetxdsWarningSftpFind();
+			await this.handlexdsWarningEmailFind();
 		},
 		data(vm) {
 			const that = this;
 			return {
+				activeNames: "",
 				warringStatus: [],
 				formSearch: defItems({
 					部门id: { label: "部门id", value: "" },
@@ -189,7 +242,8 @@ export default async function ({ PRIVATE_GLOBAL }) {
 							width: 80,
 							cellRenderer: ({ rowIndex }) => rowIndex + 1
 						},
-						{ prop: "message", label: "告警信息" },
+						// { prop: "strategyName", label: "策略名称" },
+						{ prop: "warningDetail", label: "告警详情" },
 						{
 							prop: "status",
 							label: "告警状态",
@@ -198,10 +252,10 @@ export default async function ({ PRIVATE_GLOBAL }) {
 									that.warringStatus.find(
 										item => Number(item.value) === rowData?.status
 									)?.label ?? rowData.status;
-								return h("div", label);
+								return hDiv(label);
 							}
 						},
-						{ prop: "startTime", label: "告警时间" },
+						{ prop: "createTime", label: "告警时间" },
 						defTable.colActions({
 							width: 210,
 							cellRenderer({ rowData }) {
@@ -264,7 +318,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 									_opts.admin_db_audit.warringLevel.find(
 										item => item.value === rowData?.risk
 									)?.label ?? rowData.risk;
-								return h("div", label);
+								return hDiv(label);
 							}
 						},
 						{
@@ -290,7 +344,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 							prop: "risks",
 							label: "操作",
 							cellRenderer: ({ rowData }) => {
-								return h("xBtn", {
+								return hxBtn({
 									configs: {
 										label: "保存",
 										preset: "text",
@@ -304,12 +358,57 @@ export default async function ({ PRIVATE_GLOBAL }) {
 						}
 					]
 				}),
+				configsEmailTable: defTable({
+					isHideQuery: true,
+					isHideFilter: true,
+					onQuery(pagination) {
+						vm.handlexdsWarningEmailFind();
+					},
+					data: {
+						set: new Set(),
+						list: []
+					},
+					pagination: {
+						page: 1,
+						total: 0,
+						size: 10
+					},
+					columns: [
+						{
+							prop: "email",
+							label: "邮箱"
+						},
+						{
+							prop: "risks",
+							label: "操作",
+							cellRenderer: ({ rowData }) => {
+								return hxBtn({
+									configs: {
+										label: "删除",
+										preset: "text",
+										onClick() {
+											vm.handleDelEmail(rowData);
+										}
+									}
+								});
+							}
+						}
+					]
+				}),
 				btnSaveSFTP: {
 					label: "保存配置",
 					preset: "primary",
 					icon: "save",
 					onClick() {
 						return vm.handleSaveSFTP();
+					}
+				},
+				btnAddEmail: {
+					label: "添加报警邮箱",
+					preset: "primary",
+					icon: "save",
+					onClick() {
+						return vm.handleApplyEmail();
 					}
 				},
 				btnTestSFTP: {
@@ -342,6 +441,44 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			}
 		},
 		methods: {
+			async handleApplyEmail() {
+				const vm = this;
+				await _.$openModal({
+					title: "添加告警邮箱",
+					url: "@/views/security_adjust/alarm_management/alarm_management_dialog_apply_emali.vue",
+					parent: vm,
+					onOk() {
+						console.log("1");
+					}
+				});
+			},
+			async handleDelEmail(row) {
+				await _.$confirm({
+					title: "提示",
+					content: `是否确认删除所选邮箱？`
+				});
+				const { code, msg } = await _api.admin_db_audit.xdsWarningEmailDelete({
+					id: row.id
+				});
+				if (code === 0) {
+					_.$msgSuccess(msg);
+					this.handlexdsWarningEmailFind();
+				} else {
+					_.$msgError(msg);
+				}
+			},
+			async handlexdsWarningEmailFind() {
+				const {
+					data: { list = [], total = 0 }
+				} = await _api.admin_db_audit.xdsWarningEmailFind({
+					pageSize: this.configsEmailTable.pagination.size,
+					pageNum: this.configsEmailTable.pagination.page
+				});
+				_.$setTableData(this.configsEmailTable, {
+					list,
+					total
+				});
+			},
 			async handleSaveWarring(rowData) {
 				function handleSetKey(list = [], key = "") {
 					return list.includes(key) ? 1 : 0;
