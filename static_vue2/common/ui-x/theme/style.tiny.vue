@@ -726,7 +726,9 @@ body,
 
 	.el-alert {
 		border: 1px solid transparent;
-		color: var(--xAlert-color);
+		.el-alert__title {
+			color: var(--xAlert-color);
+		}
 
 		.el-alert__description {
 			color: var(--xAlert-color-desc);
