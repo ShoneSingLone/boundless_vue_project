@@ -6,7 +6,9 @@ const path = require("path");
 	const componentDirPath = path.resolve(rootPath, "static_vue2/common/libs/highlightstyles");
 	const componentDirArray = await fs.promises.readdir(componentDirPath);
 	/* 以x开头，以.vue结尾 */
-	const cssArray = componentDirArray.filter(name => /(.*).css$/.test(name)).map(name => String(name).match(/(.*).css/)[1]);
+	const cssArray = componentDirArray
+		.filter(name => /(.*).css$/.test(name))
+		.map(name => String(name).match(/(.*).css/)[1]);
 
 	const targetLessFile = path.resolve(rootPath, "highlightCss.less");
 	const targetCssOptionns = path.resolve(rootPath, "highlightCssOptions.text");
@@ -16,7 +18,10 @@ const path = require("path");
 	await fs.promises.writeFile(targetCssOptionns, "", "utf-8");
 
 	for await (const cssName of cssArray) {
-		const targetContent_Old = await fs.promises.readFile(path.resolve(componentDirPath, cssName + ".css"), "utf-8");
+		const targetContent_Old = await fs.promises.readFile(
+			path.resolve(componentDirPath, cssName + ".css"),
+			"utf-8"
+		);
 		const targetContent_New = `.${cssName} {
             ${targetContent_Old}
         }`;

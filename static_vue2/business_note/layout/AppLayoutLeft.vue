@@ -98,7 +98,7 @@ export default async function () {
 								[item.label]
 							);
 						}
-						return h("span", {}, [item.label]);
+						return hSpan({}, [item.label]);
 					}
 				}
 			};

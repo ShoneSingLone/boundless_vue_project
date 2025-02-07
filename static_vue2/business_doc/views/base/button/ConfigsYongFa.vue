@@ -35,7 +35,7 @@ export default async function () {
 				return {
 					...this.configs,
 					disabled() {
-						/*return h("div", { style: "color: red" }, [h("div", [i18n("展示disabled是字符的情况")]), h("div", [i18n(`返回vNode也可以`)])]); */
+						/*return hDiv( { style: "color: red" }, [hDiv( [i18n("展示disabled是字符的情况")]), hDiv( [i18n(`返回vNode也可以`)])]); */
 						return "disabled 返回的是字符串或者vNode，会有提示信息（disabled可以是方法，会用于watch）";
 					}
 				};

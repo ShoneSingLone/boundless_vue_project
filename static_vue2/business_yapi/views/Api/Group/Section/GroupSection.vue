@@ -4,8 +4,8 @@
 			<xAutoResizer :onResize="setSize">
 				<div class="flex">
 					<GroupSectionProjectList :style="cptListStyle" />
-					<div :style="cptDetailStyle">
-						<xBlock class="mb group-desc-wrapper" :bodyClass="{ 'flex middle': true }">
+					<div :style="cptDetailStyle" class="GroupInfoPanel flex vertical">
+						<xBlock class="group-desc-wrapper" :bodyClass="{ 'flex middle': true }">
 							<xRender :render="renderSwitchBtnGroup" />
 							<xGap f />
 							<xIcon icon="close" @click="closeGroupDetail" class="pointer" />
@@ -25,6 +25,7 @@ export default async function () {
 	const TAB_KEY_MEMBER_LIST = Vue._yapi_var.TAB_KEY_MEMBER_LIST;
 	const TAB_KEY_GROUP_LOG = Vue._yapi_var.TAB_KEY_GROUP_LOG;
 	const TAB_KEY_GROUP_WIKI = Vue._yapi_var.TAB_KEY_GROUP_WIKI;
+
 	const ADMIN = Vue._yapi_var.ADMIN;
 	const OWNER = Vue._yapi_var.OWNER;
 
@@ -64,6 +65,7 @@ export default async function () {
 					size: { width, height },
 					cptIsShowGroupInfo
 				} = this;
+
 				const style = {
 					width: width + "px",
 					height: height + "px",
@@ -71,7 +73,8 @@ export default async function () {
 					transition: `all 0.3s ease-in`
 				};
 				if (cptIsShowGroupInfo) {
-					style.transform = `translate(-50px, -50px)`;
+					style.filter = `blur(6px)`;
+					// style.transform = `translate(-50px, -50px)`;
 				}
 
 				return style;
@@ -131,14 +134,9 @@ export default async function () {
 		computed: {
 			cptViewList() {
 				if (this.APP.cptCurrentGroup.privateSpace) {
-					return [TAB_KEY_PROJECT_LIST, TAB_KEY_GROUP_LOG, TAB_KEY_GROUP_WIKI];
+					return [TAB_KEY_GROUP_LOG, TAB_KEY_GROUP_WIKI];
 				}
-				return [
-					TAB_KEY_PROJECT_LIST,
-					TAB_KEY_MEMBER_LIST,
-					TAB_KEY_GROUP_LOG,
-					TAB_KEY_GROUP_WIKI
-				];
+				return [TAB_KEY_MEMBER_LIST, TAB_KEY_GROUP_LOG, TAB_KEY_GROUP_WIKI];
 			},
 			cptGroupDesc() {
 				return `${this.APP.cptCurrentGroup?.group_desc || "分组简介"}`;
@@ -149,19 +147,12 @@ export default async function () {
 			btnEditGroup() {
 				const vm = this;
 				return {
-					// label: i18n("编辑分组"),
 					icon: "el-icon-edit",
 					shape: "circle",
-					onClick: vm.openGroupUpsertDialog
+					onClick() {
+						vm.Group.openGroupUpsertDialog(vm.APP.cptCurrentGroup);
+					}
 				};
-			},
-			canAddProject() {
-				const isGroupRoleAuth = [ADMIN, OWNER].includes(this.APP?.cptCurrentGroup?.role);
-				const _isShow = isGroupRoleAuth || [ADMIN, OWNER].includes(this.APP.user.role);
-				if (!_isShow) {
-					console.log("canAddProject", this.APP.user.role);
-				}
-				return _isShow;
 			},
 			cptGroupViewTabName() {
 				const { GroupViewTabName } = this.$route.query;
@@ -169,8 +160,8 @@ export default async function () {
 					return GroupViewTabName;
 				} else {
 					/* 不存在或者不存在当前角色列表，就默认第一个 */
-					this.APP.routerUpsertQuery({ GroupViewTabName: TAB_KEY_PROJECT_LIST });
-					return TAB_KEY_PROJECT_LIST;
+					this.APP.routerUpsertQuery({ GroupViewTabName: TAB_KEY_MEMBER_LIST });
+					return TAB_KEY_MEMBER_LIST;
 				}
 			}
 		},
@@ -181,12 +172,9 @@ export default async function () {
 					query: _.omit(this.$route.query, ["groupId"])
 				});
 			},
-			openGroupUpsertDialog() {
-				this.Group.openGroupUpsertDialog(this.APP.cptCurrentGroup);
-			},
 			genProjectCard(projectArray, isShow = false) {
 				const vm = this;
-				return h("div", { class: "flex like-float" }, [
+				return hDiv({ class: "flex like-float" }, [
 					_.map(projectArray, (projectData, index) => {
 						return h("YapiProjectCard", {
 							onChange() {
@@ -204,7 +192,7 @@ export default async function () {
 				return h(
 					"xBtnGroup",
 					_.map(vm.cptViewList, tabName => {
-						return h("xBtn", {
+						return hxBtn({
 							configs: {
 								label: tabName,
 								preset: vm.cptGroupViewTabName === tabName ? "blue" : "",

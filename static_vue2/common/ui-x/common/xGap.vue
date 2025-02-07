@@ -67,7 +67,7 @@ export default async function () {
 			}
 		},
 		render(h) {
-			return h("div", {
+			return hDiv({
 				style: this.gapStyle,
 				class: this.gapClass
 			});

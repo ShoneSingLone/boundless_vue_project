@@ -38,7 +38,7 @@ export default async function () {
 
 \`\`\`js
 // 默认
-Vue.prototype.$X_APP_THEME = $("html").attr("data-theme")
+PRIVATE_GLOBAL_app_theme = $("html").attr("data-theme")
 \`\`\`
 
 | 主题 | 说明 |
@@ -50,10 +50,10 @@ Vue.prototype.$X_APP_THEME = $("html").attr("data-theme")
 
 | 事件名 | 说明 |
 | --- | --- |
-| xUiThemeChange | 主题切换事件 |
+| x_ui_theme_change | 主题切换事件 |
 
 \`\`\`js
-$(window).on("xUiThemeChange", function(e, theme) {
+$(window).on("x_ui_theme_change", function(e, theme) {
   console.log(theme)
 });
 \`\`\`

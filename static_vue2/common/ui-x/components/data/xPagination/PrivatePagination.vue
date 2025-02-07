@@ -1,4 +1,354 @@
-<style lang="less"></style>
+<style lang="less">
+.el-pagination--small .arrow.disabled {
+	visibility: hidden;
+}
+
+.el-pagination {
+	white-space: nowrap;
+	padding: 2px 5px;
+	color: var(--el-text-color-primary);
+	font-weight: 700;
+}
+
+.el-pagination::after,
+.el-pagination::before {
+	display: table;
+	content: "";
+}
+
+.el-pagination::after {
+	clear: both;
+}
+
+.el-pagination button,
+.el-pagination span:not([class*="suffix"]) {
+	font-size: 13px;
+	min-width: 35.5px;
+	height: 28px;
+	line-height: 28px;
+	vertical-align: top;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.el-pagination .el-input__inner {
+	text-align: center;
+	-moz-appearance: textfield;
+	line-height: normal;
+}
+
+.el-pagination .el-input__suffix {
+	right: 0;
+	-webkit-transform: scale(0.8);
+	transform: scale(0.8);
+}
+
+.el-pagination .el-select .el-input {
+	width: 100px;
+	margin: 0 5px;
+}
+
+.el-pagination .el-select .el-input .el-input__inner {
+	padding-right: 25px;
+	border-radius: var(--border-radius--small);
+}
+
+.el-pagination button {
+	border: none;
+	padding: 0 6px;
+	background: 0 0;
+}
+
+.el-pagination button:focus {
+	outline: 0;
+}
+
+.el-pagination button:hover {
+	color: var(--el-color-primary);
+}
+
+.el-pagination button:disabled {
+	color: var(--el-text-color-disabled);
+	background-color: #fff;
+	cursor: not-allowed;
+}
+
+.el-pagination .btn-next,
+.el-pagination .btn-prev {
+	background: center center no-repeat #fff;
+	background-size: 16px;
+	cursor: pointer;
+	margin: 0;
+	color: var(--el-text-color-primary);
+}
+
+.el-pagination .btn-next .el-icon,
+.el-pagination .btn-prev .el-icon {
+	display: block;
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.el-pagination .btn-prev {
+	padding-right: 12px;
+}
+
+.el-pagination .btn-next {
+	padding-left: 12px;
+}
+
+.el-pagination .el-pager li.disabled {
+	color: var(--el-text-color-disabled);
+	cursor: not-allowed;
+}
+
+.el-pager li,
+.el-pager li.btn-quicknext:hover,
+.el-pager li.btn-quickprev:hover {
+	cursor: pointer;
+}
+
+.el-pagination--small .btn-next,
+.el-pagination--small .btn-prev,
+.el-pagination--small .el-pager li,
+.el-pagination--small .el-pager li.btn-quicknext,
+.el-pagination--small .el-pager li.btn-quickprev,
+.el-pagination--small .el-pager li:last-child {
+	border-color: transparent;
+	font-size: 12px;
+	line-height: 22px;
+	height: 22px;
+	min-width: 22px;
+}
+
+.el-pagination--small .more::before,
+.el-pagination--small li.more::before {
+	line-height: 24px;
+}
+
+.el-pagination--small button,
+.el-pagination--small span:not([class*="suffix"]) {
+	height: 22px;
+	line-height: 22px;
+}
+
+.el-pagination--small .el-pagination__editor,
+.el-pagination--small .el-pagination__editor.el-input .el-input__inner {
+	height: 22px;
+}
+
+.el-pagination__sizes {
+	margin: 0 10px 0 0;
+	font-weight: 400;
+	color: var(--el-text-color-regular);
+}
+
+.el-pagination__sizes .el-input .el-input__inner {
+	font-size: 13px;
+	padding-left: 8px;
+}
+
+.el-pagination__sizes .el-input .el-input__inner:hover {
+	border-color: var(--el-color-primary);
+}
+
+.el-pagination__total {
+	margin-right: 10px;
+	font-weight: 400;
+	color: var(--el-text-color-regular);
+}
+
+.el-pagination__jump {
+	margin-left: 24px;
+	font-weight: 400;
+	color: var(--el-text-color-regular);
+}
+
+.el-pagination__jump .el-input__inner {
+	padding: 0 3px;
+}
+
+.el-pagination__rightwrapper {
+	float: right;
+}
+
+.el-pagination__editor {
+	line-height: 18px;
+	padding: 0 2px;
+	height: 28px;
+	text-align: center;
+	margin: 0 2px;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	border-radius: var(--border-radius--small);
+}
+
+.el-pager,
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev {
+	padding: 0;
+}
+
+.el-pagination__editor.el-input {
+	width: 50px;
+}
+
+.el-pagination__editor.el-input .el-input__inner {
+	height: 28px;
+}
+
+.el-pagination__editor .el-input__inner::-webkit-inner-spin-button,
+.el-pagination__editor .el-input__inner::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li {
+	margin: 0 5px;
+	background-color: var(--el-color-info-light-9);
+	color: var(--el-text-color-regular);
+	min-width: 30px;
+	border-radius: var(--border-radius--mini);
+}
+
+.el-pagination.is-background .btn-next.disabled,
+.el-pagination.is-background .btn-next:disabled,
+.el-pagination.is-background .btn-prev.disabled,
+.el-pagination.is-background .btn-prev:disabled,
+.el-pagination.is-background .el-pager li.disabled {
+	color: var(--el-text-color-disabled);
+}
+
+.el-pagination.is-background .el-pager li:not(.disabled):hover {
+	color: var(--el-color-primary);
+}
+
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+	background-color: var(--el-color-primary);
+	color: #fff;
+}
+
+.el-dialog,
+.el-pager li {
+	background: #fff;
+	-webkit-box-sizing: border-box;
+}
+
+.el-pagination.is-background.el-pagination--small .btn-next,
+.el-pagination.is-background.el-pagination--small .btn-prev,
+.el-pagination.is-background.el-pagination--small .el-pager li {
+	margin: 0 3px;
+	min-width: 22px;
+}
+
+.el-pager,
+.el-pager li {
+	vertical-align: top;
+	margin: 0;
+	display: inline-block;
+}
+
+.el-pager {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	list-style: none;
+	font-size: 0;
+}
+.el-backtop,
+.el-page-header {
+	display: -webkit-box;
+	display: -ms-flexbox;
+}
+
+.el-pager .more::before {
+	line-height: 30px;
+}
+
+.el-pager li {
+	padding: 0 4px;
+	font-size: 13px;
+	min-width: 35.5px;
+	height: 28px;
+	line-height: 28px;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+.el-menu--collapse .el-menu .el-submenu,
+.el-menu--popup {
+	min-width: 200px;
+}
+
+.el-pager li.btn-quicknext,
+.el-pager li.btn-quickprev {
+	line-height: 28px;
+	color: var(--el-text-color-primary);
+}
+
+.el-pager li.btn-quicknext.disabled,
+.el-pager li.btn-quickprev.disabled {
+	color: var(--el-text-color-disabled);
+}
+
+.el-pager li.active + li {
+	border-left: 0;
+}
+
+.el-pager li:hover {
+	color: var(--el-color-primary);
+}
+
+.el-pager li.active {
+	color: var(--el-color-primary);
+	cursor: default;
+}
+
+.el-page-header {
+	display: flex;
+	line-height: 24px;
+}
+
+.el-page-header__left {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	cursor: pointer;
+	margin-right: 40px;
+	position: relative;
+}
+
+.el-page-header__left::after {
+	content: "";
+	position: absolute;
+	width: 1px;
+	height: 16px;
+	right: -20px;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+	background-color: #dcdfe6;
+}
+.el-page-header__left .el-icon-back {
+	font-size: 18px;
+	margin-right: 6px;
+	-ms-flex-item-align: center;
+	align-self: center;
+}
+
+.el-page-header__title {
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.el-page-header__content {
+	font-size: 18px;
+	color: var(--el-text-color-primary);
+}
+</style>
 <script lang="ts">
 export default async function () {
 	return defineComponent({
@@ -52,7 +402,7 @@ export default async function () {
 			if (this.hideOnSinglePage && (!this.internalPageCount || this.internalPageCount === 1))
 				return null;
 
-			let template = h("div", {
+			let template = hDiv({
 				class: [
 					"el-pagination flex middle center",
 					{ "is-background": this.background, "el-pagination--small": this.small }
@@ -77,7 +427,7 @@ export default async function () {
 				total: h("total", {})
 			};
 			const components = layout.split(",").map(item => item.trim());
-			const rightWrapper = h("div", {
+			const rightWrapper = hDiv({
 				class: "el-pagination__rightwrapper"
 			});
 			let haveRightWrapper = false;
@@ -114,7 +464,7 @@ export default async function () {
 						},
 						[
 							this.$parent.prevText
-								? h("span", [this.$parent.prevText])
+								? hSpan([this.$parent.prevText])
 								: h("i", {
 										class: "el-icon el-icon-arrow-left"
 									})
@@ -138,7 +488,7 @@ export default async function () {
 						},
 						[
 							this.$parent.nextText
-								? h("span", [this.$parent.nextText])
+								? hSpan([this.$parent.nextText])
 								: h("i", {
 										class: "el-icon el-icon-arrow-right"
 									})
@@ -260,7 +610,7 @@ export default async function () {
 			Total: {
 				render(h) {
 					if (_.isNumber(this.$parent.total)) {
-						return h("span", {
+						return hSpan({
 							class: "el-pagination__total",
 							children: i18n("el.pagination.total", {
 								total: this.$parent.total

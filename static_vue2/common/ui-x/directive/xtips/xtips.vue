@@ -191,10 +191,10 @@ export default async function () {
 			if (hasOwn(binding.value, "_btnInnerTips")) {
 				return;
 			} else {
-				if (_.$eqObj(binding.value, _.omit(oldValue, ["$reference"]))) {
+				if (_.$isEqualByObjVal(binding.value, _.omit(oldValue, ["$reference"]))) {
 					return;
 				}
-				if (_.$eqObj(binding.value, oldValue)) {
+				if (_.$isEqualByObjVal(binding.value, oldValue)) {
 					return;
 				}
 			}

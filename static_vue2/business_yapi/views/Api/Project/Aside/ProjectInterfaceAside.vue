@@ -125,7 +125,7 @@ export default async function () {
 				const itemClass = `ProjectInterfaceAside-node-item flex middle asideTreeItem id-${_id}`;
 				const iconName = (() => {
 					const strategy = {
-						all: "allCategory",
+						all: "all_category",
 						category: "subCategory",
 						interface: "subCategoryInterface"
 					};
@@ -157,7 +157,7 @@ export default async function () {
 					},
 					[
 						h("xIcon", { icon: `_${iconName}` }),
-						h("div", { staticClass: "node-name ml4" }, [title]),
+						hDiv({ staticClass: "node-name ml4" }, [title]),
 						h("xIcon", updateIconPorps),
 						h("xIcon", insertIconPorps)
 					]
@@ -181,8 +181,8 @@ export default async function () {
 						parent: this,
 						project_id: this.APP.cptProjectId,
 						categoryInfo,
-						allCategory: this.inject_project.allCategory,
-						getInterfaceList: this.inject_project.getInterfaceList
+						all_category: this.inject_project.all_category,
+						get_interface_list: this.inject_project.get_interface_list
 					}
 				);
 				_.$openWindow_deprecated(categoryInfo ? "修改分类" : "添加分类", DialogTypeVueSFC);
@@ -194,7 +194,7 @@ export default async function () {
 					parent: this,
 					project_id: this.APP.cptProjectId,
 					categoryInfo,
-					getInterfaceList: this.inject_project.getInterfaceList
+					get_interface_list: this.inject_project.get_interface_list
 				});
 			}
 		},

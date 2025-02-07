@@ -294,27 +294,25 @@ export default async function () {
 			} = this;
 
 			const children = (() => {
-				if ($slots.default) {
-					return $slots.default;
-				}
-
 				if (_.isFunction($vSlots.default)) {
 					return $vSlots.default();
 				}
+
+				if ($slots.default) {
+					return $slots.default;
+				}
 			})();
 			const title = (() => {
-				if ($slots.title) {
-					return $slots.title;
-				}
-
 				if (_.isFunction($vSlots.title)) {
 					return $vSlots.title();
+				} else if ($slots.title) {
+					return $slots.title;
 				}
 			})();
 
 			const popupMenu = h("transition", {
 				name: menuTransitionName,
-				children: h("div", {
+				children: hDiv({
 					ref: "menu",
 					class: [`el-menu--${mode}`, popperClass, opened ? "" : "display-none"],
 					onMouseenter: $event => this.handleMouseenter($event, 100),
@@ -362,26 +360,29 @@ export default async function () {
 				onMouseleave: () => this.handleMouseleave(false),
 				onFocus: this.handleMouseenter,
 				children: [
-					h("div", {
-						class: "el-submenu__title",
-						ref: "submenu-title",
-						onClick: this.handleClick,
-						onMouseenter: this.handleTitleMouseenter,
-						onMouseleave: this.handleTitleMouseleave,
-						style: [
-							paddingStyle,
-							titleStyle,
-							{
-								backgroundColor
-							}
-						],
-						children: [
-							title,
-							h("i", {
-								class: ["el-submenu__icon-arrow", submenuTitleIcon]
-							})
-						]
-					}),
+					(() => {
+						const props = {
+							class: "el-submenu__title",
+							ref: "submenu-title",
+							onClick: this.handleClick,
+							onMouseenter: this.handleTitleMouseenter,
+							onMouseleave: this.handleTitleMouseleave,
+							style: [
+								paddingStyle,
+								titleStyle,
+								{
+									backgroundColor
+								}
+							],
+							children: [
+								title,
+								h("i", {
+									class: ["el-submenu__icon-arrow", submenuTitleIcon]
+								})
+							]
+						};
+						return hDiv(props);
+					})(),
 					this.isMenuPopup ? popupMenu : inlineMenu
 				]
 			});

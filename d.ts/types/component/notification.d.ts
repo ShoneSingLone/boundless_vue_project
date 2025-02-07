@@ -11,7 +11,7 @@ export declare class ElNotificationComponent extends Vue {
 
 export interface ElNotificationOptions {
 	/** Title */
-	title: string;
+	title: string | false;
 
 	/** Description text */
 	message: string | (() => VNode | VNode[]);

@@ -102,7 +102,7 @@ export default async function ({ onOk, projectData }) {
 											style: "width:100%"
 										},
 										[
-											h("div", { staticClass: "card-danger-content" }, [
+											hDiv({ staticClass: "card-danger-content" }, [
 												h("p", [
 													i18n(
 														"分组一旦删除，将无法恢复数据，请慎重操作！"
@@ -110,8 +110,8 @@ export default async function ({ onOk, projectData }) {
 												]),
 												h("p", [i18n("只有超级管理员有权限删除分组。")])
 											]),
-											h("div", { staticClass: "flex end" }, [
-												h("xBtn", {
+											hDiv({ staticClass: "flex end" }, [
+												hxBtn({
 													configs: {
 														preset: "danger",
 														label: "删除分组",

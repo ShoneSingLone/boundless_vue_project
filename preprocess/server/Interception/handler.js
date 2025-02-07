@@ -1,9 +1,7 @@
 const path = require("path");
 const _ = require("lodash");
 const fs = require("fs");
-const {
-	requestProxyHandler: getRequestResourceResponse
-} = require("./Interception.proxy");
+const { requestProxyHandler: getRequestResourceResponse } = require("./Interception.proxy");
 const { _n } = require("@ventose/utils-node");
 const { APP_NAME, MAIN_DOMAIN } = require("./baseConfigs");
 const pathD = _n.getPathD(__dirname);
@@ -96,8 +94,7 @@ async function proxyLocalFile(req) {
 	/* 静态资源的目录 */
 	const matchedStaticResourceArray = String(req._url).match(regexp);
 
-	let matchFilePath =
-		matchedStaticResourceArray && matchedStaticResourceArray[1];
+	let matchFilePath = matchedStaticResourceArray && matchedStaticResourceArray[1];
 	if (matchFilePath) {
 		let body = "";
 		matchFilePath = (() => {
@@ -112,10 +109,7 @@ async function proxyLocalFile(req) {
 			return matchFilePath;
 		})();
 
-		const TARGET_FILE_PATH = _n.pathR(
-			__dirname,
-			`../src/static/${matchFilePath}`
-		);
+		const TARGET_FILE_PATH = _n.pathR(__dirname, `../src/static/${matchFilePath}`);
 
 		res = await getStaticResourceResponse(req, TARGET_FILE_PATH);
 	} else {
@@ -146,10 +140,7 @@ async function proxyLocalFile(req) {
 	} catch (error) {
 		const _url = String(req._url);
 		if (/Error: miss/.test(error.stack)) {
-			console.log(
-				"本地无法提供 ",
-				_url.length > 200 ? _url.substring(0, 200) : _url
-			);
+			console.log("本地无法提供 ", _url.length > 200 ? _url.substring(0, 200) : _url);
 		} else {
 			console.log("error🚀", error);
 		}
@@ -182,11 +173,7 @@ exports.handleRequest = async req => {
 		new RegExp(`\/${MAIN_DOMAIN}\/${APP_NAME}(.*)`)
 	);
 	/* app entry 入口*/
-	if (
-		isIndexPageArray &&
-		isIndexPageArray[1] &&
-		/^\/\?agencyId/.test(isIndexPageArray[1])
-	) {
+	if (isIndexPageArray && isIndexPageArray[1] && /^\/\?agencyId/.test(isIndexPageArray[1])) {
 		await getAppIndex(req, APP_NAME);
 		isContinue = false;
 	} else {

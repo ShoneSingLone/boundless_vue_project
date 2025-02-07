@@ -183,7 +183,8 @@ export default async function () {
 				return _.$openModal({
 					title: "video player",
 					url: "@/views/explore/execTools/video/VideoPlayer.dialog.vue",
-					uri
+					uri,
+					item: record
 				});
 			}
 
@@ -208,7 +209,7 @@ export default async function () {
 				let uri = encodeURIComponent(JSON.stringify(path));
 				stateAudio.songId = name;
 				stateAudio.audio.src = Vue._common_utils.appendToken(
-					`${window._URL_PREFIX_4_DEV || ""}/api/resource/audio?uri=${uri}`
+					`${window._AJAX_URL_PREFIX || ""}/api/resource/audio?uri=${uri}`
 				);
 				await canPlay();
 				stateAudio.audio.play();

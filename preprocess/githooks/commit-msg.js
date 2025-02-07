@@ -4,7 +4,6 @@ const [hooksName, msgPath] = process.argv.slice(2);
 console.log("🚀 ~ hooksName, msgPath:", hooksName, msgPath);
 if (!msgPath) {
 	process.exit(1);
-
 }
 const msg = require("fs").readFileSync(msgPath, "utf-8").trim();
 // const commitRE = /^(feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|release|workflow)(\(.+\))?: .{1,50}/;
@@ -16,12 +15,13 @@ const msg = require("fs").readFileSync(msgPath, "utf-8").trim();
 (async () => {
 	/* https://www.jianshu.com/p/b2fec735e7cf */
 	// const msg = await execLog(`git show -s --format=%s`);
-	const commitRE = /^(sync|feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|release|workflow)(\(.+\))?: .{1,500}/;
+	const commitRE =
+		/^(sync|feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|release|workflow)(\(.+\))?: .{1,500}/;
 
 	let isFail = !commitRE.test(msg);
 	if (!isFail) {
 		const [, type, scope] = String(msg).match(commitRE);
-		const sepcial = ["xUI", "common", "sync"];
+		const sepcial = ["xUI", "common", "sync", "readme"];
 		const allowBusiness = [...sepcial, ...APP_NAME_ARRAY];
 		const [isNameOk, businessName] = (() => {
 			/* 不需要lint */

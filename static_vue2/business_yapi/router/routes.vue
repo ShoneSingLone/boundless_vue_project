@@ -6,8 +6,14 @@ export default async function () {
 		}
 	};
 	return [
-		_.$newRoute("/i18n", "@/views/I18n/I18n.vue"),
+		_.$newRoute("/demo_test", "@/views/demo/test.vue"),
+		_.$newRoute("/user", "@/views/User/ViewUser.vue"),
+		_.$newRoute("/i18n", "@/views/I18n/I18nLayout.vue", {
+			redirect: "/i18n/all",
+			children: [_.$newRoute("/i18n/all", "@/views/I18n/I18n.vue")]
+		}),
 		_.$newRoute("/note", "@/views/Note/Note.vue"),
+		_.$newRoute("/im", "@/views/im/Im.vue"),
 		_.$newRoute("/rtc", "@/views/Rtc/ViewRtc.vue", {
 			children: [
 				_.$newRoute("/rtc/demo", "@/views/Rtc/ViewRtcDemo.vue"),

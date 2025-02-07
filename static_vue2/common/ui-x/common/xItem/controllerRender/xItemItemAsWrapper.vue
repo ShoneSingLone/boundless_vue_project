@@ -40,7 +40,7 @@ export default async function () {
 									},
 									["*"]
 								),
-								h("span", { staticClass: "xItem_label-text" }, [
+								hSpan({ staticClass: "xItem_label-text" }, [
 									"X_ITEM_LABEL_IS_EMPTY" === vm.cpt_label ? "" : vm.cpt_label
 								]),
 								h(
@@ -65,7 +65,7 @@ export default async function () {
 							"div",
 							{
 								class: {
-									xItem_controller: true,
+									"xItem_controller overflow-hidden": true,
 									"el-form-item is-error": !!vm.errorTips
 								}
 							},
@@ -93,7 +93,7 @@ export default async function () {
 					]
 				),
 				/* 信息提示 */
-				h("div", { vIf: vm.calMsg(), staticClass: "xItem-msg" }, [vm.calMsg()])
+				hDiv({ vIf: vm.calMsg(), staticClass: "xItem-msg" }, [vm.calMsg()])
 			]
 		);
 	};

@@ -1,7 +1,6 @@
 const { path, _, _n, fs } = require("../preprocess.utils");
 const axios = require("axios");
 
-
 const pathD = _n.getPathD(__dirname);
 
 const [APP_NAME] = process.argv.slice(2);
@@ -19,19 +18,22 @@ async function scanFile(fileurl) {
 
 	/* "" */
 	needToTrans = matchTarget(needToTrans, {
-		content, fileurl,
+		content,
+		fileurl,
 		regTest: () => /i18n\("([^\(.]*?)"\)/g,
 		regMatch: () => /i18n\("([^\(.]*?)"\)/
 	});
 	/* '' */
 	needToTrans = matchTarget(needToTrans, {
-		content, fileurl,
+		content,
+		fileurl,
 		regTest: () => /i18n\('([^\(.]*?)'\)/g,
 		regMatch: () => /i18n\('([^\(.]*?)'\)/
 	});
 	/* `` */
 	needToTrans = matchTarget(needToTrans, {
-		content, fileurl,
+		content,
+		fileurl,
 		regTest: () => /i18n\(`([^\(.]*?)`\)/g,
 		regMatch: () => /i18n\(`([^\(.]*?)`\)/
 	});
@@ -42,7 +44,10 @@ async function scanFile(fileurl) {
 		console.log('🚀:', '', JSON.stringify(needToTrans, null, 2));
 		return;
 	 */
-	const [dirs, files] = await _n.asyncAllDirAndFile([sourceCodeDir]);
+	const [dirs, files] = await _n.asyncAllDirAndFile([
+		pathD(`../../static_vue2/common`),
+		sourceCodeDir
+	]);
 	let file;
 	while ((file = files.pop())) {
 		if ([`.js`, ".html", ".vue"].includes(path.extname(file))) {
@@ -51,12 +56,11 @@ async function scanFile(fileurl) {
 	}
 
 	const targetCodeDir = pathD(`../../static_vue2/business_${APP_NAME}/i18n/unset.i18n.json`);
-	let content = await Promise.all(_n.map(
-		needToTrans,
-		async (fileurl, prop) => {
+	let content = await Promise.all(
+		_n.map(needToTrans, async (fileurl, prop) => {
 			let item = {
 				zhCn: prop,
-				enUs: "unset_unset_unset"
+				enUs: "unset_unset_unset_unset_unset_unset"
 			};
 			const res = await axios({
 				url: "http://10.143.133.216:3001/api/i18n/get",
@@ -69,17 +73,28 @@ async function scanFile(fileurl) {
 				item = res?.data?.data;
 			}
 
+			const keyvalString = (() => {
+				try {
+					let a = {};
+					a[prop] = [item.zhCn, item.enUs];
+					let b = JSON.stringify(a);
+					return b.slice(1, b.length - 1);
+				} catch (error) {
+					return item.zhCn;
+				}
+			})();
+
 			if (fileurl.length > 1) {
-				return `/*\n${fileurl.join("\n")}\n*/\n"${prop}":["${item.zhCn}","${item.enUs}"],`;
+				return `/*\n${fileurl.join("\n")}\n*/\n${keyvalString},`;
 			} else {
-				return `"${prop}":["${item.zhCn}","${item.enUs}"],`;
+				return `\n${keyvalString},`;
 			}
-		}));
+		})
+	);
 
 	content = content.join("\n");
 
-	await fs.promises.writeFile(targetCodeDir, `{${content}}`
-	);
+	await fs.promises.writeFile(targetCodeDir, `{${content}}`);
 })();
 
 function matchTarget(_needToTrans = {}, { content, fileurl, regTest, regMatch }) {
@@ -99,4 +114,3 @@ function matchTarget(_needToTrans = {}, { content, fileurl, regTest, regMatch })
 	});
 	return _needToTrans;
 }
-

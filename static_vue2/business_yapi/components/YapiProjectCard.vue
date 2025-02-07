@@ -25,7 +25,7 @@ export default async function () {
 				return (
 					this.imageUrl ||
 					Vue._common_utils.appendToken(
-						`${window._URL_PREFIX_4_DEV || ""}/api/user/avatar?uid=${this.projectData._id}&usedBy=project`
+						`${window._AJAX_URL_PREFIX || ""}/api/user/avatar?uid=${this.projectData._id}&usedBy=project`
 					)
 				);
 			},
@@ -90,11 +90,11 @@ export default async function () {
 							})
 						}
 					},
-					[h("div", { class: "ui-logo", style: this.iconStyle })]
+					[hDiv({ class: "ui-logo", style: this.iconStyle })]
 				);
 			},
 			title() {
-				return h("div", { staticClass: "ui-title flex middle center" }, [
+				return hDiv({ staticClass: "ui-title flex middle center" }, [
 					this.projectData.name || this.projectData.projectname
 				]);
 			}

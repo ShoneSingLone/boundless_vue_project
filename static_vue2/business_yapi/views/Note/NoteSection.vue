@@ -100,7 +100,7 @@ export default async function () {
 						},
 						{ title: vm.editingWikiTitle }
 					);
-					await _api.yapi.wikiUpsertOne(params);
+					await _api.yapi.wiki_upsert_one(params);
 					vm.inject_note.currentWiki = {};
 					await vm.inject_note.updateWikiMenuList();
 					await vm.inject_note.updateCurrentWiki();

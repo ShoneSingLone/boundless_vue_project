@@ -3,7 +3,6 @@
 	width: 100%;
 	margin: auto;
 	max-height: 200px;
-	overflow: auto;
 	.CloudDiskTransferDetail-cell {
 		display: inline-block;
 		width: 4px;
@@ -18,12 +17,8 @@
 </style>
 <template>
 	<div class="CloudDiskTransferDetail flex vertical">
-		<div>{{ cptLabel }}</div>
 		<div class="pl pr flex middle">
-			<xSlider :value="cptValue" disabled class="flex1 mr" /><span
-				style="width: 60px; font-size: 12px"
-				>{{ cptProcess }}</span
-			>
+			<xProgress :percentage="cptValue" disabled class="flex1 mr" />
 		</div>
 	</div>
 </template>

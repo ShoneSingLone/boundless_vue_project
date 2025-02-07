@@ -3,8 +3,8 @@
 	<xBlock
 		v-if="isShow"
 		class="flex1 mt"
-		:bodyClass="{ height100: true }"
-		:style="{ height: '1px' }">
+		:bodyClass="{ height100: true, flex: 1 }"
+		:style="{ height: '100%' }">
 		<YapiNoteComponent />
 	</xBlock>
 </template>

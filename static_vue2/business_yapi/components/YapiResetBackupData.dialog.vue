@@ -38,7 +38,7 @@ export default async function ({ selected, callBack }) {
 							await vm.update(id);
 						}
 
-						vm.inject_project.getInterfaceList();
+						vm.inject_project.get_interface_list();
 						vm.closeModal();
 					}
 				};

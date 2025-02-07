@@ -13,6 +13,158 @@
 		opacity: 0.5;
 	}
 }
+
+.el-drawer {
+	position: absolute;
+	box-sizing: border-box;
+	background-color: #fff;
+	display: flex;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-shadow:
+		0 8px 10px -5px rgba(0, 0, 0, 0.2),
+		0 16px 24px 2px rgba(0, 0, 0, 0.14),
+		0 6px 30px 5px rgba(0, 0, 0, 0.12);
+	box-shadow:
+		0 8px 10px -5px rgba(0, 0, 0, 0.2),
+		0 16px 24px 2px rgba(0, 0, 0, 0.14),
+		0 6px 30px 5px rgba(0, 0, 0, 0.12);
+	outline: 0;
+}
+
+.el-drawer__body > *,
+.el-empty {
+	-webkit-box-sizing: border-box;
+}
+
+.el-drawer.ltr,
+.el-drawer.rtl,
+.el-drawer__container {
+	top: 0;
+	bottom: 0;
+	height: 100%;
+}
+
+.el-drawer.rtl {
+	-webkit-animation: rtl-drawer-out 0.3s;
+	animation: rtl-drawer-out 0.3s;
+	right: 0;
+}
+
+.el-drawer__open .el-drawer.rtl {
+	-webkit-animation: rtl-drawer-in 0.3s 1ms;
+	animation: rtl-drawer-in 0.3s 1ms;
+}
+
+.el-drawer.ltr {
+	-webkit-animation: ltr-drawer-out 0.3s;
+	animation: ltr-drawer-out 0.3s;
+	left: 0;
+}
+
+.el-drawer__open .el-drawer.ltr {
+	-webkit-animation: ltr-drawer-in 0.3s 1ms;
+	animation: ltr-drawer-in 0.3s 1ms;
+}
+
+.el-drawer.ttb {
+	-webkit-animation: ttb-drawer-out 0.3s;
+	animation: ttb-drawer-out 0.3s;
+	top: 0;
+}
+
+.el-drawer__open .el-drawer.ttb {
+	-webkit-animation: ttb-drawer-in 0.3s 1ms;
+	animation: ttb-drawer-in 0.3s 1ms;
+}
+
+.el-drawer.btt {
+	-webkit-animation: btt-drawer-out 0.3s;
+	animation: btt-drawer-out 0.3s;
+	bottom: 0;
+}
+
+.el-drawer__open .el-drawer.btt {
+	-webkit-animation: btt-drawer-in 0.3s 1ms;
+	animation: btt-drawer-in 0.3s 1ms;
+}
+
+.el-drawer__wrapper {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	overflow: hidden;
+	margin: 0;
+}
+
+.el-drawer__header {
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	color: #72767b;
+	display: flex;
+	// margin-bottom: 32px;
+	padding: 20px 20px 0;
+}
+
+.el-drawer__header > :first-child {
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+}
+
+.el-drawer__title {
+	margin: 0;
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	line-height: inherit;
+	font-size: 1rem;
+}
+
+.el-drawer__close-btn {
+	border: none;
+	cursor: pointer;
+	font-size: 20px;
+	color: inherit;
+	background-color: transparent;
+}
+
+.el-drawer__body {
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	overflow: auto;
+}
+
+.el-drawer__body > * {
+	box-sizing: border-box;
+}
+
+.el-drawer.btt,
+.el-drawer.ttb {
+	width: 100%;
+	left: 0;
+	right: 0;
+}
+
+.el-drawer__container {
+	position: relative;
+	left: 0;
+	right: 0;
+	width: 100%;
+}
+
+.el-drawer-fade-enter-active {
+	-webkit-animation: el-drawer-fade-in 0.3s;
+	animation: el-drawer-fade-in 0.3s;
+}
+
+.el-drawer-fade-leave-active {
+	animation: el-drawer-fade-in 0.3s reverse;
+}
 </style>
 <template>
 	<transition name="el-drawer-fade" @after-enter="afterEnter" @after-leave="afterLeave">

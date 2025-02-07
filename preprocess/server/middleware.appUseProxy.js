@@ -1,65 +1,64 @@
 // 中间件 /middleware/httpProxy.js
-const axios = require('axios');
-const qs = require('qs');
+const axios = require("axios");
+const qs = require("qs");
 
 exports.useProxy = (opts = {}) => {
-    return (ctx, next) => {
-        let isUseProxy = (() => {
-            if (/yapi_4_dev/.test(ctx.path)) {
-                return true;
-            }
-        })();
+	return (ctx, next) => {
+		let isUseProxy = (() => {
+			if (/yapi_4_dev/.test(ctx.path)) {
+				return true;
+			}
+		})();
 
-        if (isUseProxy) {
-            return proxy(ctx, opts);
-        } else {
-            return next();
-        }
-    };
+		if (isUseProxy) {
+			return proxy(ctx, opts);
+		} else {
+			return next();
+		}
+	};
 };
 
 function proxy(ctx, opts) {
+	let params = Object.assign({}, { host: opts.apiHost || "" });
 
-    let params = Object.assign({}, { host: opts.apiHost || '' });
+	let reqParams = Object.assign({}, params, formatReqParams(ctx, params));
+	if (reqParams.method.toUpperCase() !== "GET") {
+		reqParams.data = params.data || ctx.request.body;
+	}
+	// application/x-www-form-urlencoded形式转发参数乱码修改
+	if (qs.stringify(ctx.request.body)) {
+		reqParams = { ...reqParams, data: qs.stringify(ctx.request.body) };
+	}
 
-    let reqParams = Object.assign({}, params, formatReqParams(ctx, params));
-    if (reqParams.method.toUpperCase() !== 'GET') {
-        reqParams.data = params.data || ctx.request.body;
-    }
-    // application/x-www-form-urlencoded形式转发参数乱码修改
-    if (qs.stringify(ctx.request.body)) {
-        reqParams = { ...reqParams, data: qs.stringify(ctx.request.body) };
-    }
-
-    delete reqParams.headers.host;
-    return axios(reqParams)
-        .then(res => {
-            const { data, headers } = res;
-            setResCookies(ctx, headers);
-            debugger;
-            return data;
-        })
-        .catch(err => {
-            debugger;
-            // console.log(err)
-            return err;
-        });
+	delete reqParams.headers.host;
+	return axios(reqParams)
+		.then(res => {
+			const { data, headers } = res;
+			setResCookies(ctx, headers);
+			debugger;
+			return data;
+		})
+		.catch(err => {
+			debugger;
+			// console.log(err)
+			return err;
+		});
 }
 function setResCookies(ctx, headers) {
-    const resCookies = headers['set-cookie'];
+	const resCookies = headers["set-cookie"];
 
-    if (!headers || !resCookies || !resCookies.length || resCookies.length <= 0 || !resCookies[0]) {
-        return;
-    }
+	if (!headers || !resCookies || !resCookies.length || resCookies.length <= 0 || !resCookies[0]) {
+		return;
+	}
 
-    ctx.res._headers = ctx.res._headers || {};
-    ctx.res._headerNames = ctx.res._headerNames || {};
+	ctx.res._headers = ctx.res._headers || {};
+	ctx.res._headerNames = ctx.res._headerNames || {};
 
-    ctx.res._headers['set-cookie'] = ctx.res._headers['set-cookie'] || [];
-    ctx.res._headers['set-cookie'] =
-        ctx.res._headers['set-cookie'].concat && ctx.res._headers['set-cookie'].concat(resCookies);
+	ctx.res._headers["set-cookie"] = ctx.res._headers["set-cookie"] || [];
+	ctx.res._headers["set-cookie"] =
+		ctx.res._headers["set-cookie"].concat && ctx.res._headers["set-cookie"].concat(resCookies);
 
-    ctx.res._headerNames['set-cookie'] = 'set-cookie';
+	ctx.res._headerNames["set-cookie"] = "set-cookie";
 }
 
 /**
@@ -67,21 +66,19 @@ function setResCookies(ctx, headers) {
  * @param  {} params 请求参数
  */
 function formatReqParams(ctx, params) {
-    let { url, method, headers, protocol } = ctx;
-    const { host } = params;
-    const hasProtocol = /(http|s):\/\//;
+	let { url, method, headers, protocol } = ctx;
+	const { host } = params;
+	const hasProtocol = /(http|s):\/\//;
 
-    url = params.url || url;
-    method = params.method || method;
-    protocol = hasProtocol.test(url) ? url.split(':')[0] : params.protocol || protocol;
+	url = params.url || url;
+	method = params.method || method;
+	protocol = hasProtocol.test(url) ? url.split(":")[0] : params.protocol || protocol;
 
-    url = `${protocol}://${host}${url}`;
-    delete params.host;
+	url = `${protocol}://${host}${url}`;
+	delete params.host;
 
-    return { url, method, protocol, headers };
+	return { url, method, protocol, headers };
 }
-
-
 
 // // 注册及使用 app.js
 // const httpProxy = require('./middleware/httpProxy');

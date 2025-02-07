@@ -263,7 +263,7 @@ export default async function ({
 
 								if (resource) {
 									let { unit } = resource;
-									return h("span", { class: "ml8" }, [unit.zh_cn]);
+									return hSpan({ class: "ml8" }, [unit.zh_cn]);
 								}
 								return null;
 							}

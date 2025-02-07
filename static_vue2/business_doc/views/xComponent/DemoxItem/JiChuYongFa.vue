@@ -50,7 +50,7 @@ export default async function () {
 						// value: "1
 						tips: "提示信息",
 						msg() {
-							return h("div", [h("xTag", ["msg"]), "提示信息"]);
+							return hDiv([h("xTag", ["msg"]), "提示信息"]);
 						},
 						onEnter() {
 							_.$msgSuccess("enter 事件");

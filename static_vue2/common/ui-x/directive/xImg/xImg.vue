@@ -1,4 +1,5 @@
-<style lang="less"></style>
+<style lang="less">
+</style>
 <template>
 	<div class="el-image">
 		<slot v-if="loading" name="placeholder">

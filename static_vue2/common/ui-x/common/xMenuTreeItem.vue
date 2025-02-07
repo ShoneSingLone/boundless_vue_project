@@ -38,7 +38,7 @@ export default async function () {
 						return props.renders?.label.call(vm, { item: vm.item });
 					}
 
-					return h("div", { staticClass: "el-submenu__title-text" }, [vm.cptLabel]);
+					return hDiv({ staticClass: "el-submenu__title-text" }, [vm.cptLabel]);
 				},
 				toggle() {
 					/* 如果折叠就不跳转 */
@@ -101,12 +101,15 @@ export default async function () {
 			level = Number(level || 0);
 			folderIcon = folderIcon || "xMenuTreeItemFolderIcon";
 			collapse = !!collapse;
+			const vm = this;
 
 			return h(
 				"div",
 				mergeProps4h([
 					$attrs,
-					{ attrs: $attrs },
+					{
+						attrs: $attrs
+					},
 					{
 						class: {
 							"xMenuTreeItem el-menu": true,
@@ -114,7 +117,11 @@ export default async function () {
 							open: state.isOpen,
 							collapse: collapse
 						},
-						attrs: { role: "menubar", "data-nest-level": level }
+						attrs: {
+							role: "menubar",
+							"data-nest-level": level,
+							"data-href-key": _.camelCase(item.href)
+						}
 					}
 				]),
 				[
@@ -135,7 +142,11 @@ export default async function () {
 											if (item.DO_NOT_TO) {
 												return;
 											}
-											$router.push({ path: item.href });
+											if (_.isFunction(item.beforePush)) {
+												return item.beforePush.call(vm, item);
+											} else {
+												$router.push({ path: item.href });
+											}
 										}
 									}
 								},
@@ -146,7 +157,7 @@ export default async function () {
 										attrs: { icon: item?.icon }
 									}),
 									scopeSlotsDefault({ item }),
-									h("xGap", { attrs: { f: "" } }),
+									h("xGap", { vIf: isFolder, attrs: { f: "" } }),
 									h("xIcon", {
 										vIf: isFolder,
 										class: cptClassFolderIcon,
@@ -193,9 +204,13 @@ export default async function () {
 </script>
 
 <style lang="less">
+.xMenuTreeItem {
+}
+
 .xMenuTreeItem-submenu-wrapper {
 	display: flex;
 	align-items: center;
+	position: relative;
 }
 .xMenuTreeItem-submenu-icon {
 	margin-right: var(--ui-half);

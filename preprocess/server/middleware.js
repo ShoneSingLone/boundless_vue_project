@@ -20,7 +20,6 @@ function appUseProxy(app) {
 	app.use(router.allowedMethods());
 }
 
-
 function openInBrowser(lan) {
 	if (openInBrowser.timer) {
 		clearTimeout(openInBrowser.timer);
@@ -34,7 +33,6 @@ function openInBrowser(lan) {
 			console.log(title);
 		} catch (error) {
 			console.log(title, error);
-
 		}
 	}, 2000 * 1);
 }
@@ -43,7 +41,7 @@ let server;
 
 function appRun(app) {
 	server = app.listen(SERVER_PORT);
-	server.on("error", async (error) => {
+	server.on("error", async error => {
 		console.log("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀", `端口${SERVER_PORT}被占用`);
 		server.close();
 		await execCmd(`kill-port ${SERVER_PORT}`);

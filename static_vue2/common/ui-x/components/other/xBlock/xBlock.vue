@@ -57,7 +57,7 @@ export default async function () {
 					return this.$scopedSlots.header();
 				}
 				if (this.header) {
-					const vNode = h("span", { class: "card__header" }, [i18n(this.header)]);
+					const vNode = hSpan({ class: "card__header" }, [i18n(this.header)]);
 					return vNode;
 				}
 				return "";
@@ -65,7 +65,7 @@ export default async function () {
 		},
 		render() {
 			const header = this.vDomHeader();
-			return h("div", { class: this.getClass({ xBlock: true, "el-card": true }) }, [
+			return hDiv({ class: this.getClass({ xBlock: true, "el-card": true }) }, [
 				h(
 					"div",
 					{

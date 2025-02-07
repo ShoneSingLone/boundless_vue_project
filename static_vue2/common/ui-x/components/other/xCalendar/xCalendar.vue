@@ -114,7 +114,7 @@ export default async function () {
 			cellRenderProxy({ text, type }) {
 				let render = this.elCalendar.$scopedSlots.dateCell;
 				if (!render)
-					return h("span", {
+					return hSpan({
 						children: text
 					});
 				const day = this.getFormateDate(text, type);
@@ -243,7 +243,7 @@ export default async function () {
 											{
 												class: this.getCellClass(cell),
 												onClick: this.pickDay.bind(this, cell),
-												children: h("div", {
+												children: hDiv({
 													class: "el-calendar-day",
 													children: this.cellRenderProxy(cell)
 												})

@@ -154,7 +154,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 
 			checkboxSize() {
 				const temCheckboxSize =
-					this.size || this._elFormItemSize || PRIVATE_GLOBAL.x_ui_size;
+					this.size || this._elFormItemSize || PRIVATE_GLOBAL.x_ui.size;
 				return this.isGroup
 					? this._checkboxGroup.checkboxGroupSize || temCheckboxSize
 					: temCheckboxSize;

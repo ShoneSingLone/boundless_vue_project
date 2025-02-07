@@ -1,12 +1,11 @@
 const { PROXY_TARGETS, APP_CONFIGS, SERVER_PORT } = require("../../../PRIVATE_CONFIGS.js");
 
-
 /* 
 exports.APP_CONFIGS = {
     // index.html 里面的 data-app-name="app_name"
     app_name: {
         // 自定义前缀请求前缀:app_request_prefix/mock/666
-        _URL_PREFIX_4_DEV: "app_request_prefix"
+        _AJAX_URL_PREFIX: "app_request_prefix"
     },
 };
 
@@ -28,6 +27,5 @@ exports.PROXY_TARGETS = {
 exports.SERVER_PORT = SERVER_PORT || 3002;
 exports.APP_CONFIGS = APP_CONFIGS;
 exports.PROXY_OPTIONS = {
-    targets: PROXY_TARGETS
+	targets: PROXY_TARGETS
 };
-

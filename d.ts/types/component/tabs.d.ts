@@ -1,7 +1,7 @@
 import { ElementUIComponent } from "./component";
 
 export type TabType = "card" | "border-card";
-export type TabPosition = "top" | "right" | "bottom" | "left";
+export type TabPosition = "top" | "right" | "bottom" | "left" | "center";
 
 /** Divide data collections which are related yet belong to different types */
 export declare class ElTabs extends ElementUIComponent {

@@ -52,7 +52,7 @@ export default async function () {
 					rules: [_rules.required()],
 					itemSlots: {
 						afterController() {
-							return h("span", { class: "ml8" }, ["台"]);
+							return hSpan({ class: "ml8" }, ["台"]);
 						}
 					}
 				},

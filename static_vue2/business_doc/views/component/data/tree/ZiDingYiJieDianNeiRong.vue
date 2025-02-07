@@ -51,7 +51,7 @@ export default async function () {
 					},
 					[
 						node.isLeaf
-							? h("span", { staticClass: "mr" }, ["leaf"])
+							? hSpan({ staticClass: "mr" }, ["leaf"])
 							: h("xIcon", { icon: "tips", staticClass: "mr" }),
 						node.label
 					]

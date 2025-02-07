@@ -12,47 +12,12 @@
 			</template>
 			<!-- 名称或者路径 -->
 			<template #right>
-				<xAdvancedSearch
-					mountTo="#AdvancedSearch"
-					:collapse="isAdvancedSearchCollapse"
-					@change="handleAdvancedSearchCollapse">
-					<xBlock class="mt">
-						<xForm>
-							<xItem :configs="inject_project_interface_section.form.path" />
-							<xItem :configs="inject_project_interface_section.form.catid" />
-							<xItem :configs="inject_project_interface_section.form.method" />
-							<xItem :configs="inject_project_interface_section.form.tag" />
-							<xItem :configs="inject_project_interface_section.form.isUseBackup" />
-							<xItem :configs="inject_project_interface_section.form.witchEnv" />
-							<div class="flex end width100" span="2">
-								<xBtn :configs="btnRest" class="ml4" />
-								<xBtn
-									preset="primary"
-									@click="
-										inject_project_interface_section.configsTable.onQuery({
-											page: 1
-										})
-									"
-									>查询</xBtn
-								>
-							</div>
-						</xForm>
-					</xBlock>
-					<template #collapse>
-						<div class="flex middle mr8">
-							<xItem :configs="inject_project_interface_section.form.path" />
-							<xBtn
-								preset="primary"
-								@click="
-									inject_project_interface_section.configsTable.onQuery({
-										page: 1
-									})
-								"
-								>查询</xBtn
-							>
-						</div>
-					</template>
-				</xAdvancedSearch>
+				<xItem :configs="inject_project_interface_section.form.path" />
+				<xBtn
+					preset="primary"
+					@click="inject_project_interface_section.configsTable.onQuery({ page: 1 })"
+					>查询</xBtn
+				>
 			</template>
 		</xTablebar>
 		<div id="AdvancedSearch"></div>
@@ -71,7 +36,7 @@ export default async function () {
 		inject: ["APP", "inject_project", "inject_project_interface_section"],
 		data() {
 			return {
-				rowHeight: 50,
+				rowHeight: 100,
 				isAdvancedSearchCollapse: true
 			};
 		},
@@ -83,9 +48,18 @@ export default async function () {
 				const vm = this;
 				return [
 					{
+						label: "添加接口",
+						onClick: vm.addInterface
+					},
+					{
 						label: "切换代理",
 						disabled: () => vm.cptIsCheckedRow,
 						onClick: vm.changeProxy
+					},
+					{
+						label: "切换维护人",
+						disabled: () => vm.cptIsCheckedRow,
+						onClick: vm.switchingMaintenancePersonnel
 					},
 					{
 						label: "复制接口",
@@ -99,7 +73,7 @@ export default async function () {
 					},
 					{
 						label: "删除",
-						icon: "delete",
+						preset: "danger",
 						disabled: () => vm.cptIsCheckedRow,
 						onClick: vm.deleteInterface
 					}
@@ -114,6 +88,7 @@ export default async function () {
 				};
 			}
 		},
+		watch: {},
 		methods: {
 			customRowRender({ cells, columns, depth, isScrolling, rowData, rowIndex, style }) {
 				const { rowHeight } = this;
@@ -144,10 +119,29 @@ export default async function () {
 			resetSearchForm() {
 				_.$resetFormValues(this.inject_project_interface_section.form);
 			},
+			async addInterface() {
+				return _.$openModal({
+					title: "添加接口",
+					url: "@/components/YapiDialogUpsertInterface.vue",
+					parent: this,
+					project_id: this.APP.cptProjectId,
+					get_interface_list: this.inject_project.get_interface_list
+				});
+			},
 			async changeProxy() {
 				_.$openModal({
 					title: i18n("切换代理"),
 					url: "@/components/YapiChangeProxyDialog.vue",
+					parent: this,
+					selected: Array.from(
+						this.inject_project_interface_section.configsTable.data.set
+					)
+				});
+			},
+			async switchingMaintenancePersonnel() {
+				_.$openModal({
+					title: i18n("切换维护人"),
+					url: "@/components/YapiSwitchingMaintenancePersonnel.vue",
 					parent: this,
 					selected: Array.from(
 						this.inject_project_interface_section.configsTable.data.set
@@ -171,7 +165,7 @@ export default async function () {
 					const res = await _api.yapi.interface_del_by_ids(
 						Array.from(this.inject_project_interface_section.configsTable.data.set)
 					);
-					this.inject_project.getInterfaceList();
+					this.inject_project.get_interface_list();
 				} catch (error) {
 					_.$msgError(error);
 					console.error(error);

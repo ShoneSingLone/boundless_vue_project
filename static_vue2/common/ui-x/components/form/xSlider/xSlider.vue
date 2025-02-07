@@ -154,7 +154,7 @@ export default async function () {
 				render() {
 					let label = typeof this.mark === "string" ? this.mark : this.mark.label;
 
-					return h("div", {
+					return hDiv({
 						class: "el-slider__marks-text",
 						style: this.mark.style || {},
 						children: label

@@ -125,7 +125,7 @@ export default async function () {
 					disabled: isDisabled,
 					onChange: this.handleCheckChange,
 					nativeOnClick: stopPropagation,
-					children: h("span", {})
+					children: hSpan({})
 				});
 			},
 			renderCheckIcon(h) {
@@ -152,7 +152,7 @@ export default async function () {
 							data: node.data
 						})
 					: null;
-				return h("span", {
+				return hSpan({
 					class: "el-cascader-node__label",
 					children: vnode || node.label
 				});

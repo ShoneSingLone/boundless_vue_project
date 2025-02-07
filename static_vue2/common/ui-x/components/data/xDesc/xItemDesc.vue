@@ -60,6 +60,12 @@ export default async function () {
 				if (_.isBoolean(this.item.isHide)) {
 					return !this.item.isHide;
 				}
+				if (_.isFunction(this.item.isHideWhenDesc)) {
+					return !this.item.isHideWhenDesc();
+				}
+				if (_.isBoolean(this.item.isHideWhenDesc)) {
+					return !this.item.isHideWhenDesc;
+				}
 				return true;
 			},
 			cptIsEmpty() {
@@ -84,7 +90,9 @@ export default async function () {
 					return this.item?.itemType;
 				})();
 				/* TODO:这种API...有待商榷 */
-				if (itemType === "xItemSelect") {
+				if (_.isFunction(this.item?.xItemRender)) {
+					content = this.item.xItemRender.call(this.item, { xItemDesc: this });
+				} else if (itemType === "xItemSelect") {
 					let options = this.item.options;
 					if (_.isFunction(options)) {
 						options = options();
@@ -92,8 +100,6 @@ export default async function () {
 					content = _.find(options, { value: this.item?.value })?.label;
 				} else if (_.isBoolean(content)) {
 					content = content ? i18n("是") : i18n("否");
-				} else if (_.isFunction(this.item?.xItemRender)) {
-					content = this.item.xItemRender.call(this.item, { xItemDesc: this });
 				} else if (_.isPlainObject(content)) {
 					content = "";
 				}

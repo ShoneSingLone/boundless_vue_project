@@ -32,5 +32,8 @@ ${res.code}
 </script>
 ${styleBlock}`;
 
-	await _n.asyncWriteFile(path.resolve(__dirname, "../../babelFiles", sourceFilePath), transformedContent);
+	await _n.asyncWriteFile(
+		path.resolve(__dirname, "../../babelFiles", sourceFilePath),
+		transformedContent
+	);
 })();

@@ -18,7 +18,7 @@ export default async function () {
 		props: {
 			label: String,
 			labelContent: Function,
-			name: String,
+			name: [String, Number],
 			closable: Boolean,
 			disabled: Boolean,
 			lazy: Boolean

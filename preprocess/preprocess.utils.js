@@ -17,7 +17,6 @@ const APP_NAME_ARRAY = DIRS_ARRAY.reduce((target, dirname) => {
 
 exports.APP_NAME_ARRAY = APP_NAME_ARRAY;
 
-
 function log(message, options = {}) {
 	message = stdDecode(message);
 	console.log(message);
@@ -28,14 +27,15 @@ function log(message, options = {}) {
 }
 exports.log = log;
 
-
 async function execLog(cmd, options) {
-	const log = (content) => {
+	const log = content => {
 		content = iconv.decode(content, "utf-8");
-		console.log("=================================\n", content, "\n=================================");
-		return content
-			.replace("\r", "")
-			.replace("\n", "");
+		console.log(
+			"=================================\n",
+			content,
+			"\n================================="
+		);
+		return content.replace("\r", "").replace("\n", "");
 	};
 
 	return new Promise((resolve, reject) => {
@@ -47,7 +47,7 @@ async function execLog(cmd, options) {
 			resolve(log(data));
 		});
 	});
-};
+}
 exports.execLog = execLog;
 function execCmd(cmd, options) {
 	let startTime = Date.now();
@@ -61,10 +61,9 @@ function execCmd(cmd, options) {
 			resolve();
 		});
 	});
-};
+}
 
 exports.execCmd = execCmd;
-
 
 const stdDecode = content => {
 	content = iconv.decode(content, "gbk");
@@ -144,7 +143,10 @@ exports.VueLoader = function (sourceCodeString) {
 				return [targetSource, {}];
 			} else {
 				openingTag = openingTag[0];
-				targetSource = source.slice(source.indexOf(openingTag) + openingTag.length, source.lastIndexOf("</" + pickType + ">"));
+				targetSource = source.slice(
+					source.indexOf(openingTag) + openingTag.length,
+					source.lastIndexOf("</" + pickType + ">")
+				);
 			}
 			/* TODO: jsx解析*/
 			if (["template", "setup-render"].includes(pickType)) {

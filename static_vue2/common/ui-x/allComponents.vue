@@ -7,6 +7,7 @@ export default async function () {
 		"components/other/xCollapse/xCollapseItem",
 		"components/other/xCollapse/xCollapse",
 		"components/other/xAlert/xAlert",
+		"components/other/xProgress/xProgress",
 		"components/TableCell/TableCell",
 		"components/TableCell/TableCellItem",
 		/*  */
@@ -14,6 +15,7 @@ export default async function () {
 		"components/base/layout/xCol",
 		/*  */
 		"components/base/xBtn/xBtnWithConfirm",
+		"components/base/xDevlog/xDevlog",
 		"components/base/xBtn/xBtn",
 		"components/base/xBtn/xBtnArray",
 		"components/base/xBtn/xBtnGroup",
@@ -147,6 +149,7 @@ export default async function () {
 		"common/xItem/xItemCascader",
 		"common/xItem/xItemSlider",
 		"common/xItem/xItemSwitch",
+		"common/xItem/xItemMonaco",
 		/* ******************* */
 		"components/form/xToggleEditor/xToggleText/xToggleText"
 	];

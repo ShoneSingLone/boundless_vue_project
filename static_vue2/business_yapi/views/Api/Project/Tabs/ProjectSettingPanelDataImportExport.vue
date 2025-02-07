@@ -58,32 +58,33 @@ export default async function () {
 						value: "normal",
 						label: "数据覆盖模式",
 						itemType: "xItemRadioGroup",
+						isButton: true,
 						minWidth: 100,
-						tips() {
-							return h("div", [
-								h("div", {}, [
-									h("xTag", { class: "mr" }, ["普通模式"]),
-									h("span", {}, ["不导入已存在的接口"])
-								]),
-								h("div", {}, [
-									h("xTag", { class: "mr mt" }, ["智能合并"]),
-									h("span", {}, [
-										"已存在的接口，将合并返回数据的 response，适用于导入了 swagger 数据，保留对数据结构的改动 "
-									])
-								]),
-								h("div", {}, [
-									h("xTag", { class: "mr mt" }, ["完全覆盖"]),
-									h("span", {}, [
-										"不保留旧数据，完全使用新数据，适用于接口定义完全交给后端定义"
-									])
-								])
-							]);
-						},
 						options: [
 							{ label: "普通模式", value: "normal" },
 							{ label: "智能合并", value: "good" },
 							{ label: "完全覆盖", value: "merge" }
-						]
+						],
+						tips() {
+							return hDiv([
+								hDiv({}, [
+									h("xTag", { class: "mr" }, ["普通模式"]),
+									hSpan({}, ["不导入已存在的接口"])
+								]),
+								hDiv({}, [
+									h("xTag", { class: "mr mt" }, ["智能合并"]),
+									hSpan({}, [
+										"已存在的接口，将合并返回数据的 response，适用于导入了 swagger 数据，保留对数据结构的改动 "
+									])
+								]),
+								hDiv({}, [
+									h("xTag", { class: "mr mt" }, ["完全覆盖"]),
+									hSpan({}, [
+										"不保留旧数据，完全使用新数据，适用于接口定义完全交给后端定义"
+									])
+								])
+							]);
+						}
 					},
 					importBy: {
 						value: "2",
@@ -96,10 +97,10 @@ export default async function () {
 						itemSlots: {
 							afterController() {
 								const xBtnProps = { configs: vm.btnSelectFile, class: "ml" };
-								const xBtn = h("xBtn", xBtnProps);
+								const xBtn = hxBtn(xBtnProps);
 
 								if (vm.cptIsImportFile) {
-									return h("div", [xBtn]);
+									return hDiv([xBtn]);
 								} else {
 									const xItemProps = {
 										class: "ml",
@@ -109,7 +110,7 @@ export default async function () {
 											vm._importByVm = xItem;
 										}
 									};
-									return h("div", { class: "flex middle" }, [
+									return hDiv({ class: "flex middle" }, [
 										h("xItem", xItemProps),
 										xBtn
 									]);
@@ -134,6 +135,7 @@ export default async function () {
 						let json, res;
 
 						if (vm.cptIsImportFile) {
+							/* 导入本地文件 */
 							try {
 								/* 读取本地文件 */
 								const [file] = await _.$openFileSelector();
@@ -149,6 +151,7 @@ export default async function () {
 								_.$msgError(error);
 							}
 						} else {
+							/* 通过URL导入 */
 							if (!vm.cptParams.swaggerURL) {
 								vm._importByVm.errorTips = "导入之前需要填写URL";
 								return;
@@ -178,6 +181,7 @@ export default async function () {
 						path: item.path
 					};
 				});
+
 				let resToMerge = await _api.yapi.log_update({
 					type: "project",
 					typeid,
@@ -191,7 +195,7 @@ export default async function () {
 						parent: this,
 						domainData: resToMerge.data,
 						originData,
-						allCategory: this.inject_project.allCategory,
+						all_category: this.inject_project.all_category,
 						dataSync: this.cptParams.dataSync
 					});
 				}

@@ -241,6 +241,15 @@ export default async function () {
 						async onClick() {
 							return vm.openTranslateDialog();
 						}
+					},
+					{
+						label: "转换all.i18n.js",
+						async onClick() {
+							return _.$openModal({
+								title: "导入国际化字段",
+								url: "@/views/I18n/I18n.transi18n.dialog.vue"
+							});
+						}
 					}
 				],
 				configsTable: defTable({
@@ -260,7 +269,7 @@ export default async function () {
 							prop: "_id",
 							width: 60,
 							cellRenderer({ rowData, rowIndex }) {
-								return h("div", { attrs: { title: rowData.desc } }, [rowIndex + 1]);
+								return hDiv({ attrs: { title: rowData.desc } }, [rowIndex + 1]);
 							}
 						},
 						{ label: i18n("ID"), prop: "_id", isShow: false },

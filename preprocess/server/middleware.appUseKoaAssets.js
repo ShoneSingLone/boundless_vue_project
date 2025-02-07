@@ -19,7 +19,9 @@ exports.appUseKoaAssets = function (app) {
 		}
 		try {
 			let [targetPath, extname] = (function () {
-				let targetPath = app.pathResolve(ctx.path.replace(/^\/(static)?/, "../../static_vue2/"));
+				let targetPath = app.pathResolve(
+					ctx.path.replace(/^\/(static)?/, "../../static_vue2/")
+				);
 				let extname = path.extname(targetPath);
 				/* 如果没有明确的文件后缀，添加html尝试返回页面 */
 				if (!extname) {
@@ -33,7 +35,10 @@ exports.appUseKoaAssets = function (app) {
 				}
 
 				if (String(ctx.path).includes(`static/framework/`)) {
-					targetPath = app.pathResolve("../../static_other/framework", String(ctx.path).split(`static/framework/`)[1]);
+					targetPath = app.pathResolve(
+						"../../static_other/framework",
+						String(ctx.path).split(`static/framework/`)[1]
+					);
 				}
 
 				if (fs.existsSync(targetPath)) {
@@ -52,10 +57,9 @@ exports.appUseKoaAssets = function (app) {
 					return [targetPath, extname];
 				}
 
-
 				const [isUseMoMockJsonData, _path] = (function () {
 					const whiteList = [
-						'/rest/product/v3.0/apply/products',
+						"/rest/product/v3.0/apply/products",
 						"/rest/momaintenance/custom/login",
 						"/rest/momaintenance/v1/timerRequest/announcements",
 						"/rest/task/v3.0/timerRequest/tasks",
@@ -64,7 +68,7 @@ exports.appUseKoaAssets = function (app) {
 					];
 					let url;
 					/*  mo数据*/
-					if (url = _.find(whiteList, url => ctx.path.includes(url))) {
+					if ((url = _.find(whiteList, url => ctx.path.includes(url)))) {
 						return [true, [url.slice(1)]];
 					}
 
@@ -78,7 +82,10 @@ exports.appUseKoaAssets = function (app) {
 
 				if (isUseMoMockJsonData && _path) {
 					/* "/static/business_mo_rancher_sc/moRancher.html/rest/momaintenance/custom/login" */
-					targetPath = app.pathResolve("../../static_other/mock_mo_json", _path.join("/"));
+					targetPath = app.pathResolve(
+						"../../static_other/mock_mo_json",
+						_path.join("/")
+					);
 				}
 				if (fs.existsSync(targetPath)) {
 					return [targetPath, "application/json"];
@@ -93,15 +100,30 @@ exports.appUseKoaAssets = function (app) {
 					async function handleIndexHtml() {
 						ctx.status = 200;
 						ctx.set("Content-Type", mime.lookup(targetPath));
-						const indexHtmlString = await fs.promises.readFile(decodeURIComponent(targetPath), "utf-8");
+						const indexHtmlString = await fs.promises.readFile(
+							decodeURIComponent(targetPath),
+							"utf-8"
+						);
 						const $ = cheerio.load(indexHtmlString);
 						/* 首页注入 hmr 代码 */
-						let scriptBlockString = await fs.promises.readFile(app.pathResolve("./hmr.socket.io.script_block.vue"), "utf-8");
-						scriptBlockString = scriptBlockString.replace("LOCALHOST_PORT", app.LOCALHOST_PORT);
+						let scriptBlockString = await fs.promises.readFile(
+							app.pathResolve("./hmr.socket.io.script_block.vue"),
+							"utf-8"
+						);
+						scriptBlockString = scriptBlockString.replace(
+							"LOCALHOST_PORT",
+							app.LOCALHOST_PORT
+						);
 
-						socketIoString = await fs.promises.readFile(app.pathResolve("./hmr.socket.io.script_block.socket.io.js"), "utf-8");
+						socketIoString = await fs.promises.readFile(
+							app.pathResolve("./hmr.socket.io.script_block.socket.io.js"),
+							"utf-8"
+						);
 
-						scriptBlockString = scriptBlockString.replace(`/* window.io */`, socketIoString);
+						scriptBlockString = scriptBlockString.replace(
+							`/* window.io */`,
+							socketIoString
+						);
 
 						$("#app").after(scriptBlockString);
 
@@ -111,24 +133,24 @@ exports.appUseKoaAssets = function (app) {
 							return /business_(.*)/.test(name);
 						});
 
-						if (APP_NAME === 'index' && businessItem) {
+						if (businessItem) {
 							const [, name] = String(businessItem).match(/business_(.*)/);
 							APP_NAME = name;
 						}
 
-						const { _URL_PREFIX_4_DEV } = APP_CONFIGS[APP_NAME] || {};
+						const { _AJAX_URL_PREFIX } = APP_CONFIGS[APP_NAME] || {};
 
 						/* 配置 yapi mock 地址 */
-						if (_URL_PREFIX_4_DEV) {
+						if (_AJAX_URL_PREFIX) {
 							$("#app").after(`<script only-use-in-dev-model="">
-							let _URL_PREFIX_4_DEV = "";
-							Object.defineProperty(window, "_URL_PREFIX_4_DEV", {
+							let _AJAX_URL_PREFIX = "";
+							Object.defineProperty(window, "_AJAX_URL_PREFIX", {
 								get() {
-									return _URL_PREFIX_4_DEV||"${_URL_PREFIX_4_DEV}"
+									return _AJAX_URL_PREFIX||"${_AJAX_URL_PREFIX}"
 								},
 								set(newValue) {
-									_URL_PREFIX_4_DEV = newValue
-									console.log("🚀 ~ set ~ _URL_PREFIX_4_DEV in only-use-in-dev-model:", _URL_PREFIX_4_DEV);
+									_AJAX_URL_PREFIX = newValue
+									console.log("🚀 ~ set ~ _AJAX_URL_PREFIX in only-use-in-dev-model:", _AJAX_URL_PREFIX);
 								},
 							});
 						</script>`);
@@ -146,7 +168,11 @@ exports.appUseKoaAssets = function (app) {
 							}
 						</script>`);
 						}
-						console.log("🚀 middleware.appUseKoaAssets.js APP_CONFIGS:", APP_NAME, _URL_PREFIX_4_DEV);
+						console.log(
+							"🚀 middleware.appUseKoaAssets.js APP_CONFIGS:",
+							APP_NAME,
+							_AJAX_URL_PREFIX
+						);
 
 						ctx.body = $.html();
 					}
@@ -162,8 +188,18 @@ exports.appUseKoaAssets = function (app) {
 					async function hanldeAssets() {
 						ctx.status = 200;
 						const contentType = mime.lookup(targetPath) || extname;
+
 						ctx.set("Content-Type", contentType);
-						ctx.body = fs.createReadStream(targetPath);
+
+						const gzipFilePath = targetPath + ".gz";
+						const isUseGzip = fs.existsSync(gzipFilePath);
+						if (false) {
+							ctx.set("Cache-Control", "max-age=8640000000");
+							ctx.set("Content-Encoding", "gzip");
+							ctx.body = fs.createReadStream(gzipFilePath);
+						} else {
+							ctx.body = fs.createReadStream(targetPath);
+						}
 					}
 					return await hanldeAssets();
 				} catch (error) {

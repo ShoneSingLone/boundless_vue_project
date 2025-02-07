@@ -68,7 +68,7 @@ export default async function () {
 				const linkProps = { attrs: isLastItem ? null : { href: item.href } };
 
 				target.push(
-					h("span", itemProps, [h("span", innerProps, [h("a", linkProps, [item.label])])])
+					hSpan(itemProps, [hSpan(innerProps, [h("a", linkProps, [item.label])])])
 				);
 
 				if (!isLastItem) {

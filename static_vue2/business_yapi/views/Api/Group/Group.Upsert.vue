@@ -4,7 +4,7 @@
 		<xCard>
 			<xForm v-if="isUpdate">
 				<xItem :configs="form.currGroupName" span="full" />
-				<xItem :configs="form.currGroupDesc" span="full" />
+				<xItem :configs="form.currGroupDesc" span="full" class="mt" />
 				<xItem :configs="form.custom_field1_enable" />
 				<xItem :configs="form.custom_field1_name" />
 				<xRender :render="renderDeleteGroup" span="full" />
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-export default async function ({ groupInfo }) {
+export default async function ({ groupInfo, onOk }) {
 	const isUpdate = !!groupInfo;
 
 	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
@@ -38,6 +38,12 @@ export default async function ({ groupInfo }) {
 			const vm = this;
 			return {
 				isUpdate,
+				confirmGroupName: defItem({
+					value: "",
+					label: i18n("再次输入分组名称"),
+					placeholder: i18n("输入分组名称"),
+					rules: [_rules.validator(({ val }) => {}, { name: "required" })]
+				}),
 				form: {
 					newGroupName: defItem({
 						value: "",
@@ -129,36 +135,41 @@ export default async function ({ groupInfo }) {
 						const [atLestOne] = await _.$validateForm(vm.$el);
 						if (atLestOne) return;
 
-						if (isUpdate) {
-							const {
-								currGroupName,
-								currGroupDesc,
-								custom_field1_enable,
-								custom_field1_name
-							} = vm.cptFormData;
-							await _api.yapi.groupUpdateGroup({
-								...groupInfo,
-								group_name: currGroupName,
-								group_desc: currGroupDesc,
-								custom_field1: {
-									enable: custom_field1_enable,
-									name: custom_field1_name
-								},
-								id: groupInfo._id
-							});
-							_.$msg("分组修改成功");
-						} else {
-							const { newGroupName, newGroupDesc, owner_uids } = vm.cptFormData;
-							await _api.yapi.groupAddGroup({
-								group_name: newGroupName,
-								group_desc: newGroupDesc,
-								owner_uids: owner_uids
-							});
-							_.$msg("分组添加成功");
+						_.$loading(true);
+						try {
+							if (isUpdate) {
+								const {
+									currGroupName,
+									currGroupDesc,
+									custom_field1_enable,
+									custom_field1_name
+								} = vm.cptFormData;
+								await _api.yapi.groupUpdateGroup({
+									...groupInfo,
+									group_name: currGroupName,
+									group_desc: currGroupDesc,
+									custom_field1: {
+										enable: custom_field1_enable,
+										name: custom_field1_name
+									}
+								});
+								_.$msg("分组修改成功");
+							} else {
+								const { newGroupName, newGroupDesc, owner_uids } = vm.cptFormData;
+								await _api.yapi.groupAddGroup({
+									group_name: newGroupName,
+									group_desc: newGroupDesc,
+									owner_uids: owner_uids
+								});
+								_.$msg("分组添加成功");
+							}
+							vm.closeModal();
+						} catch (error) {
+							_.$msgError(error.message || error);
+						} finally {
+							await onOk();
+							_.$loading(false);
 						}
-						await vm.APP.updateGroupList();
-
-						vm.closeModal();
 					}
 				};
 			}
@@ -176,8 +187,8 @@ export default async function ({ groupInfo }) {
 					data: {
 						currGroupName: group_name || "",
 						currGroupDesc: group_desc || "",
-						custom_field1_enable: custom_field1.enable || false,
-						custom_field1_name: custom_field1.name || ""
+						custom_field1_enable: custom_field1?.enable || false,
+						custom_field1_name: custom_field1?.name || ""
 					},
 					order: [
 						"currGroupName",
@@ -213,7 +224,7 @@ export default async function ({ groupInfo }) {
 											style: "width:100%"
 										},
 										[
-											h("div", { staticClass: "card-danger-content" }, [
+											hDiv({ staticClass: "card-danger-content" }, [
 												h("p", [
 													i18n(
 														"分组一旦删除，将无法恢复数据，请慎重操作！"
@@ -221,13 +232,61 @@ export default async function ({ groupInfo }) {
 												]),
 												h("p", [i18n("只有超级管理员有权限删除分组。")])
 											]),
-											h("div", { staticClass: "flex end" }, [
-												h("xBtn", {
+											hDiv({ staticClass: "flex end" }, [
+												hxBtn({
 													configs: {
 														preset: "danger",
 														label: "删除分组",
 														id: "delete-group-btn",
-														onClick: vm.showDeleteGroupConfirm
+														onClick() {
+															return _.$openModal({
+																title: i18n("再次确认删除操作"),
+																url: "/common/ui-x/msg/WindowConfirm.vue",
+																content: () => {
+																	return hDiv([
+																		hxItem({
+																			configs:
+																				vm.confirmGroupName
+																		})
+																	]);
+																},
+																renderFooter(vmConfirmWindow) {
+																	return () => {
+																		return h(
+																			"div",
+																			{
+																				style: `border-top: 1px solid var(--el-border-color);padding-top:var(--ui-one);width:100%;text-align:center;`
+																			},
+																			[
+																				hxBtn({
+																					staticClass:
+																						"mr",
+																					configs: {
+																						label: "删除",
+																						onClick() {
+																							return _.$api.yapi.groupDeleteGroup(
+																								groupInfo.id
+																							);
+																						}
+																					}
+																				}),
+																				hxBtn({
+																					configs: {
+																						label: i18n(
+																							"取消"
+																						),
+																						preset: "primary",
+																						onClick() {
+																							vmConfirmWindow.closeModal();
+																						}
+																					}
+																				})
+																			]
+																		);
+																	};
+																}
+															});
+														}
 													}
 												})
 											])

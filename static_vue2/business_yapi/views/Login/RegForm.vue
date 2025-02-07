@@ -7,7 +7,7 @@
 		</div>
 
 		<xItem span="full" :configs="configsForm.code" autocomplete="email" />
-		<xItem span="full" :configs="configsForm.userName" autocomplete="userName" />
+		<xItem span="full" :configs="configsForm.username" autocomplete="username" />
 		<!-- 密码 -->
 		<xItem span="full" :configs="configsForm.password" autocomplete="current-password" />
 		<!-- 确认密码 -->
@@ -38,7 +38,7 @@ export default async function () {
 			const vm = this;
 			return {
 				configsForm: {
-					userName: defItem({
+					username: defItem({
 						value: _.$lStorage.reg_userName || "",
 						size: "large",
 						/* render的时候重新获取 */
@@ -144,15 +144,12 @@ export default async function () {
 					},
 					async onClick() {
 						try {
-							const { data } = await _api.yapi.postNewVarifyCode(
+							const { data: msg } = await _api.yapi.postNewVarifyCode(
 								vm.configsForm.email.value
 							);
-							if (data) {
-								_.$msg(data.msg);
-								vm.$router.push({ path: "/group" });
-							}
+							_.$msg(msg);
 						} catch (e) {
-							_.$msgError(e.message);
+							_.$msgError(e);
 						}
 					}
 				};

@@ -51,7 +51,16 @@
 			class="flex middle"
 			target="_blank"
 			v-xtips="{ content: '部署项目', trigger: 'hover', placement: 'left' }">
-			<xIcon icon="_hamburger" />
+			<xIcon icon="_deploy" />
+		</a>
+		<xGap r="4" />
+		<a
+			@click="onClickUserManager"
+			v-if="cptIsAdmin"
+			class="flex middle"
+			target="_blank"
+			v-xtips="{ content: '用户管理', trigger: 'hover', placement: 'left' }">
+			<xIcon icon="_user_manager" />
 		</a>
 		<xGap f />
 		<YapiToolUserBar />
@@ -101,6 +110,9 @@ export default async function () {
 			}
 		},
 		methods: {
+			onClickUserManager() {
+				this.$router.push("/user");
+			},
 			async deploy() {
 				_.$openModal({
 					title: "Deploy Project",

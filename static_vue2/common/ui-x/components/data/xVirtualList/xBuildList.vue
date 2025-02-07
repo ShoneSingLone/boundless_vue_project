@@ -609,7 +609,14 @@ export default async function () {
 				const cache2 = ref(initCache(props, instance));
 				injectToInstance?.(instance, cache2);
 				const inject_xTableVir = inject("inject_xTableVir");
+				/* 一帧 16ms */
+				const EXPERIENCE_VALUE = 18;
+				/** 动态列表高度变化后触发重新计算高度 */
 				inject_xTableVir.updateTableByScroll = _.debounce(() => {
+					/* 如果不是动态高度，就不需要重新计算， */
+					if (!inject_xTableVir.isDynamic) {
+						return;
+					}
 					const pos = {
 						scrollLeft: states.value.scrollLeft,
 						scrollTop: states.value.scrollTop,
@@ -626,8 +633,8 @@ export default async function () {
 					scrollTo(pos);
 					setTimeout(() => {
 						scrollTo(_pos);
-					}, 18);
-				}, 18);
+					}, EXPERIENCE_VALUE);
+				}, EXPERIENCE_VALUE);
 
 				const windowRef = ref();
 				const hScrollbar = ref();

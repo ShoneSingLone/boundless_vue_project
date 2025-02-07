@@ -11,7 +11,9 @@ const sourceFilePath = `static_vue2/common/ui-x/common/xItem.vue`;
 	const parsedAst = babelCore.parseSync(scritpSourceCode, {
 		parserOpts: { allowReturnOutsideFunction: true }
 	});
-	const res = babelCore.transformFromAstSync(parsedAst, scritpSourceCode, { presets: ["@babel/preset-env"] });
+	const res = babelCore.transformFromAstSync(parsedAst, scritpSourceCode, {
+		presets: ["@babel/preset-env"]
+	});
 	let templateBlock = "";
 	if (templateSourceCode) {
 		templateSourceCode = `
@@ -34,5 +36,8 @@ ${res.code}
 </script>
 ${styleBlock}`;
 
-	await _n.asyncWriteFile(path.resolve(__dirname, "../../babelFiles", sourceFilePath), transformedContent);
+	await _n.asyncWriteFile(
+		path.resolve(__dirname, "../../babelFiles", sourceFilePath),
+		transformedContent
+	);
 })();

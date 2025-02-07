@@ -1,12 +1,19 @@
 /// <reference path="./locale.d.ts" />
 
-export = dayjs;
-
 declare function dayjs(date?: dayjs.ConfigType): dayjs.Dayjs;
 
-declare function dayjs(date?: dayjs.ConfigType, format?: dayjs.OptionType, strict?: boolean): dayjs.Dayjs;
+declare function dayjs(
+	date?: dayjs.ConfigType,
+	format?: dayjs.OptionType,
+	strict?: boolean
+): dayjs.Dayjs;
 
-declare function dayjs(date?: dayjs.ConfigType, format?: dayjs.OptionType, locale?: string, strict?: boolean): dayjs.Dayjs;
+declare function dayjs(
+	date?: dayjs.ConfigType,
+	format?: dayjs.OptionType,
+	locale?: string,
+	strict?: boolean
+): dayjs.Dayjs;
 
 declare namespace dayjs {
 	interface ConfigTypeMap {
@@ -25,9 +32,25 @@ declare namespace dayjs {
 
 	export type UnitTypeShort = "d" | "D" | "M" | "y" | "h" | "m" | "s" | "ms";
 
-	export type UnitTypeLong = "millisecond" | "second" | "minute" | "hour" | "day" | "month" | "year" | "date";
+	export type UnitTypeLong =
+		| "millisecond"
+		| "second"
+		| "minute"
+		| "hour"
+		| "day"
+		| "month"
+		| "year"
+		| "date";
 
-	export type UnitTypeLongPlural = "milliseconds" | "seconds" | "minutes" | "hours" | "days" | "months" | "years" | "dates";
+	export type UnitTypeLongPlural =
+		| "milliseconds"
+		| "seconds"
+		| "minutes"
+		| "hours"
+		| "days"
+		| "months"
+		| "years"
+		| "dates";
 
 	export type UnitType = UnitTypeLong | UnitTypeLongPlural | UnitTypeShort;
 
@@ -35,7 +58,7 @@ declare namespace dayjs {
 	export type QUnitType = UnitType | "quarter" | "quarters" | "Q";
 	export type ManipulateType = Exclude<OpUnitType, "date" | "dates">;
 
-	class Dayjs {
+	export class Dayjs {
 		constructor(config?: ConfigType);
 		/**
 		 * All Day.js objects are immutable. Still, `dayjs#clone` can create a clone of the current object if you need one.
@@ -424,7 +447,11 @@ declare namespace dayjs {
 
 	export function extend<T = unknown>(plugin: PluginFunc<T>, option?: T): Dayjs;
 
-	export function locale(preset?: string | ILocale, object?: Partial<ILocale>, isLocal?: boolean): string;
+	export function locale(
+		preset?: string | ILocale,
+		object?: Partial<ILocale>,
+		isLocal?: boolean
+	): string;
 
 	export function isDayjs(d: any): d is Dayjs;
 

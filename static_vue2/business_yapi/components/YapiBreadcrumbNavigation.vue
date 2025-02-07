@@ -13,9 +13,7 @@ export default async function () {
 				};
 				const group = {
 					label: this.APP.cptCurrentGroup?.group_name,
-					href: _.$aHashLink("/api/group", {
-						groupId: this.APP.cptCurrentGroup?._id
-					})
+					href: _.$aHashLink("/api/group", {})
 				};
 
 				const { projectname, name } = this.APP.cptProject || {};

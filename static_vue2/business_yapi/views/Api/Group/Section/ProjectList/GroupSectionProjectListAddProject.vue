@@ -27,15 +27,58 @@ export default async function ({ onOk }) {
 			value: "",
 			label: i18n("所属分组"),
 			placeholder: "请选择项目所属的分组",
-			options: _.map(vm.APP.groupList, i => {
-				return {
-					label: i.group_name,
-					value: String(i._id)
-					// disabled: ![DEV, OWNER, ADMIN].includes(i.role)
-				};
-			}),
-			rules: [_rules.required("请选择项目所属的分组")]
+			options: [],
+			once() {
+				vm.$watch(
+					() => [vm.APP?.user?.role, vm.APP.groupList],
+					([role, groupList]) => {
+						this.options = _.reduce(
+							groupList,
+							(target, groupItem) => {
+								const isShow = (() => {
+									const isGroupRoleAuth = [ADMIN, OWNER].includes(
+										groupItem?.role
+									);
+									return isGroupRoleAuth || [ADMIN, OWNER].includes(role);
+								})();
+
+								if (isShow) {
+									target.push({
+										label: groupItem.group_name,
+										value: String(groupItem._id)
+									});
+								}
+								return target;
+							},
+							[]
+						);
+					},
+					{ immediate: true }
+				);
+			},
+			rules: [_rules.required("请选择项目所属的分组")],
+			itemSlots: {
+				afterController() {
+					return hxBtn({
+						class: "ml",
+						configs: {
+							label: "新建分组",
+							preset: "preset",
+							onClick() {
+								return _.$openModal({
+									title: i18n("添加分组"),
+									url: "@/views/Api/Group/Group.Upsert.vue",
+									onOk() {
+										vm.APP.updateGroupList();
+									}
+								});
+							}
+						}
+					});
+				}
+			}
 		});
+
 		const name = defItem({
 			_where: "GroupSectionProjectListAddProject",
 			placeholder: "请输入项目名称",
@@ -86,9 +129,9 @@ export default async function ({ onOk }) {
 						content: item.content
 					},
 					[
-						h("span", { class: "flex middle" }, [
+						hSpan({ class: "flex middle" }, [
 							h("xIcon", { icon: item.icon }),
-							h("span", { class: "ml4" }, item.label)
+							hSpan({ class: "ml4" }, item.label)
 						])
 					]
 				);
@@ -108,11 +151,8 @@ export default async function ({ onOk }) {
 		useProjectForm,
 		inject: ["APP"],
 		props: useDialogProps(),
-		mounted() {
-			this.init();
-		},
-		data() {
-			const { group_id, name, basepath, desc, project_type } = useProjectForm(this);
+		data(vm) {
+			const { group_id, name, basepath, desc, project_type } = useProjectForm(vm);
 			return {
 				form: {
 					group_id,
@@ -138,39 +178,34 @@ export default async function ({ onOk }) {
 					label: i18n("确定"),
 					preset: "blue",
 					async onClick() {
-						const [atLestOne] = await _.$validateForm(vm.$el);
-						if (atLestOne) return;
-						const { name, basepath, group_id, project_type, desc } = vm.cptFormData;
-						const group = _.find(vm.form.group_id.options, { value: group_id });
-						const group_name = group.label;
-						const { data } = await _api.yapi.project_add({
-							name,
-							basepath,
-							group_id,
-							group_name,
-							project_type,
-							desc
-						});
-						_.$msg(`添加成功`);
-						onOk();
-						vm.closeModal();
+						_.$loading(true);
+						try {
+							const [atLestOne] = await _.$validateForm(vm.$el);
+							if (atLestOne) return;
+							const { name, basepath, group_id, project_type, desc } = vm.cptFormData;
+							const group = _.find(vm.form.group_id.options, { value: group_id });
+							const group_name = group.label;
+							const { data } = await _api.yapi.project_add({
+								name,
+								basepath,
+								group_id,
+								group_name,
+								project_type,
+								desc
+							});
+							_.$msg(`添加成功`);
+							onOk();
+							vm.closeModal();
+						} catch (error) {
+							_.$msgError(error?.message || error);
+						} finally {
+							_.$loading(false);
+						}
 					}
 				};
 			}
 		},
 		methods: {
-			async init() {
-				this.fillFormData();
-			},
-			async fillFormData() {
-				_.$fillBackData({
-					form: this.form,
-					data: {
-						group_id: this.APP.cptGroupId
-					},
-					order: ["group_id"]
-				});
-			},
 			renderDeleteGroup() {
 				const vm = this;
 				/* 只有超级管理员能删除分组 */
@@ -197,7 +232,7 @@ export default async function ({ onOk }) {
 											style: "width:100%"
 										},
 										[
-											h("div", { staticClass: "card-danger-content" }, [
+											hDiv({ staticClass: "card-danger-content" }, [
 												h("p", [
 													i18n(
 														"分组一旦删除，将无法恢复数据，请慎重操作！"
@@ -205,8 +240,8 @@ export default async function ({ onOk }) {
 												]),
 												h("p", [i18n("只有超级管理员有权限删除分组。")])
 											]),
-											h("div", { staticClass: "flex end" }, [
-												h("xBtn", {
+											hDiv({ staticClass: "flex end" }, [
+												hxBtn({
 													configs: {
 														preset: "danger",
 														label: "删除分组",

@@ -1,4 +1,82 @@
-<style lang="less"></style>
+<style lang="less">
+.el-autocomplete {
+	position: relative;
+	display: inline-block;
+}
+
+.el-autocomplete-suggestion {
+	margin: 5px 0;
+	-webkit-box-shadow: var(--normal-box-shadow);
+	box-shadow: var(--normal-box-shadow);
+	border-radius: var(--border-radius);
+	border: 1px solid #e4e7ed;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	background-color: #fff;
+}
+
+.el-autocomplete-suggestion__wrap {
+	max-height: 280px;
+	padding: 10px 0;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.el-autocomplete-suggestion__list {
+	margin: 0;
+	padding: 0;
+}
+
+.el-autocomplete-suggestion li {
+	padding: 0 20px;
+	margin: 0;
+	line-height: 34px;
+	cursor: pointer;
+	color: #606266;
+	font-size: 14px;
+	list-style: none;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.el-autocomplete-suggestion li.highlighted,
+.el-autocomplete-suggestion li:hover {
+	background-color: var(--el-fill-color-light);
+}
+
+.el-autocomplete-suggestion li.divider {
+	margin-top: 6px;
+	border-top: 1px solid #000;
+}
+
+.el-autocomplete-suggestion li.divider:last-child {
+	margin-bottom: -6px;
+}
+
+.el-autocomplete-suggestion.is-loading li {
+	text-align: center;
+	height: 100px;
+	line-height: 100px;
+	font-size: 20px;
+	color: #999;
+}
+
+.el-autocomplete-suggestion.is-loading li::after {
+	display: inline-block;
+	content: "";
+	height: 100%;
+	vertical-align: middle;
+}
+
+.el-autocomplete-suggestion.is-loading li:hover {
+	background-color: #fff;
+}
+
+.el-autocomplete-suggestion.is-loading .el-icon-loading {
+	vertical-align: middle;
+}
+</style>
 <template>
 	<div
 		class="el-autocomplete"

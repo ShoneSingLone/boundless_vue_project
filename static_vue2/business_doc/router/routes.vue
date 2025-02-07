@@ -2,7 +2,7 @@
 export default async function () {
 	const ComponentPageRouterView = {
 		render(h) {
-			return h("div", { class: "x-page-view Demo-view" }, [
+			return hDiv({ class: "x-page-view Demo-view" }, [
 				h("xPageContent", [h("router-view")])
 			]);
 		}
@@ -30,7 +30,13 @@ export default async function () {
 		}),
 		/* 指令 */
 		_.$newRoute("/directive", ComponentPageRouterView, {
-			children: [_.$newRoute("/directive/ripple", "@/views/directive/directive/ripple.vue")]
+			children: [
+				_.$newRoute("/directive/ripple", "@/views/directive/directive/ripple/ripple.vue"),
+				_.$newRoute(
+					"/directive/infinite_scroll",
+					"@/views/directive/directive/infinite_scroll/infinite_scroll.vue"
+				)
+			]
 		}),
 		/* 聚合类 */
 		_.$newRoute("/x-component", ComponentPageRouterView, {
@@ -208,6 +214,7 @@ export default async function () {
 				_.$newRoute("/other/message", "@/views/other/message/DemoMessage.vue"),
 				_.$newRoute("/other/notification", "@/views/other/notification/Notification.vue"),
 				_.$newRoute("/other/alert", "@/views/other/alert/DemoAlert.vue"),
+				_.$newRoute("/other/progress", "@/views/other/progress/DemoProgress.vue"),
 				_.$newRoute("/other/collapse", "@/views/other/collapse/DemoCollapse.vue"),
 				_.$newRoute("/other/layer", "@/views/other/layer/layer.vue"),
 				_.$newRoute("/other/move", "@/views/other/move/move.vue"),

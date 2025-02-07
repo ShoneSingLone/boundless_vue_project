@@ -20,9 +20,12 @@ export default async function () {
 		},
 		methods: {
 			renderCloseIcon() {
-				return hDiv(h("xIcon", { icon: "close" }), {
-					class: "flex middle height100 width100 end"
-				});
+				return hDiv(
+					{
+						class: "flex middle height100 width100 end flex1"
+					},
+					h("xIcon", { icon: "close" })
+				);
 			},
 			handleClick(tab, event) {
 				console.log(tab, event);

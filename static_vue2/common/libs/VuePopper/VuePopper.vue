@@ -139,8 +139,15 @@ export default async function () {
 					left: "right",
 					right: "left"
 				};
+				let { _reference } = this.popperJS;
+				if (_reference) {
+					$(this.popperJS._popper).css({
+						"--xSelectDropdown-min-width": `${_reference.offsetWidth}px`
+					});
+				}
 				let placement = this.popperJS._popper.getAttribute("x-placement").split("-")[0];
 				let origin = placementMap[placement];
+
 				this.popperJS._popper.style.transformOrigin =
 					typeof this.transformOrigin === "string"
 						? this.transformOrigin

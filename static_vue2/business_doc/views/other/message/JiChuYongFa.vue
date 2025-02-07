@@ -27,7 +27,7 @@ export default async function () {
 					//message 可以作为函数，返回一个字符串或一个 VNode ，它会被显示为正文内容。
 					message: () =>
 						h("p", null, [
-							h("span", null, "内容可以是 "),
+							hSpan(null, "内容可以是 "),
 							h("i", { style: "color: teal" }, "返回VNode的函数")
 						])
 				});

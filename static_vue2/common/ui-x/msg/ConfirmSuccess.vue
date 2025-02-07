@@ -1,6 +1,6 @@
 <template>
 	<xDialog>
-		<xCard class="mt10" :header="i18n('xxxxxxxx')">
+		<xCard class="mt10" :header="i18n('名称')">
 			<xForm col="1" ref="form" :style="labelStyle">
 				<xItem :configs="configs" v-for="(configs, prop) in form" :key="prop" />
 			</xForm>

@@ -75,7 +75,7 @@ export default async function () {
 								{ id: String(vm.mountTo).replace("#", "") },
 								vm.mountProps
 							);
-							return h("div", props, vm.$slots.default);
+							return hDiv(props, vm.$slots.default);
 						}
 					});
 

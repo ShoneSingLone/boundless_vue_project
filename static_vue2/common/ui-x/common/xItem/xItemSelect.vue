@@ -3,8 +3,11 @@ export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
 	return defineComponent({
 		mixins: [mixins],
-		props: ["value", "options", "configs"],
+		props: ["value", "options", "configs", "readonly"],
 		computed: {
+			cptReadonly() {
+				return this.readonly;
+			},
 			selectOptions() {
 				return this.options || this?.configs?.options || [];
 			}
@@ -43,6 +46,11 @@ export default async function () {
 					});
 				}
 			})();
+
+			if (vm.cptReadonly) {
+				const item = _.find(vm.selectOptions, { value: vm.mixin_value });
+				return hDiv([item?.label || vm.mixin_value]);
+			}
 
 			return h("xSelect", selectProps, children);
 		}

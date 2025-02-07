@@ -205,7 +205,7 @@ export default async function () {
 					},
 					[
 						label,
-						h("div", {
+						hDiv({
 							staticClass: "xItemCheck-selected-icon-wrapper"
 						}),
 						h("xIcon", {
@@ -259,7 +259,7 @@ export default async function () {
 				);
 			},
 			rendererGroupItem() {
-				return h("div", [this.cptItemRederer()]);
+				return hDiv([this.cptItemRederer()]);
 			}
 		},
 		render() {

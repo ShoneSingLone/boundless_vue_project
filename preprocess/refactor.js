@@ -11,7 +11,10 @@ function VueLoader(sourceCodeString) {
 				return [targetSource, {}];
 			} else {
 				openingTag = openingTag[0];
-				targetSource = source.slice(source.indexOf(openingTag) + openingTag.length, source.lastIndexOf("</" + pickType + ">"));
+				targetSource = source.slice(
+					source.indexOf(openingTag) + openingTag.length,
+					source.lastIndexOf("</" + pickType + ">")
+				);
 			}
 			/* TODO: jsx解析*/
 			if (["template", "setup-render"].includes(pickType)) {
@@ -38,7 +41,9 @@ function VueLoader(sourceCodeString) {
 }
 
 async function main(params) {
-	const [dir, files] = await _n.asyncAllDirAndFile([path.resolve(__dirname, "../static_vue2/business_book")]);
+	const [dir, files] = await _n.asyncAllDirAndFile([
+		path.resolve(__dirname, "../static_vue2/business_book")
+	]);
 
 	_n.each(files, async i => {
 		if (path.extname(i) === ".vue") {

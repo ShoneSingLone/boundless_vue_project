@@ -106,13 +106,16 @@
 					<slot name="prefix"></slot>
 				</template>
 				<template slot="suffix">
-					<i
+					<xIcon
 						v-show="!showClose"
-						:class="['el-select__caret', 'el-input__icon', 'el-icon-' + iconClass]"></i>
-					<i
+						:icon="state.xSelectIconArrow"
+						:class="['el-select__caret el-input__icon', iconClass]" />
+					<!-- el-icon-circle-close -->
+					<xIcon
 						v-if="showClose"
-						class="el-select__caret el-input__icon el-icon-circle-close"
-						@click="handleClearClick"></i>
+						icon="circle-close"
+						class="el-select__caret el-input__icon"
+						@click="handleClearClick" />
 				</template>
 			</xInput>
 		</div>
@@ -162,12 +165,45 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	return defineComponent({
 		setup() {
 			const { focus } = useFocus(this, "reference");
-			return { focus };
+
+			const state = reactive({
+				xSelectIconArrow: "arrow-down"
+			});
+
+			(() => {
+				function onThemeChange() {
+					const theme = PRIVATE_GLOBAL.x_ui.theme;
+					if (theme && onThemeChange.old_theme !== theme) {
+						onThemeChange.old_theme = theme;
+
+						const x_ui_collection = PRIVATE_GLOBAL.x_ui_collection || {};
+						const configs = x_ui_collection[theme] || {};
+						const x_select = configs.x_select || {};
+
+						const { icon_arrow } = x_select;
+
+						if (_.isString(icon_arrow) && icon_arrow !== state.xSelectIconArrow) {
+							state.xSelectIconArrow = icon_arrow;
+						} else {
+							state.xSelectIconArrow = "arrow-down";
+						}
+					}
+				}
+
+				$(window).on(`x_ui_theme_change.${this._uid}`, onThemeChange);
+				onBeforeUnmount(() =>
+					$(window).off(`x_ui_theme_change.${this._uid}`, onThemeChange)
+				);
+				onThemeChange();
+			})();
+
+			return { focus, state };
 		},
 		mixins: [NavigationMixin],
 		name: "xSelect",
 		componentName: "xSelect",
 		inject: {
+			xItem: { default: {} },
 			elForm: {
 				default: ""
 			},
@@ -206,11 +242,11 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			},
 
 			iconClass() {
-				return this.remote && this.filterable
-					? ""
-					: this.visible
-						? "arrow-up is-reverse"
-						: "arrow-up";
+				if (this.remote && this.filterable) {
+					return "";
+				}
+
+				return this.visible ? "is-reverse" : "";
 			},
 
 			duration() {
@@ -247,7 +283,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			},
 
 			selectSize() {
-				return this.size || this._elFormItemSize || PRIVATE_GLOBAL.x_ui_size;
+				return this.size || this._elFormItemSize || PRIVATE_GLOBAL.x_ui.size;
 			},
 
 			selectDisabled() {
@@ -918,6 +954,9 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		},
 
 		mounted() {
+			if (_.isFunction(this.xItem?.cptConfigs?.refInnerComponent)) {
+				this.xItem.cptConfigs.refInnerComponent({ vm: this });
+			}
 			if (this.multiple && Array.isArray(this.value) && this.value.length > 0) {
 				this.currentPlaceholder = "";
 			}
@@ -986,28 +1025,33 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			transform 0.3s,
 			-webkit-transform 0.3s;
 		-webkit-transform: rotateZ(180deg);
-		transform: rotateZ(180deg);
-		cursor: pointer;
-	}
-
-	.el-input .el-select__caret.is-reverse {
-		-webkit-transform: rotateZ(0);
 		transform: rotateZ(0);
+		cursor: pointer;
+		&.el-input__icon {
+			width: 16px;
+		}
 	}
 
-	.el-input .el-select__caret.is-show-close {
-		font-size: 14px;
-		text-align: center;
-		-webkit-transform: rotateZ(180deg);
-		transform: rotateZ(180deg);
-		border-radius: 100%;
-		color: var(--el-text-color-disabled);
-		-webkit-transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
-		transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
-	}
+	.el-input {
+		.el-select__caret {
+			&.is-show-close {
+				font-size: 14px;
+				text-align: center;
+				-webkit-transform: rotateZ(180deg);
+				transform: rotateZ(180deg);
+				border-radius: 100%;
+				color: var(--el-text-color-disabled);
+				-webkit-transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+				transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+				&:hover {
+					color: var(--el-text-color-secondary);
+				}
+			}
 
-	.el-input .el-select__caret.is-show-close:hover {
-		color: var(--el-text-color-secondary);
+			&.is-reverse {
+				transform: rotateZ(180deg);
+			}
+		}
 	}
 
 	.el-input.is-disabled .el-input__inner {
@@ -1080,19 +1124,22 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	background-color: var(--el-fill-color-light);
 }
 
-.el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after {
+.x-select-selected-icon {
 	position: absolute;
 	right: 20px;
-	font-family: element-icons;
-	content: "\e6da";
-	font-size: 12px;
-	font-weight: 700;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+	width: 12px;
+	// font-weight: 700;
+	height: 100%;
 }
 
-.el-select-dropdown .el-scrollbar.is-empty .el-select-dropdown__list {
-	padding: 0;
+.el-select-dropdown {
+	.el-scrollbar {
+		&.is-empty {
+			.el-select-dropdown__list {
+				padding: 0;
+			}
+		}
+	}
 }
 
 .el-select-dropdown__empty {
@@ -1105,6 +1152,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 
 .el-select-dropdown__wrap {
 	max-height: 274px;
+	width: 100%;
 }
 
 .el-select-dropdown__list {
@@ -1122,7 +1170,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	color: #606266;
+	color: var(--el-text-color-regular);
 	height: 34px;
 	line-height: 34px;
 	-webkit-box-sizing: border-box;
@@ -1218,10 +1266,9 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	color: var(--el-text-color-disabled);
 	line-height: 18px;
 	font-size: 14px;
-}
-
-.el-select__close:hover {
-	color: var(--el-text-color-secondary);
+	&:hover {
+		color: var(--el-text-color-secondary);
+	}
 }
 
 .el-select__tags {

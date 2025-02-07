@@ -17,7 +17,7 @@ export default async function () {
 \`\`\`js
 /**
 *  ${title}
-*  ${window.location.href}/#/api/project?projectId=${projectId}&groupId=${groupId}&interfaceType=interface&interfaceId=${interfaceId}&project_interface_tab=1&project_setting_tab=3&projectTabName=接口
+*  ${window.location.href}/#/api/project?projectId=${projectId}&groupId=${groupId}&interfaceType=interface&interfaceId=${interfaceId}&project_interface_tab=preview&project_setting_tab=3&projectTabName=接口
 */
 async ${camelCase(path)}(data) {
 	return _.$ajax.${camelCase(method)}(\`${basepath}${path}\`,{data});

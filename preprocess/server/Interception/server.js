@@ -1,8 +1,4 @@
-const {
-	IS_THE_GARBAGE,
-	YAPI_MOCK_ID,
-	TARGET_SERVER
-} = require("./baseConfigs");
+const { IS_THE_GARBAGE, YAPI_MOCK_ID, TARGET_SERVER } = require("./baseConfigs");
 const { _n } = require("@ventose/utils-node");
 const Koa = require("koa");
 const asyncfs = require("fs/promises");
@@ -28,10 +24,7 @@ const runServer = async () => {
 			}
 			async function handleAfterReadLocalFileFail() {
 				const originUrl = ctx.request.url;
-				ctx.request.url = `${YAPI_MOCK_ID}${ctx.request.url.replace(
-					"/azure",
-					""
-				)}`;
+				ctx.request.url = `${YAPI_MOCK_ID}${ctx.request.url.replace("/azure", "")}`;
 				try {
 					const sub = ffUrl(`${YAPI_MOCK_ID}/v3/auth/tokens`);
 					const response = await getResponse({
@@ -55,11 +48,7 @@ const runServer = async () => {
 			async function handleAfterProxyFail(params) {
 				try {
 					/* 静态资源 */
-					responsePath = path.resolve(
-						__dirname,
-						"../src",
-						ctx.request.url.substring(1)
-					);
+					responsePath = path.resolve(__dirname, "../src", ctx.request.url.substring(1));
 					const body = await asyncfs.readFile(responsePath);
 					if (body) {
 						ctx.body = body;

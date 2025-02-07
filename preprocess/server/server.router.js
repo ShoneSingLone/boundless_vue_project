@@ -2,10 +2,11 @@ const { fs, path, _, execCmd } = require("../preprocess.utils");
 const { copyNewProject } = require("./server.handlers");
 const koaRouter = require("koa-router");
 
-
 let projectsDB = (function () {
 	try {
-		const projects = fs.readFileSync(path.resolve(__dirname, "./db/projects.json"), { encoding: "utf8" });
+		const projects = fs.readFileSync(path.resolve(__dirname, "./db/projects.json"), {
+			encoding: "utf8"
+		});
 		if (projects.length > 2) {
 			return JSON.parse(projects);
 		}
@@ -26,7 +27,10 @@ exports.Router = function () {
 			openVscode: async function () {
 				const { id } = args;
 				const name = id.replace("business_", "");
-				const pathString = path.resolve(__dirname, `../../vscode.workspace/n2one_${name}.code-workspace`);
+				const pathString = path.resolve(
+					__dirname,
+					`../../vscode.workspace/n2one_${name}.code-workspace`
+				);
 				await execCmd(`code . ${pathString}`);
 			}
 		};
@@ -49,26 +53,30 @@ exports.Router = function () {
 		if (update) {
 			const projects = update;
 			if (projects.length) {
-				await fs.promises.writeFile(path.resolve(__dirname, "./db/projects.json"), JSON.stringify(projects), { encoding: "utf8" });
+				await fs.promises.writeFile(
+					path.resolve(__dirname, "./db/projects.json"),
+					JSON.stringify(projects),
+					{ encoding: "utf8" }
+				);
 				projectsDB = projects;
-				return ctx.body = {
+				return (ctx.body = {
 					code: 200,
 					data: projects
-				};
+				});
 			}
 		}
 
-
 		const { name, desc } = create || {};
 		if (name) {
-			if (_.some(projectsDB, db => {
-				return name === db.id.replace("business_", "");
-			})) {
-				return ctx.body = {
+			if (
+				_.some(projectsDB, db => {
+					return name === db.id.replace("business_", "");
+				})
+			) {
+				return (ctx.body = {
 					code: 500,
 					msg: "项目名称重复"
-				};
-
+				});
 			} else {
 				await copyNewProject(name);
 
@@ -76,29 +84,31 @@ exports.Router = function () {
 					id: `business_${name}`,
 					name,
 					desc,
-					"children": [
+					children: [
 						{
-							"id": `business_${name}_${name}.html`,
-							"parent": `business_${name}`,
-							"desc": "",
-							"name": `${name}.html`
+							id: `business_${name}_${name}.html`,
+							parent: `business_${name}`,
+							desc: "",
+							name: `${name}.html`
 						}
 					]
-
 				});
-				await fs.writeFileSync(path.resolve(__dirname, "./db/projects.json"), JSON.stringify(projectsDB), { encoding: "utf8" });
-				return ctx.body = {
+				await fs.writeFileSync(
+					path.resolve(__dirname, "./db/projects.json"),
+					JSON.stringify(projectsDB),
+					{ encoding: "utf8" }
+				);
+				return (ctx.body = {
 					code: 200,
 					data: projectsDB
-				};
+				});
 			}
 		}
 
-		return ctx.body = {
+		return (ctx.body = {
 			code: 500,
 			msg: "500"
-		};
-
+		});
 	});
 	router.get("/boundless-api/project/all", async function (ctx) {
 		ctx.body = {
@@ -134,9 +144,8 @@ function getAllProjects() {
 			})
 		};
 	});
-	fs.writeFileSync(path.resolve(__dirname, "./db/projects.json"), JSON.stringify(list), { encoding: "utf8" });
+	fs.writeFileSync(path.resolve(__dirname, "./db/projects.json"), JSON.stringify(list), {
+		encoding: "utf8"
+	});
 	return { list, targetData };
 }
-
-
-

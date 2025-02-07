@@ -1,6 +1,53 @@
 import _ = require("./index");
 			declare module "./index" {
 				interface LoDashStatic {/**
+	 * document.getElementsByTagName
+	 * @param {*} tagName
+	 * @returns
+	 */
+$$tags:   (tagName: string)=> HTMLElement[] ;
+/**
+	 * document.getElementsByTagName
+	 * @param {*} tagName
+	 * @returns
+	 */
+$$id:   (tagName: string)=> HTMLElement[] ;
+$val: any;
+$ensure:any;
+$appendScript: any;
+/**
+	 * @param {any} url
+	 * @param {any} styleSourceCode
+	 * @param {any} options {userLink:Boolean 如果为true，则使用Link方式引入，这样文件里面的相对路径是相对css文件，否则会缓存文本放在style元素里面，路径是相对页面，有这个差异}
+	 * @returns
+	 */
+$appendStyle:   (url:string,styleSourceCode?:string,options?:any)=>any ;
+/**
+	 * @param {any} url
+	 * @param {any} styleSourceCode
+	 * @param {any} options {userLink:Boolean 如果为true，则使用Link方式引入，这样文件里面的相对路径是相对css文件，否则会缓存文本放在style元素里面，路径是相对页面，有这个差异}
+	 * @returns
+	 */
+$resolveCssAssetsPath:   (url:string,styleSourceCode?:string,options?:any)=>any ;
+$idb:any;
+/**
+	 * 依赖全局变量SRC_ROOT_PATH
+	 * 返回静态资源路径
+	 * @param {any} url
+	 * @returns
+	 */
+$resolveSvgIcon:   (url: string)=>string ;
+$resolvePath: any;
+$loadText:any;
+$asyncLoadOrderAppendScrips:any;
+/**
+			 * 创建i18n 函数，可同时存在不同语言options的i18n对象
+			 * @param {*} lang zh-CN,对应i18n文件夹下的文件
+			 * @returns
+			 */
+$newI18n:   (options: { lang: "zh-CN" | "en-US" }) => Promise<any> ;
+$getRawQueryParamFromSearch:any;
+/**
 	 * 构造树型结构数据
 	 * @param {*} data 数据源
 	 * @param {*} idProp id字段 默认 'id'
@@ -9,7 +56,6 @@ import _ = require("./index");
 	 */
 $arrayToTree:   (params: { data: any[]; id?: string; pid?: string; children?: string; label?: string; value?: string; rootId?: any }) => { TREE: any[]; CHILDREN_MAP: any; NODES_OBJ: any } ;
 $updateCol:any;
-$pickFromArray:any;
 $percent:any;
 $coerceTruthyValueToArray:any;
 $flatNodes:any;
@@ -62,10 +108,6 @@ $readFileAsText:   (obj:object)=>Promise<string> ;
 		 */
 $downloadTextAsBlob:   (obj:object, filename:string)=>Promise<void> ;
 /**
-	 * 获取对象的值
-	 */
-$handleSetFormValue:  (obj:object,key:string)=>string ;
-/**
 	 * //将空字符串转换为null
 	 * @param str
 	 * @return {null|*}
@@ -78,12 +120,13 @@ $translateStrByNull:   (str:string)=>null|string ;
 	 */
 $timeAgo:   (timestamp:string)=>string ;
 /**
-	 * 浅-判断对象值是否相同
+	 * 判断对象值是否相同,将Function转为字符串比较
+	 * 执行深比较来确定两个值是否相等。对于对象和数组，它会递归地比较它们的属性和元素，而不仅仅是检查引用是否相同。
 	 * @param {*} a
 	 * @param {*} b
 	 * @returns
 	 */
-$eqObj:   (a:object,b:object)=>boolean ;
+$isEqualByObjVal:   (a:object,b:object)=>boolean ;
 $isHttp:any;
 /**
 		 * 数组至少有一个元素
@@ -110,12 +153,12 @@ $isFirefox:any;
 $getLeftTopFromAbsolute:   ($ele:jQuery)=>object ;
 $getLeftTopFromTranslate:any;
 /**
-	 * 将一个url转换为VueRouter使用的a标签href
-	 * @param {*} urlLike
-	 * @param {*} query
-	 * @returns
-	 */
-$aHashLink:   (urlLike:string, query:object) => string ;
+		 * 将一个url转换为VueRouter使用的a标签href
+		 * @param {*} urlLike
+		 * @param {*} query
+		 * @returns
+		 */
+$aHashLink:   (urlLike:string, query?:object) => string ;
 /**
 	 * 设置主题
 	 * @param {*} theme
@@ -206,7 +249,14 @@ $isInput:   (val:any)=>boolean ;
 	 */
 $doNoting:   ()=>void ;
 $sleep:any;
-$asyncDebounce:any;
+/**
+	 *
+	 * @param {*} vm 绑定当前实例
+	 * @param {*} fn
+	 * @param {*} wait time
+	 * @returns
+	 */
+$asyncDebounce:   (vm:any, fn:Function, wait:number)=>any ;
 /**
 	 * 全局loading单例
 	 * - 注意，一定要保证成对出现，不然一直loading
@@ -218,11 +268,19 @@ $asyncDebounce:any;
 $loading:    (isLoading?:boolean,selector?:string)=>void;
 /**
 	 * 确认信息
-	 * @param {*} options
+	 * @param {*} options {
+	 * title:string,
+	 * content:vNode or string
+	 * }
 	 * @returns
 	 */
 $confirm:   (options?:any)=>Promise<any> ;
-$confirm_important:any;
+/**
+	 * 删除前的弹窗提示
+	 * @param {*} options
+	 * @returns
+	 */
+$confirm_important:   (options?:any)=>Promise<any> ;
 /**
 	 * notify 弹窗，成功提示，可复写
 	 * @param {*} title
@@ -248,13 +306,6 @@ $msgError:   (title:string,options?:any)=>Promise<any> ;
 		 * vm.onWindowClose = callBackFunction
 		 */
 $openWindow_deprecated:   (title:string, WindowVueCtor:Vue, options?:object)=>void ;
-/**
-		 *
-		 * @param {*} fnGetValue 执行此函数，直到返回真值
-		 * @param {*} duration 默认为0即不断尝试；若给定时间，未在给定时间内完成，则失败
-		 * @returns
-		 */
-$ensure:   (fnGetValue:(()=>Promise<any>)|(()=>any), duration?:number) =>Promise<any> ;
 $globalVar: any;
 /**
 	 * 从location.search  get val
@@ -347,45 +398,19 @@ $setFormValuesDelay:any;
 $pickFormValues:   (configs:object)=>object ;
 $newI18nMany:any;
 $getSelectedItemFrom:any;
+/**
+		 * 只要value不是undefined，就返回value，否则用默认值
+		 * @param value
+		 * @param defaultValue
+		 * @returns
+		 */
+$valOrDefault:   (value: any, defaultValue: any) => any ;
 $getFirstOrDefaultValue:any;
 $getIpInRangeAndUseable:any;
 $intToIp4:any;
 $ip4ToInt:any;
 $isIp4InCidr:any;
 $intToBin:any;
-$calculateCidrRange:any;
-/**
-	 * document.getElementsByTagName
-	 * @param {*} tagName
-	 * @returns
-	 */
-$$tags:   (tagName: string)=> HTMLElement[] ;
-/**
-	 * document.getElementsByTagName
-	 * @param {*} tagName
-	 * @returns
-	 */
-$$id:   (tagName: string)=> HTMLElement[] ;
-$val: any;
-$appendScript: any;
-$appendStyle: any;
-$resolveCssAssetsPath: any;
-$idb:any;
-/**
-	 * 依赖全局变量SRC_ROOT_PATH
-	 * 返回静态资源路径
-	 * @param {any} url
-	 * @returns
-	 */
-$resolveSvgIcon:   (url: string)=>string ;
-$resolvePath: any;
-$loadText:any;
-$asyncLoadOrderAppendScrips:any;
-/**
-			 * 创建i18n 函数，可同时存在不同语言options的i18n对象
-			 * @param {*} lang zh-CN,对应i18n文件夹下的文件
-			 * @returns
-			 */
-$newI18n:   (options: { lang: "zh-CN" | "en-US" }) => Promise<any> 
+$calculateCidrRange:any
             }
         }

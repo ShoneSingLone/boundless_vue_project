@@ -62,7 +62,7 @@ export default async function ({ parentDocId, belong_type, belong_id, hide }) {
 								belong_type: belong_type || "all",
 								belong_id: belong_id
 							};
-							const res = await _api.yapi.wikiUpsertOne(params);
+							const res = await _api.yapi.wiki_upsert_one(params);
 							if (!res.errcode) {
 								await vm.inject_note.updateWikiMenuList();
 								await vm.inject_note.setCurrentWiki(res.data.msg);

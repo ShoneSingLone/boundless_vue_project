@@ -4,6 +4,7 @@ export default async function () {
 
 	if (!window._rules) {
 		window._rules = {
+			/* @typescriptDeclare  (validatorFn: any, options?: {}) => { name: string; validator: any; trigger: string[]; }*/
 			validator(validatorFn, options = {}) {
 				validatorFn = validatorFn || (() => "");
 				return _.merge(

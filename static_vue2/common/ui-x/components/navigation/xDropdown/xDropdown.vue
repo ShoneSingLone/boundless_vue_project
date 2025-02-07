@@ -68,7 +68,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 
 		computed: {
 			dropdownSize() {
-				return this.size || PRIVATE_GLOBAL.x_ui_size;
+				return this.size || PRIVATE_GLOBAL.x_ui.size;
 			}
 		},
 
@@ -308,8 +308,8 @@ export default async function ({ PRIVATE_GLOBAL }) {
 							disabled: !this.triggerElm || disabled
 						},
 						[
-							h("i", {
-								class: "el-dropdown__icon el-icon-arrow-down"
+							h("xIcon", {
+								icon: "arrow-down"
 							})
 						]
 					)
@@ -352,6 +352,206 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	.xBtn {
 		&.el-button.el-button--primary.el-button--medium {
 			height: 37px;
+		}
+	}
+}
+
+.el-dropdown .el-dropdown-selfdefine:focus:active,
+.el-dropdown .el-dropdown-selfdefine:focus:not(.focusing),
+.el-message__closeBtn:focus,
+.el-message__content:focus,
+.el-popover:focus,
+.el-popover:focus:active,
+.el-popover__reference:focus:hover,
+.el-popover__reference:focus:not(.focusing),
+.el-rate:active,
+.el-rate:focus,
+.el-tooltip:focus:hover,
+.el-tooltip:focus:not(.focusing),
+.el-upload-list__item.is-success:active,
+.el-upload-list__item.is-success:not(.focusing):focus {
+	outline-width: 0;
+}
+
+.el-dropdown-menu,
+.el-menu--collapse .el-submenu .el-menu {
+	z-index: 10;
+	-webkit-box-shadow: var(--normal-box-shadow);
+}
+
+.el-dropdown {
+	display: inline-block;
+	position: relative;
+	color: var(--el-text-color-regular);
+	font-size: 14px;
+
+	&.xBtnGroup {
+		display: inline-flex;
+		align-items: center;
+		/* 按钮下拉 */
+		height: 32px;
+
+		.xDropdown {
+			height: 100%;
+			.xBtn {
+				height: 100%;
+			}
+		}
+	}
+
+	.el-button-group {
+		display: flex;
+
+		.el-button {
+			float: none;
+		}
+	}
+
+	.el-dropdown__caret-button {
+		padding-left: 5px;
+		padding-right: 5px;
+		position: relative;
+		border-left: none;
+
+		&:hover:not(.is-disabled)::before {
+			top: 0;
+			bottom: 0;
+		}
+
+		&::before {
+			content: "";
+			position: absolute;
+			display: block;
+			width: 1px;
+			top: 5px;
+			bottom: 5px;
+			left: 0;
+			background: rgba(255, 255, 255, 0.5);
+		}
+
+		&.el-button--default {
+			&::before {
+				background: rgba(220, 223, 230, 0.5);
+			}
+		}
+
+		.el-dropdown__icon {
+			padding-left: 0;
+		}
+	}
+}
+
+.el-dropdown__icon {
+	font-size: 12px;
+	margin: 0 3px;
+}
+
+.el-dropdown [disabled] {
+	cursor: not-allowed;
+	color: #bbb;
+}
+
+.el-dropdown-menu {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 10px 0;
+	margin: 5px 0;
+	background-color: #fff;
+	border: 1px solid var(--el-border-color-lighter);
+	border-radius: var(--border-radius);
+	box-shadow: var(--normal-box-shadow);
+}
+
+.el-dropdown-menu__item {
+	list-style: none;
+	line-height: 36px;
+	padding: 0 20px;
+	margin: 0;
+	font-size: 14px;
+	color: var(--el-text-color-regular);
+	cursor: pointer;
+	outline: 0;
+
+	i {
+		margin-right: 5px;
+	}
+}
+
+.el-dropdown-menu__item:focus,
+.el-dropdown-menu__item:not(.is-disabled):hover {
+	background-color: #ecf5ff;
+	color: var(--el-color-primary-hover);
+}
+
+.el-dropdown-menu__item--divided {
+	position: relative;
+	margin-top: 6px;
+	border-top: 1px solid var(--el-border-color-lighter);
+	&:before {
+		content: "";
+		height: 6px;
+		display: block;
+		margin: 0 -20px;
+		background-color: #fff;
+	}
+}
+
+.el-dropdown-menu__item {
+	&.is-disabled {
+		cursor: default;
+		color: #bbb;
+		pointer-events: none;
+	}
+}
+
+.el-dropdown-menu--medium {
+	padding: 6px 0;
+	&.el-dropdown-menu__item {
+		line-height: 30px;
+		padding: 0 17px;
+		font-size: 14px;
+	}
+
+	.el-dropdown-menu__item {
+		&.el-dropdown-menu__item--divided {
+			margin-top: 6px;
+			&:before {
+				height: 6px;
+				margin: 0 -17px;
+			}
+		}
+	}
+}
+
+.el-dropdown-menu--small {
+	padding: 6px 0;
+	.el-dropdown-menu__item {
+		line-height: 27px;
+		padding: 0 15px;
+		font-size: 13px;
+		&.el-dropdown-menu__item--divided {
+			margin-top: 4px;
+			&:before {
+				height: 4px;
+				margin: 0 -15px;
+			}
+		}
+	}
+}
+
+.el-dropdown-menu--mini {
+	padding: 3px 0;
+	.el-dropdown-menu__item {
+		line-height: 24px;
+		padding: 0 10px;
+		font-size: 12px;
+		&.el-dropdown-menu__item--divided {
+			margin-top: 3px;
+			&:before {
+				height: 3px;
+				margin: 0 -10px;
+			}
 		}
 	}
 }

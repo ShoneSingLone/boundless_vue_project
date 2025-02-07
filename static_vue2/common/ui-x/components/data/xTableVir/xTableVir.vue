@@ -1,347 +1,3 @@
-<style lang="less">
-.xDataGrid_table {
-	&.small {
-		.el-table-v2__row-cell {
-			font-size: 12px;
-		}
-	}
-}
-
-.xDataGrid {
-	position: relative;
-	//outline: 1px solid red;
-
-	.x-table-vir-expand-row {
-		position: absolute;
-		top: 0;
-		left: 0;
-	}
-
-	.el-table-v2__header-cell {
-		// outline: 1px solid blue;
-		position: relative;
-
-		&::after {
-			position: absolute;
-			content: " ";
-			right: 0;
-			height: 100%;
-			width: 2px;
-			top: 0;
-			bottom: 0;
-			cursor: col-resize;
-		}
-
-		display: flex;
-		font-size: 13px;
-		align-items: center;
-		padding: 0 8px;
-		height: 100%;
-		// user-select: none;
-		overflow: hidden;
-		background-color: var(--el-table-header-bg-color);
-		color: var(--el-table-header-text-color);
-		// font-weight: 700;
-
-		&.is-align-center {
-			justify-content: center;
-			text-align: center;
-		}
-
-		&.is-align-right {
-			justify-content: flex-end;
-			text-align: right;
-		}
-
-		&.is-sortable {
-			cursor: pointer;
-		}
-
-		&:hover {
-			.el-icon {
-				display: block;
-			}
-		}
-	}
-
-	.xDataGrid_mask {
-		position: absolute;
-		display: none;
-
-		&.active {
-			display: block;
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-			background-color: transparent;
-			opacity: 0.5;
-			z-index: 1;
-
-			&:hover {
-				cursor: col-resize;
-			}
-
-			.xDataGrid_mask-line {
-				position: absolute;
-				top: 0;
-				width: 1px;
-				border-left: 1px dashed gray;
-				bottom: 0;
-				left: 0;
-			}
-		}
-	}
-}
-
-.el-table-v2 {
-	--el-table-border-color: var(--el-border-color-lighter);
-	--el-table-border: 1px solid var(--el-table-border-color);
-	--el-table-text-color: var(--el-text-color-regular);
-	--el-table-header-text-color: var(--el-text-color-primary);
-	--el-table-row-hover-bg-color: var(--el-fill-color-light);
-	--el-table-current-row-bg-color: var(--el-color-primary-light-9);
-	--el-table-header-bg-color: var(--el-border-color-lighter);
-	--el-table-fixed-box-shadow: var(--el-box-shadow-light);
-	--el-table-bg-color: var(--el-fill-color-blank);
-	--el-table-tr-bg-color: var(--el-fill-color-blank);
-	--el-table-expanded-cell-bg-color: var(--el-fill-color-blank);
-	--el-table-fixed-left-column: inset 10px 0 10px -10px rgba(0, 0, 0, 0.15);
-	--el-table-fixed-right-column: inset -10px 0 10px -10px rgba(0, 0, 0, 0.15);
-}
-
-.el-vl__wrapper {
-	position: relative;
-}
-
-.el-vl__wrapper:hover .el-virtual-scrollbar,
-.el-vl__wrapper.always-on .el-virtual-scrollbar {
-	opacity: 1;
-}
-
-.el-vl__window {
-	scrollbar-width: none;
-}
-
-.el-vl__window::-webkit-scrollbar {
-	display: none;
-}
-
-.el-virtual-scrollbar {
-	opacity: 0;
-	transition: opacity 0.34s ease-out;
-}
-
-.el-virtual-scrollbar.always-on {
-	opacity: 1;
-}
-
-.el-vg__wrapper {
-	position: relative;
-}
-
-.el-table-v2 {
-	* {
-		// outline: 1px solid grey;
-	}
-
-	font-size: 14px;
-}
-
-.el-table-v2 * {
-	box-sizing: border-box;
-}
-
-.el-table-v2__root {
-	position: relative;
-}
-
-.el-table-v2__root:hover .el-table-v2__main .el-virtual-scrollbar {
-	opacity: 1;
-}
-
-.el-table-v2__main {
-	display: flex;
-	flex-direction: column-reverse;
-	position: absolute;
-	overflow: hidden;
-	top: 0;
-	background-color: var(--el-bg-color);
-	left: 0;
-}
-
-.el-table-v2__main .el-vl__horizontal,
-.el-table-v2__main .el-vl__vertical {
-	z-index: 2;
-}
-
-.el-table-v2__left {
-	display: flex;
-	flex-direction: column-reverse;
-	position: absolute;
-	overflow: hidden;
-	top: 0;
-	background-color: var(--el-bg-color);
-	left: 0;
-	box-shadow: 2px 0 4px 0 rgba(0, 0, 0, 0.06);
-}
-
-.el-table-v2__left .el-virtual-scrollbar {
-	opacity: 0;
-}
-
-.el-table-v2__left .el-vl__horizontal,
-.el-table-v2__left .el-vl__vertical {
-	z-index: -1;
-}
-
-.el-table-v2__right {
-	display: flex;
-	flex-direction: column-reverse;
-	position: absolute;
-	overflow: hidden;
-	top: 0;
-	background-color: var(--el-bg-color);
-	right: 0;
-	box-shadow: -2px 0 4px 0 rgba(0, 0, 0, 0.06);
-}
-
-.el-table-v2__right .el-virtual-scrollbar {
-	opacity: 0;
-}
-
-.el-table-v2__right .el-vl__horizontal,
-.el-table-v2__right .el-vl__vertical {
-	z-index: -1;
-}
-
-.el-table-v2__header-row {
-	-webkit-padding-end: var(--el-table-scrollbar-size);
-	padding-inline-end: var(--el-table-scrollbar-size);
-}
-
-.el-table-v2__row {
-	-webkit-padding-end: var(--el-table-scrollbar-size);
-	padding-inline-end: var(--el-table-scrollbar-size);
-}
-
-.el-table-v2__header-wrapper {
-	overflow: hidden;
-}
-
-.el-table-v2__header {
-	background-color: var(--el-table-header-bg-color);
-	position: relative;
-	overflow: hidden;
-}
-
-.el-table-v2__footer {
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	overflow: hidden;
-}
-
-.el-table-v2__empty {
-	position: absolute;
-	left: 0;
-}
-
-.el-table-v2__overlay {
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	z-index: 9999;
-}
-
-.el-table-v2__header-row {
-	display: flex;
-	border-bottom: var(--el-table-border);
-}
-
-.el-table-v2__sort-icon {
-	transition:
-		opacity,
-		display var(--el-transition-duration);
-	opacity: 0.6;
-	display: none;
-}
-
-.el-table-v2__sort-icon.is-sorting {
-	display: block;
-	opacity: 1;
-}
-
-.el-table-v2__row {
-	border-bottom: var(--el-table-border);
-	display: flex;
-	align-items: center;
-	transition: background-color var(--el-transition-duration);
-}
-
-.el-table-v2__row.is-hovered {
-	background-color: var(--el-table-row-hover-bg-color);
-}
-
-.el-table-v2__row:hover {
-	background-color: var(--el-table-row-hover-bg-color);
-}
-
-.el-table-v2__row-cell {
-	height: 100%;
-	overflow: hidden;
-	display: flex;
-	align-items: center;
-	padding: 0 8px;
-}
-
-.el-table-v2__row-cell.is-align-center {
-	justify-content: center;
-	text-align: center;
-}
-
-.el-table-v2__row-cell.is-align-right {
-	justify-content: flex-end;
-	text-align: right;
-}
-
-.el-table-v2__expand-icon {
-	margin: 0 4px;
-	cursor: pointer;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-
-.el-table-v2__expand-icon svg {
-	transition: transform var(--el-transition-duration);
-}
-
-.el-table-v2__expand-icon.is-expanded svg {
-	transform: rotate(90deg);
-}
-
-.el-table-v2:not(.is-dynamic) .el-table-v2__cell-text {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-.el-table-v2.is-dynamic .el-table-v2__row {
-	overflow: hidden;
-	align-items: stretch;
-}
-
-.el-table-v2.is-dynamic .el-table-v2__row .el-table-v2__row-cell {
-	word-break: break-all;
-}
-</style>
-
 <script lang="ts">
 export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 	let x_table_vir_empty_component =
@@ -1055,7 +711,6 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 
 		debounced.cancel = cancel;
 		debounced.flush = flush;
-		debugger;
 		return debounced;
 	}
 
@@ -1416,6 +1071,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 		const mainTableHeights = shallowRef({});
 		const rightTableHeights = shallowRef({});
 		const isDynamic = computed(() => _.isNumber(props.estimatedRowHeight));
+		inject_xTableVir.isDynamic = isDynamic.value;
 
 		function onRowsRendered(params) {
 			props.onRowsRendered?.(params);
@@ -2120,7 +1776,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 
 			const cellStyle = enforceUnit(style);
 			if (column.placeholderSign === placeholderSign) {
-				return h("div", {
+				return hDiv({
 					class: ns.em("row-cell", "placeholder"),
 					style: cellStyle
 				});
@@ -2181,63 +1837,67 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 			})();
 
 			const iconStyle = `margin-inline-start: ${depth * indentSize}px;`;
-			const isShowIcon = column.prop === "COL_EXPAND_ARROW";
+			const isShowIconArrow = column.prop === "COL_EXPAND_ARROW";
 
-			let iconProps = {
-				style: [iconStyle, `width: ${iconSize}px; height: ${iconSize}px;`].join(" ")
-			};
-			let IconOrPlaceholder = isShowIcon
-				? h(
-						"i",
-						(() => {
-							if (expandable) {
-								const expanded = _.some(expandedRowKeys, key => {
-									return _.$isSame(rowData[rowKey], key);
-								});
+			const iconVNode = () => {
+				let iconProps = {
+					icon: "arrow-right",
+					style: [iconStyle, `width: ${iconSize}px; height: ${iconSize}px;`].join(" ")
+				};
 
-								iconProps = mergeProps4h([
-									iconProps,
-									{
-										class: {
-											[ns.e("expand-icon")]: true,
-											"el-icon el-icon-arrow-right ": isShowIcon,
-											"el-table__expand-icon--expanded": expanded
-										},
-										attrs: {
-											size: iconSize,
-											expanded: expanded,
-											expandable: true
-										},
-										onClick() {
-											if (isShowIcon && expandable) {
-												const inject_xTableVir = injectVm(
-													this._original,
-													"xTableVirWrapper"
-												);
-												if (inject_xTableVir.updateTableByScroll) {
-													setTimeout(() => {
-														inject_xTableVir.rowHeights.value = {};
-														inject_xTableVir.$nextTick(() => {
-															inject_xTableVir.updateTableByScroll();
-														});
-													}, 64);
-												}
+				return hxIcon(
+					(() => {
+						if (expandable) {
+							const expanded = _.some(expandedRowKeys, key => {
+								return _.$isSame(rowData[rowKey], key);
+							});
 
-												onRowExpanded({
-													expanded: !expanded,
-													rowData,
-													rowIndex,
-													rowKey: rowData[rowKey]
-												});
+							iconProps = mergeProps4h([
+								iconProps,
+								{
+									class: {
+										[ns.e("expand-icon")]: true,
+										"el-icon el-icon-arrow-right ": isShowIconArrow,
+										"el-table__expand-icon--expanded": expanded
+									},
+									attrs: {
+										size: iconSize,
+										expanded: expanded,
+										expandable: true
+									},
+									onClick() {
+										if (isShowIconArrow && expandable) {
+											const inject_xTableVir = injectVm(
+												this,
+												"xTableVirWrapper"
+											);
+
+											if (inject_xTableVir.updateTableByScroll) {
+												setTimeout(() => {
+													inject_xTableVir.rowHeights.value = {};
+													inject_xTableVir.$nextTick(() => {
+														inject_xTableVir.updateTableByScroll();
+													});
+												}, 64);
 											}
+
+											onRowExpanded({
+												expanded: !expanded,
+												rowData,
+												rowIndex,
+												rowKey: rowData[rowKey]
+											});
 										}
 									}
-								]);
-							}
-							return iconProps;
-						})()
-					)
-				: null;
+								}
+							]);
+						}
+						return iconProps;
+					})()
+				);
+			};
+
+			let IconOrPlaceholder = isShowIconArrow ? iconVNode() : null;
 
 			return h(
 				"div",
@@ -2304,7 +1964,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 			const { column, ns, style, onColumnSorted } = props;
 			const cellStyle = enforceUnit(style);
 			if (column.placeholderSign === placeholderSign) {
-				return h("div", {
+				return hDiv({
 					class: ns.em("header-row-cell", "placeholder"),
 					style: cellStyle
 				});
@@ -2356,7 +2016,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 			if (column.sortable) {
 				cellWrapperProps.onClick = onColumnSorted;
 			}
-			return h("div", cellWrapperProps, [
+			return hDiv(cellWrapperProps, [
 				Cell,
 				h(SortIcon, {
 					vIf: sortable,
@@ -2388,24 +2048,26 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 		functional: true,
 		render(h, { data: props, slots, scopedSlots }, vm) {
 			const inject_xTableVir = injectVm(vm, "xTableVirWrapper");
-
 			let emptyChild = (() => {
 				if (inject_xTableVir?.$scopedSlots?.empty) {
 					return inject_xTableVir.$scopedSlots.empty();
 				}
-				return emptyRender();
+				return emptyRender({ inject_xTableVir });
 			})();
+
+			const style = { position: "relative", width: "100%", padding: "16px" };
+
+			if (props.headerHeight && props.mainTableHeight) {
+				const { headerHeight, mainTableHeight } = props;
+				style.top = `${headerHeight}px`;
+				style.height = `${mainTableHeight - headerHeight}px`;
+			}
 
 			return h(
 				"div",
 				{
 					class: props.class,
-					style: {
-						top: "50%",
-						transform: "translateY(-50%)",
-						position: "relative",
-						width: "100%"
-					}
+					style
 				},
 				[emptyChild]
 			);
@@ -2716,7 +2378,6 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 					class: ns.e("footer"),
 					style: unref(footerHeight)
 				};
-
 				return h(
 					"div",
 					{
@@ -2743,7 +2404,9 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 							{
 								vIf: showEmpty.value,
 								class: ns.e("empty"),
-								style: unref(emptyStyle)
+								style: unref(emptyStyle),
+								headerHeight,
+								mainTableHeight: unref(mainTableHeight)
 							},
 							[{ default: vmTable.$vSlots.empty }]
 						),
@@ -2850,17 +2513,22 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 		watch: {
 			"$attrs.data": {
 				immediate: true,
-				handler(data) {
-					if (!data.length) {
-						return;
-					}
+				handler(data = [], oldData) {
 					this.$nextTick(async () => {
-						await _.$ensure(() => {
-							const selector = `[data-role=table-main_body]`;
-							const $el = $(this.$el).find(selector);
-							return $el.length;
-						});
-						this.updateTableByScroll && this.updateTableByScroll();
+						try {
+							if (!data.length) {
+								return;
+							}
+							if (_.isEqual(data, oldData)) {
+								return;
+							}
+							await _.$ensure(() => {
+								const selector = `[data-role=table-main_body]`;
+								const $el = $(this.$el).find(selector);
+								return $el.length;
+							});
+							this.updateTableByScroll && this.updateTableByScroll();
+						} catch (error) {}
 					});
 				}
 			}
@@ -2870,6 +2538,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 				if (!width) {
 					return this.$props.columns;
 				}
+
 				const currentShouldShow = _.reduce(
 					this.$props.columns,
 					(columnsForShow, column) => {
@@ -2900,11 +2569,13 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 					eachWidth;
 
 				_.each(currentShouldShow, (column, index) => {
-					if (column.width) {
+					if (column.width && !column.__unset_width) {
+						/* 只记录自定义宽度的列 */
 						usedWidth += column.width;
 					} else {
-						/* 没有设置width就会自动分配 */
+						/* 初始化时收集未配置宽度的列 */
 						unsetWidth[index] = true;
+						column.__unset_width = true;
 					}
 				});
 				/* 剩余的宽度 */
@@ -2919,7 +2590,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 				}
 
 				return _.map(currentShouldShow, column => {
-					if (!hasOwn(column, "width")) {
+					if (column.__unset_width) {
 						_.$val(column, "width", eachWidth);
 					}
 					return {
@@ -2947,7 +2618,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 				$vSlots: {
 					default: ({ width, height }) => {
 						const xTableVirProps = {
-							staticClass: ["xDataGrid_table", PRIVATE_GLOBAL.x_ui_size].join(" "),
+							staticClass: ["xDataGrid_table", PRIVATE_GLOBAL.x_ui.size].join(" "),
 							attrs: { "data-table": vm._uid },
 							width,
 							height: this.getHeight(height),
@@ -2971,8 +2642,8 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 						};
 
 						/* 拖动列宽 */
-						const vDomLine = h("div", { staticClass: "xDataGrid_mask-line" }, []);
-						return [h(xTableVir, xTableVirProps), h("div", divProps, [vDomLine])];
+						const vDomLine = hDiv({ staticClass: "xDataGrid_mask-line" }, []);
+						return [h(xTableVir, xTableVirProps), hDiv(divProps, [vDomLine])];
 					}
 				}
 			});
@@ -2980,3 +2651,967 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 	});
 }
 </script>
+
+<style lang="less">
+.xDataGrid_table {
+	&.small {
+		.el-table-v2__row-cell {
+			font-size: 12px;
+		}
+	}
+}
+
+.xDataGrid {
+	position: relative;
+	//outline: 1px solid red;
+
+	.x-table-vir-expand-row {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+
+	.el-table-v2__header-cell {
+		// outline: 1px solid blue;
+		position: relative;
+
+		&::after {
+			position: absolute;
+			content: " ";
+			right: 0;
+			height: 100%;
+			width: 2px;
+			top: 0;
+			bottom: 0;
+			cursor: col-resize;
+		}
+
+		display: flex;
+		font-size: 13px;
+		align-items: center;
+		padding: 0 8px;
+		height: 100%;
+		// user-select: none;
+		overflow: hidden;
+		background-color: var(--el-table-header-bg-color);
+		color: var(--el-table-header-text-color);
+		// font-weight: 700;
+
+		&.is-align-center {
+			justify-content: center;
+			text-align: center;
+		}
+
+		&.is-align-right {
+			justify-content: flex-end;
+			text-align: right;
+		}
+
+		&.is-sortable {
+			cursor: pointer;
+		}
+
+		&:hover {
+			.el-icon {
+				display: block;
+			}
+		}
+	}
+
+	.xDataGrid_mask {
+		position: absolute;
+		display: none;
+
+		&.active {
+			display: block;
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-color: transparent;
+			opacity: 0.5;
+			z-index: 1;
+
+			&:hover {
+				cursor: col-resize;
+			}
+
+			.xDataGrid_mask-line {
+				position: absolute;
+				top: 0;
+				width: 1px;
+				border-left: 1px dashed gray;
+				bottom: 0;
+				left: 0;
+			}
+		}
+	}
+}
+
+.el-table-v2 {
+	--el-table-border-color: var(--el-border-color-lighter);
+	--el-table-border: 1px solid var(--el-table-border-color);
+	--el-table-text-color: var(--el-text-color-regular);
+	--el-table-header-text-color: var(--el-text-color-primary);
+	--el-table-row-hover-bg-color: var(--el-fill-color-light);
+	--el-table-current-row-bg-color: var(--el-color-primary-light-9);
+	--el-table-header-bg-color: var(--el-border-color-lighter);
+	--el-table-fixed-box-shadow: var(--el-box-shadow-light);
+	--el-table-bg-color: var(--el-fill-color-blank);
+	--el-table-tr-bg-color: var(--el-fill-color-blank);
+	--el-table-expanded-cell-bg-color: var(--el-fill-color-blank);
+	--el-table-fixed-left-column: inset 10px 0 10px -10px rgba(0, 0, 0, 0.15);
+	--el-table-fixed-right-column: inset -10px 0 10px -10px rgba(0, 0, 0, 0.15);
+}
+
+.el-vl__wrapper {
+	position: relative;
+}
+
+.el-vl__wrapper:hover .el-virtual-scrollbar,
+.el-vl__wrapper.always-on .el-virtual-scrollbar {
+	opacity: 1;
+}
+
+.el-vl__window {
+	scrollbar-width: none;
+}
+
+.el-vl__window::-webkit-scrollbar {
+	display: none;
+}
+
+.el-virtual-scrollbar {
+	opacity: 0;
+	transition: opacity 0.34s ease-out;
+}
+
+.el-virtual-scrollbar.always-on {
+	opacity: 1;
+}
+
+.el-vg__wrapper {
+	position: relative;
+}
+
+.el-table-v2 {
+	* {
+		// outline: 1px solid grey;
+	}
+
+	font-size: 14px;
+}
+
+.el-table-v2 * {
+	box-sizing: border-box;
+}
+
+.el-table-v2__root {
+	position: relative;
+}
+
+.el-table-v2__root:hover .el-table-v2__main .el-virtual-scrollbar {
+	opacity: 1;
+}
+
+.el-table-v2__main {
+	display: flex;
+	flex-direction: column-reverse;
+	position: absolute;
+	overflow: hidden;
+	top: 0;
+	background-color: var(--el-bg-color);
+	left: 0;
+}
+
+.el-table-v2__main .el-vl__horizontal,
+.el-table-v2__main .el-vl__vertical {
+	z-index: 2;
+}
+
+.el-table-v2__left {
+	display: flex;
+	flex-direction: column-reverse;
+	position: absolute;
+	overflow: hidden;
+	top: 0;
+	background-color: var(--el-bg-color);
+	left: 0;
+	box-shadow: 2px 0 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.el-table-v2__left .el-virtual-scrollbar {
+	opacity: 0;
+}
+
+.el-table-v2__left .el-vl__horizontal,
+.el-table-v2__left .el-vl__vertical {
+	z-index: -1;
+}
+
+.el-table-v2__right {
+	display: flex;
+	flex-direction: column-reverse;
+	position: absolute;
+	overflow: hidden;
+	top: 0;
+	background-color: var(--el-bg-color);
+	right: 0;
+	box-shadow: -2px 0 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.el-table-v2__right .el-virtual-scrollbar {
+	opacity: 0;
+}
+
+.el-table-v2__right .el-vl__horizontal,
+.el-table-v2__right .el-vl__vertical {
+	z-index: -1;
+}
+
+.el-table-v2__header-row {
+	-webkit-padding-end: var(--el-table-scrollbar-size);
+	padding-inline-end: var(--el-table-scrollbar-size);
+}
+
+.el-table-v2__row {
+	-webkit-padding-end: var(--el-table-scrollbar-size);
+	padding-inline-end: var(--el-table-scrollbar-size);
+}
+
+.el-table-v2__header-wrapper {
+	overflow: hidden;
+}
+
+.el-table-v2__header {
+	background-color: var(--el-table-header-bg-color);
+	position: relative;
+	overflow: hidden;
+}
+
+.el-table-v2__footer {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow: hidden;
+}
+
+.el-table-v2__empty {
+	position: absolute;
+	left: 0;
+}
+
+.el-table-v2__overlay {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 9999;
+}
+
+.el-table-v2__header-row {
+	display: flex;
+	border-bottom: var(--el-table-border);
+}
+
+.el-table-v2__sort-icon {
+	transition:
+		opacity,
+		display var(--el-transition-duration);
+	opacity: 0.6;
+	display: none;
+}
+
+.el-table-v2__sort-icon.is-sorting {
+	display: block;
+	opacity: 1;
+}
+
+.el-table-v2__row {
+	border-bottom: var(--el-table-border);
+	display: flex;
+	align-items: center;
+	transition: background-color var(--el-transition-duration);
+}
+
+.el-table-v2__row.is-hovered {
+	background-color: var(--el-table-row-hover-bg-color);
+}
+
+.el-table-v2__row:hover {
+	background-color: var(--el-table-row-hover-bg-color);
+}
+
+.el-table-v2__row-cell {
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	padding: 0 8px;
+}
+
+.el-table-v2__row-cell.is-align-center {
+	justify-content: center;
+	text-align: center;
+}
+
+.el-table-v2__row-cell.is-align-right {
+	justify-content: flex-end;
+	text-align: right;
+}
+
+.el-table-v2__expand-icon {
+	margin: 0 4px;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.el-table-v2__expand-icon svg {
+	transition: transform var(--el-transition-duration);
+}
+
+.el-table-v2__expand-icon.is-expanded svg {
+	transform: rotate(90deg);
+}
+
+.el-table-v2:not(.is-dynamic) .el-table-v2__cell-text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.el-table-v2.is-dynamic .el-table-v2__row {
+	overflow: hidden;
+	align-items: stretch;
+}
+
+.el-table-v2.is-dynamic .el-table-v2__row .el-table-v2__row-cell {
+	word-break: break-all;
+}
+
+.el-table,
+.el-table__expanded-cell {
+	background-color: #fff;
+}
+.el-table {
+	position: relative;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	width: 100%;
+	max-width: 100%;
+	font-size: 14px;
+	color: #606266;
+}
+
+.el-table--mini,
+.el-table--small,
+.el-table__expand-icon {
+	font-size: 12px;
+}
+
+.el-table__empty-block {
+	min-height: 60px;
+	text-align: center;
+	width: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.el-table__empty-text {
+	line-height: 60px;
+	width: 50%;
+	color: var(--el-text-color-secondary);
+}
+
+.el-table__expand-column .cell {
+	padding: 0;
+	text-align: center;
+}
+
+.el-table__expand-icon {
+	position: relative;
+	cursor: pointer;
+	color: #666;
+	-webkit-transition: -webkit-transform 0.2s ease-in-out;
+	transition: -webkit-transform 0.2s ease-in-out;
+	transition: transform 0.2s ease-in-out;
+	transition:
+		transform 0.2s ease-in-out,
+		-webkit-transform 0.2s ease-in-out;
+	height: 20px;
+}
+
+.el-table__expand-icon--expanded {
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+
+.el-table__expand-icon > .el-icon {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -5px;
+	margin-top: -5px;
+}
+
+.el-table__expanded-cell[class*="cell"] {
+	padding: 20px 50px;
+}
+
+.el-table__expanded-cell:hover {
+	background-color: transparent !important;
+}
+
+.el-table__placeholder {
+	display: inline-block;
+	width: 20px;
+}
+
+.el-table__append-wrapper {
+	overflow: hidden;
+}
+
+.el-table--fit {
+	border-right: 0;
+	border-bottom: 0;
+}
+
+.el-table--fit .el-table__cell.gutter {
+	border-right-width: 1px;
+}
+
+.el-table--scrollable-x .el-table__body-wrapper {
+	overflow-x: auto;
+}
+
+.el-table--scrollable-y .el-table__body-wrapper {
+	overflow-y: auto;
+}
+
+.el-table thead {
+	color: var(--el-text-color-secondary);
+	font-weight: 500;
+}
+
+.el-table thead.is-group th.el-table__cell {
+	background: var(--el-fill-color-light);
+}
+
+.el-table .el-table__cell {
+	padding: 12px 0;
+	min-width: 0;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	text-overflow: ellipsis;
+	vertical-align: middle;
+	position: relative;
+	text-align: left;
+}
+
+.el-table .el-table__cell.is-center {
+	text-align: center;
+}
+
+.el-table .el-table__cell.is-right {
+	text-align: right;
+}
+
+.el-table .el-table__cell.gutter {
+	width: 15px;
+	border-right-width: 0;
+	border-bottom-width: 0;
+	padding: 0;
+}
+
+.el-table--medium .el-table__cell {
+	padding: 10px 0;
+}
+
+.el-table--small .el-table__cell {
+	padding: 8px 0;
+}
+
+.el-table--mini .el-table__cell {
+	padding: 6px 0;
+}
+
+.el-table .cell,
+.el-table--border .el-table__cell:first-child .cell {
+	padding-left: 10px;
+}
+
+.el-table tr {
+	background-color: #fff;
+}
+
+.el-table tr input[type="checkbox"] {
+	margin: 0;
+}
+
+.el-table td.el-table__cell,
+.el-table th.el-table__cell.is-leaf {
+	border-bottom: 1px solid var(--el-border-color-lighter);
+}
+
+.el-table th.el-table__cell.is-sortable {
+	cursor: pointer;
+}
+
+.el-table th.el-table__cell {
+	overflow: hidden;
+	-ms-user-select: none;
+	user-select: none;
+	background-color: #fff;
+}
+
+.el-table th.el-table__cell .cell {
+	-ms-user-select: text;
+	user-select: text;
+}
+
+.el-table th.el-table__cell > .cell {
+	display: inline-block;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	position: relative;
+	vertical-align: middle;
+	padding-left: 10px;
+	padding-right: 10px;
+	width: 100%;
+}
+
+.el-table th.el-table__cell > .cell.highlight {
+	color: var(--el-color-primary);
+}
+
+.el-table th.el-table__cell.required > div::before {
+	display: inline-block;
+	content: "";
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #ff4d51;
+	margin-right: 5px;
+	vertical-align: middle;
+}
+
+.el-table td.el-table__cell div {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.el-table td.el-table__cell.gutter {
+	width: 0;
+}
+
+.el-table .cell {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: normal;
+	word-break: break-all;
+	line-height: 23px;
+	padding-right: 10px;
+}
+
+.el-table .cell.el-tooltip {
+	white-space: nowrap;
+	min-width: 50px;
+}
+
+.el-table--border,
+.el-table--group {
+	border: 1px solid var(--el-border-color-lighter);
+}
+
+.el-table--border::after,
+.el-table--group::after,
+.el-table::before {
+	content: "";
+	position: absolute;
+	background-color: var(--el-border-color-lighter);
+	z-index: 1;
+}
+
+.el-table--border::after,
+.el-table--group::after {
+	top: 0;
+	right: 0;
+	width: 1px;
+	height: 100%;
+}
+
+.el-table::before {
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 1px;
+}
+
+.el-table--border {
+	border-right: none;
+	border-bottom: none;
+}
+
+.el-table--border.el-loading-parent--relative {
+	border-color: transparent;
+}
+
+.el-table--border .el-table__cell,
+.el-table__body-wrapper .el-table--border.is-scrolling-left ~ .el-table__fixed {
+	border-right: 1px solid var(--el-border-color-lighter);
+}
+
+.el-table--border th.el-table__cell.gutter:last-of-type {
+	border-bottom: 1px solid var(--el-border-color-lighter);
+	border-bottom-width: 1px;
+}
+
+.el-table--border th.el-table__cell,
+.el-table__fixed-right-patch {
+	border-bottom: 1px solid var(--el-border-color-lighter);
+}
+
+.el-table__fixed,
+.el-table__fixed-right {
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
+}
+
+.el-table__fixed-right::before,
+.el-table__fixed::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 1px;
+	background-color: var(--el-border-color-lighter);
+	z-index: 4;
+}
+
+.el-table__fixed-right-patch {
+	position: absolute;
+	top: -1px;
+	right: 0;
+	background-color: #fff;
+}
+
+.el-table__fixed-right {
+	top: 0;
+	left: auto;
+	right: 0;
+}
+
+.el-table__fixed-right .el-table__fixed-body-wrapper,
+.el-table__fixed-right .el-table__fixed-footer-wrapper,
+.el-table__fixed-right .el-table__fixed-header-wrapper {
+	left: auto;
+	right: 0;
+}
+
+.el-table__fixed-header-wrapper {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 3;
+}
+
+.el-table__fixed-footer-wrapper {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	z-index: 3;
+}
+
+.el-table__fixed-footer-wrapper tbody td.el-table__cell {
+	border-top: 1px solid var(--el-border-color-lighter);
+	background-color: var(--el-fill-color-light);
+	color: #606266;
+}
+
+.el-table__fixed-body-wrapper {
+	position: absolute;
+	left: 0;
+	top: 37px;
+	overflow: hidden;
+	z-index: 3;
+}
+
+.el-table__body-wrapper,
+.el-table__footer-wrapper,
+.el-table__header-wrapper {
+	width: 100%;
+}
+
+.el-table__footer-wrapper {
+	margin-top: -1px;
+}
+
+.el-table__footer-wrapper td.el-table__cell {
+	border-top: 1px solid var(--el-border-color-lighter);
+}
+
+.el-table__body,
+.el-table__footer,
+.el-table__header {
+	table-layout: fixed;
+	border-collapse: separate;
+}
+
+.el-table__footer-wrapper,
+.el-table__header-wrapper {
+	overflow: hidden;
+}
+
+.el-table__footer-wrapper tbody td.el-table__cell,
+.el-table__header-wrapper tbody td.el-table__cell {
+	background-color: var(--el-fill-color-light);
+	color: #606266;
+}
+
+.el-table__body-wrapper {
+	overflow: hidden;
+	position: relative;
+}
+
+.el-table__body-wrapper.is-scrolling-left ~ .el-table__fixed,
+.el-table__body-wrapper.is-scrolling-none ~ .el-table__fixed,
+.el-table__body-wrapper.is-scrolling-none ~ .el-table__fixed-right,
+.el-table__body-wrapper.is-scrolling-right ~ .el-table__fixed-right {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.el-table__body-wrapper .el-table--border.is-scrolling-right ~ .el-table__fixed-right {
+	border-left: 1px solid var(--el-border-color-lighter);
+}
+
+.el-table .caret-wrapper {
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	height: 34px;
+	width: 24px;
+	vertical-align: middle;
+	cursor: pointer;
+	overflow: initial;
+	position: relative;
+}
+
+.el-table .sort-caret {
+	width: 0;
+	height: 0;
+	border: 5px solid transparent;
+	position: absolute;
+	left: 7px;
+}
+
+.el-table .sort-caret.ascending {
+	border-bottom-color: var(--el-text-color-disabled);
+	top: 5px;
+}
+
+.el-table .sort-caret.descending {
+	border-top-color: var(--el-text-color-disabled);
+	bottom: 7px;
+}
+
+.el-table .ascending .sort-caret.ascending {
+	border-bottom-color: var(--el-color-primary);
+}
+
+.el-table .descending .sort-caret.descending {
+	border-top-color: var(--el-color-primary);
+}
+
+.el-table .hidden-columns {
+	position: absolute;
+	z-index: -1;
+}
+
+.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+	background: var(--el-fill-color-lighter);
+}
+
+.el-table--striped .el-table__body tr.el-table__row--striped.current-row td.el-table__cell {
+	background-color: #ecf5ff;
+}
+
+.el-table__body tr.hover-row.current-row > td.el-table__cell,
+.el-table__body tr.hover-row.el-table__row--striped.current-row > td.el-table__cell,
+.el-table__body tr.hover-row.el-table__row--striped > td.el-table__cell,
+.el-table__body tr.hover-row > td.el-table__cell {
+	/*background-color: var(--el-fill-color-light)*/
+}
+
+.el-table__body tr.current-row > td.el-table__cell {
+	background-color: #ecf5ff;
+}
+
+.el-table__column-resize-proxy {
+	position: absolute;
+	left: 200px;
+	top: 0;
+	bottom: 0;
+	width: 0;
+	border-left: 1px solid var(--el-border-color-lighter);
+	z-index: 10;
+}
+
+.el-table__column-filter-trigger {
+	display: inline-block;
+	line-height: 34px;
+	cursor: pointer;
+}
+
+.el-table__column-filter-trigger i {
+	color: var(--el-text-color-secondary);
+	font-size: 12px;
+	-webkit-transform: scale(0.75);
+	transform: scale(0.75);
+}
+
+.el-table--enable-row-transition .el-table__body td.el-table__cell {
+	-webkit-transition: background-color 0.25s ease;
+	transition: background-color 0.25s ease;
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
+	background-color: var(--el-fill-color-light);
+}
+
+.el-table--fluid-height .el-table__fixed,
+.el-table--fluid-height .el-table__fixed-right {
+	bottom: 0;
+	overflow: hidden;
+}
+
+.el-table [class*="el-table__row--level"] .el-table__expand-icon {
+	display: inline-block;
+	width: 20px;
+	line-height: 20px;
+	height: 20px;
+	text-align: center;
+	margin-right: 3px;
+}
+
+.el-table-column--selection .cell {
+	padding-left: 14px;
+	padding-right: 14px;
+}
+
+.el-table-filter {
+	border: 1px solid var(--el-border-color-lighter);
+	border-radius: var(--border-radius--mini);
+	background-color: #fff;
+	box-shadow: var(--normal-box-shadow);
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: 2px 0;
+}
+
+.el-table-filter__list {
+	padding: 5px 0;
+	margin: 0;
+	list-style: none;
+	min-width: 100px;
+}
+
+.el-table-filter__list-item {
+	line-height: 36px;
+	padding: 0 10px;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.el-table-filter__list-item:hover {
+	background-color: #ecf5ff;
+	color: var(--el-color-primary-hover);
+}
+
+.el-table-filter__list-item.is-active {
+	background-color: var(--el-color-primary);
+	color: #fff;
+}
+
+.el-table-filter__content {
+	min-width: 100px;
+}
+
+.el-table-filter__bottom {
+	border-top: 1px solid var(--el-border-color-lighter);
+	padding: 8px;
+}
+
+.el-table-filter__bottom button {
+	background: 0 0;
+	border: none;
+	color: #606266;
+	cursor: pointer;
+	font-size: 13px;
+	padding: 0 3px;
+}
+
+.el-table-filter__bottom button:hover {
+	color: var(--el-color-primary);
+}
+
+.el-table-filter__bottom button:focus {
+	outline: 0;
+}
+
+.el-table-filter__bottom button.is-disabled {
+	color: var(--el-text-color-disabled);
+	cursor: not-allowed;
+}
+
+.el-table-filter__wrap {
+	max-height: 280px;
+}
+
+.el-table-filter__checkbox-group {
+	padding: 10px;
+}
+
+.el-table-filter__checkbox-group label.el-checkbox {
+	display: block;
+	margin-right: 5px;
+	margin-bottom: 8px;
+	margin-left: 5px;
+}
+
+.el-table-filter__checkbox-group .el-checkbox:last-child {
+	margin-bottom: 0;
+}
+</style>

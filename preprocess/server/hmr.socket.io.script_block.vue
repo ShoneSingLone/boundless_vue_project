@@ -6,7 +6,7 @@ window.ONLY_USE_IN_DEV_MODEL = function () {
 	/* 运行时会replace */
 	/* 默认 socket.io */
 	// var ws = io("LOCALHOST_PORT/ws");
-	const websocketURL = `${location.host}/ws`;
+	const websocketURL = `${location.host}`;
 	var ws = io(websocketURL);
 	console.log("ONLY_USE_IN_DEV_MODEL", websocketURL);
 	window.APP_WS = ws;

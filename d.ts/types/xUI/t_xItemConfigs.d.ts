@@ -23,6 +23,22 @@ export type t_xItemConfigsOptions = {
 	isPwd?: boolean;
 	/*** xInput 是否为数字框 */
 	isNumber?: boolean;
+	/*** xInput 带有下拉框的Input 特型控件 */
+	inputType?: "select_input";
+	/*** xInput 带有下拉框的Input 特型控件 下拉的值 */
+	selectValue?: string | boolean | number;
+	/*** xInput 带有下拉框的Input 特型控件 下拉项 */
+	selectOptions?: any[];
+	/*** xInput 带有下拉框的Input 特型控件 下拉的值改变时的回调函数 */
+	onSelectChange?: Function;
+	/*** xInputNumber 步长 */
+	step?: number;
+	/*** xInputNumber 是否只能输入 step 的倍数 */
+	stepStrictly?: boolean;
+	/*** xInputNumber min */
+	min?: number;
+	/*** xInputNumber max */
+	max?: number;
 	/*** xItemSlider 是否显示输入框 */
 	showInput?: boolean;
 	/*** xItemRadioGroup 是否使用按钮组 */
@@ -46,7 +62,11 @@ export type t_xItemConfigsOptions = {
 	i18nMany?: Function;
 	disabled?: boolean | Function;
 	isHide?: boolean | Function;
-	options?: any[] | Function;
+	/*** xItemDesc 是否在应用此组件的时候隐藏 */
+	isHideWhenDesc?: boolean | Function;
+	options?: any[];
+	/*** xItemSelect 渲染自定义项 */
+	optonsRender?: Function;
 	onEmitValue?: ({ val: any }) => void;
 	once?: Function;
 	tips?: string | Function;
@@ -60,12 +80,16 @@ export type t_xItemConfigsOptions = {
 	onEnter?: Function;
 };
 
-type t_options = {
+type t_xItems = {
 	[prop: string]: t_xItemConfigsOptions;
 };
 
-export declare type t_xItemConfigsFn = (options: t_options) => t_options;
+export declare type t_defItemsFn = (options: t_xItems) => t_xItems;
 
-export interface i_defItems extends t_xItemConfigsFn {
+export interface i_defItems extends t_defItemsFn {
+	/* methods */
+}
+export declare type t_defItemFn = (options: t_xItemConfigsOptions) => t_xItemConfigsOptions;
+export interface i_defItem extends t_defItemFn {
 	/* methods */
 }

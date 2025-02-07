@@ -101,32 +101,31 @@ export default async function () {
 			return {
 				chunkAndSizeArray: [],
 				sortBy: "name",
-				oprBtnArray: [
-					{
-						label: i18n("名称"),
-						preset: "text",
-						onClick() {
-							vm.sortBy = "name";
-							vm.APP.mSetResources(vm.APP.resourceList);
+				oprBtnArray: (() => {
+					const genOnClickFn = type => {
+						return () => {
+							vm.APP.sortBy = type;
+							vm.APP.mSetResources();
+						};
+					};
+					return [
+						{
+							label: i18n("名称"),
+							preset: "text",
+							onClick: genOnClickFn("name")
+						},
+						{
+							label: i18n("时间"),
+							preset: "text",
+							onClick: genOnClickFn("add_time")
+						},
+						{
+							label: i18n("类型"),
+							preset: "text",
+							onClick: genOnClickFn("type")
 						}
-					},
-					{
-						label: i18n("时间"),
-						preset: "text",
-						onClick() {
-							vm.sortBy = "add_time";
-							vm.APP.mSetResources(vm.APP.resourceList);
-						}
-					},
-					{
-						label: i18n("类型"),
-						preset: "text",
-						onClick() {
-							vm.sortBy = "type";
-							vm.APP.mSetResources(vm.APP.resourceList);
-						}
-					}
-				],
+					];
+				})(),
 				oprBtnArray_openAs: [
 					{
 						label: i18n("audio"),
@@ -398,13 +397,51 @@ export default async function () {
 				this.APP.playMedia(item, { resource: this.APP.resourceList });
 			},
 			async downloadFile() {
+				let _id;
+				while ((_id = this.APP.selectedItems.pop())) {
+					this.downloadFileOne(_.find(this.APP.resourceList, { _id }));
+					await _.$sleep(500);
+				}
+				this.APP.isShowBMoreDrawer = false;
+			},
+			async downloadFileOne(item) {
+				return new Promise(async resolve => {
+					const DownloadByOctetStreamProgressDialog = await _.$importVue(
+						"@/views/CloudDisk/CloudDiskResource.downloadProgress.dialog.vue"
+					);
+
+					_.$notify({
+						title: false,
+						duration: 0,
+						showClose: false,
+						customClass: "DownloadByOctetStreamProgressDialog",
+						onClose() {
+							resolve("done");
+						},
+						message() {
+							return h(
+								DownloadByOctetStreamProgressDialog,
+								{
+									props: {
+										item,
+										payload: { id: item._id }
+									}
+								},
+								[]
+							);
+						},
+						position: "bottom-right"
+					});
+				});
+			},
+			async downloadFile_old() {
 				const vm = this;
 				if (vm.APP.selectedItems.length !== 1) {
 					return _.$msgError("只能选择一个文件");
 				}
 				let item = _.find(vm.APP.resourceList, { _id: vm.APP.selectedItems[0] });
 				return _.$ajax.downloadOctetStream({
-					url: _.$ajax.urlWrapper(`/api/resource/get`),
+					url: `/api/resource/get`,
 					payload: { id: item._id },
 					resolveResult(result, state, xhr) {
 						let blob = new Blob([result], { type: result.type });
@@ -459,11 +496,11 @@ export default async function () {
 			preview_image(item) {
 				const urlList = _.filter(this.APP.resourceList, { type: "image" }).map(item =>
 					Vue._common_utils.appendToken(
-						`${window._URL_PREFIX_4_DEV || ""}/api/resource/get?id=${item._id}`
+						`${window._AJAX_URL_PREFIX || ""}/api/resource/get?id=${item._id}`
 					)
 				);
 				const currentUrl = Vue._common_utils.appendToken(
-					`${window._URL_PREFIX_4_DEV || ""}/api/resource/get?id=${item._id}`
+					`${window._AJAX_URL_PREFIX || ""}/api/resource/get?id=${item._id}`
 				);
 				_.$previewImgs({ urlList, currentUrl });
 			},

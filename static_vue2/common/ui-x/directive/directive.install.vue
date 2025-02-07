@@ -108,6 +108,7 @@ export default async function () {
 			options.onClose = function () {
 				_.$notify.close(id, userOnClose);
 			};
+
 			let instance = new NotificationConstructor({
 				data: options
 			});

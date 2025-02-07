@@ -34,9 +34,9 @@ export default async function ({ diffView }) {
 						if (!item.content) {
 							return null;
 						}
-						return h("div", { class: "item-content" }, [
+						return hDiv({ class: "item-content" }, [
 							h("h3", { class: "title" }, [item.title]),
-							h("div", { domProps: { innerHTML: item.content } })
+							hDiv({ domProps: { innerHTML: item.content } })
 						]);
 					});
 				}

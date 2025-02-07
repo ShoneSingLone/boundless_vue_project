@@ -1,15 +1,19 @@
 <script lang="ts">
-export default async function () {
-	// window._CURENT_IS_MOBILE = /Mobile/gi.test(window.navigator.userAgent)
-	/*anxin应用用到的组件*/
+export default async function ({ PRIVATE_GLOBAL }) {
+	const _$TRIGGER_EVENT_NAME = "USER_WS_MESSAGE";
+
+	PRIVATE_GLOBAL._$TRIGGER_EVENT_NAME = _$TRIGGER_EVENT_NAME;
+
 	_.each(
 		{
 			TuiEditor: "@/components/TuiEditor/TuiEditor.vue",
 			YapiApiRequestBodyPreviewer: "@/components/YapiApiRequestBodyPreviewer.vue",
-			YapiItemMonaco: "@/components/YapiItemMonaco.vue",
+			xItemMonaco: "@/components/xItemMonaco.vue",
+			yapiItemReqBodyParams: "@/components/yapiItemReqBodyParams.vue",
 			YapiItemProxyEnv: "@/components/YapiItemProxyEnv.vue",
 			YapiItemAvatar: "@/components/YapiItemAvatar.vue",
 			YapiItemUac: "@/components/YapiItemUac.vue",
+			YapiItemKeyValTable: "@/components/YapiItemKeyValTable.vue",
 			YapiItemPathParams: "@/components/YapiItemPathParams.vue",
 			YapiProjectCard: "@/components/YapiProjectCard.vue",
 			YapiPlaceholderView: "@/components/YapiPlaceholderView.vue"
@@ -21,7 +25,8 @@ export default async function () {
 		Promise.all([
 			_.$importVue("/common/ui-x/useXui.vue", {
 				size: "small",
-				I18N_LANGUAGE: window.I18N_LANGUAGE
+				I18N_LANGUAGE: window.I18N_LANGUAGE,
+				x_table_vir_empty_component_icon: "_no_data"
 			}),
 			_.$importVue("/common/ui-element/useElementUI.NoJS.vue", {
 				size: "small",
@@ -84,13 +89,13 @@ export default async function () {
 					if (!vm.user.isLogin) {
 						const res = await _api.yapi.userStatus();
 						const { data: userInfo } = res;
-						vm._setUser(userInfo);
+						await vm._setUser(userInfo);
 					}
 
 					if (vm.user.isLogin) {
 						const res = await _api.yapi.userSearch({});
-						const { data: allUser } = res;
-						vm.allUser = allUser;
+						const { data: all_user } = res;
+						vm.all_user = all_user;
 						/* TODO: 跳转到首页 或者note应用*/
 						if (vm.$route.path === "/note") {
 							return;
@@ -119,7 +124,7 @@ export default async function () {
 				expandedKeys: {
 					group: []
 				},
-				allUser: [],
+				all_user: [],
 				menu: {},
 				globalSize: "",
 				isFooterFold: false,
@@ -135,7 +140,7 @@ export default async function () {
 					_id: "",
 					isLogin: false,
 					isLDAP: false,
-					userName: null,
+					username: null,
 					uid: null,
 					loginState: LOADING_STATUS,
 					breadcrumb: [],
@@ -174,7 +179,8 @@ export default async function () {
 			_toggleFooterFold() {
 				this.isFooterFold = !this.isFooterFold;
 			},
-			_setUser(userInfo) {
+			async _setUser(userInfo) {
+				const vm = this;
 				const isLogin = !!userInfo._id;
 				this.user = {
 					...userInfo,
@@ -182,11 +188,62 @@ export default async function () {
 					isLDAP: !!userInfo.ladp,
 					role: userInfo ? userInfo.role : null,
 					loginState: isLogin ? MEMBER_STATUS : GUEST_STATUS,
-					userName: userInfo ? userInfo.username : null,
+					username: userInfo ? userInfo.username : null,
 					uid: userInfo ? isLogin : null,
 					type: userInfo ? userInfo.type : null,
 					study: userInfo ? userInfo.study : false
 				};
+				if (!isLogin) {
+					return;
+				}
+				this.user._id && vm.initWebsocket(this.user._id);
+
+				// await vm.initSSE();
+			},
+			async initWebsocket(uid) {
+				uid = await new Promise(async resolve => {
+					const wsOptions = {
+						TRIGGER_EVENT_NAME: _$TRIGGER_EVENT_NAME,
+						onConnection: ({ id }) => resolve(id),
+						namespace: `/ws_yapi?uid=${uid}`
+					};
+					this.WS = await _.$importVue("/common/libs/socket.io.vue", wsOptions);
+				});
+				$(window).on(_$TRIGGER_EVENT_NAME, (event, { type, payload }) => {
+					this.$emit(type, payload);
+				});
+			},
+			initSSE() {
+				return new Promise(resolve => {
+					const SseEventSource = new EventSource(
+						`${window._AJAX_URL_PREFIX || ""}/api/sse`
+					);
+					SseEventSource.onmessage = function (e) {
+						try {
+							const message = JSON.parse(e.data);
+							const { type, payload } = message;
+							const HANDLER_MAP = {
+								chat_one() {
+									vm.$emit("chat_one", payload);
+								}
+							};
+							const handler = HANDLER_MAP[type];
+							if (handler) {
+								handler();
+							}
+						} catch (error) {
+							console.error(error);
+						} finally {
+						}
+					};
+					SseEventSource.onerror = function (e) {
+						console.log("SseEventSource error: ", e.data);
+					};
+					SseEventSource.onopen = function (e) {
+						console.log("SseEventSource open:", e);
+						resolve(SseEventSource);
+					};
+				});
 			},
 			/**
 			 * 如果group是对象，直接赋值，
@@ -217,10 +274,10 @@ export default async function () {
 					const { data } = await _api.yapi.userLogout();
 					if (data === "ok") {
 						_.$lStorage.x_token = "";
-						this._setUser({
+						await this._setUser({
 							isLogin: false,
 							loginState: GUEST_STATUS,
-							userName: null,
+							username: null,
 							uid: null,
 							role: "",
 							type: ""
@@ -406,7 +463,7 @@ html.x-yapi-app {
 	--base-nav-height: 70px;
 	--xPageTitle-padding: 0;
 	--dialog-bg-color: var(--el-button-hover-bg-color);
-	--active-color: #5bcfad;
+	--active-color: var(--el-color-primary);
 	--active-color-bg: #e8f2f1;
 	--unactive-color: #6c787d;
 	--unactive-color-bg: #d8d8d8;

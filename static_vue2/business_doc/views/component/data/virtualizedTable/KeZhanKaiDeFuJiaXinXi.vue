@@ -70,7 +70,7 @@ export default async function () {
 		},
 		methods: {
 			customCellRenderer({ rowData, column }) {
-				return hDiv(rowData[column.prop] + "asdfasdfas", { style: { width: "100px" } });
+				return hDiv({ style: { width: "100px" } }, rowData[column.prop] + "asdfasdfas");
 			},
 			customRowRender(props) {
 				const { cells, rowData } = props;

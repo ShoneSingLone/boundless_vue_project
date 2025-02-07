@@ -11,7 +11,7 @@ export default async function () {
 		inject: ["rootTabs"],
 		props: {
 			panes: Array,
-			currentName: String,
+			currentName: [String, Number],
 			editable: Boolean,
 			onTabClick: {
 				type: Function,
@@ -33,6 +33,16 @@ export default async function () {
 			};
 		},
 		computed: {
+			cptClassTabsNav() {
+				return [
+					"el-tabs__nav x-tabs__nav",
+					`is-${this.rootTabs.tabPosition}`,
+					{
+						"is-stretch":
+							this.stretch && ["top", "bottom"].includes(this.rootTabs.tabPosition)
+					}
+				];
+			},
 			renderHeaderOpr() {
 				if (this.rootTabs?.slotHeaderOpr) {
 					return this.rootTabs.slotHeaderOpr;
@@ -328,14 +338,7 @@ export default async function () {
 							h(
 								"div",
 								{
-									class: [
-										"el-tabs__nav",
-										`is-${this.rootTabs.tabPosition}`,
-										stretch &&
-										["top", "bottom"].indexOf(this.rootTabs.tabPosition) !== -1
-											? "is-stretch"
-											: ""
-									],
+									class: this.cptClassTabsNav,
 									ref: "nav",
 									style: navStyle,
 									role: "tablist",
@@ -349,7 +352,7 @@ export default async function () {
 									tabs
 								]
 							),
-							hDiv([this.renderHeaderOpr()], { class: "flex1" })
+							this.renderHeaderOpr()
 						]
 					)
 				]

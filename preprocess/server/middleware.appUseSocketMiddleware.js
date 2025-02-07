@@ -35,9 +35,8 @@ exports.appUseSocketMiddleware = function (ioWs) {
 		/* 回执 */
 		ctx.acknowledge(`send to other,callback with ctx.acknowledge`);
 	});
-	ioWs.on("self", (ctx) => {
+	ioWs.on("self", ctx => {
 		try {
-
 			const { data } = ctx || {};
 			const { action, cmd, args } = data || {};
 			if (action === "cmd") {
@@ -45,7 +44,10 @@ exports.appUseSocketMiddleware = function (ioWs) {
 					openVscode: async () => {
 						const { id } = args;
 						const name = id.replace("business_", "");
-						const pathString = path.resolve(__dirname, `../../vscode.workspace/n2one_${name}.code-workspace`);
+						const pathString = path.resolve(
+							__dirname,
+							`../../vscode.workspace/n2one_${name}.code-workspace`
+						);
 						await execCmd(`code . ${pathString}`, {
 							log(content) {
 								ctx.socket.emit("message", msg("self", ctx, { content }));
@@ -55,7 +57,7 @@ exports.appUseSocketMiddleware = function (ioWs) {
 					format: async () => {
 						const projects = args;
 						let project;
-						while (project = projects.pop()) {
+						while ((project = projects.pop())) {
 							const name = project.id.replace("business_", "");
 							await execCmd(`npm run lint ${name}`, {
 								log(content) {
@@ -63,12 +65,11 @@ exports.appUseSocketMiddleware = function (ioWs) {
 								}
 							});
 						}
-
 					},
 					dst: async () => {
 						const projects = args;
 						let project;
-						while (project = projects.pop()) {
+						while ((project = projects.pop())) {
 							const name = project.id.replace("business_", "");
 							await execCmd(`npm run d.ts api ${name}`, {
 								log(content) {
@@ -81,16 +82,13 @@ exports.appUseSocketMiddleware = function (ioWs) {
 								}
 							});
 						}
-
-					},
+					}
 				};
 				const cmdHander = COMMAND_STRATEGY[cmd];
 				cmdHander();
 			} else {
 				ctx.socket.emit("message", msg("self", ctx, { content: "命令错误" }));
 			}
-
-
 		} catch (error) {
 			console.error(error);
 		}

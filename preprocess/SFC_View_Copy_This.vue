@@ -88,7 +88,9 @@ export default async function () {
 						options: [],
 						async once() {
 							try {
-								const { vmConfigInfos } = await _.$ajax.get("/rest/fc/admin/v1.0/vmconfig/list");
+								const { vmConfigInfos } = await _.$ajax.get(
+									"/rest/fc/admin/v1.0/vmconfig/list"
+								);
 								this.configs.options = _.map(vmConfigInfos, i => {
 									return {
 										item: i,
@@ -96,7 +98,10 @@ export default async function () {
 										value: i.id
 									};
 								});
-								this.configs.value = _.$getFirstOrDefaultValue(this.configs.options, "");
+								this.configs.value = _.$getFirstOrDefaultValue(
+									this.configs.options,
+									""
+								);
 							} catch (error) {
 								console.error(error);
 							}
@@ -108,7 +113,10 @@ export default async function () {
 								return;
 							}
 							vm.c_search.azId.options = await getOptions_az(siteId);
-							vm.c_search.azId.value = _.$getFirstOrDefaultValue(vm.c_search.azId.options, "");
+							vm.c_search.azId.value = _.$getFirstOrDefaultValue(
+								vm.c_search.azId.options,
+								""
+							);
 						}
 					},
 					azId: {
@@ -217,12 +225,15 @@ export default async function () {
 										}).then(async () => {
 											try {
 												_.$loading(true);
-												await _.$ajax.post(`/rest/fc/admin/v1.0/image/status`, {
-													data: {
-														status: "1",
-														id: row.id
+												await _.$ajax.post(
+													`/rest/fc/admin/v1.0/image/status`,
+													{
+														data: {
+															status: "1",
+															id: row.id
+														}
 													}
-												});
+												);
 												_.$msg(i18n("msgSetUnavailableStatusSuccess"));
 												vm.getTableData({ current: 0 });
 											} catch (e) {
@@ -245,12 +256,15 @@ export default async function () {
 										}).then(async () => {
 											try {
 												_.$loading(true);
-												await _.$ajax.post(`/rest/fc/admin/v1.0/image/status`, {
-													data: {
-														status: "0",
-														id: row.id
+												await _.$ajax.post(
+													`/rest/fc/admin/v1.0/image/status`,
+													{
+														data: {
+															status: "0",
+															id: row.id
+														}
 													}
-												});
+												);
 												_.$msg(i18n("msgSetUnavailableStatusSuccess"));
 												vm.getTableData({ current: 0 });
 											} catch (e) {

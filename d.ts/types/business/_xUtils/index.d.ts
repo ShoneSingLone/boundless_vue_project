@@ -84,7 +84,6 @@ export type t_xUtils = {
 	buildProps: any;
 	getStyle: any;
 	isScroll: any;
-	getScrollContainer: any;
 	columns: any;
 	virtualizedScrollbarProps: any;
 	virtualizedGridProps: any;
@@ -121,6 +120,11 @@ export type t_xUtils = {
 	useWindowSize: any;
 	useElementBounding: any;
 	useResizeObserver: any;
+	DEFAULT_DELAY: number;
+	DEFAULT_DISTANCE: number;
+	getScrollOptions: Function;
+	getScrollContainer: Function;
+	getOffsetTopDistance: Function;
 };
 
-type t_xTipsHover = { msg: string; placement?: PopoverPlacement; content?: () => VNode };
+type t_xTipsHover = { msg?: string; placement?: PopoverPlacement; content?: () => VNode };

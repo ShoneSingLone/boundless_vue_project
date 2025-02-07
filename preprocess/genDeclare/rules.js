@@ -33,21 +33,31 @@ module.exports = async function () {
 					return;
 				}
 				rulesDeclare = _.map(right.properties, propertie => {
-					const comments = propertie.leadingComments;
-					const dts = `${propertie.key.name}(args?:any):object`;
+					let comments = propertie.leadingComments;
+					let rule_declare = `${propertie.key.name}(args?:any):object`;
+
 					if (comments) {
-						const [desc] = comments.map(comment => comment.value);
+						comments = comments.map(comment => comment.value);
+						const desc = _.first(comments);
+						const typeDefine = _.last(comments);
 						if (desc) {
-							return `/*${desc}*/\r\n${dts}`;
+							rule_declare = `/*${desc}\n*/\n${rule_declare}`;
+						}
+						if (String(typeDefine).includes("@typescriptDeclare")) {
+							rule_declare = `${propertie.key.name}:${String(typeDefine).replace("@typescriptDeclare", "")}`;
+						}
+						if (desc !== typeDefine) {
+							rule_declare = `/*${desc}\n*/${rule_declare}`;
 						}
 					}
-					return dts;
+					return rule_declare;
 				});
 			} else {
 				console.log("left.type", left.type, left.name);
 			}
 		}
 	});
+
 	await fs.promises.writeFile(
 		path.resolve(__dirname, `../../d.ts/types/business/_rules/index.d.ts`),
 		`export type t_rules = {

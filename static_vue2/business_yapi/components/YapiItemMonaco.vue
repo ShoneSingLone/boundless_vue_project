@@ -1,5 +1,5 @@
 <template>
-	<div class="YapiItemMonaco mt x-loading" ref="refMonacoContainer" />
+	<div class="xItemMonaco mt x-loading" ref="refMonacoContainer" />
 </template>
 
 <script lang="ts">
@@ -77,8 +77,8 @@ export default async function () {
 </script>
 
 <style lang="less">
-.YapiItemMonaco {
+.xItemMonaco {
 	width: 100%;
-	height: var(--YapiItemMonaco-height, 800px);
+	height: var(--xItemMonaco-height, 800px);
 }
 </style>

@@ -18,7 +18,12 @@ async function scanFile(fileurl) {
 		let [full] = execResult;
 		await fs.promises.appendFile(`./result.usedElementUI`, full + "\r", "utf-8");
 	}
-	hasEle && await fs.promises.appendFile(`./result.usedElementUI`, `\n\n\n=========>>>>>>>>>>>>>>>>>>>>>>${fileurl}\n\n\n=========>>>>>>>>>>>>>>>>>>>>>>\n\n\n`, "utf-8");
+	hasEle &&
+		(await fs.promises.appendFile(
+			`./result.usedElementUI`,
+			`\n\n\n=========>>>>>>>>>>>>>>>>>>>>>>${fileurl}\n\n\n=========>>>>>>>>>>>>>>>>>>>>>>\n\n\n`,
+			"utf-8"
+		));
 }
 
 // scanFile(`/Users/shone/workspace/m2o/static_vue2/common/ui-x/common/xItemSelect.vue`);

@@ -23,13 +23,13 @@ export default async function () {
 		},
 		mounted() {
 			/* 获取接口信息 */
-			this.getInterfaceList();
+			this.get_interface_list();
 		},
 		data() {
 			return {
-				allCategory: [],
-				allInterface: [],
-				allTags: []
+				all_category: [],
+				all_interface: [],
+				all_tags: []
 			};
 		},
 		computed: {
@@ -41,7 +41,7 @@ export default async function () {
 						menuType: Vue._yapi_var.ALL,
 						list: []
 					},
-					...this.allCategory
+					...this.all_category
 				];
 			},
 			cptTabName: {
@@ -65,11 +65,11 @@ export default async function () {
 			}
 		},
 		methods: {
-			async getInterfaceList() {
+			async get_interface_list() {
 				const vm = this;
 				const { data } = await _api.yapi.apiInterfaceListMenu(this.APP.cptProjectId);
 				if (data) {
-					const allCategory = data.map(category => {
+					const all_category = data.map(category => {
 						const children = _.map(category.list, i => {
 							return {
 								...i,
@@ -92,9 +92,9 @@ export default async function () {
 						};
 					});
 
-					vm.allCategory = allCategory;
-					vm.allInterface = _.reduce(
-						allCategory,
+					vm.all_category = all_category;
+					vm.all_interface = _.reduce(
+						all_category,
 						(dataSource, i) => {
 							if (_.$isArrayFill(i.list)) {
 								dataSource = dataSource.concat(i.list);
@@ -103,21 +103,15 @@ export default async function () {
 						},
 						[]
 					);
-					const needMergeColumnProp = "catid";
-					const groupedRowObj = _.groupBy(vm.allInterface, needMergeColumnProp);
-					vm.allInterface = xTableVirNewGroupSortedRows({
-						groupedRowObj,
-						mergeProp: needMergeColumnProp
-					});
-					const _allTags = _.reduce(
-						vm.allInterface,
-						(allTags, i) => {
-							return allTags.concat(i.tag);
+					const _all_tags = _.reduce(
+						vm.all_interface,
+						(all_tags, i) => {
+							return all_tags.concat(i.tag);
 						},
 						[]
 					);
-					vm.allTags = _.uniqBy(_allTags);
-					return vm.allCategory;
+					vm.all_tags = _.uniqBy(_all_tags);
+					return vm.all_category;
 				}
 			}
 		}

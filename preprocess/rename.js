@@ -3,7 +3,9 @@ const path = require("path");
 const asyncFs = require("fs").promises;
 
 async function main(params) {
-	const [dir, files] = await _n.asyncAllDirAndFile([path.resolve(__dirname, "../static_vue2/common")]);
+	const [dir, files] = await _n.asyncAllDirAndFile([
+		path.resolve(__dirname, "../static_vue2/common")
+	]);
 
 	_n.each(files, async i => {
 		if (path.extname(i) === ".vue") {
