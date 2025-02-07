@@ -3,8 +3,8 @@
 	<div>
 		<xMd :md="md" />
 		<xAlert title="不可关闭的 alert" type="success" :closable="false" />
-		<xAlert title="自定义 close-text" type="info" close-text="知道了" />
-		<xAlert title="设置了回调的 alert" type="warning" @close="hello" />
+		<xAlert title="自定义 close-text" type="info" close-text="知道了" :closable="true" />
+		<xAlert title="设置了回调的 alert" type="warning" @close="hello" :closable="true" />
 	</div>
 </template>
 <script lang="ts">
