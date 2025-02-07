@@ -57,7 +57,7 @@ m2o 项目以koa为基础依赖
 
 ## 部署方案
 
-- preprocess\deploy\internet_portal\deploy_internet_portal.js ：压缩项目文件 ，上传服务器，解压
+- preprocess\deploy\************.js ：压缩项目文件 ，上传服务器，解压
 - gzip不会提交的git仓库，只在部署代码里面替换
 
 ## TODO
