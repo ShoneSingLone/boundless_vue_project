@@ -1,6 +1,6 @@
 - [main](./readme.main.md)
-- [business_doc](https://shonesinglone.github.io/boundless_vue_project/business_doc)
-- [business_yapi](https://shonesinglone.github.io/boundless_vue_project/business_yapi)
+- [business_doc](https://shonesinglone.github.io/boundless_vue_project/business_doc/doc.html)
+- [business_yapi](https://shonesinglone.github.io/boundless_vue_project/business_yapi/yapi.html)
 - [cloud_disk](https://shonesinglone.github.io/boundless_vue_project/business_yapi/cloud_disk.html)
 
 
