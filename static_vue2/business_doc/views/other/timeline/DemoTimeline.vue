@@ -19,7 +19,7 @@ export default async function () {
 	return {
 		data() {
 			return {
-				md: "基于`Vue-popper`开发",
+				md: "## Timeline 时间线",
 				apiString: `### Timeline Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |

@@ -1,16 +1,14 @@
 <template>
-	<el-table :data="gridData">
-		<el-table-column width="150" property="date" label="日期"></el-table-column>
-		<el-table-column width="100" property="name" label="姓名"></el-table-column>
-		<el-table-column width="300" property="address" label="地址"></el-table-column>
-	</el-table>
+	<div style="height: 300px; width: 500px">
+		<xTableVir :columns="configsTable.columns" :data="configsTable.data.list" />
+	</div>
 </template>
 <script lang="ts">
 export default async function () {
 	return defineComponent({
-		data() {
-			return {
-				gridData: [
+		mounted() {
+			_.$setTableData(this.configsTable, {
+				list: [
 					{
 						date: "2016-05-02",
 						name: "上海市普陀区金沙江路",
@@ -32,6 +30,60 @@ export default async function () {
 						address: "上海市普陀区金沙江路 1518 弄"
 					}
 				]
+			});
+		},
+		data(vm) {
+			return {
+				configsTable: defTable({
+					isHideQuery: true,
+					isHideFilter: true,
+					onQuery(pagination) {},
+					data: {
+						set: new Set(),
+						list: [],
+						expandedRowKeys: []
+					},
+					pagination: {
+						page: 1,
+						total: 0,
+						size: 10
+					},
+					columns: [
+						{
+							prop: "no",
+							label: "序号",
+							width: 80,
+							cellRenderer: ({ rowIndex }) => rowIndex + 1
+						},
+						{ prop: "date", label: "date" },
+						{ prop: "name", label: "name" },
+						{ prop: "address", label: "address" },
+						defTable.colActions({
+							width: 120,
+							cellRenderer({ rowData }) {
+								return hBtnWithMore({
+									children: [
+										/* { label: "添加子部门", icon: "_icon_btn_add_sub_dept", onClick() { vm.$router.push({ path: "/dept/edit", query: { id: rowData.id } }); } }, */
+										{
+											label: "编辑",
+											icon: "edit"
+										},
+										{
+											label: "删除",
+											icon: "delete",
+											onClick() {
+												return _.$confirm({
+													title: "提示",
+													content: `是否删除所选数据？`
+												});
+											}
+										}
+									]
+								});
+							}
+						})
+					]
+				})
 			};
 		}
 	});

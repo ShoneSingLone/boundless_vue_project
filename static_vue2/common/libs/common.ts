@@ -5,6 +5,12 @@
 		console.log("common.js");
 	}
 
+	/* 调用window.location.reload(),附加reason */
+	_.$reloadWindow = function (message) {
+		console.log("🚀 ~ message:", message);
+		window.location.reload();
+	};
+
 	const PRIVATE_GLOBAL = new Proxy(
 		{},
 		{
@@ -1219,11 +1225,11 @@
 			_.$loading.count--;
 			if (_.$loading.count < 1) {
 				/* 延迟取消 */
-				var timmer = setTimeout(() => {
+				var timer = setTimeout(() => {
 					if (_.$loading.count < 1) {
 						$(selector).removeClass("x-loading");
 					} else {
-						clearTimeout(timmer);
+						clearTimeout(timer);
 					}
 				}, 400);
 				_.$loading.count = 0;

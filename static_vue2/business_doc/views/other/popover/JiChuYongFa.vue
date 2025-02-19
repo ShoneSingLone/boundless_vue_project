@@ -25,13 +25,15 @@
 			class="el-button el-button--default el-button--small">
 			DIV hover
 		</div>
+		<div v-xtips="manualImmediateShow" class="el-button el-button--default el-button--small">
+			manual且直接显示,2s后关闭
+		</div>
 		<div v-xtips="manual" @click="toggle" class="el-button el-button--default el-button--small">
 			DIV 手动 {{ visible_label }}
 		</div>
 
 		{{ manual }}
 		<xMd :md="'#### 组件\n\n'" />
-
 		<xBtn
 			v-xtips="{
 				title: '标题',
@@ -138,7 +140,28 @@ export default async function () {
 					width: 200,
 					trigger: "manual",
 					placement: "top",
-					visible: false
+					visible: false,
+					onMounted({ popoverVm, referenceVm }) {
+						console.log(
+							"🚀 ~ onMounted ~  popoverVm, referenceVm :",
+							popoverVm,
+							referenceVm
+						);
+						_.$msg("manual onMounted");
+					}
+				},
+				manualImmediateShow: {
+					content: "如果 trigger 为 manual 且 visible 为 true，则直接显示 popover",
+					width: 200,
+					trigger: "manual",
+					visible: true,
+					placement: "top",
+					onMounted({ popoverVm, referenceVm }) {
+						setTimeout(() => {
+							popoverVm.doClose();
+							_.$msg("close");
+						}, 1000 * 2);
+					}
 				},
 				md1: "### 推荐使用v-xtips\n\n>如果是字符串默认为`content`\n\n>如果是对象，但`content`是假值，则不会有tips"
 			};

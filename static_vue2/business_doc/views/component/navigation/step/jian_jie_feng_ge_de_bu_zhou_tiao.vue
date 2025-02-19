@@ -3,9 +3,9 @@
 		<xMd :md="md" />
 
 		<xSteps :active="1" simple>
-			<xStep title="步骤 1" icon="el-icon-edit" />
-			<xStep title="步骤 2" icon="el-icon-upload" />
-			<xStep title="步骤 3" icon="el-icon-picture" />
+			<xStep title="步骤 1" icon="edit" />
+			<xStep title="步骤 2" icon="upload" />
+			<xStep title="步骤 3" icon="picture" />
 		</xSteps>
 
 		<xSteps :active="1" finish-status="success" simple style="margin-top: 20px">

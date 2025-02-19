@@ -71,7 +71,6 @@ async function main(params) {
 				const target_path = path.resolve(__dirname, "../static_vue2", file_path);
 				await removeDebugger(target_path);
 				await execCmd(`prettier --write "${target_path}/**/*.vue"`);
-				debugger;
 			}
 		}
 

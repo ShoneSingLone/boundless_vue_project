@@ -291,7 +291,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 					]);
 				} else {
 					return h(vm.type || "button", buttonProps, [
-						hSpan({ class: ["flex", { middle: vm.cptIcon }] }, [
+						hSpan({ class: ["flex center", { middle: vm.cptIcon }] }, [
 							(() => {
 								if (vm.cptLoading) {
 									return hxIcon({

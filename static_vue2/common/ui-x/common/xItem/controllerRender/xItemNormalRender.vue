@@ -43,6 +43,7 @@ export default async function () {
 			vIf: !vm.cpt_isHide,
 			staticClass: "xItem-wrapper flex vertical",
 			attrs: {
+				"data-form-item-selector": CONFIGS.selector || "",
 				"data-form-item-type": vm.itemType,
 				"data-form-item-id": vm.cpt_id,
 				disabled: vm.cptDisabled,
@@ -142,21 +143,31 @@ export default async function () {
 					hDiv(controllerWrapperProps, controllerChildren),
 
 					/* 校验错误提示 */
-					h(
-						"xTooltip",
-						{
-							vIf: vm.errorTips,
-							effect: "dark",
-							content: vm.errorTips,
-							placement: "top-end"
-						},
-						[
-							h("xIcon", {
-								icon: "exclamationMark",
-								staticClass: "xItem_error-msg ml4"
-							})
-						]
-					)
+					(() => {
+						if (vm.errorTips) {
+							if (_.isString(vm.errorTips)) {
+								/* 默认 tooltips 弹窗 */
+								return h(
+									"xTooltip",
+									{
+										effect: "dark",
+										content: vm.errorTips,
+										placement: "top-end"
+									},
+									[
+										h("xIcon", {
+											icon: "exclamationMark",
+											staticClass: "xItem_error-msg ml4"
+										})
+									]
+								);
+							} else {
+								return h("xRender", { render: vm.errorTips });
+							}
+						} else {
+							return null;
+						}
+					})()
 				]
 			),
 			/* 信息提示 */

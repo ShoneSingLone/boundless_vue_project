@@ -1,11 +1,11 @@
-const { APP_NAME_ARRAY, _, execCmd } = require("../preprocess.utils");
+const { APP_NAME_ARRAY, _, execCmd, fs, path } = require("../preprocess.utils");
 // const { execLog, APP_NAME_ARRAY, _ } = require("./preprocess.utils");
-const [hooksName, msgPath] = process.argv.slice(2);
-console.log("🚀 ~ hooksName, msgPath:", hooksName, msgPath);
-if (!msgPath) {
+const [hooksName, COMMIT_EDITMSG_FILE_PATH] = process.argv.slice(2);
+if (!COMMIT_EDITMSG_FILE_PATH) {
 	process.exit(1);
 }
-const msg = require("fs").readFileSync(msgPath, "utf-8").trim();
+const COMMIT_EDITMSG = fs.readFileSync(COMMIT_EDITMSG_FILE_PATH, "utf-8").trim();
+
 // const commitRE = /^(feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|release|workflow)(\(.+\))?: .{1,50}/;
 /* if (!commitRE.test(msg)) {
 	console.log(msg);
@@ -13,14 +13,18 @@ const msg = require("fs").readFileSync(msgPath, "utf-8").trim();
 } */
 
 (async () => {
+	if ("******************************" === COMMIT_EDITMSG) {
+		/* 不做校验 */
+		return;
+	}
 	/* https://www.jianshu.com/p/b2fec735e7cf */
 	// const msg = await execLog(`git show -s --format=%s`);
 	const commitRE =
 		/^(sync|feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|release|workflow)(\(.+\))?: .{1,500}/;
 
-	let isFail = !commitRE.test(msg);
+	let isFail = !commitRE.test(COMMIT_EDITMSG);
 	if (!isFail) {
-		const [, type, scope] = String(msg).match(commitRE);
+		const [, type, scope] = String(COMMIT_EDITMSG).match(commitRE);
 		const sepcial = ["xUI", "common", "sync", "readme"];
 		const allowBusiness = [...sepcial, ...APP_NAME_ARRAY];
 		const [isNameOk, businessName] = (() => {
@@ -52,7 +56,7 @@ const msg = require("fs").readFileSync(msgPath, "utf-8").trim();
 	}
 
 	if (isFail) {
-		isFail = !/Merge /.test(msg);
+		isFail = !/Merge /.test(COMMIT_EDITMSG);
 	}
 
 	if (isFail) {

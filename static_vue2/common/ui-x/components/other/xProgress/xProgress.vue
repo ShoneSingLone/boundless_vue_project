@@ -1,4 +1,134 @@
-<style lang="less"></style>
+<style lang="less">
+.el-progress {
+	position: relative;
+	line-height: 1;
+}
+
+.el-progress__text {
+	font-size: 14px;
+	color: #606266;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 10px;
+	line-height: 1;
+}
+
+.el-progress__text i {
+	vertical-align: middle;
+	display: block;
+}
+
+.el-progress--circle,
+.el-progress--dashboard {
+	display: inline-block;
+}
+
+.el-progress--circle .el-progress__text,
+.el-progress--dashboard .el-progress__text {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	margin: 0;
+	-webkit-transform: translate(0, -50%);
+	transform: translate(0, -50%);
+}
+
+.el-progress--circle .el-progress__text i,
+.el-progress--dashboard .el-progress__text i {
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.el-progress--without-text .el-progress__text {
+	display: none;
+}
+
+.el-progress--without-text .el-progress-bar {
+	padding-right: 0;
+	margin-right: 0;
+	display: block;
+}
+
+.el-progress-bar,
+.el-progress-bar__inner::after,
+.el-progress-bar__innerText,
+.el-spinner {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.el-progress--text-inside .el-progress-bar {
+	padding-right: 0;
+	margin-right: 0;
+}
+
+.el-progress.is-success .el-progress-bar__inner {
+	background-color: var(--el-color-success);
+}
+
+.el-progress.is-success .el-progress__text {
+	color: var(--el-color-success);
+}
+
+.el-progress.is-warning .el-progress-bar__inner {
+	background-color: var(--el-color-warning);
+}
+
+.el-progress.is-warning .el-progress__text {
+	color: var(--el-color-warning);
+}
+
+.el-progress.is-exception .el-progress-bar__inner {
+	background-color: var(--el-color-error);
+}
+
+.el-progress.is-exception .el-progress__text {
+	color: var(--el-color-error);
+}
+
+.el-progress-bar {
+	padding-right: 50px;
+	width: 100%;
+	margin-right: -55px;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.el-progress-bar__outer {
+	height: 6px;
+	border-radius: 100px;
+	background-color: var(--el-border-color-lighter);
+	overflow: hidden;
+	position: relative;
+	vertical-align: middle;
+}
+
+.el-progress-bar__inner {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	background-color: var(--el-color-primary);
+	text-align: right;
+	border-radius: 100px;
+	line-height: 1;
+	white-space: nowrap;
+	-webkit-transition: width 0.6s ease;
+	transition: width 0.6s ease;
+}
+
+.el-progress-bar__inner::after {
+	height: 100%;
+}
+
+.el-progress-bar__innerText {
+	color: #fff;
+	font-size: 12px;
+	margin: 0 5px;
+}
+</style>
 <template>
 	<div
 		class="el-progress"

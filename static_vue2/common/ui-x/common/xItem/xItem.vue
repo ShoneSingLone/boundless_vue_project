@@ -176,11 +176,11 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			});
 
 			(() => {
-				let timmer;
+				let timer;
 				onMounted(() => {
 					/* FIXED: xItem xItem_controller overflow-hidden 高度产生滑动条 */
 					if (cptConfigs.value.KEEP_SCROLL_TOP_0) {
-						timmer = setInterval(() => {
+						timer = setInterval(() => {
 							try {
 								const xItem_controller = $(this.$el).find(".xItem_controller");
 								if (xItem_controller[0]) {
@@ -194,7 +194,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 					}
 				});
 				onBeforeUnmount(() => {
-					timmer && clearInterval(timmer);
+					timer && clearInterval(timer);
 				});
 			})();
 

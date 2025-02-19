@@ -1,31 +1,29 @@
 <style lang="less"></style>
 <template>
-	<ul @click="onPagerClick" class="el-pager">
-		<li :class="{ active: currentPage === 1, disabled }" v-if="pageCount > 0" class="number">
+	<ul @click="onPagerClick" class="el-pager flex middle">
+		<li
+			v-if="pageCount > 0"
+			:class="['number flex middle center', { active: currentPage === 1, disabled }]">
 			1
 		</li>
 		<li
-			class="el-icon more btn-quickprev"
-			:class="[quickprevIconClass, { disabled }]"
+			:class="('el-icon more btn-quickprev', [quickprevIconClass, { disabled }])"
 			v-if="showPrevMore"
 			@mouseenter="onMouseenter('left')"
 			@mouseleave="quickprevIconClass = 'el-icon-more'"></li>
 		<li
 			v-for="pager in pagers"
 			:key="pager"
-			:class="{ active: currentPage === pager, disabled }"
-			class="number">
+			:class="['number flex middle center', { active: currentPage === pager, disabled }]">
 			{{ pager }}
 		</li>
 		<li
-			class="el-icon more btn-quicknext"
-			:class="[quicknextIconClass, { disabled }]"
+			:class="['el-icon more btn-quicknext', quicknextIconClass, { disabled }]"
 			v-if="showNextMore"
 			@mouseenter="onMouseenter('right')"
 			@mouseleave="quicknextIconClass = 'el-icon-more'"></li>
 		<li
-			:class="{ active: currentPage === pageCount, disabled }"
-			class="number"
+			:class="['number flex middle center', { active: currentPage === pageCount, disabled }]"
 			v-if="pageCount > 1">
 			{{ pageCount }}
 		</li>
@@ -55,10 +53,10 @@ export default async function () {
 		methods: {
 			onPagerClick(event) {
 				const target = event.target;
-				if (target.tagName === "UL" || this.disabled) {
+
+				if (_.$isSame(target.tagName, "UL") || this.disabled) {
 					return;
 				}
-
 				let newPage = Number(event.target.textContent);
 				const pageCount = this.pageCount;
 				const currentPage = this.currentPage;

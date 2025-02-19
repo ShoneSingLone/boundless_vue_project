@@ -2,7 +2,7 @@
 	<div class="card-JianDanKaPian">
 		<xMd :md="md" />
 		<div class="flex">
-			<div class="avatar-block mr flex middle" v-for="fit in fits" :key="fit">
+			<div class="avatar-block mr flex vertical center middle" v-for="fit in fits" :key="fit">
 				<span class="title mr">{{ fit }}</span>
 				<xAvatar shape="square" :size="100" :fit="fit" :src="url"></xAvatar>
 			</div>

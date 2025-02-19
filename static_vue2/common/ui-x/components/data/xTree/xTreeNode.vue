@@ -179,7 +179,10 @@ export default async function () {
 				return injectRootTree.props?.indent || 16;
 			});
 			const icon = computed(() => {
-				return injectRootTree.props?.icon || h("i", { class: "el-icon-caret-right" });
+				return (
+					injectRootTree.props?.icon ||
+					h("xIcon", { class: "el-icon-caret-right", icon: "caret-right" })
+				);
 			});
 			const handleClick = e => {
 				vm.$emit("click", props.node, e);

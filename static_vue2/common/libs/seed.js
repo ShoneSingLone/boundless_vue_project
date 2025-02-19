@@ -1,7 +1,7 @@
 (async function useIdbKeyVal() {
 	const ResolvePathCache = {};
-	const isDev = !!localStorage.isDev;
-	const COMMON_LIBS = isDev ? "/common/libs" : "/common/libs/min";
+	const IS_DEV = !!localStorage.isDev;
+	const COMMON_LIBS = IS_DEV ? "/common/libs" : "/common/libs/min";
 	const camelizeRE = /\/|\.|_|-(\w)/g;
 	/**
 	 * document.getElementById
@@ -394,7 +394,6 @@
 					}
 					$loadText.pending[key] = res;
 				} catch (error) {
-					debugger;
 					$loadText.pending[key].forEach(({ reject }) => reject(error));
 				}
 			}
@@ -420,18 +419,6 @@
 		return $loadText;
 	})();
 
-	(async function () {
-		try {
-			/* index.html页面带有preload的数据会首先加载并缓存，后续需要的时候直接使用 */
-			const preloadString = document.getElementById("preload")?.innerHTML || false;
-			if (preloadString) {
-				const getPreload = new Function(preloadString);
-				const preloadArray = getPreload();
-				preloadArray.forEach(url => $loadText(url));
-			}
-		} catch (error) { }
-	})();
-
 	/**
 	 * 异步加载脚本代码，但是按顺序执行
 	 * @param {*} FRAMWORK_DEEPS
@@ -455,7 +442,7 @@
 				$script.innerHTML = innerHtml;
 				body.appendChild($script);
 				if (typeof callback === "function") {
-					callback();
+					await callback();
 				}
 			}
 			console.timeEnd("框架基本依赖");
@@ -637,46 +624,99 @@
 		})();
 
 		await (async (/* clearAssetsCacheByAppVersion */) => {
-			if (APP_VERSION && APP_VERSION !== (await $idb.get("APP_VERSION"))) {
+			/* 如果没有配置或者配置了并且和缓存的版本不一致，则清除缓存 */
+			const NO_CACHE = !APP_VERSION;
+			const NOT_MATCH = APP_VERSION && (APP_VERSION !== (await $idb.get("APP_VERSION")));
+
+			if (IS_DEV || NO_CACHE || NOT_MATCH) {
 				await $idb.clear();
 				await $idb.set("APP_VERSION", APP_VERSION);
 				window.APP_VERSION = APP_VERSION;
 			}
 
+
+			/* 预加载，等vue加载后赋值 */
+			_$loadText(`@/i18n/${I18N_LANGUAGE}.js`);
+
 			await _$asyncLoadOrderAppendScrips([
-				[
-					COMMON_LIBS + "/jquery/jquery-3.7.0.min.js",
-					null,
-					() => $("body").addClass("x-app-body")
-				],
-				[
-					COMMON_LIBS + "/lodash.js",
-					null,
-					() => {
-						_.$$tags = $$tags;
-						_.$$id = $$id;
-						_.$val = $val;
-						_.$ensure = $ensure;
-						_.$appendScript = $appendScript;
-						_.$appendStyle = $appendStyle;
-						_.$resolveCssAssetsPath = $resolveCssAssetsPath;
-						_.$idb = $idb;
-						_.$resolveSvgIcon = $resolveSvgIcon;
-						_.$resolvePath = $resolvePath;
-						_.$loadText = _$loadText;
-						_.$asyncLoadOrderAppendScrips = _$asyncLoadOrderAppendScrips;
+				[COMMON_LIBS + "/jquery/jquery-3.7.0.min.js", null, () => $("body").addClass("x-app-body")],
+				[COMMON_LIBS + "/lodash.js", null, () => {
+					_.$$tags = $$tags;
+					_.$$id = $$id;
+					_.$val = $val;
+					_.$ensure = $ensure;
+					_.$appendScript = $appendScript;
+					_.$appendStyle = $appendStyle;
+					_.$resolveCssAssetsPath = $resolveCssAssetsPath;
+					_.$idb = $idb;
+					_.$resolveSvgIcon = $resolveSvgIcon;
+					_.$resolvePath = $resolvePath;
+					_.$loadText = _$loadText;
+					_.$asyncLoadOrderAppendScrips = _$asyncLoadOrderAppendScrips;
+					/**
+					 * 创建i18n 函数，可同时存在不同语言options的i18n对象
+					 * @param {*} lang zh-CN,对应i18n文件夹下的文件
+					 * @returns
+					 */
+					/* @typescriptDeclare (options: { lang: "zh-CN" | "en-US" }) => Promise<any> */
+					_.$newI18n = async function ({ lang }) {
+						/* @/i18n/zh-CN.js */
+						/* @/i18n/en-US.js */
+						let langOptionsString = await _.$loadText(`@/i18n/${lang}.js`);
+						langOptionsString = langOptionsString.replace("window.i18n.options = ", "");
+						const getLangOptionsFn = new Function(`return ${langOptionsString};`);
+						const langOptions = getLangOptionsFn();
+						const i18n = function (key, payload) {
+							if (key.length > 64) {
+								alert(`i18n key: 【${key}】 长度超过64，过长，建议重命名`);
+							}
+							/!*使用 {变量名} 赋值*!/;
+							_.templateSettings.interpolate = /{([\s\S]+?)}/g;
+							let temp = $val(langOptions, key);
+							if (_.isString(temp)) {
+								return _.template(temp)(payload);
+							} else {
+								return key;
+							}
+						};
+						i18n.langOptions = langOptions;
+
+						return i18n;
+					};
+
+					if (IS_DEV || NO_CACHE || NOT_MATCH) {
+						try {
+							/* index.html页面带有preload的数据会首先加载并缓存，后续需要的时候直接使用 */
+							const preloadString = document.getElementById("preload")?.innerHTML || false;
+							if (preloadString) {
+								const getPreload = new Function(preloadString);
+								const preloadArray = getPreload();
+								preloadArray.forEach(url => $loadText(url));
+							}
+						} catch (error) { }
 					}
+				}
 				],
 				[COMMON_LIBS + "/dayjs.js"],
-				[COMMON_LIBS + "/vue.js"],
+				[COMMON_LIBS + "/vue.js", null, async () => {
+					/**
+					 *  国际化
+					 * @param {*} key
+					 * @param {*} payload
+					 * @returns
+					*/
+					const i18n = await _.$newI18n({ lang: I18N_LANGUAGE });
+					/* vue加载之后才能使用国际化属性 */
+					window.i18n = i18n;
+					Vue.prototype.i18n = i18n;
+				}],
 				[COMMON_LIBS + "/common.ts"],
 				[COMMON_LIBS + "/common.$.ajax.ts"]
 			]);
 
-			if (isDev) {
+			if (IS_DEV) {
 				window.ONLY_USE_IN_DEV_MODEL && window.ONLY_USE_IN_DEV_MODEL();
 			}
-
 			Vue.prototype._ = _;
 
 			if (window._CURENT_IS_MOBILE) {
@@ -705,50 +745,7 @@
 `
 			);
 		})();
-
-		await (async function setI18nFunction() {
-			/**
-			 * 创建i18n 函数，可同时存在不同语言options的i18n对象
-			 * @param {*} lang zh-CN,对应i18n文件夹下的文件
-			 * @returns
-			 */
-			/* @typescriptDeclare (options: { lang: "zh-CN" | "en-US" }) => Promise<any> */
-			_.$newI18n = async function ({ lang }) {
-				/* @/i18n/zh-CN.js */
-				/* @/i18n/en-US.js */
-				let langOptionsString = await _.$loadText(`@/i18n/${lang}.js`);
-				langOptionsString = langOptionsString.replace("window.i18n.options = ", "");
-				const getLangOptionsFn = new Function(`return ${langOptionsString};`);
-				const langOptions = getLangOptionsFn();
-				const i18n = function (key, payload) {
-					if (key.length > 64) {
-						alert(`i18n key: 【${key}】 长度超过64，过长，建议重命名`);
-					}
-					/!*使用 {变量名} 赋值*!/;
-					_.templateSettings.interpolate = /{([\s\S]+?)}/g;
-					let temp = $val(langOptions, key);
-					if (_.isString(temp)) {
-						return _.template(temp)(payload);
-					} else {
-						return key;
-					}
-				};
-				i18n.langOptions = langOptions;
-
-				return i18n;
-			};
-
-			/**
-			 * 国际化
-			 * @param {*} key
-			 * @param {*} payload
-			 * @returns
-			 */
-			const i18n = await _.$newI18n({ lang: I18N_LANGUAGE });
-			window.i18n = i18n;
-			Vue.prototype.i18n = i18n;
-		})();
-
+		
 		/* setup */
 		!APP_NO_NPROGRESS &&
 			(_.$importVue.Nprogress = await _.$importVue("/common/libs/Nprogress.vue"));
@@ -759,7 +756,7 @@
 		);
 		console.log("APP end");
 		console.timeEnd("APP");
-		if (isDev) {
+		if (IS_DEV) {
 			window.HMR_APP = APP;
 		}
 	})();

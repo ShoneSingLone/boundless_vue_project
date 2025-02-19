@@ -312,7 +312,7 @@ export default async function () {
 				},
 				{
 					icon: "icon_report",
-					label: i18n("测试正则校验"),
+					label: i18n("调试"),
 					href: "/dev/rule"
 				}
 			]

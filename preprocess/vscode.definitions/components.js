@@ -29,6 +29,7 @@
         "static_vue2\\business_mo_vdun_oc\\utils\\keyLabel.vue",
         "static_vue2\\business_mo_oc\\utils\\keyLabel.vue",
         "static_vue2\\business_mo_ack_oc\\utils\\keyLabel.vue",
+        "static_vue2\\business_lingyun_perf\\utils\\keyLabel.vue",
         "static_vue2\\business_internet_portal_oc\\utils\\keyLabel.vue",
         "static_vue2\\business_hdr_y_oc\\utils\\keyLabel.vue"
     ],
@@ -45,11 +46,13 @@
         "static_vue2\\business_mo_vdun_oc\\utils\\handler.vue",
         "static_vue2\\business_mo_oc\\utils\\handler.vue",
         "static_vue2\\business_mo_ack_oc\\utils\\handler.vue",
+        "static_vue2\\business_lingyun_perf\\utils\\handler.vue",
         "static_vue2\\business_internet_portal_oc\\utils\\handler.vue",
         "static_vue2\\business_hdr_y_oc\\utils\\handler.vue"
     ],
     "useXui": [
-        "static_vue2\\common\\ui-x\\useXui.vue"
+        "static_vue2\\common\\ui-x\\useXui.vue",
+        "static_vue2\\common\\libs\\min\\useXui.vue"
     ],
     "theme.default": [
         "static_vue2\\common\\ui-x\\theme\\theme.default.vue"
@@ -704,7 +707,8 @@
         "static_vue2\\common\\ui-x\\common\\ItemMixins.vue"
     ],
     "allComponents": [
-        "static_vue2\\common\\ui-x\\allComponents.vue"
+        "static_vue2\\common\\ui-x\\allComponents.vue",
+        "static_vue2\\common\\libs\\min\\allComponents.vue"
     ],
     "useElementUI": [
         "static_vue2\\common\\ui-element\\useElementUI.vue"
@@ -862,6 +866,7 @@
         "static_vue2\\business_mo_ctyun\\utils\\opts.vue",
         "static_vue2\\business_mo_ack_oc\\utils\\opts.vue",
         "static_vue2\\business_mo_ack\\utils\\opts.vue",
+        "static_vue2\\business_lingyun_perf\\utils\\opts.vue",
         "static_vue2\\business_internet_portal_oc\\utils\\opts.vue",
         "static_vue2\\business_internet_portal\\utils\\opts.vue",
         "static_vue2\\business_hdr_y_oc\\utils\\opts.vue",
@@ -890,6 +895,7 @@
         "static_vue2\\business_mo_ack_oc\\utils\\api.vue",
         "static_vue2\\business_mo_ack\\utils\\api.vue",
         "static_vue2\\business_moRancher\\utils\\api.vue",
+        "static_vue2\\business_lingyun_perf\\utils\\api.vue",
         "static_vue2\\business_internet_portal_oc\\utils\\api.vue",
         "static_vue2\\business_internet_portal\\utils\\api.vue",
         "static_vue2\\business_hdr_y_oc\\utils\\api.vue",
@@ -917,6 +923,7 @@
         "static_vue2\\business_mo_ack_oc\\router\\routes.vue",
         "static_vue2\\business_mo_ack\\router\\routes.vue",
         "static_vue2\\business_moRancher\\router\\routes.vue",
+        "static_vue2\\business_lingyun_perf\\router\\routes.vue",
         "static_vue2\\business_jh\\router\\routes.vue",
         "static_vue2\\business_internet_portal_oc\\router\\routes.vue",
         "static_vue2\\business_internet_portal\\router\\routes.vue",
@@ -944,6 +951,7 @@
         "static_vue2\\business_mo_ack_oc\\router\\MenuArray.vue",
         "static_vue2\\business_mo_ack\\router\\MenuArray.vue",
         "static_vue2\\business_moRancher\\router\\MenuArray.vue",
+        "static_vue2\\business_lingyun_perf\\router\\MenuArray.vue",
         "static_vue2\\business_internet_portal_oc\\router\\MenuArray.vue",
         "static_vue2\\business_hdr_y_oc\\router\\MenuArray.vue",
         "static_vue2\\business_hdr_y\\router\\MenuArray.vue",
@@ -988,6 +996,7 @@
         "static_vue2\\business_mo_ack_oc\\layout\\AppLayoutHeader.vue",
         "static_vue2\\business_mo_ack\\layout\\AppLayoutHeader.vue",
         "static_vue2\\business_moRancher\\layout\\AppLayoutHeader.vue",
+        "static_vue2\\business_lingyun_perf\\layout\\AppLayoutHeader.vue",
         "static_vue2\\business_jh\\layout\\AppLayoutHeader.vue",
         "static_vue2\\business_internet_portal_oc\\layout\\AppLayoutHeader.vue",
         "static_vue2\\business_hdr_y_oc\\layout\\AppLayoutHeader.vue",
@@ -1011,6 +1020,7 @@
         "static_vue2\\business_mo_ack_oc\\layout\\AppLayout.vue",
         "static_vue2\\business_mo_ack\\layout\\AppLayout.vue",
         "static_vue2\\business_moRancher\\layout\\AppLayout.vue",
+        "static_vue2\\business_lingyun_perf\\layout\\AppLayout.vue",
         "static_vue2\\business_jh\\layout\\AppLayout.vue",
         "static_vue2\\business_internet_portal_oc\\layout\\AppLayout.vue",
         "static_vue2\\business_hdr_y_oc\\layout\\AppLayout.vue",
@@ -1038,6 +1048,7 @@
         "static_vue2\\business_mo_ack_oc\\entry.vue",
         "static_vue2\\business_mo_ack\\entry.vue",
         "static_vue2\\business_moRancher\\entry.vue",
+        "static_vue2\\business_lingyun_perf\\entry.vue",
         "static_vue2\\business_jh\\entry.vue",
         "static_vue2\\business_internet_portal_oc\\entry.vue",
         "static_vue2\\business_internet_portal\\entry.vue",
@@ -1189,6 +1200,9 @@
     "Im": [
         "static_vue2\\business_yapi\\views\\im\\Im.vue"
     ],
+    "I18nLayout": [
+        "static_vue2\\business_yapi\\views\\I18n\\I18nLayout.vue"
+    ],
     "I18n": [
         "static_vue2\\business_yapi\\views\\I18n\\I18n.vue"
     ],
@@ -1197,6 +1211,9 @@
     ],
     "I18n.translate.dialog": [
         "static_vue2\\business_yapi\\views\\I18n\\I18n.translate.dialog.vue"
+    ],
+    "I18n.transi18n.dialog": [
+        "static_vue2\\business_yapi\\views\\I18n\\I18n.transi18n.dialog.vue"
     ],
     "I18n.import.dialog": [
         "static_vue2\\business_yapi\\views\\I18n\\I18n.import.dialog.vue"
@@ -1227,6 +1244,9 @@
     ],
     "MusicPlayerAudio": [
         "static_vue2\\business_yapi\\views\\explore\\execTools\\music\\MusicPlayerAudio.vue"
+    ],
+    "test": [
+        "static_vue2\\business_yapi\\views\\demo\\test.vue"
     ],
     "CloudDiskTransferDetail": [
         "static_vue2\\business_yapi\\views\\CloudDisk\\CloudDiskTransferDetail.vue"
@@ -1421,6 +1441,9 @@
     ],
     "YapiItemMonaco": [
         "static_vue2\\business_yapi\\components\\YapiItemMonaco.vue"
+    ],
+    "YapiItemKeyValTable": [
+        "static_vue2\\business_yapi\\components\\YapiItemKeyValTable.vue"
     ],
     "YapiItemAvatar": [
         "static_vue2\\business_yapi\\components\\YapiItemAvatar.vue"
@@ -1761,12 +1784,14 @@
         "static_vue2\\business_mo_vdun_oc\\utils\\variables.vue",
         "static_vue2\\business_mo_oc\\utils\\variables.vue",
         "static_vue2\\business_mo_ack_oc\\utils\\variables.vue",
+        "static_vue2\\business_lingyun_perf\\utils\\variables.vue",
         "static_vue2\\business_internet_portal_oc\\utils\\variables.vue",
         "static_vue2\\business_hdr_y_oc\\utils\\variables.vue"
     ],
     "vDunBpcEnv": [
         "static_vue2\\business_mo_vdun_oc\\components\\vDunBpcEnv.vue",
-        "static_vue2\\business_mo_ack_oc\\components\\vDunBpcEnv.vue"
+        "static_vue2\\business_mo_ack_oc\\components\\vDunBpcEnv.vue",
+        "static_vue2\\business_lingyun_perf\\components\\vDunBpcEnv.vue"
     ],
     "ViewList": [
         "static_vue2\\business_mo_vdun\\views\\NodeManagement\\ViewList.vue",
@@ -2880,6 +2905,9 @@
     "clusterBaseInfo": [
         "static_vue2\\business_moRancher\\components\\clusterBaseInfo.vue"
     ],
+    "PageLogin": [
+        "static_vue2\\business_lingyun_perf\\views\\login\\PageLogin.vue"
+    ],
     "Sass": [
         "static_vue2\\business_internet_portal_oc\\views\\Sass\\Sass.vue"
     ],
@@ -2967,8 +2995,17 @@
     "PageFooter": [
         "static_vue2\\business_internet_portal\\layout\\PageFooter.vue"
     ],
+    "PageDocumentDetail": [
+        "static_vue2\\business_internet_portal\\layout\\PageDocument\\PageDocumentDetail.vue"
+    ],
+    "PageDocument": [
+        "static_vue2\\business_internet_portal\\layout\\PageDocument\\PageDocument.vue"
+    ],
     "PageAdvanced": [
         "static_vue2\\business_internet_portal\\layout\\PageAdvanced.vue"
+    ],
+    "PageAccountCertifyUpgrade": [
+        "static_vue2\\business_internet_portal\\layout\\PageAccount\\PageAccountCertifyUpgrade.vue"
     ],
     "PageAccountCertifyModify": [
         "static_vue2\\business_internet_portal\\layout\\PageAccount\\PageAccountCertifyModify.vue"
@@ -2979,11 +3016,20 @@
     "PageAccount": [
         "static_vue2\\business_internet_portal\\layout\\PageAccount\\PageAccount.vue"
     ],
+    "PageVpc": [
+        "static_vue2\\business_internet_portal\\layout\\Page\\vpc\\PageVpc.vue"
+    ],
     "PageStaticTemplate": [
         "static_vue2\\business_internet_portal\\layout\\Page\\PageStaticTemplate.vue"
     ],
+    "PageIms": [
+        "static_vue2\\business_internet_portal\\layout\\Page\\ims\\PageIms.vue"
+    ],
     "PageEvs": [
-        "static_vue2\\business_internet_portal\\layout\\Page\\ecs\\PageEvs.vue"
+        "static_vue2\\business_internet_portal\\layout\\Page\\evs\\PageEvs.vue"
+    ],
+    "PageEip": [
+        "static_vue2\\business_internet_portal\\layout\\Page\\eip\\PageEip.vue"
     ],
     "PageEcs": [
         "static_vue2\\business_internet_portal\\layout\\Page\\ecs\\PageEcs.vue"
@@ -2999,6 +3045,9 @@
     ],
     "SwiperItems": [
         "static_vue2\\business_internet_portal\\components\\SwiperItems.vue"
+    ],
+    "SidebarTree": [
+        "static_vue2\\business_internet_portal\\components\\SidebarTree.vue"
     ],
     "QueryOnTheProgressOfRegistrationReview": [
         "static_vue2\\business_internet_portal\\components\\QueryOnTheProgressOfRegistrationReview.vue"
@@ -3042,9 +3091,15 @@
     "ContentBannerItem": [
         "static_vue2\\business_internet_portal\\components\\ContentBannerItem.vue"
     ],
+    "CardRegisterSuccess": [
+        "static_vue2\\business_internet_portal\\components\\CardRegisterSuccess.vue"
+    ],
     "ViewMessage": [
         "static_vue2\\business_hdr_y_oc\\views\\ViewMessage.vue",
         "static_vue2\\business_hdr_y\\view\\ViewMessage.vue"
+    ],
+    "SystemInfo": [
+        "static_vue2\\business_hdr_y_oc\\views\\System\\SystemInfo.vue"
     ],
     "ServiceRegistration": [
         "static_vue2\\business_hdr_y_oc\\views\\ServiceRegistration\\ServiceRegistration.vue"
@@ -3330,6 +3385,9 @@
     ],
     "infinite_scroll": [
         "static_vue2\\business_doc\\views\\directive\\directive\\infinite_scroll\\infinite_scroll.vue"
+    ],
+    "xItem结合xtips细致提示密码校验规则": [
+        "static_vue2\\business_doc\\views\\dev\\xItem结合xtips细致提示密码校验规则.vue"
     ],
     "testRule": [
         "static_vue2\\business_doc\\views\\dev\\testRule.vue"

@@ -14,6 +14,12 @@
 	}
 }
 
+.el-drawer,
+.el-drawer__header {
+	display: -webkit-box;
+	display: -ms-flexbox;
+}
+
 .el-drawer {
 	position: absolute;
 	box-sizing: border-box;

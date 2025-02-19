@@ -12,11 +12,9 @@ export default async function () {
 		);
 	}
 	let { ExcalidrawLib } = window;
-	debugger;
 	return defineComponent({
 		mounted() {
 			const AppExcalidrawLib = () => {
-				debugger;
 				return React.createElement(
 					React.Fragment,
 					null,
@@ -33,7 +31,6 @@ export default async function () {
 			const excalidrawWrapper = this.$el;
 			const root = ReactDOM.createRoot(excalidrawWrapper);
 			root.render(React.createElement(AppExcalidrawLib));
-			debugger;
 		}
 	});
 }

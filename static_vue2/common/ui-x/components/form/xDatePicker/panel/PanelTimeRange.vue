@@ -143,8 +143,9 @@ export default async function () {
 				}
 			},
 
-			visible(val) {
+			async visible(val) {
 				if (val) {
+					await _.$ensure(() => this.$refs.minSpinner);
 					this.oldValue = this.value;
 					this.$nextTick(() => this.$refs.minSpinner.emitSelectRange("hours"));
 				}

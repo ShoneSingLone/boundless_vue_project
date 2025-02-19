@@ -1,4 +1,52 @@
-<style lang="less"></style>
+<style lang="less">
+.el-avatar {
+	display: inline-block;
+	box-sizing: border-box;
+	text-align: center;
+	color: #fff;
+	background: var(--el-text-color-disabled);
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	font-size: 14px;
+}
+
+.el-avatar > img {
+	display: block;
+	height: 100%;
+	vertical-align: middle;
+}
+
+.el-avatar--circle {
+	border-radius: 50%;
+}
+
+.el-avatar--square {
+	border-radius: var(--border-radius);
+}
+
+.el-avatar--icon {
+	font-size: 18px;
+}
+
+.el-avatar--large {
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+}
+
+.el-avatar--medium {
+	width: 36px;
+	height: 36px;
+	line-height: 36px;
+}
+
+.el-avatar--small {
+	width: 28px;
+	height: 28px;
+	line-height: 28px;
+}
+</style>
 <script lang="ts">
 export default async function () {
 	return defineComponent({
