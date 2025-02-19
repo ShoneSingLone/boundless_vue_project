@@ -187,7 +187,9 @@ export default async function () {
 					trigger: ["change", "blur"]
 				};
 			},
-			email: () => {
+			email: options => {
+				const msg = options?.msg || i18n("请输入Email");
+
 				return {
 					name: "email",
 					async validator({ val }) {
@@ -196,7 +198,7 @@ export default async function () {
 						}
 						var urlRegex = _reg.email();
 						if (!urlRegex.test(val)) {
-							return i18n("请输入Email");
+							return msg;
 						}
 						return "";
 					},

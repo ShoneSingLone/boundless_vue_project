@@ -1,4 +1,195 @@
 <style lang="less">
+.el-message-box {
+	display: inline-block;
+	width: 420px;
+	padding-bottom: 10px;
+	vertical-align: middle;
+	background-color: #fff;
+	border-radius: var(--border-radius);
+	border: 1px solid var(--el-border-color-lighter);
+	font-size: 18px;
+	-webkit-box-shadow: var(--normal-box-shadow);
+	box-shadow: var(--normal-box-shadow);
+	text-align: left;
+	overflow: hidden;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.el-message-box__wrapper {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	text-align: center;
+}
+
+.el-message-box__wrapper::after {
+	content: "";
+	display: inline-block;
+	height: 100%;
+	width: 0;
+	vertical-align: middle;
+}
+
+.el-message-box__header {
+	position: relative;
+	padding: 15px 15px 10px;
+}
+
+.el-message-box__title {
+	padding-left: 0;
+	margin-bottom: 0;
+	font-size: 18px;
+	line-height: 1;
+	color: var(--el-text-color-primary);
+}
+
+.el-message-box__headerbtn {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	padding: 0;
+	border: none;
+	outline: 0;
+	background: 0 0;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.el-message-box__headerbtn .el-message-box__close {
+	color: var(--el-text-color-secondary);
+}
+
+.el-message-box__headerbtn:focus .el-message-box__close,
+.el-message-box__headerbtn:hover .el-message-box__close {
+	color: var(--el-color-primary);
+}
+
+.el-message-box__content {
+	padding: 10px 15px;
+	color: #606266;
+	font-size: 14px;
+}
+
+.el-message-box__container {
+	position: relative;
+}
+
+.el-message-box__input {
+	padding-top: 15px;
+}
+
+.el-message-box__status {
+	position: absolute;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+	font-size: 24px !important;
+}
+
+.el-message-box__status::before {
+	padding-left: 1px;
+}
+
+.el-message-box__status + .el-message-box__message {
+	padding-left: 36px;
+	padding-right: 12px;
+}
+
+.el-message-box__status.el-icon-success {
+	color: var(--el-color-success);
+}
+
+.el-message-box__status.el-icon-info {
+	color: var(--el-text-color-secondary);
+}
+
+.el-message-box__status.el-icon-warning {
+	color: var(--el-color-warning);
+}
+
+.el-message-box__status.el-icon-error {
+	color: var(--el-color-error);
+}
+
+.el-message-box__message {
+	margin: 0;
+}
+
+.el-message-box__message p {
+	margin: 0;
+	line-height: 24px;
+}
+
+.el-message-box__errormsg {
+	color: var(--el-color-error);
+	font-size: 12px;
+	min-height: 18px;
+	margin-top: 2px;
+}
+
+.el-message-box__btns {
+	padding: 5px 15px 0;
+	text-align: right;
+}
+
+.el-message-box__btns button:nth-child(2) {
+	margin-left: 10px;
+}
+
+.el-message-box__btns-reverse {
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: reverse;
+	-ms-flex-direction: row-reverse;
+	flex-direction: row-reverse;
+}
+
+.el-message-box--center {
+	padding-bottom: 30px;
+}
+
+.el-message-box--center .el-message-box__header {
+	padding-top: 30px;
+}
+
+.el-message-box--center .el-message-box__title {
+	position: relative;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+}
+
+.el-message-box--center .el-message-box__status {
+	position: relative;
+	top: auto;
+	padding-right: 5px;
+	text-align: center;
+	-webkit-transform: translateY(-1px);
+	transform: translateY(-1px);
+}
+
+.el-message-box--center .el-message-box__message {
+	margin-left: 0;
+}
+
+.el-message-box--center .el-message-box__btns,
+.el-message-box--center .el-message-box__content {
+	text-align: center;
+}
+
+.el-message-box--center .el-message-box__content {
+	padding-left: 27px;
+	padding-right: 27px;
+}
+
 .el-message {
 	min-width: 380px;
 	box-sizing: border-box;

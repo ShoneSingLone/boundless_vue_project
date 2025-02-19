@@ -285,6 +285,7 @@ export default async function () {
 				 *  删除角色
 				 */
 				async xdsRoleId(id) {
+          debugger;
 					return _.$ajax.delete(`/xds/role/${id}`);
 				},
 				/**
@@ -402,6 +403,7 @@ export default async function () {
 				 *  删除用户
 				 */
 				async xdsUserId(id) {
+          console.log('id',id)
 					return _.$ajax.delete(`/xds/user/${id}`);
 				},
 				/**
@@ -486,7 +488,7 @@ export default async function () {
 					return _.$ajax.post(`/xds/user/edit`, { data });
 				},
 				async xdsUserResetPwd(data = {}) {
-					return _.$ajax.get(`/xds/user/resetPwd`, { data });
+					return _.$ajax.get(`/xds/user/resetPwd/${data.id}`);
 				},
 				getUserInfo() {
 					return _.$ajax.get("/getInfo");

@@ -11,14 +11,10 @@
 
 			<div class="el-step__icon" :class="cptClassStepIcon">
 				<slot v-if="currentStatus !== 'success' && currentStatus !== 'error'" name="icon">
-					<i v-if="icon" class="el-step__icon-inner" :class="[icon]"></i>
+					<xIcon v-if="icon" class="el-step__icon-inner" :icon="[icon]" />
 					<div class="el-step__icon-inner" v-if="!icon && !isSimple">{{ index + 1 }}</div>
 				</slot>
-				<i
-					v-else
-					:class="['el-icon-' + (currentStatus === 'success' ? 'check' : 'close')]"
-					class="el-step__icon-inner is-status">
-				</i>
+				<xIcon v-else :class="cptIconClass" :icon="'icon_' + cptIconName" />
 			</div>
 		</div>
 		<!-- title & description -->
@@ -65,6 +61,12 @@ export default async function () {
 		},
 
 		computed: {
+			cptIconName({ currentStatus }) {
+				return currentStatus === "success" ? "check" : "close";
+			},
+			cptIconClass({ cptIconName }) {
+				return ["el-step__icon-inner is-status", `el-icon-${cptIconName}`];
+			},
 			cptClassStepIcon() {
 				return `is-${this.icon ? "icon" : "text"}`;
 			},

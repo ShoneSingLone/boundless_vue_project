@@ -51,58 +51,50 @@ export default async function () {
 
 <style lang="less">
 .image-demo {
-	.demo-image {
-		.block {
-			padding: 30px 0;
-			text-align: center;
-			border-right: solid 1px #eff2f6;
-			display: inline-block;
-			width: 20%;
-			box-sizing: border-box;
-			vertical-align: top;
-			&:last-child {
-				border-right: none;
-			}
-		}
-
-		.demonstration {
-			display: block;
-			color: #8492a6;
-			font-size: 14px;
-			margin-bottom: 20px;
+	.block {
+		padding: 30px 0;
+		text-align: center;
+		border-right: solid 1px #eff2f6;
+		display: inline-block;
+		width: 20%;
+		box-sizing: border-box;
+		vertical-align: top;
+		&:last-child {
+			border-right: none;
 		}
 	}
 
-	.demo-image__placeholder,
+	.demonstration {
+		display: block;
+		color: #8492a6;
+		font-size: 14px;
+		margin-bottom: 20px;
+	}
+
+	.xImg {
+		width: 300px;
+		height: 200px;
+	}
+
+	.image-slot {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		background: #f5f7fa;
+		color: #909399;
+		font-size: 14px;
+	}
+
+	.dot {
+		animation: dot 2s infinite steps(3, start);
+		overflow: hidden;
+	}
+
 	.demo-image__error {
-		@extend .demo-image;
-
-		.block {
-			width: 49%;
-		}
-
-		.xImg {
-			width: 300px;
-			height: 200px;
-		}
-
-		.image-slot {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			width: 100%;
-			height: 100%;
-			background: #f5f7fa;
-			color: #909399;
-			font-size: 14px;
-		}
-	}
-
-	.demo-image__placeholder {
-		.dot {
-			animation: dot 2s infinite steps(3, start);
-			overflow: hidden;
-		}
+		width: 200px;
+		height: 200px;
 	}
 }
 </style>

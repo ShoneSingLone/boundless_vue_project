@@ -87,7 +87,6 @@ window.ONLY_USE_IN_DEV_MODEL = function () {
 							match.components[key] = factory.resolved;
 						}
 						forceUpdate();
-						// location.reload();
 					} catch (error) {
 						console.error(error);
 					}

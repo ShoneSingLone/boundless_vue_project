@@ -1,16 +1,17 @@
 <template>
 	<div>
 		<xMd :md="mdTitle" />
-		<div class="demo-image__error flex">
-			<div class="block">
+		<div class="flex middle">
+			<div class="">
 				<span class="demonstration">默认</span>
-				<xImg />
+				<xImg class="demo-image__error" />
 			</div>
-			<div class="block">
+			<xGap l />
+			<div class="">
 				<span class="demonstration">自定义</span>
-				<xImg>
+				<xImg class="demo-image__error">
 					<div slot="error" class="image-slot">
-						<i class="el-icon-picture-outline"></i>
+						<xIcon icon="picture-filled" style="height: 30px; width: 30px" />
 					</div>
 				</xImg>
 			</div>

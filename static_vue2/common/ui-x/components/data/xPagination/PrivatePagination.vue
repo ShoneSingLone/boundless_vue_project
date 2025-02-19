@@ -141,15 +141,17 @@
 	margin: 0 10px 0 0;
 	font-weight: 400;
 	color: var(--el-text-color-regular);
-}
 
-.el-pagination__sizes .el-input .el-input__inner {
-	font-size: 13px;
-	padding-left: 8px;
-}
+	.el-input {
+		.el-input__inner {
+			font-size: 13px;
+			padding-left: 8px;
+		}
 
-.el-pagination__sizes .el-input .el-input__inner:hover {
-	border-color: var(--el-color-primary);
+		.el-input__inner:hover {
+			border-color: var(--el-color-primary);
+		}
+	}
 }
 
 .el-pagination__total {
@@ -531,10 +533,15 @@ export default async function () {
 									disabled: this.$parent.disabled
 								},
 								_.map(this.pageSizes, item =>
-									h("xOption", {
-										value: item,
-										label: item + i18n("el.pagination.pagesize")
-									})
+									h(
+										"xOption",
+										{
+											value: item,
+											label: item + i18n("el.pagination.pagesize")
+										},
+										/* 条/页 */
+										[item + i18n("el.pagination.pagesize")]
+									)
 								)
 							)
 						]

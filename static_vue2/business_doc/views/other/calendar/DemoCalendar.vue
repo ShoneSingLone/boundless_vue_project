@@ -13,7 +13,7 @@ export default async function () {
 	return {
 		data() {
 			return {
-				md: "## Collapse 折叠面板\n\n通过折叠面板收纳内容区域",
+				md: "## Calendar 日历",
 				apiString: `### Attributes
 | 参数             | 说明          | 类型      | 可选值        | 默认值  |
 |-----------------|-------------- |---------- |------------ |-------- |

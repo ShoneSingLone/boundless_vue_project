@@ -12,19 +12,19 @@
 						:collapse="isAdvancedSearchCollapse"
 						@change="handleAdvancedSearchCollapse">
 						<xBlock class="mt">
-							<xForm col="5" ref="formSearch">
+							<xForm col="4" ref="formSearch">
 								<template v-for="item in formSearch">
 									<xItem
 										:configs="item"
 										v-if="item.label !== '时间'"
 										:key="item.label" />
 									<xItem
+										:configs="formSearch.time"
 										v-else
 										style="
 											--xItem-wrapper-width: 400px;
 											--xItem-label-width: 60px;
-										"
-										:configs="formSearch.time" />
+										" />
 								</template>
 
 								<div class="flex end width100" span="full">
@@ -230,9 +230,24 @@ export default async function () {
 						value: "",
 						resetValue: ""
 					},
+					sqlContent: {
+						label: "SQL内容",
+						value: "",
+						resetValue: ""
+					},
+					sqlResult: {
+						label: "SQL结果内容",
+						value: "",
+						resetValue: ""
+					},
+					executionTime: {
+						label: "执行时间(毫秒)",
+						value: "",
+						resetValue: ""
+					},
 					time: {
 						label: "时间",
-						itemType: "xItemDaterange",
+						itemType: "xItemDatetimerange",
 						value: [],
 						clearable: true,
 						resetValue: null
@@ -380,9 +395,8 @@ export default async function () {
 			},
 			handleAdvancedSearchCollapse(collapse) {
 				this.isAdvancedSearchCollapse = collapse;
-				if (collapse) {
-					this.resetSearchForm();
-				}
+				/* 点击高级搜索会重置检索词条（需要修改为不会重置，否则检索结果难以展示）；20250218151830 */
+				// if (collapse) { this.resetSearchForm(); }
 			},
 			resetSearchForm() {
 				_.$resetFormValues(this.$refs.formSearch);

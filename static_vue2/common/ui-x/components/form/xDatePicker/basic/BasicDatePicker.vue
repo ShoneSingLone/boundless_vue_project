@@ -1,4 +1,124 @@
-<style lang="less"></style>
+<style lang="less">
+.el-time-range-picker {
+	width: 354px;
+	overflow: visible;
+}
+
+.el-time-range-picker__content {
+	position: relative;
+	text-align: center;
+	padding: 10px;
+}
+
+.el-time-range-picker__cell {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 4px 7px 7px;
+	width: 50%;
+	display: inline-block;
+}
+
+.el-time-range-picker__header {
+	margin-bottom: 5px;
+	text-align: center;
+	font-size: 14px;
+}
+
+.el-time-range-picker__body {
+	border-radius: var(--border-radius--mini);
+	border: 1px solid #e4e7ed;
+}
+
+.el-time-panel {
+	margin: 5px 0;
+	border: 1px solid #e4e7ed;
+	background-color: #fff;
+	box-shadow: var(--normal-box-shadow);
+	border-radius: var(--border-radius--mini);
+	position: absolute;
+	width: 180px;
+	left: 0;
+	z-index: 1000;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
+.el-time-panel__content {
+	font-size: 0;
+	position: relative;
+	overflow: hidden;
+}
+
+.el-time-panel__content::after,
+.el-time-panel__content::before {
+	content: "";
+	top: 50%;
+	position: absolute;
+	margin-top: -15px;
+	height: var(--ui-height);
+	z-index: -1;
+	left: 0;
+	right: 0;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	padding-top: 6px;
+	text-align: left;
+	border-top: 1px solid #e4e7ed;
+	border-bottom: 1px solid #e4e7ed;
+}
+
+.el-time-panel__content::after {
+	left: 50%;
+	margin-left: 12%;
+	margin-right: 12%;
+}
+
+.el-time-panel__content::before {
+	padding-left: 50%;
+	margin-right: 12%;
+	margin-left: 12%;
+}
+
+.el-time-panel__content.has-seconds::after {
+	left: calc(100% / 3 * 2);
+}
+
+.el-time-panel__content.has-seconds::before {
+	padding-left: calc(100% / 3);
+}
+
+.el-time-panel__footer {
+	border-top: 1px solid #e4e4e4;
+	padding: 4px;
+	height: 36px;
+	line-height: 25px;
+	text-align: right;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.el-time-panel__btn {
+	border: none;
+	line-height: 28px;
+	padding: 0 5px;
+	margin: 0 5px;
+	cursor: pointer;
+	background-color: transparent;
+	outline: 0;
+	font-size: 12px;
+	color: var(--el-text-color-primary);
+}
+
+.el-time-panel__btn.confirm {
+	font-weight: 800;
+	color: var(--el-color-primary);
+}
+</style>
 <template>
 	<xInput
 		class="el-date-editor"

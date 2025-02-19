@@ -127,8 +127,12 @@ export default async function () {
 
 <style lang="less">
 .el-radio,
-.el-radio--medium.is-bordered .el-radio__label {
-	font-size: 14px;
+.el-radio--medium {
+	&.is-bordered {
+		.el-radio__label {
+			font-size: 14px;
+		}
+	}
 }
 
 .el-radio {
@@ -141,6 +145,7 @@ export default async function () {
 	font-size: 14px;
 	padding-left: 10px;
 }
+
 .el-radio-button__inner,
 .el-radio-group {
 	display: inline-block;
@@ -453,13 +458,5 @@ export default async function () {
 .el-radio__input {
 	position: relative;
 	display: inline-block;
-}
-.el-cascader-node > .el-radio,
-.el-radio:last-child {
-	margin-right: 0;
-}
-
-.el-cascader-node > .el-radio .el-radio__label {
-	padding-left: 0;
 }
 </style>

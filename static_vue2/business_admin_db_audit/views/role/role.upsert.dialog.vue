@@ -4,6 +4,7 @@
 			<xForm col="1" ref="form">
 				<xItem :configs="form.roleName" />
 				<xItem :configs="form.roleCode" />
+				<xItem :configs="form.status" />
 			</xForm>
 		</xCard>
 		<template #footer>
@@ -21,7 +22,6 @@ export default async function ({ row, parent }) {
 	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 	return defineComponent({
 		props: useDialogProps(),
-		mounted() {},
 		data() {
 			return {
 				form: defItems({
@@ -29,8 +29,15 @@ export default async function ({ row, parent }) {
 					roleCode: {
 						label: "角色编号",
 						value: "",
-						rules: [_rules.required(), _rules.roleCode()]
-					}
+						rules: [_rules.required()]
+					},
+          status: {
+						label: "角色状态",
+            itemType: "xItemSelect",
+            options: [],
+						value: "",
+						rules: [_rules.required(),]
+					},
 				})
 			};
 		},
@@ -50,6 +57,7 @@ export default async function ({ row, parent }) {
 			}
 		},
 		mounted() {
+      this.handleStatus();
 			if (row && Object.keys(row).length > 0) {
 				this.form.roleCode.value = row.roleCode;
 				this.form.roleName.value = row.roleName;
@@ -77,7 +85,11 @@ export default async function ({ row, parent }) {
 				} else {
 					_.$msgError(msg);
 				}
-			}
+			},
+      async handleStatus(){
+        const res=await _api.admin_db_audit.xdsOptionsUserStatus();
+        this.form.status.options=res;
+      }
 		}
 	});
 }

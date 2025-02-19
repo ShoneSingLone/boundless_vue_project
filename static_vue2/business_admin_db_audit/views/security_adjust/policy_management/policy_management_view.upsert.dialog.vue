@@ -3,7 +3,7 @@
 		<xForm col="1" ref="form">
 			<xItem :configs="form.strategyName" v-if="!isUpdate" />
 			<xItem :configs="form.priority" v-if="!isUpdate" />
-			<xItem :configs="form.风险等级" v-if="!isUpdate" />
+			<xItem :configs="form.riskLevel" v-if="!isUpdate" />
 			<div class="flex middle width100 mt" v-if="!isUpdate">
 				规则
 				<xGap f />
@@ -90,7 +90,7 @@ export default async function ({ row, parent }) {
 						disabled: isUpdate,
 						rules: [_rules.required(), _rules.lessThan(50)]
 					},
-					风险等级: {
+					riskLevel: {
 						value: "",
 						label: i18n("风险等级"),
 						disabled: isUpdate,
@@ -144,7 +144,8 @@ export default async function ({ row, parent }) {
 				this.actionList.splice(index, 1);
 			},
 			async handleGetXdsOptionsRisk() {
-				this.form.风险等级.options = await _api.admin_db_audit.xdsOptionsRisk();
+				const options = await _api.admin_db_audit.xdsOptionsRisk();
+				this.form.riskLevel.options = options;
 			},
 			async handleGetXdsOptionsJoint() {
 				this.JointList = await _api.admin_db_audit.xdsOptionsJoint();
@@ -163,6 +164,7 @@ export default async function ({ row, parent }) {
 				}
 				const fn = row ? _api.admin_db_audit.xdsRuleEdit : _api.admin_db_audit.xdsRuleAdd;
 				let obj = _.$pickFormValues(this.form);
+				debugger;
 				if (row) {
 					obj = {
 						...row,

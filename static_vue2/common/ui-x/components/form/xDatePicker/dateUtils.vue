@@ -1503,11 +1503,6 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	margin: 5px 0;
 }
 
-.el-popover,
-.el-time-panel {
-	-webkit-box-shadow: var(--normal-box-shadow);
-}
-
 .el-picker-panel__body-wrapper::after,
 .el-picker-panel__body::after {
 	content: "";
@@ -1712,23 +1707,5 @@ export default async function ({ PRIVATE_GLOBAL }) {
 .el-time-spinner__item.disabled {
 	color: var(--el-text-color-disabled);
 	cursor: not-allowed;
-}
-
-.el-time-panel {
-	margin: 5px 0;
-	border: 1px solid #e4e7ed;
-	background-color: #fff;
-	box-shadow: var(--normal-box-shadow);
-	border-radius: var(--border-radius--mini);
-	position: absolute;
-	width: 180px;
-	left: 0;
-	z-index: 1000;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	-webkit-box-sizing: content-box;
-	box-sizing: content-box;
 }
 </style>

@@ -6454,7 +6454,7 @@ body {
 }
 
 .el-image-viewer__btn,
-.xStep__icon-inner {
+.el-step__icon-inner {
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
@@ -10413,8 +10413,8 @@ body {
 	overflow: hidden;
 }
 
-.xStep.is-vertical,
-.xSteps {
+.el-step.is-vertical,
+.el-steps {
 	display: -webkit-box;
 	display: -ms-flexbox;
 }
@@ -10424,21 +10424,21 @@ body {
 	vertical-align: middle;
 }
 
-.xSteps {
+.el-steps {
 	display: flex;
 }
 
-.xSteps--simple {
+.el-steps--simple {
 	padding: 13px 8%;
 	border-radius: var(--border-radius);
 	background: #f5f7fa;
 }
 
-.xSteps--horizontal {
+.el-steps--horizontal {
 	white-space: nowrap;
 }
 
-.xSteps--vertical {
+.el-steps--vertical {
 	height: 100%;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
@@ -10446,17 +10446,17 @@ body {
 	flex-flow: column;
 }
 
-.xStep {
+.el-step {
 	position: relative;
 	-ms-flex-negative: 1;
 	flex-shrink: 1;
 }
 
-.xStep:last-of-type .xStep__line {
+.el-step:last-of-type .el-step__line {
 	display: none;
 }
 
-.xStep:last-of-type.is-flex {
+.el-step:last-of-type.is-flex {
 	-ms-flex-preferred-size: auto !important;
 	flex-basis: auto !important;
 	-ms-flex-negative: 0;
@@ -10466,42 +10466,42 @@ body {
 	flex-grow: 0;
 }
 
-.xStep:last-of-type .xStep__description,
-.xStep:last-of-type .xStep__main {
+.el-step:last-of-type .el-step__description,
+.el-step:last-of-type .el-step__main {
 	padding-right: 0;
 }
 
-.xStep__head {
+.el-step__head {
 	position: relative;
 	width: 100%;
 }
 
-.xStep__head.is-process {
+.el-step__head.is-process {
 	color: var(--el-text-color-primary);
 	border-color: var(--el-text-color-primary);
 }
 
-.xStep__head.is-wait {
+.el-step__head.is-wait {
 	color: var(--el-text-color-disabled);
 	border-color: var(--el-text-color-disabled);
 }
 
-.xStep__head.is-success {
+.el-step__head.is-success {
 	color: var(--el-color-success);
 	border-color: var(--el-color-success);
 }
 
-.xStep__head.is-error {
+.el-step__head.is-error {
 	color: var(--el-color-error);
 	border-color: var(--el-color-error);
 }
 
-.xStep__head.is-finish {
+.el-step__head.is-finish {
 	color: var(--el-color-primary);
 	border-color: var(--el-color-primary);
 }
 
-.xStep__icon {
+.el-step__icon {
 	position: relative;
 	z-index: 1;
 	display: -webkit-inline-box;
@@ -10523,17 +10523,17 @@ body {
 	transition: 0.15s ease-out;
 }
 
-.xStep__icon.is-text {
+.el-step__icon.is-text {
 	border-radius: 50%;
 	border: 2px solid;
 	border-color: inherit;
 }
 
-.xStep__icon.is-icon {
+.el-step__icon.is-icon {
 	width: 40px;
 }
 
-.xStep__icon-inner {
+.el-step__icon-inner {
 	display: inline-block;
 	user-select: none;
 	text-align: center;
@@ -10542,23 +10542,23 @@ body {
 	color: inherit;
 }
 
-.xStep__icon-inner[class*="el-icon"]:not(.is-status) {
+.el-step__icon-inner[class*="el-icon"]:not(.is-status) {
 	font-size: 25px;
 	font-weight: 400;
 }
 
-.xStep__icon-inner.is-status {
+.el-step__icon-inner.is-status {
 	-webkit-transform: translateY(1px);
 	transform: translateY(1px);
 }
 
-.xStep__line {
+.el-step__line {
 	position: absolute;
 	border-color: inherit;
 	background-color: var(--el-text-color-disabled);
 }
 
-.xStep__line-inner {
+.el-step__line-inner {
 	display: block;
 	border-width: 1px;
 	border-style: solid;
@@ -10571,38 +10571,38 @@ body {
 	height: 0;
 }
 
-.xStep__main {
+.el-step__main {
 	white-space: normal;
 	text-align: left;
 }
 
-.xStep__title {
+.el-step__title {
 	font-size: 16px;
 	line-height: 38px;
 }
 
-.xStep__title.is-process {
+.el-step__title.is-process {
 	font-weight: 700;
 	color: var(--el-text-color-primary);
 }
 
-.xStep__title.is-wait {
+.el-step__title.is-wait {
 	color: var(--el-text-color-disabled);
 }
 
-.xStep__title.is-success {
+.el-step__title.is-success {
 	color: var(--el-color-success);
 }
 
-.xStep__title.is-error {
+.el-step__title.is-error {
 	color: var(--el-color-error);
 }
 
-.xStep__title.is-finish {
+.el-step__title.is-finish {
 	color: var(--el-color-primary);
 }
 
-.xStep__description {
+.el-step__description {
 	padding-right: 10%;
 	margin-top: -5px;
 	font-size: 12px;
@@ -10610,87 +10610,87 @@ body {
 	font-weight: 400;
 }
 
-.xStep__description.is-process {
+.el-step__description.is-process {
 	color: var(--el-text-color-primary);
 }
 
-.xStep__description.is-wait {
+.el-step__description.is-wait {
 	color: var(--el-text-color-disabled);
 }
 
-.xStep__description.is-success {
+.el-step__description.is-success {
 	color: var(--el-color-success);
 }
 
-.xStep__description.is-error {
+.el-step__description.is-error {
 	color: var(--el-color-error);
 }
 
-.xStep__description.is-finish {
+.el-step__description.is-finish {
 	color: var(--el-color-primary);
 }
 
-.xStep.is-horizontal {
+.el-step.is-horizontal {
 	display: inline-block;
 }
 
-.xStep.is-horizontal .xStep__line {
+.el-step.is-horizontal .el-step__line {
 	height: 2px;
 	top: 11px;
 	left: 0;
 	right: 0;
 }
 
-.xStep.is-vertical {
+.el-step.is-vertical {
 	display: flex;
 }
 
-.xStep.is-vertical .xStep__head {
+.el-step.is-vertical .el-step__head {
 	-webkit-box-flex: 0;
 	-ms-flex-positive: 0;
 	flex-grow: 0;
 	width: 24px;
 }
 
-.xStep.is-vertical .xStep__main {
+.el-step.is-vertical .el-step__main {
 	padding-left: 10px;
 	-webkit-box-flex: 1;
 	-ms-flex-positive: 1;
 	flex-grow: 1;
 }
 
-.xStep.is-vertical .xStep__title {
+.el-step.is-vertical .el-step__title {
 	line-height: 24px;
 	padding-bottom: 8px;
 }
 
-.xStep.is-vertical .xStep__line {
+.el-step.is-vertical .el-step__line {
 	width: 2px;
 	top: 0;
 	bottom: 0;
 	left: 11px;
 }
 
-.xStep.is-vertical .xStep__icon.is-icon {
+.el-step.is-vertical .el-step__icon.is-icon {
 	width: 24px;
 }
 
-.xStep.is-center .xStep__head,
-.xStep.is-center .xStep__main {
+.el-step.is-center .el-step__head,
+.el-step.is-center .el-step__main {
 	text-align: center;
 }
 
-.xStep.is-center .xStep__description {
+.el-step.is-center .el-step__description {
 	padding-left: 20%;
 	padding-right: 20%;
 }
 
-.xStep.is-center .xStep__line {
+.el-step.is-center .el-step__line {
 	left: 50%;
 	right: -50%;
 }
 
-.xStep.is-simple {
+.el-step.is-simple {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -10699,29 +10699,29 @@ body {
 	align-items: center;
 }
 
-.xStep.is-simple .xStep__head {
+.el-step.is-simple .el-step__head {
 	width: auto;
 	font-size: 0;
 	padding-right: 10px;
 }
 
-.xStep.is-simple .xStep__icon {
+.el-step.is-simple .el-step__icon {
 	background: 0 0;
 	width: 16px;
 	height: 16px;
 	font-size: 12px;
 }
 
-.xStep.is-simple .xStep__icon-inner[class*="el-icon"]:not(.is-status) {
+.el-step.is-simple .el-step__icon-inner[class*="el-icon"]:not(.is-status) {
 	font-size: 18px;
 }
 
-.xStep.is-simple .xStep__icon-inner.is-status {
+.el-step.is-simple .el-step__icon-inner.is-status {
 	-webkit-transform: scale(0.8) translateY(1px);
 	transform: scale(0.8) translateY(1px);
 }
 
-.xStep.is-simple .xStep__main {
+.el-step.is-simple .el-step__main {
 	position: relative;
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -10734,17 +10734,17 @@ body {
 	flex-grow: 1;
 }
 
-.xStep.is-simple .xStep__title {
+.el-step.is-simple .el-step__title {
 	font-size: 16px;
 	line-height: 20px;
 }
 
-.xStep.is-simple:not(:last-of-type) .xStep__title {
+.el-step.is-simple:not(:last-of-type) .el-step__title {
 	max-width: 50%;
 	word-break: break-all;
 }
 
-.xStep.is-simple .xStep__arrow {
+.el-step.is-simple .el-step__arrow {
 	-webkit-box-flex: 1;
 	-ms-flex-positive: 1;
 	flex-grow: 1;
@@ -10759,8 +10759,8 @@ body {
 	justify-content: center;
 }
 
-.xStep.is-simple .xStep__arrow::after,
-.xStep.is-simple .xStep__arrow::before {
+.el-step.is-simple .el-step__arrow::after,
+.el-step.is-simple .el-step__arrow::before {
 	content: "";
 	display: inline-block;
 	position: absolute;
@@ -10769,21 +10769,21 @@ body {
 	background: var(--el-text-color-disabled);
 }
 
-.xStep.is-simple .xStep__arrow::before {
+.el-step.is-simple .el-step__arrow::before {
 	-webkit-transform: rotate(-45deg) translateY(-4px);
 	transform: rotate(-45deg) translateY(-4px);
 	-webkit-transform-origin: 0 0;
 	transform-origin: 0 0;
 }
 
-.xStep.is-simple .xStep__arrow::after {
+.el-step.is-simple .el-step__arrow::after {
 	-webkit-transform: rotate(45deg) translateY(4px);
 	transform: rotate(45deg) translateY(4px);
 	-webkit-transform-origin: 100% 100%;
 	transform-origin: 100% 100%;
 }
 
-.xStep.is-simple:last-of-type .xStep__arrow {
+.el-step.is-simple:last-of-type .el-step__arrow {
 	display: none;
 }
 

@@ -218,6 +218,14 @@ each(@list, {
 	margin-bottom: 0px !important;
 	color: red !important;
 }
+.use-transform {
+	transition: transform 0.3s;
+
+	&.reverse {
+		transform: rotateZ(180deg);
+	}
+}
+
 /* x-app-body只用于body元素，唯一 */
 body.x-app-body {
 	position: relative;

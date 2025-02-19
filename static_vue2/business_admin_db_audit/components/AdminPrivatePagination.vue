@@ -6,10 +6,10 @@
 		li {
 			background-color: transparent;
 			&.number {
-				width: 28px;
-				min-width: unset;
+				min-width: 28px;
 				height: 28px;
-				padding: 0;
+				padding: 0 2px;
+
 				&.active {
 					border: 1px solid var(--el-color-primary);
 					border-radius: 6px;

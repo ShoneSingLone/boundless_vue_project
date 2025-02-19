@@ -6,7 +6,7 @@ export default async function () {
 			I18N_LANGUAGE: window.I18N_LANGUAGE
 		})
 		// ,_.$importVue("/common/ui-element/useElementUI.vue", { size: "small", I18N_LANGUAGE: window.I18N_LANGUAGE })
-		// _.$importVue("/common/ui-element/useElementUI.NoJS.vue", { size: "small", I18N_LANGUAGE: window.I18N_LANGUAGE })
+		// ,_.$importVue("/common/ui-element/useElementUI.NoJS.vue", { size: "small", I18N_LANGUAGE: window.I18N_LANGUAGE })
 	]);
 
 	_.each(

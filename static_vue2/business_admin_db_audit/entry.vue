@@ -11,7 +11,8 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			AdminMenuPermissionTree: "/common/type_admin/components/AdminMenuPermissionTree.vue",
 			AdminIconSelector:
 				"/common/type_admin/components/AdminIconSelector/AdminIconSelector.vue",
-			xItemDaterange: "@/components/AdminItems/xItemDaterange.vue"
+			xItemDaterange: "@/components/AdminItems/xItemDaterange.vue",
+      xItemDatetimerange: "@/components/AdminItems/xItemDatetimerange.vue",
 		},
 		(componentURL, name) => Vue.component(name, () => _.$importVue(componentURL))
 	);

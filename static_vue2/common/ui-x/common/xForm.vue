@@ -27,7 +27,7 @@ export default async function () {
 							if (isNeedTop) {
 								return "";
 							} else {
-								return `.xFormItem:nth-of-type(${i + 1}) { margin-top: 0; }`;
+								return `.xFormItem:nth-of-type(${i + 1}) {  }`;
 							}
 						}).join("")}}`);
 				}

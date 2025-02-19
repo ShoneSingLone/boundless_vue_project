@@ -250,7 +250,6 @@ export default async function ({ PRIVATE_GLOBAL }) {
 							`${window._AJAX_URL_PREFIX || ""}/api/user/avatar?uid=${uid}&usedBy=user`
 						);
 						return hDiv({ staticClass: "ellipsis flex middle" }, [
-							"asdfasdf",
 							hxIcon({
 								img: user.avatar,
 								iscache: true,

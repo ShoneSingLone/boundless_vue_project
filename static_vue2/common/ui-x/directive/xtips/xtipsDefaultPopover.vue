@@ -22,6 +22,7 @@ export default async function () {
 		_.$appendScript("/common/libs/VuePopper/popper.js", "Popper")
 	]);
 
+	/* 弹出层 */
 	return defineComponent({
 		name: "xPopover",
 		watch: {
@@ -34,6 +35,9 @@ export default async function () {
 			showPopper(val) {
 				if (this.disabled) {
 					return;
+				}
+				if (this.options.onVisibleChange) {
+					this.options.onVisibleChange(val);
 				}
 				val ? this.$emit("show") : this.$emit("hide");
 				val ? this.updatePopper() : this.destroyPopper();
@@ -49,18 +53,20 @@ export default async function () {
 			this.popperJsUpdate = _.debounce(() => {
 				if (this.popperJS) {
 					this.popperJS.update();
-					if (!this.opacity) {
+					if (this.opacity !== 1) {
 						setTimeout(() => {
 							this.opacity = 1;
 						}, 32);
 					}
 				}
 			}, 100);
+
 			onMounted(() => {
 				resizerStopper = useResizeObserver(this.$refs.refRender, ([entry]) => {
 					this.popperJsUpdate();
 				}).stop;
 			});
+
 			onBeforeUnmount(() => {
 				resizerStopper?.();
 			});
@@ -93,7 +99,7 @@ export default async function () {
 				return `el-popover-${this.refId}`;
 			},
 			trigger() {
-				return this.options.trigger || "click";
+				return this.options.trigger || "hover";
 			},
 			openDelay() {
 				return this.options.openDelay || 0;
@@ -119,14 +125,11 @@ export default async function () {
 					opacity: this.opacity
 				};
 			},
-			arrowOffset() {
-				return this.options.arrowOffset || 0;
-			},
 			transition() {
 				if (_.isObject(this.options.content)) {
 					return "fade-in-linear";
 				}
-				return this.options.content || "fade-in-linear";
+				return this.options.transition || "fade-in-linear";
 			},
 			tabindex() {
 				return this.options.tabindex || 0;
@@ -223,9 +226,6 @@ export default async function () {
 					this.$reference.on("mousedown", this.doShow).on("mouseup", this.doClose);
 				}
 			}
-		},
-		beforeDestroy() {
-			this.cleanup();
 		},
 		deactivated() {
 			this.cleanup();
@@ -406,6 +406,7 @@ export default async function () {
 			}
 		},
 		beforeDestroy() {
+			this.cleanup();
 			this.doDestroy(true);
 			if (this.popperElm && this.popperElm.parentNode === document.body) {
 				this.popperElm.removeEventListener("click", stop);

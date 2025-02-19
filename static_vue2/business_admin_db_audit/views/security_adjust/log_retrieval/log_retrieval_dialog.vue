@@ -1,8 +1,8 @@
 <template>
 	<xDialog style="width: 60vw">
 		<xForm col="2" ref="form">
-			<xItem v-for="(value, key) of form" :label="value.label" :key="key">
-				{{ value.value }}
+			<xItem v-for="(item, key) of form" :label="item.label" :key="key">
+				{{ item.value }}
 			</xItem>
 		</xForm>
 		<template #footer>
@@ -25,6 +25,10 @@ export default async function ({ row, warringStatus, parent }) {
 			return {
 				form: {},
 				list: [
+					{ prop: "id", label: "ID" },
+					{ prop: "timestamp", label: "时间戳" },
+					{ prop: "startTime", label: "开始时间" },
+					{ prop: "endTime", label: "结束时间" },
 					{ prop: "accessTime", label: "访问时间" },
 					{ prop: "clientId", label: "客户端IP" },
 					{ prop: "clientMac", label: "客户端MAC" },
@@ -76,16 +80,29 @@ export default async function ({ row, warringStatus, parent }) {
 			}
 		},
 		mounted() {
-			const mapDict = this.list.reduce((map, item) => {
-				map[item.prop] = item.label;
-				return map;
-			}, {});
-			if (row && Object.keys(row)) {
+			const mapDict = _.reduce(
+				this.list,
+				(map, { label, prop }) => {
+					map[prop] = label;
+					return map;
+				},
+				{}
+			);
+
+			if (row && Object.keys(row).length) {
 				this.form = defItems(
-					Object.keys(row).reduce((config, key) => {
-						config[`${key}`] = { label: mapDict[`${key}`], value: row[key] };
-						return config;
-					}, {})
+					_.reduce(
+						row,
+						(_form, value, key) => {
+							const label = mapDict[key];
+							if (!label) {
+								debugger;
+							}
+							_form[key] = { label, value };
+							return _form;
+						},
+						{}
+					)
 				);
 			}
 		}

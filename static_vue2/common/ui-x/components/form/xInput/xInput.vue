@@ -30,14 +30,22 @@
 			<!-- 前置内容 -->
 			<span class="el-input__prefix flex middle" v-if="$scopedSlots.prefix || prefixIcon">
 				<slot name="prefix"></slot>
-				<i class="el-input__icon" v-if="prefixIcon" :class="prefixIcon"> </i>
+				<xIcon
+					class="el-input__icon"
+					v-if="prefixIcon"
+					:class="prefixIcon"
+					:icon="prefixIcon" />
 			</span>
 			<!-- 后置内容 -->
 			<span class="el-input__suffix flex middle" v-if="getSuffixVisible()">
 				<span class="el-input__suffix-inner">
 					<template v-if="!showClear || !showPwdVisible || !isWordLimitVisible">
 						<slot name="suffix"></slot>
-						<i class="el-input__icon" v-if="suffixIcon" :class="suffixIcon"> </i>
+						<xIcon
+							class="el-input__icon"
+							v-if="suffixIcon"
+							:class="suffixIcon"
+							:icon="suffixIcon" />
 					</template>
 					<xIcon
 						v-if="showClear"
@@ -45,21 +53,22 @@
 						class="el-input__icon el-input__suffix-inner_x-icon el-icon-circle-close el-input__clear"
 						@mousedown.prevent
 						@click="clear" />
-					<i
+					<xIcon
 						v-if="showPwdVisible"
+						icon="view"
 						class="el-input__icon el-icon-view el-input__clear"
-						@click="handlePasswordVisible"></i>
+						@click="handlePasswordVisible"></xIcon>
 					<span v-if="isWordLimitVisible" class="el-input__count">
 						<span class="el-input__count-inner">
 							{{ textLength }}/{{ upperLimit }}
 						</span>
 					</span>
 				</span>
-				<i
+				<xIcon
 					class="el-input__icon"
 					v-if="validateState"
-					:class="['el-input__validateIcon', validateIcon]">
-				</i>
+					:icon="validateIcon"
+					:class="['el-input__validateIcon', validateIcon]" />
 			</span>
 			<!-- 后置元素 -->
 			<div class="x-iniput__append el-input-group__append" v-if="$scopedSlots.append">
@@ -519,7 +528,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		-webkit-transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 		transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 		width: 14px;
-		height: 14px;
+		height: 100%;
 
 		&:hover {
 			color: var(--el-text-color-secondary);
@@ -909,15 +918,6 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	height: 0;
 }
 
-.el-form-item.is-error .el-input__inner,
-.el-form-item.is-error .el-input__inner:focus,
-.el-form-item.is-error .el-textarea__inner,
-.el-form-item.is-error .el-textarea__inner:focus,
-.el-message-box__input input.invalid,
-.el-message-box__input input.invalid:focus {
-	border-color: var(--el-color-error);
-	background-color: var(--xItem-error-bg);
-}
 
 .xItem {
 	--xItem-prepend-width: 72px;

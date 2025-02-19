@@ -22,6 +22,13 @@
 			<xItem :configs="xItemTopRight" />
 			<xItem :configs="xItemTopRight" />
 		</xForm>
+		<xMd> ### xForm 上的col</xMd>
+		<xForm col="3">
+			<xItem :configs="xItemTopRight" span="full" />
+			<xItem :configs="xItemTopRight" />
+			<xItem :configs="xItemTopRight" />
+			<xItem :configs="xItemTopRight" />
+		</xForm>
 		<xMd> ## 其他的可以自行扩展（添加足够的用例）</xMd>
 	</div>
 </template>
@@ -67,6 +74,9 @@ export default async function () {
 #x-form-demo-position {
 	.xForm {
 		outline: 1px solid royalblue;
+		.xFormItem {
+			outline: 1px dashed darkcyan;
+		}
 	}
 	.xItem-label-controller {
 		outline: 1px dashed darkcyan;

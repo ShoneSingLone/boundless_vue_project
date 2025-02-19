@@ -1,68 +1,3 @@
-<style lang="less">
-.el-popover:focus,
-.el-popover:focus:active,
-.el-popover__reference:focus:hover,
-.el-popover__reference:focus:not(.focusing) {
-	outline-width: 0;
-}
-.el-popover,
-.el-time-panel {
-	-webkit-box-shadow: var(--normal-box-shadow);
-}
-.el-popover,
-.el-radio-button:first-child:last-child .el-radio-button__inner {
-	border-radius: var(--border-radius);
-}
-.el-popover {
-	position: absolute;
-	background: #fff;
-	min-width: 150px;
-	border: 1px solid var(--el-border-color-lighter);
-	padding: 12px;
-	z-index: 2000;
-	color: var(--el-text-color-regular);
-	line-height: 1.4;
-	text-align: justify;
-	font-size: 14px;
-	box-shadow: var(--normal-box-shadow);
-	word-break: break-all;
-}
-
-.el-popover--plain {
-	padding: 18px 20px;
-}
-
-.el-popover__title {
-	color: var(--el-text-color-primary);
-	font-size: 16px;
-	line-height: 1;
-	margin-bottom: 12px;
-}
-.el-dropdown .el-dropdown-selfdefine:focus:active,
-.el-dropdown .el-dropdown-selfdefine:focus:not(.focusing),
-.el-message__closeBtn:focus,
-.el-message__content:focus,
-.el-popover:focus,
-.el-popover:focus:active,
-.el-popover__reference:focus:hover,
-.el-popover__reference:focus:not(.focusing),
-.el-rate:active,
-.el-rate:focus,
-.el-tooltip:focus:hover,
-.el-tooltip:focus:not(.focusing),
-.el-upload-list__item.is-success:active,
-.el-upload-list__item.is-success:not(.focusing):focus {
-	outline-width: 0;
-}
-.el-popover,
-.el-time-panel {
-	-webkit-box-shadow: var(--normal-box-shadow);
-}
-.el-popover,
-.el-radio-button:first-child:last-child .el-radio-button__inner {
-	border-radius: var(--border-radius);
-}
-</style>
 <template>
 	<span>
 		<transition
@@ -340,3 +275,41 @@ export default async function () {
 	});
 }
 </script>
+<style lang="less">
+.el-popover:focus,
+.el-popover:focus:active,
+.el-popover__reference:focus:hover,
+.el-popover__reference:focus:not(.focusing) {
+	outline-width: 0;
+}
+
+.el-popover,
+.el-radio-button:first-child:last-child .el-radio-button__inner {
+	border-radius: var(--border-radius);
+}
+.el-popover {
+	position: absolute;
+	background: #fff;
+	min-width: 150px;
+	border: 1px solid var(--el-border-color-lighter);
+	padding: 12px;
+	z-index: 2000;
+	color: var(--el-text-color-regular);
+	line-height: 1.4;
+	text-align: justify;
+	font-size: 14px;
+	box-shadow: var(--normal-box-shadow);
+	word-break: break-all;
+}
+
+.el-popover--plain {
+	padding: 18px 20px;
+}
+
+.el-popover__title {
+	color: var(--el-text-color-primary);
+	font-size: 16px;
+	line-height: 1;
+	margin-bottom: 12px;
+}
+</style>

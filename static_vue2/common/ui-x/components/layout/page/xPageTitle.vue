@@ -39,7 +39,7 @@
 	<div class="flex middle xPageTitle" v-else>
 		<slot name="title">
 			<span class="title-text mr4"> <xRender :render="cptTitle" :payload="title" /> </span>
-			<xIcon icon="tips" v-if="tips" v-xtips="cptTips" />
+			<xIcon icon="_tip" v-if="tips" v-xtips="cptTips" />
 		</slot>
 		<span class="flex1"> </span>
 		<slot />

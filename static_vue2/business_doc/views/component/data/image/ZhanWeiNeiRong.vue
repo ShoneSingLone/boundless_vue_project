@@ -6,6 +6,7 @@
 				<span class="demonstration">默认</span>
 				<xImg :src="src" />
 			</div>
+			<xGap l/>
 			<div class="block">
 				<span class="demonstration">自定义</span>
 				<xImg :src="src">
@@ -23,7 +24,7 @@ export default async function () {
 		data() {
 			return {
 				mdTitle: "可通过`slot = placeholder`可自定义占位内容",
-				src: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+				src: "xxxxxxxxxx"
 			};
 		}
 	});

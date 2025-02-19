@@ -129,17 +129,20 @@ export default async function () {
 				});
 			},
 			renderCheckIcon(h) {
-				return h("i", {
+				return hxIcon({
+					icon: "check",
 					class: "el-icon-check el-cascader-node__prefix"
 				});
 			},
 			renderLoadingIcon(h) {
-				return h("i", {
+				return hxIcon({
+					icon: "loading",
 					class: "el-icon-loading el-cascader-node__postfix"
 				});
 			},
 			renderExpandIcon(h) {
-				return h("i", {
+				return hxIcon({
+					icon: "arrow-right",
 					class: "el-icon-arrow-right el-cascader-node__postfix"
 				});
 			},

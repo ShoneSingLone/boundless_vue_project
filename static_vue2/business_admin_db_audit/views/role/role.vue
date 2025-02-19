@@ -151,9 +151,7 @@ export default async function () {
 													content: `是否确认删除所选角色？`
 												});
 												const { code, msg } =
-													await _api.admin_db_audit.xdsRoleId({
-														id: rowData.id
-													});
+													await _api.admin_db_audit.xdsRoleId(rowData.id);
 												if (code === 0) {
 													_.$msg(msg);
 													vm.getTableData({ page: 1 });

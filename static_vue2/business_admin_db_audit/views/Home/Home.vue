@@ -116,7 +116,7 @@ export default async function () {
 					columns: [
 						{ prop: "风险等级", label: "风险等级" },
 						{ prop: "匹配策略", label: "匹配策略" },
-						{ prop: "匹配策略", label: "报警时间" }
+						{ prop: "报警时间", label: "报警时间" }
 					]
 				})
 			};
