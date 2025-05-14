@@ -1,6 +1,6 @@
 <template>
 	<xDialog>
-		<xCard class="mt10" :header="i18n('名称')">
+		<xCard class="mt10" :header="i18n('name_info')">
 			<xForm col="1" ref="form" :style="labelStyle">
 				<xItem :configs="configs" v-for="(configs, prop) in form" :key="prop" />
 			</xForm>
@@ -9,7 +9,7 @@
 			<div class="flex center width100">
 				<xBtn :configs="btnOk" />
 				<xGap w="32" />
-				<xBtn @click="closeModal">{{ i18n("取消") }}</xBtn>
+				<xBtn @click="closeModal">{{ i18n("cancel") }}</xBtn>
 			</div>
 		</template>
 	</xDialog>
@@ -28,7 +28,7 @@ export default async function ({ row, callBack }) {
 				form: {
 					name: {
 						value: "",
-						label: i18n("名称"),
+						label: i18n("name"),
 						rules: [_rules.required(), _rules.lessThan(64)]
 					}
 				}
@@ -46,7 +46,7 @@ export default async function ({ row, callBack }) {
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("ok"),
 					preset: "blue",
 					async onClick() {
 						const [error] = await _.$validateForm(vm.$refs.form);
@@ -72,4 +72,3 @@ export default async function ({ row, callBack }) {
 	});
 }
 </script>
-<style lang="less"></style>

@@ -1,7 +1,6 @@
 <template>
 	<xBtnGroup :configs="cpt_btnList" :row="row" class="xCellBtnGroup" />
 </template>
-
 <script lang="ts">
 export default async function () {
 	return {
@@ -10,8 +9,11 @@ export default async function () {
 		},
 		computed: {
 			cpt_btnList() {
-				if (this.configs?.col?.componentOptions?.btnList) {
-					return this.configs?.col?.componentOptions?.btnList({
+				if (_.$val(this, "configs.col.componentOptions.btnList")) {
+					return _.$callFn(
+						this,
+						"configs.col.componentOptions.btnList"
+					)({
 						xCellBtnGroup: this,
 						configs: this.configs,
 						col: this.configs.col,
@@ -27,7 +29,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 td {
 	> .btn-group-wrapper.xCellBtnGroup {

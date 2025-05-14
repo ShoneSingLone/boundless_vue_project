@@ -57,7 +57,6 @@
 		</div>
 	</transition>
 </template>
-
 <script lang="ts">
 export default async function () {
 	const [{ parseDate, limitTimeRange, modifyDate, clearMilliseconds, timeWithinRange }] =
@@ -176,9 +175,11 @@ export default async function () {
 					this.$refs.minSpinner.selectableRange = [
 						[minTimeOfDay(this.minDate), this.maxDate]
 					];
+
 					this.$refs.maxSpinner.selectableRange = [
 						[this.minDate, maxTimeOfDay(this.maxDate)]
 					];
+
 					this.$emit("pick", [this.minDate, this.maxDate], true);
 				}
 			},

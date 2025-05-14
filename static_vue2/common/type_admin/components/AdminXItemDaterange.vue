@@ -8,7 +8,6 @@
 		start-placeholder="开始日期"
 		end-placeholder="结束日期" />
 </template>
-
 <script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
@@ -30,5 +29,3 @@ export default async function () {
 	})();
 }
 </script>
-
-<style lang="less"></style>

@@ -597,15 +597,17 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			nextTick(() => {
 				if (isInit || height !== Number.parseInt(style.height)) {
 					const firstColumn = columns2[0];
-					const isPlaceholder = firstColumn?.placeholderSign === placeholderSign;
-					onRowHeightChange?.(
-						{
-							rowKey: rowKey2,
-							height,
-							rowIndex
-						},
-						firstColumn && !isPlaceholder && firstColumn.fixed
-					);
+					const isPlaceholder =
+						_.$val(firstColumn, "placeholderSign") === placeholderSign;
+					onRowHeightChange &&
+						onRowHeightChange(
+							{
+								rowKey: rowKey2,
+								height,
+								rowIndex
+							},
+							firstColumn && !isPlaceholder && firstColumn.fixed
+						);
 				}
 			});
 		};
@@ -645,7 +647,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 							rowIndex,
 							rowKey: rowKey2
 						});
-						existedHandler?.(event);
+						existedHandler && existedHandler(event);
 					};
 				});
 			}
@@ -653,12 +655,13 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		});
 		const onExpand = expanded => {
 			const { onRowExpand, rowData, rowIndex, rowKey } = props;
-			onRowExpand?.({
-				expanded,
-				rowData,
-				rowIndex,
-				rowKey
-			});
+			onRowExpand &&
+				onRowExpand({
+					expanded,
+					rowData,
+					rowIndex,
+					rowKey
+				});
 		};
 		onMounted(() => {
 			if (unref(measurable)) {
@@ -726,7 +729,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		});
 		const fixedRowHeight = computed(() => {
 			const { fixedData, rowHeight } = props;
-			return (fixedData?.length || 0) * rowHeight;
+			return (_.$val(fixedData, "length") || 0) * rowHeight;
 		});
 		const headerHeight = computed(() => sum(props.headerHeight));
 		const gridHeight = computed(() => {
@@ -739,16 +742,17 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		const itemKey = ({ data, rowIndex }) => data[rowIndex][props.rowKey];
 
 		function onItemRendered({ rowCacheStart, rowCacheEnd, rowVisibleStart, rowVisibleEnd }) {
-			props.onRowsRendered?.({
-				rowCacheStart,
-				rowCacheEnd,
-				rowVisibleStart,
-				rowVisibleEnd
-			});
+			props.onRowsRendered &&
+				props.onRowsRendered({
+					rowCacheStart,
+					rowCacheEnd,
+					rowVisibleStart,
+					rowVisibleEnd
+				});
 		}
 
 		function resetAfterRowIndex(index, forceUpdate2) {
-			bodyRef.value?.resetAfterRowIndex(index, forceUpdate2);
+			_.$callFn(bodyRef, "value.resetAfterRowIndex")(index, forceUpdate2);
 		}
 
 		function scrollTo(leftOrOptions, top) {
@@ -768,18 +772,21 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		}
 
 		function scrollToTop(scrollTop) {
-			unref(bodyRef)?.scrollTo({
+			_.$callFn(
+				unref(bodyRef),
+				"scrollTo"
+			)({
 				scrollTop
 			});
 		}
 
 		function scrollToRow(row, strategy) {
-			unref(bodyRef)?.scrollToItem(row, 1, strategy);
+			_.$callFn(unref(bodyRef), "scrollToItem")(row, 1, strategy);
 		}
 
 		function forceUpdate() {
-			unref(bodyRef)?.$forceUpdate();
-			unref(headerRef)?.$forceUpdate();
+			_.$callFn(unref(bodyRef), "$forceUpdate")();
+			_.$callFn(unref(headerRef), "$forceUpdate")();
 		}
 
 		return {
@@ -806,7 +813,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		return _.isArray(listLike) ? listLike.reduce(sumReducer, 0) : listLike;
 	};
 	const tryCall = (fLike, params, defaultRet = {}) => {
-		return _.isFunction(fLike) ? fLike(params) : fLike ?? defaultRet;
+		return _.isFunction(fLike) ? fLike(params) : fLike || defaultRet;
 	};
 	const enforceUnit = (style = {}) => {
 		if (_.isArray(style)) {
@@ -1020,13 +1027,14 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			}).stop;
 		});
 		onBeforeUnmount(() => {
-			resizerStopper?.();
+			resizerStopper && resizerStopper();
 		});
 		watch([width$, height$], ([width, height]) => {
-			props.onResize?.({
-				width,
-				height
-			});
+			props.onResize &&
+				props.onResize({
+					width,
+					height
+				});
 		});
 		return {
 			sizer,

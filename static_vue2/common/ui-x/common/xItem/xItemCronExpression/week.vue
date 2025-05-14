@@ -87,8 +87,7 @@
 		</el-form-item>
 	</el-form>
 </template>
-
-<script>
+<script lang="ts">
 export default {
 	data() {
 		return {
@@ -129,6 +128,7 @@ export default {
 					value: "星期日"
 				}
 			],
+
 			checkNum: this.$options.propsData.check
 		};
 	},

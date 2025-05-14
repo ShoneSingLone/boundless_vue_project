@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<ul @click="onPagerClick" class="el-pager flex middle">
 		<li
@@ -29,7 +28,6 @@
 		</li>
 	</ul>
 </template>
-
 <script lang="ts">
 export default async function () {
 	return defineComponent({

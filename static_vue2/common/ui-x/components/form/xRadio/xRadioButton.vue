@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<label
 		class="el-radio-button xRadioButton"

@@ -7,7 +7,7 @@
 			:configs="btnConfigs" />
 		<xDropdown v-if="isShowMoreBtn" trigger="click" @visible-change="handleVisibleChange">
 			<xBtn :preset="preset">
-				{{ i18n("更多") }}<i class="el-icon-arrow-down el-icon--right"></i>
+				{{ i18n("more_content") }}<i class="el-icon-arrow-down el-icon--right"></i>
 			</xBtn>
 			<xDropdownMenu slot="dropdown" ref="ElDropdownMenu">
 				<div
@@ -23,7 +23,6 @@
 		</xDropdown>
 	</div>
 </template>
-
 <script lang="ts">
 export default async function () {
 	/* 有更多选项的 按钮组 */
@@ -137,7 +136,7 @@ export default async function () {
 					currentBtnConfigs.onClick(this.configs);
 				}
 				/* dropdown 折叠 */
-				if (this.$refs?.ElDropdownMenu?.showPopper) {
+				if (_.$val(this, "$refs.ElDropdownMenu.showPopper")) {
 					this.$refs.ElDropdownMenu.showPopper = false;
 				}
 			}
@@ -145,7 +144,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .xColActionAndMore {
 	margin: unset;

@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<div class="el-step" :style="style" :class="cptClassStep">
 		<!-- icon & line -->

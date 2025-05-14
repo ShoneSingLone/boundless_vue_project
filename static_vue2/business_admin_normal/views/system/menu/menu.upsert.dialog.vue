@@ -19,7 +19,7 @@
 		</xCard>
 		<template #footer>
 			<xBtn :configs="btnOk" />
-			<xBtn @click="closeModal">{{ i18n("取消") }}</xBtn>
+			<xBtn @click="closeModal">{{ i18n("Cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>
@@ -91,8 +91,8 @@ export default async function ({ row, onClick, isAppend }) {
 						isButton: true,
 						tips: "选择是外链则路由地址需要以`http(s)://`开头",
 						options: [
-							{ label: i18n("是"), value: "0" },
-							{ label: i18n("否"), value: "1" }
+							{ label: i18n("yes_answer"), value: "0" },
+							{ label: i18n("no_answer"), value: "1" }
 						],
 						rules: [_rules.required()]
 					},
@@ -185,7 +185,7 @@ export default async function ({ row, onClick, isAppend }) {
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("OK"),
 					preset: "blue",
 					async onClick() {
 						vm.onClickOk();

@@ -74,6 +74,7 @@ export default async function () {
 						"el-scrollbar__wrap",
 						gutter ? "" : "el-scrollbar__wrap--hidden-default"
 					],
+
 					style,
 					onScroll: this.handleScroll
 				},

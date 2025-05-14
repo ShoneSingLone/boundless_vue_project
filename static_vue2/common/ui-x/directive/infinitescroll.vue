@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <script lang="ts">
 export default async function () {
 	const SCOPE = "xInfiniteScroll";
@@ -23,9 +22,9 @@ export default async function () {
 			await handleScrollChange.call(el, { delta });
 			/* TODO: 是否需要保持之前的scrollTop？*/
 			/* if (needTriggerScrollTop) {
-				const { scrollHeight: newScrollHeight } = containerEl;
-				el[SCOPE].triggerSrollTop(newScrollHeight - scrollHeight);
-			} */
+      	const { scrollHeight: newScrollHeight } = containerEl;
+      	el[SCOPE].triggerSrollTop(newScrollHeight - scrollHeight);
+      } */
 		};
 		const delta = scrollTop - lastScrollTop;
 
@@ -123,7 +122,7 @@ export default async function () {
 		},
 		unbind(el) {
 			const { container, onScroll } = el[SCOPE];
-			container?.removeEventListener("scroll", onScroll);
+			_.$callFn(container, "removeEventListener")("scroll", onScroll);
 			destroyObserver(el);
 		}
 	});

@@ -248,7 +248,7 @@ export default async function () {
 		},
 
 		destroyed() {
-			if (this.referenceElm?.nodeType === 1) {
+			if (_.$val(this, "referenceElm.nodeType") === 1) {
 				$(this.referenceElm)
 					.off("mouseenter", this.show)
 					.off("mouseleave", this.hide)
@@ -260,7 +260,6 @@ export default async function () {
 	});
 }
 </script>
-
 <style lang="less">
 .el-tooltip__popper {
 	position: absolute;

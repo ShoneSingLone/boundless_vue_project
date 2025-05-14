@@ -16,7 +16,7 @@ export default async function () {
 
 			const setColActionWidthImmediate = () => {
 				try {
-					if (this?.cpt_data?.list?.length > 0) {
+					if (_.$val(this, "cpt_data.list.length") > 0) {
 						const $xColActions = $(refxTable.value.$el).find(".xColActions")[0];
 						/* TODO: 列表中最长的操作 */
 						if (
@@ -251,7 +251,7 @@ export default async function () {
 						return configsCol.label;
 					}
 					if (prop === "COL_ACTIONS") {
-						return i18n("Operation");
+						return i18n("operation");
 					}
 					return "";
 				}
@@ -259,7 +259,7 @@ export default async function () {
 			},
 			getWidthBy(prop) {
 				const configsCol = this.allColInfo[prop];
-				if (configsCol?.width) {
+				if (_.$val(configsCol, "width")) {
 					return configsCol.width;
 				}
 
@@ -270,7 +270,7 @@ export default async function () {
 			},
 			getColTypeBy(prop) {
 				const configsCol = this.allColInfo[prop];
-				if (configsCol?.type) {
+				if (_.$val(configsCol, "type")) {
 					return configsCol.type;
 				}
 				return "";
@@ -299,7 +299,7 @@ export default async function () {
 			/* ***************** */
 			isUseComponent(prop) {
 				const colInfo = this.allColInfo[prop];
-				let isUse = !!colInfo?.component;
+				let isUse = !!_.$val(colInfo, "component");
 				if (!isUse) {
 					for (const prop in colInfo) {
 						if (/^xCell/.test(prop)) {
@@ -322,7 +322,7 @@ export default async function () {
 			},
 			useComponent(prop) {
 				const colInfo = this.allColInfo[prop];
-				return colInfo?.component || "div";
+				return _.$val(colInfo, "component") || "div";
 			},
 			log(prop, col) {}
 		},
@@ -338,7 +338,7 @@ export default async function () {
 		},
 		computed: {
 			cpt_data() {
-				return this.configs?.data || this.data;
+				return _.$val(this, "configs.data") || this.data;
 			},
 			cptxAutoResizerProps() {
 				return mergeProps4h([
@@ -347,7 +347,7 @@ export default async function () {
 						attrs: { "data-table-resizer-id": this._uid }
 					},
 					{
-						class: this?.configs?.class
+						class: _.$val(this, "configs.class")
 					},
 					this.$attrs
 				]);
@@ -418,7 +418,6 @@ export default async function () {
 	});
 }
 </script>
-
 <style lang="less">
 .xTable {
 	margin-top: var(--ui-half);

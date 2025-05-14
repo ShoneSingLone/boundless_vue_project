@@ -7,6 +7,7 @@ export default async function () {
 			/* payload: object */
 			"payload"
 		],
+
 		render() {
 			let log_message = "";
 			try {
@@ -25,7 +26,7 @@ export default async function () {
 					log_message = "isArray";
 					return h("xFragment", cell_any_type);
 				}
-				if (cell_any_type?.TYPE_IS_VNODE) {
+				if (_.$val(cell_any_type, "TYPE_IS_VNODE")) {
 					log_message = "TYPE_IS_VNODE";
 					return cell_any_type;
 				}
@@ -46,4 +47,3 @@ export default async function () {
 	};
 }
 </script>
-<style lang="less"></style>

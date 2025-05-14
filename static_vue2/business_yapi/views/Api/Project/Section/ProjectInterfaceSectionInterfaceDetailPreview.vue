@@ -241,7 +241,7 @@ export default async function () {
 							return h("xTag", { class: "mr" }, [user?.username || uid]);
 						}
 					},
-					状态: { label: i18n("状态"), value: status || "--" },
+					状态: { label: i18n("status_info"), value: status || "--" },
 					更新时间: {
 						label: i18n("更新时间"),
 						value: up_time || "--",
@@ -304,10 +304,12 @@ export default async function () {
 						label: i18n("BackupJSON"),
 						value: path || "--",
 						xItemRender: () => {
+							return "";
+							return hDiv(this.cptBackupData);
 							if (this.cptBackupData) {
 								return h("xMd", { md: this.cptBackupData });
 							} else {
-								return hDiv("");
+								return hDiv(this.cptBackupData);
 							}
 						}
 					},

@@ -66,7 +66,7 @@ export default async function () {
 				/*  */
 				oprBtnArray: [
 					{
-						label: i18n("删除"),
+						label: i18n("delete_action"),
 						disabled: () => !vm.configsTable.data.set.size,
 						isHide: () => !vm.$auth.hasPermiOr(["system:operlog:remove"]),
 						async onClick() {
@@ -91,7 +91,7 @@ export default async function () {
 					title: _adminTools.search_form_configs_text({ label: i18n("系统模块") }),
 					operName: _adminTools.search_form_configs_text({ label: i18n("操作人员") }),
 					businessType: _adminTools.search_form_configs_text({ label: i18n("类型") }),
-					status: _adminTools.search_form_configs_text({ label: i18n("状态") }),
+					status: _adminTools.search_form_configs_text({ label: i18n("status_info") }),
 					dateRange: _adminTools.search_form_date_range({ label: i18n("操作时间") }),
 					operlogKey: _adminTools.search_form_configs_text({ label: i18n("公告键名") }),
 					operlogType: _adminTools.search_form_configs_select({
@@ -156,7 +156,7 @@ export default async function () {
 						await _.$confirm_important("是否确认删除数据项？");
 						await _adminTools.api_operlog_delete(operIds);
 					}
-					_.$msg(i18n("删除成功"));
+					_.$msg(i18n("delete_success_info"));
 					this.getTableData();
 				} catch (error) {
 					if (error) {

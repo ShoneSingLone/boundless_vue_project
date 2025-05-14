@@ -8,7 +8,6 @@
 		</div>
 	</div>
 </template>
-
 <script lang="ts">
 export default async function () {
 	/* --xDialog-wrapper-width */
@@ -83,7 +82,7 @@ export default async function () {
 				return [
 					"xDialog xDialog-wrapper",
 					{
-						fullscreen: this.inject_modal.dialogClass?.fullscreen
+						fullscreen: _.$val(this, "inject_modal.dialogClass.fullscreen")
 					}
 				];
 			}
@@ -91,7 +90,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .xDialog {
 	--xDialog-padding: var(--ui-one);

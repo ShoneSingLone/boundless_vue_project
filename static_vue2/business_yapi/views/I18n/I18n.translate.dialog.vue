@@ -8,7 +8,7 @@
 			<xTableVir class="mt" :columns="configsTable.columns" :data="configsTable.data.list" />
 		</div>
 		<template #footer>
-			<xBtn @click="closeModal">{{ i18n("取消") }}</xBtn>
+			<xBtn @click="closeModal">{{ i18n("cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>
@@ -88,7 +88,7 @@ Total：${listData.length}
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("ok"),
 					preset: "blue",
 					async onClick() {
 						refreshTableData();
@@ -104,7 +104,11 @@ Total：${listData.length}
 				let dataList = _.cloneDeep(listData);
 				while ((i18n = dataList.pop())) {
 					try {
-						const { dst } = await this.inject_i18n.translate({ query: i18n.zhCn });
+						const { dst } = await this.inject_i18n.translate({
+							query: i18n.zhCn,
+							appId: _.$lStorage.translateAppId,
+							appKey: _.$lStorage.appKey
+						});
 						i18n.enUs = dst;
 						await _api.yapi.i18nUpsertOne({ i18n });
 						newRows.push(i18n);

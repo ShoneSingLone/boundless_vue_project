@@ -44,7 +44,7 @@ export default async function () {
 				];
 			},
 			renderHeaderOpr() {
-				if (this.rootTabs?.slotHeaderOpr) {
+				if (_.$val(this, "rootTabs.slotHeaderOpr")) {
 					return this.rootTabs.slotHeaderOpr;
 				} else {
 					return () => null;

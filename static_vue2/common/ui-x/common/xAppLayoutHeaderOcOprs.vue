@@ -1,3 +1,46 @@
+<template>
+	<div class="x-app-layout_header-oc-oprs">
+		<div class="menu-wrapper" v-for="(item, index) in items" :key="index">
+			<a class="menu-text" @click="handleClick(item)" :href="item.href">{{ item.label }}</a>
+			<div class="menu-drop-wrapper" v-if="item.children">
+				<ul class="dropdown-menu">
+					<li
+						v-for="subItem in item.children"
+						class="dropdown-menu-item-menu-item"
+						:key="subItem.value"
+						@click="handleClickChild(item, subItem)">
+						<a class="dropdown-menu-item-menu-item-text" :href="item.href">{{
+							subItem.label
+						}}</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<xGap l />
+	</div>
+</template>
+<script lang="ts">
+export default async function () {
+	return defineComponent({
+		props: ["items"],
+		data() {
+			return {};
+		},
+		methods: {
+			handleClickChild(item, subItem) {
+				if (_.$val(item, "onClickChild")) {
+					item.onClickChild(subItem);
+				}
+			},
+			handleClick(item) {
+				if (_.$val(item, "onClick")) {
+					item.onClick(item);
+				}
+			}
+		}
+	});
+}
+</script>
 <style lang="less">
 .x-app-layout_header-oc-oprs {
 	display: flex;
@@ -59,46 +102,3 @@
 	}
 }
 </style>
-<template>
-	<div class="x-app-layout_header-oc-oprs">
-		<div class="menu-wrapper" v-for="(item, index) in items" :key="index">
-			<a class="menu-text" @click="handleClick(item)" :href="item.href">{{ item.label }}</a>
-			<div class="menu-drop-wrapper" v-if="item.children">
-				<ul class="dropdown-menu">
-					<li
-						v-for="subItem in item.children"
-						class="dropdown-menu-item-menu-item"
-						:key="subItem.value"
-						@click="handleClickChild(item, subItem)">
-						<a class="dropdown-menu-item-menu-item-text" :href="item.href">{{
-							subItem.label
-						}}</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<xGap l />
-	</div>
-</template>
-<script lang="ts">
-export default async function () {
-	return defineComponent({
-		props: ["items"],
-		data() {
-			return {};
-		},
-		methods: {
-			handleClickChild(item, subItem) {
-				if (item?.onClickChild) {
-					item.onClickChild(subItem);
-				}
-			},
-			handleClick(item) {
-				if (item?.onClick) {
-					item.onClick(item);
-				}
-			}
-		}
-	});
-}
-</script>

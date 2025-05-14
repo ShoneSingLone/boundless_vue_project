@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<xAutoResizer :onResize="onResize">
 		<template #default="{ width, height }">
@@ -50,7 +49,7 @@ export default async function () {
 			vm.onResize = _.debounce(function () {
 				if (vm.myChart) {
 					vm.myChart.resize();
-					_.$execfnify(vm?.helper?.onResize, {
+					_.$execfnify(_.$val(vm, "helper.onResize"), {
 						instance: vm.myChart,
 						chartVM: vm
 					});
@@ -73,7 +72,7 @@ export default async function () {
 
 				vm.options = vm.helper.updateOptions(options, vm.dataset);
 
-				await _.$execfnify(vm?.helper?.afterInit, { instance: vm.myChart });
+				await _.$execfnify(_.$val(vm, "helper.afterInit"), { instance: vm.myChart });
 
 				vm.myChart.setOption(vm.options);
 				vm.myChart.hideLoading();

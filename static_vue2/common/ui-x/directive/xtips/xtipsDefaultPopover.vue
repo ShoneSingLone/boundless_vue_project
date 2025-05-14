@@ -367,7 +367,7 @@ export default async function () {
 				}
 			},
 			handleMouseLeave() {
-				console.log("handleMouseLeave");
+				console.log("[xtipsDefaultPopover] handleMouseLeave");
 				clearTimeout(this._timer);
 				if (this.closeDelay) {
 					this._timer = setTimeout(() => {

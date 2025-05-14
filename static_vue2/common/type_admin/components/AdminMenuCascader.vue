@@ -7,7 +7,6 @@
 		:show-all-levels="true"
 		v-model="cptValue" />
 </template>
-
 <script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
@@ -86,5 +85,3 @@ export default async function () {
 	};
 }
 </script>
-
-<style lang="less"></style>

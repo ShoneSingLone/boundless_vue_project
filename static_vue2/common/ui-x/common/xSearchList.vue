@@ -97,7 +97,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .x-search-list_wrapper .card-body .form-check label.ellipsis {
 	font-weight: unset;

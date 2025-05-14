@@ -28,7 +28,10 @@
 				@change="handleChange"
 				:aria-label="label" />
 			<!-- 前置内容 -->
-			<span class="el-input__prefix flex middle" v-if="$scopedSlots.prefix || prefixIcon">
+			<span
+				class="el-input__prefix flex middle"
+				v-if="$scopedSlots.prefix || prefixIcon"
+				@click="$event => handleClickIcon('prefix', $event)">
 				<slot name="prefix"></slot>
 				<xIcon
 					class="el-input__icon"
@@ -37,8 +40,11 @@
 					:icon="prefixIcon" />
 			</span>
 			<!-- 后置内容 -->
-			<span class="el-input__suffix flex middle" v-if="getSuffixVisible()">
-				<span class="el-input__suffix-inner">
+			<span
+				class="el-input__suffix flex middle"
+				v-if="getSuffixVisible()"
+				@click="$event => handleClickIcon('suffix', $event)">
+				<span :class="cpt_el_input_suffix_inner_class">
 					<template v-if="!showClear || !showPwdVisible || !isWordLimitVisible">
 						<slot name="suffix"></slot>
 						<xIcon
@@ -99,7 +105,6 @@
 		>
 	</div>
 </template>
-
 <script lang="ts">
 export default async function ({ PRIVATE_GLOBAL }) {
 	const { calcTextareaHeight } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
@@ -111,6 +116,9 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		inject: {
 			elForm: {
 				default: ""
+			},
+			xItem: {
+				default: {}
 			},
 			elFormItem: {
 				default: ""
@@ -175,10 +183,19 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				type: Boolean,
 				default: false
 			},
-			tabindex: String
+			tabindex: String,
+			suffixInnerClass: String
 		},
 
 		computed: {
+			cpt_el_input_suffix_inner_class() {
+				return [
+					{
+						"el-input__suffix-inner": true
+					},
+					this.suffixInnerClass || ""
+				];
+			},
 			cptInputClass() {
 				let {
 					type,
@@ -308,7 +325,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 
 		methods: {
 			prependRender() {
-				if (this.$scopedSlots?.prepend) {
+				if (_.$val(this, "$scopedSlots.prepend")) {
 					const [vNode] = this.$scopedSlots.prepend();
 					if (vNode.text) {
 						return h(
@@ -344,6 +361,11 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			handleEnter(event) {
 				this.focused = true;
 				this.$emit("enter", event);
+			},
+			/* 处理点击前置、后置图标 prefix、 suffix */
+			handleClickIcon(type, event) {
+				this.focused = true;
+				this.$emit(`click-${type}`, event);
 			},
 			handleBlur(event) {
 				this.focused = false;
@@ -714,28 +736,25 @@ export default async function ({ PRIVATE_GLOBAL }) {
 
 .el-input--small {
 	font-size: 13px;
-}
-
-.el-input--small .el-input__inner {
-	height: var(--ui-height);
-	line-height: var(--ui-height);
-}
-
-.el-input--small .el-input__icon {
-	line-height: var(--ui-height);
+	.el-input__inner {
+		height: var(--ui-height);
+		line-height: var(--ui-height);
+	}
+	.el-input__icon {
+		line-height: var(--ui-height);
+		width: var(--ui-xinput-icon-width-small, 16px);
+	}
 }
 
 .el-input--mini {
 	font-size: 12px;
-}
-
-.el-input--mini .el-input__inner {
-	height: 28px;
-	line-height: 28px;
-}
-
-.el-input--mini .el-input__icon {
-	line-height: 28px;
+	.el-input__inner {
+		height: 28px;
+		line-height: 28px;
+	}
+	.el-input__icon {
+		line-height: 28px;
+	}
 }
 
 .el-input-group {
@@ -917,7 +936,6 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	width: 0;
 	height: 0;
 }
-
 
 .xItem {
 	--xItem-prepend-width: 72px;

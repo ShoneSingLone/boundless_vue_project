@@ -2,8 +2,8 @@
 	<div class="xOprWithMore" ref="xOprWithMore">
 		<xBtn
 			preset="text"
-			v-for="(btn, index) in btnArray"
-			:key="index"
+			v-for="btn in btnArray"
+			:key="btn.__unix_index"
 			:data-title="btn | btnLabel(configs)"
 			:disabled="btn | isDisabled(configs)"
 			@click="handleClick(btn)">
@@ -11,7 +11,7 @@
 		</xBtn>
 		<xDropdown v-if="isShowMoreBtn" trigger="click" @visible-change="handleVisibleChange">
 			<xBtn preset="text">
-				{{ i18n("更多") }}
+				{{ i18n("more_content") }}
 			</xBtn>
 			<xDropdownMenu slot="dropdown" ref="ElDropdownMenu">
 				<div
@@ -19,8 +19,8 @@
 					ref="xOprWithMoreDropdown">
 					<xBtn
 						preset="text"
-						v-for="(btn, index) in btnArrayMore"
-						:key="index"
+						v-for="btn in btnArrayMore"
+						:key="btn.__unix_index"
 						:data-title="btn | btnLabel(configs)"
 						:disabled="btn | isDisabled(configs)"
 						@click="handleClick(btn)">
@@ -31,7 +31,6 @@
 		</xDropdown>
 	</div>
 </template>
-
 <script lang="ts">
 export default async function () {
 	/* 有更多选项的 按钮组 */
@@ -56,8 +55,11 @@ export default async function () {
 		},
 		computed: {
 			colspan() {
-				if (_.isNumber(this.configs?.col?.colspan) && this.configs?.col?.colspan > 2) {
-					return this.configs?.col?.colspan;
+				if (
+					_.isNumber(_.$val(this, "configs.col.colspan")) &&
+					_.$val(this, "configs.col.colspan") > 2
+				) {
+					return _.$val(this, "configs.col.colspan");
 				} else {
 					return DID_NOT_SET_COL;
 				}
@@ -67,7 +69,7 @@ export default async function () {
 				return this.$attrs.row || this.configs.row || {};
 			},
 			btnArrayAll() {
-				const _btnArray = _.filter(this.configs?.col?.btnList, btnConfigs => {
+				const _btnArray = _.filter(_.$val(this, "configs.col.btnList"), btnConfigs => {
 					if (btnConfigs.isHide !== undefined) {
 						if (_.isBoolean(btnConfigs.isHide)) {
 							return !btnConfigs.isHide;
@@ -83,7 +85,10 @@ export default async function () {
 					}
 					return true;
 				});
-				return _btnArray;
+				return _.map(_btnArray, (configs, index) => {
+					configs.__unix_index = Date.now() + index;
+					return configs;
+				});
 			}
 		},
 		filters: {
@@ -137,7 +142,7 @@ export default async function () {
 					currentBtnConfigs.onClick(this.configs);
 				}
 				/* dropdown 折叠 */
-				if (this.$refs?.ElDropdownMenu?.showPopper) {
+				if (_.$val(this, "$refs.ElDropdownMenu.showPopper")) {
 					this.$refs.ElDropdownMenu.showPopper = false;
 				}
 			}
@@ -145,7 +150,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .xOprWithMore {
 	margin: unset;

@@ -1,0 +1,11 @@
+{
+    "resourceManagerEndpoints": ["home", "vpc", "obs", "ims", "nfviecs", "nfvievs", "nfvivpc", "nfvivpn"],
+    "moScale": "B2B2000VM",
+    "workScene": "HuaweiCloudStack",
+    "scenario": "",
+    "showVDCService": false,
+    "gotoServiceConsole": true,
+    "extProjectsProjectsRoles": ["te_admin", "readonly", "vpc_netadm", "elbadm"],
+    "manageOneOnline": "",
+    "showHuaweicloudConsole": false
+}

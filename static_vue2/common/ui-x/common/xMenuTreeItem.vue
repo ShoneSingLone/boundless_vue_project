@@ -14,6 +14,7 @@ export default async function () {
 			"folderIcon",
 			"collapse"
 		],
+
 		setup(props, { slots }) {
 			const vm = this;
 
@@ -31,11 +32,11 @@ export default async function () {
 					vm.clickItem && vm.clickItem(vm.item);
 				},
 				scopeSlotsDefault() {
-					if (slots?.label) {
-						return slots?.label.call(vm, { item: vm.item });
+					if (_.$val(slots, "label")) {
+						return _.$callFn(slots, "label").call(vm, { item: vm.item });
 					}
-					if (props.renders?.label) {
-						return props.renders?.label.call(vm, { item: vm.item });
+					if (_.$val(props, "renders.label")) {
+						return _.$callFn(props, "renders.label").call(vm, { item: vm.item });
 					}
 
 					return hDiv({ staticClass: "el-submenu__title-text" }, [vm.cptLabel]);
@@ -60,13 +61,13 @@ export default async function () {
 				return isActive;
 			},
 			cptLabel() {
-				return this.item?.label;
+				return _.$val(this, "item.label");
 			},
 			isFolder: function () {
-				return this.item?.children && this.item?.children.length;
+				return _.$val(this, "item.children") && _.$val(this, "item.children.length");
 			},
 			cptChildren: function () {
-				return this.item?.children || [];
+				return _.$val(this, "item.children") || [];
 			},
 			cptClassFolderIcon() {
 				return [
@@ -152,9 +153,9 @@ export default async function () {
 								},
 								[
 									h("xIcon", {
-										vIf: item?.icon,
+										vIf: _.$val(item, "icon"),
 										staticClass: "xMenuTreeItem-submenu-icon",
-										attrs: { icon: item?.icon }
+										attrs: { icon: _.$val(item, "icon") }
 									}),
 									scopeSlotsDefault({ item }),
 									h("xGap", { vIf: isFolder, attrs: { f: "" } }),
@@ -182,6 +183,7 @@ export default async function () {
 										expression: "state.isOpen"
 									}
 								],
+
 								key: index,
 								staticStyle: {
 									"padding-left": "var(--xMenuTreeItemPaddingLeft,var(--ui-one))"
@@ -202,7 +204,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .xMenuTreeItem {
 }

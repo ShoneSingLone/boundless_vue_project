@@ -15,7 +15,6 @@
 		</template>
 	</xCheckboxGroup>
 </template>
-
 <script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
@@ -25,10 +24,10 @@ export default async function () {
 			props: ["value", "configs", "options"],
 			computed: {
 				selectOptions() {
-					return this.options || this.configs?.options || [];
+					return this.options || _.$val(this, "configs.options") || [];
 				},
 				isButton() {
-					return this.configs?.isButton || false;
+					return _.$val(this, "configs.isButton") || false;
 				}
 			},
 			data() {
@@ -38,5 +37,3 @@ export default async function () {
 	})();
 }
 </script>
-
-<style lang="less"></style>

@@ -77,7 +77,7 @@ export default async function () {
 						}
 					},
 					{
-						label: i18n("删除"),
+						label: i18n("delete_action"),
 						disabled: () => !vm.configsTable.data.set.size,
 						isHide: () => !vm.$auth.hasPermiOr(["system:dict:remove"]),
 						async onClick() {
@@ -131,7 +131,7 @@ export default async function () {
 						{ label: i18n("标签键值"), prop: "dictValue" },
 						{ label: i18n("标签排序"), prop: "dictSort" },
 						{
-							label: i18n("状态"),
+							label: i18n("status_info"),
 							prop: "status",
 							cellRenderer: ({ cellData }) =>
 								hVal2Tag(cellData, dicts.sys_normal_disable)
@@ -164,7 +164,7 @@ export default async function () {
 											}
 										},
 										{
-											label: i18n("删除"),
+											label: i18n("delete_action"),
 											isHide: () =>
 												!vm.$auth.hasPermiOr(["system:dict:remove"]),
 											onClick: async () => {
@@ -204,7 +204,7 @@ export default async function () {
 						'是否确认删除标签编号为"' + dictCodes + '"的数据项？'
 					);
 					await _adminTools.api_dict_data_delete(dictCodes);
-					_.$msg(i18n("删除成功"));
+					_.$msg(i18n("delete_success_info"));
 					this.getTableData();
 				} catch (error) {
 					if (error) {

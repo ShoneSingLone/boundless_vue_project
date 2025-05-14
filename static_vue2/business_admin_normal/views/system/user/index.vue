@@ -93,7 +93,7 @@ export default async function () {
 						}
 					},
 					{
-						label: i18n("删除"),
+						label: i18n("delete_action"),
 						disabled: () => !vm.configsTable.data.set.size,
 						isHide: () => !vm.$auth.hasPermiOr(["system:user:remove"]),
 						async onClick() {
@@ -151,13 +151,13 @@ export default async function () {
 						{ label: i18n("部门"), prop: "dept.deptName" },
 						{ label: i18n("手机号码"), prop: "phonenumber" },
 						{
-							label: i18n("状态"),
+							label: i18n("status_info"),
 							prop: "status",
 							cellRenderer({ cellData, rowData }) {
 								const userIsAdmin = rowData.userId === 1;
 								if (userIsAdmin) {
 									return hVal2Tag(cellData, sys_normal_disable);
-									// return h("span", { class: "text-gray" }, i18n("超级管理员"));
+									// return hSpan( { class: "text-gray" }, i18n("超级管理员"));
 								}
 
 								return h("xSwitch", {
@@ -197,7 +197,7 @@ export default async function () {
 											}
 										},
 										{
-											label: i18n("删除"),
+											label: i18n("delete_action"),
 											isHide: () =>
 												!vm.$auth.hasPermiOr(["system:user:remove"]),
 											onClick: async () => {
@@ -255,7 +255,7 @@ export default async function () {
 				try {
 					await _.$confirm_important('是否确认删除用户编号为"' + userIds + '"的数据项？');
 					await _adminTools.api_user_delete(userIds);
-					_.$msg(i18n("删除成功"));
+					_.$msg(i18n("delete_success_info"));
 					this.getTableData();
 				} catch (error) {
 					if (error) {

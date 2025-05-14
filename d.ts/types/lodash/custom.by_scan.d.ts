@@ -14,7 +14,14 @@ $$tags:   (tagName: string)=> HTMLElement[] ;
 $$id:   (tagName: string)=> HTMLElement[] ;
 $val: any;
 $ensure:any;
-$appendScript: any;
+/**
+	 * 该函数用于在网页中动态添加脚本文件。它接受一个URL参数和一个全局名称参数，根据URL创建一个id，并检查是否已存在具有该id的script元素。如果不存在，它会创建一个新的script元素，设置其id和src属性，并添加到页面的body元素中。如果URL参数中包含路径，则使用该路径作为src属性值；否则，通过调用另一个函数获取脚本内容。无论使用哪种方式，加载脚本的过程都是异步的。如果指定了全局名称参数，则返回通过该名称访问到的值。
+	 *
+	 * @param {any} url
+	 * @param {string} [globalName=""]
+	 * @returns
+	 */
+$appendScript:   (url:string,globalName:string)=>any ;
 /**
 	 * @param {any} url
 	 * @param {any} styleSourceCode
@@ -41,11 +48,28 @@ $resolvePath: any;
 $loadText:any;
 $asyncLoadOrderAppendScrips:any;
 /**
-			 * 创建i18n 函数，可同时存在不同语言options的i18n对象
-			 * @param {*} lang zh-CN,对应i18n文件夹下的文件
-			 * @returns
-			 */
+						 * 创建i18n 函数，可同时存在不同语言options的i18n对象
+						 * @param {*} lang zh-CN,对应i18n文件夹下的文件
+						 * @returns
+						 */
 $newI18n:   (options: { lang: "zh-CN" | "en-US" }) => Promise<any> ;
+$callFn:any;
+/**
+	 * base64编码 原生不支持字符，需要用$.base64 插件
+	 * */
+$base64:   { decode(str: string): string; encode(str: string): string; is(str: string): boolean; };
+$reloadWindow:any;
+/**
+	 * 字符串脱敏处理函数
+	 * @param {string} str - 需要脱敏的字符串
+	 * @param {string} type - 脱敏类型：'phone'|'email'|'idcard'|'name'|'custom'
+	 * @param {object} options - 自定义脱敏选项
+	 * @param {number} options.start - 保留开始位数
+	 * @param {number} options.end - 保留结束位数
+	 * @param {string} options.mask - 掩码字符
+	 * @returns {string} 脱敏后的字符串
+	 */
+$desensitize:   (str: any, type?: string, options?: object)=>string;
 $getRawQueryParamFromSearch:any;
 /**
 	 * 构造树型结构数据
@@ -341,6 +365,12 @@ $setPagination:any;
 	 */
 $setTableData:   (tableConfigs: any, { list, total:number, selected, set: Set }: any)=>void ;
 /**
+	 * 通过ID获取xItem的vm实例
+	 * @param id
+	 * @returns Vue实例
+	 */
+$xItemVmById:   (idName:string)=>Promise<[msg,vm][]> ;
+/**
 	 * TODO: isHide的元素不需要校验
 	 *
 	 * @param {any} selector  满足jQuery能选出来就行 form#表单的包裹元素，校验元素内的所有控件
@@ -405,6 +435,7 @@ $getSelectedItemFrom:any;
 		 * @returns
 		 */
 $valOrDefault:   (value: any, defaultValue: any) => any ;
+$valuInArrayOrFirst:any;
 $getFirstOrDefaultValue:any;
 $getIpInRangeAndUseable:any;
 $intToIp4:any;

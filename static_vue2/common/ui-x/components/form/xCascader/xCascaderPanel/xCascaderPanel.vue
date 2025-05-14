@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<div :class="cptCascaderPanelClass" @keydown="handleKeyDown">
 		<xCascaderMenu

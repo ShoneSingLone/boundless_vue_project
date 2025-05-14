@@ -42,7 +42,6 @@
 		</tbody>
 	</table>
 </template>
-
 <script lang="ts">
 export default async function () {
 	const [{ isDate, range, nextDate, getDayCountOfYear }] = await _.$importVue([

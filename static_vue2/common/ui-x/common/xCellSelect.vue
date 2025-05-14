@@ -3,33 +3,33 @@ export default async function () {
 	Vue._CurrentCellId = Vue._CurrentCellId || ref(0);
 	return defineComponent({
 		created() {
-			if (_.isArray(this.configs?.col?.componentOptions?.options)) {
+			if (_.isArray(_.$val(this, "configs.col.componentOptions.options"))) {
 				/* 
-				this.$watch(
-					"configs.col.options",
-					(options, oldOptions) => {
-						const a = JSON.stringify(options || []);
-						const b = JSON.stringify(oldOptions || []);
-						if (a !== b) {
-							this.configsSelectComponent.options = options || [];
-						}
-					},
-					{ immediate: true }
-				);
-				if (this.configs?.col?.componentOptions?.props) {
-					this.$watch(
-						"configs.col.xCellSelect.props",
-						(options, oldOptions) => {
-							const a = JSON.stringify(options || []);
-							const b = JSON.stringify(oldOptions || []);
-							if (a !== b) {
-								this.configsInputComponent.props = options || [];
-							}
-						},
-						{ immediate: true }
-					);
-				}
-			 */
+        this.$watch(
+        	"configs.col.options",
+        	(options, oldOptions) => {
+        		const a = JSON.stringify(options || []);
+        		const b = JSON.stringify(oldOptions || []);
+        		if (a !== b) {
+        			this.configsSelectComponent.options = options || [];
+        		}
+        	},
+        	{ immediate: true }
+        );
+        if (this.configs?.col?.componentOptions?.props) {
+        	this.$watch(
+        		"configs.col.xCellSelect.props",
+        		(options, oldOptions) => {
+        			const a = JSON.stringify(options || []);
+        			const b = JSON.stringify(oldOptions || []);
+        			if (a !== b) {
+        				this.configsInputComponent.props = options || [];
+        			}
+        		},
+        		{ immediate: true }
+        	);
+        }
+        */
 			}
 		},
 		data() {
@@ -40,7 +40,7 @@ export default async function () {
 			configsMerged() {
 				return {
 					payload: this.params,
-					...(this.configs?.col?.componentOptions || {}),
+					...(_.$val(this, "configs.col.componentOptions") || {}),
 					itemType: "xItemSelect"
 				};
 			},
@@ -65,7 +65,7 @@ export default async function () {
 					return this.row[this.configs.prop] || "";
 				},
 				set(val) {
-					if (this.configs?.col?.componentOptions?.onEmitValue) {
+					if (_.$val(this, "configs.col.componentOptions.onEmitValue")) {
 						if (this.row[this.configs.prop] !== val) {
 							this.configs.col.componentOptions.onEmitValue({
 								...this.params,

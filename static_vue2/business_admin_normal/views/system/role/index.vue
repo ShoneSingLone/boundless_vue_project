@@ -83,7 +83,7 @@ export default async function () {
 						}
 					},
 					{
-						label: i18n("删除"),
+						label: i18n("delete_action"),
 						disabled: () => !vm.configsTable.data.set.size,
 						isHide: () => !vm.$auth.hasPermiOr(["system:role:remove"]),
 						async onClick() {
@@ -140,7 +140,7 @@ export default async function () {
 						{ label: i18n("权限字符"), prop: "roleKey" },
 						{ label: i18n("显示顺序"), prop: "roleSort" },
 						{
-							label: i18n("状态"),
+							label: i18n("status_info"),
 							prop: "status",
 							cellRenderer({ cellData, rowData }) {
 								const userIsAdmin = rowData.roleId === 1;
@@ -186,7 +186,7 @@ export default async function () {
 											}
 										},
 										{
-											label: i18n("删除"),
+											label: i18n("delete_action"),
 											isHide: () =>
 												!vm.$auth.hasPermiOr(["system:role:remove"]),
 											onClick: async () => {
@@ -249,7 +249,7 @@ export default async function () {
 				try {
 					await _.$confirm_important('是否确认删除角色编号为"' + roleIds + '"的数据项？');
 					await _adminTools.api_role_delete(roleIds);
-					_.$msg(i18n("删除成功"));
+					_.$msg(i18n("delete_success_info"));
 					this.getTableData();
 				} catch (error) {
 					if (error) {

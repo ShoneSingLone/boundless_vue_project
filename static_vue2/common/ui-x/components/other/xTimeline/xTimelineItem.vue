@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<li class="xTimelineItem el-timeline-item">
 		<div class="el-timeline-item__tail"></div>

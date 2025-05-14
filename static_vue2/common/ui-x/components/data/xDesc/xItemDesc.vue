@@ -1,30 +1,3 @@
-<style lang="less">
-.xItemDesc-wrapper {
-	overflow: hidden;
-	width: var(--xItem-wrapper-width, 320px);
-	min-height: var(--xItem-wrapper-height);
-	.xItemDesc-wrapper_label {
-		width: var(--xItem-label-width, 120px);
-	}
-	padding: 10px 15px;
-	// border-bottom: 1px solid #eee;
-	&:hover {
-		background-color: var(--xItemDesc-hover-bg, transparent);
-	}
-	&:last-child {
-		border-bottom: none;
-	}
-	&:first-child {
-		// border-top: 1px solid #eee;
-	}
-
-	.xItemDesc-wrapper_content {
-		word-break: break-all;
-		width: 1px;
-		overflow: auto;
-	}
-}
-</style>
 <template>
 	<div class="xItemDesc-wrapper flex middle" v-if="cptIsEmpty"></div>
 	<div class="xItemDesc-wrapper flex middle" v-else-if="cptIsShow">
@@ -84,22 +57,22 @@ export default async function () {
 				let content = this.item.value;
 				let itemType = (() => {
 					/*  如果有其他自定义的类型，但是readonly的显示效果是一样的 */
-					if (_.isString(this.item?.xItemRender)) {
-						return this.item?.xItemRender;
+					if (_.isString(_.$val(this, "item.xItemRender"))) {
+						return _.$val(this, "item.xItemRender");
 					}
-					return this.item?.itemType;
+					return _.$val(this, "item.itemType");
 				})();
 				/* TODO:这种API...有待商榷 */
-				if (_.isFunction(this.item?.xItemRender)) {
+				if (_.isFunction(_.$val(this, "item.xItemRender"))) {
 					content = this.item.xItemRender.call(this.item, { xItemDesc: this });
 				} else if (itemType === "xItemSelect") {
 					let options = this.item.options;
 					if (_.isFunction(options)) {
 						options = options();
 					}
-					content = _.find(options, { value: this.item?.value })?.label;
+					content = _.$val(_, "find(options, {\n  value: this.item.value\n}).label");
 				} else if (_.isBoolean(content)) {
-					content = content ? i18n("是") : i18n("否");
+					content = content ? i18n("yes_answer") : i18n("no_answer");
 				} else if (_.isPlainObject(content)) {
 					content = "";
 				}
@@ -110,3 +83,30 @@ export default async function () {
 	});
 }
 </script>
+<style lang="less">
+.xItemDesc-wrapper {
+	overflow: hidden;
+	width: var(--xItem-wrapper-width, 320px);
+	min-height: var(--xItem-wrapper-height);
+	.xItemDesc-wrapper_label {
+		width: var(--xItem-label-width, 120px);
+	}
+	padding: 10px 15px;
+	// border-bottom: 1px solid #eee;
+	&:hover {
+		background-color: var(--xItemDesc-hover-bg, transparent);
+	}
+	&:last-child {
+		border-bottom: none;
+	}
+	&:first-child {
+		// border-top: 1px solid #eee;
+	}
+
+	.xItemDesc-wrapper_content {
+		word-break: break-all;
+		width: 1px;
+		overflow: auto;
+	}
+}
+</style>

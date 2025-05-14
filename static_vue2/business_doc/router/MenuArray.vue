@@ -64,7 +64,7 @@ export default async function () {
 				},
 				{
 					icon: "_icon_msg",
-					label: `${i18n("Message")} ${i18n("消息")}`,
+					label: `${i18n("Message")} ${i18n("message_info")}`,
 					href: "/other/message"
 				}
 			]
@@ -226,6 +226,11 @@ export default async function () {
 					icon: "icon_report",
 					label: `${i18n("Pagination")} ${i18n("分页")}`,
 					href: "/component/data/pagination"
+				},
+				{
+					icon: "icon_report",
+					label: `${i18n("Badge")} ${i18n("标记")}`,
+					href: "/component/data/badge"
 				},
 				{
 					icon: "icon_report",

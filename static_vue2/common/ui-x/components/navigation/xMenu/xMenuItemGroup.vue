@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<li class="el-menu-item-group">
 		<div class="el-menu-item-group__title" :style="{ paddingLeft: levelPadding + 'px' }">

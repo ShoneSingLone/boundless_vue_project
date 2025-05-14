@@ -3,7 +3,7 @@
 		<p @click="copy" ref="refCode" class="pointer">{{ componentPath }}</p>
 		<xMd :md="md" />
 		<template #footer>
-			<xBtn @click="closeModal">{{ i18n("取消") }}</xBtn>
+			<xBtn @click="closeModal">{{ i18n("cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>

@@ -12,7 +12,7 @@
 		</div>
 		<template #footer>
 			<xBtn :configs="btnOk" />
-			<xBtn @click="closeModal">{{ i18n("取消") }}</xBtn>
+			<xBtn @click="closeModal">{{ i18n("Cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>
@@ -55,7 +55,7 @@ export default async function ({ row, onSelected }) {
 						{ label: i18n("邮箱"), prop: "email" },
 						{ label: i18n("手机"), prop: "phonenumber" },
 						{
-							label: i18n("状态"),
+							label: i18n("status_info"),
 							prop: "status",
 							cellRenderer: ({ cellData }) => hVal2Tag(cellData, sys_normal_disable)
 						},
@@ -72,7 +72,7 @@ export default async function ({ row, onSelected }) {
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("OK"),
 					preset: "blue",
 					disabled() {
 						return !vm.configsTable.data.set.size;

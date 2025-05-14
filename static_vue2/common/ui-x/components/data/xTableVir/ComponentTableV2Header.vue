@@ -26,7 +26,7 @@ export default async function () {
 			const scrollToLeft = left => {
 				const headerEl = unref(headerRef);
 				nextTick(() => {
-					headerEl?.scroll &&
+					_.$val(headerEl, "scroll") &&
 						headerEl.scroll({
 							left
 						});
@@ -35,19 +35,25 @@ export default async function () {
 			const renderFixedRows = () => {
 				const fixedRowClassName = ns.e("fixed-header-row");
 				const { columns, fixedHeaderData, rowHeight } = props;
-				return fixedHeaderData?.map((fixedRowData, fixedRowIndex) => {
+				return _.$callFn(
+					fixedHeaderData,
+					"map"
+				)((fixedRowData, fixedRowIndex) => {
 					const style = enforceUnit({
 						height: rowHeight,
 						width: "100%"
 					});
 					// console.log("renderFixedRows", columns.width, columns);
-					return slots.fixed?.({
-						class: fixedRowClassName,
-						columns,
-						rowData: fixedRowData,
-						rowIndex: -(fixedRowIndex + 1),
-						style
-					});
+					return (
+						slots.fixed &&
+						slots.fixed({
+							class: fixedRowClassName,
+							columns,
+							rowData: fixedRowData,
+							rowIndex: -(fixedRowIndex + 1),
+							style
+						})
+					);
 				});
 			};
 			const renderDynamicRows = () => {
@@ -59,12 +65,15 @@ export default async function () {
 						height: rowHeight
 					});
 					// console.log("renderDynamicRows", columns.width, columns);
-					return slots.dynamic?.({
-						class: dynamicRowClassName,
-						columns: columns,
-						headerIndex: rowIndex,
-						style
-					});
+					return (
+						slots.dynamic &&
+						slots.dynamic({
+							class: dynamicRowClassName,
+							columns: columns,
+							headerIndex: rowIndex,
+							style
+						})
+					);
 				});
 			};
 
@@ -101,5 +110,3 @@ export default async function () {
 	});
 }
 </script>
-
-<style lang="less"></style>

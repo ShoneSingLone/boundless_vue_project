@@ -9,7 +9,7 @@
 	 * @param {Function} API_OPTIONS.error 请求失败回调
 	 */
 	_.$ajax = (function () {
-		function configs(API_OPTIONS) {
+		function configs(API_OPTIONS = {}) {
 			let { requestInjector, responseInjector } = this;
 
 			const normal = options => options;
@@ -57,10 +57,10 @@
 			const errorCodeArray = [400, 401, 402, 403, 404, 405, 500, 555];
 
 			const success = function (response, state, xhr) {
-				response = responseInjector(response);
+				response = responseInjector(response, { API_OPTIONS });
 				if (_.isPlainObject(response)) {
 					/* 兼容 */
-					const errcode = response?.errcode || response?.code;
+					const errcode = response && (response.errcode || response.code);
 
 					if (errcode) {
 						if (errorCodeArray.includes(errcode)) {
@@ -68,7 +68,7 @@
 							return;
 						}
 					}
-					if (response?.status) {
+					if (response && response.status) {
 						if (errorCodeArray.includes(response.status)) {
 							const { body, message } = response || {};
 							reject(body || message);
@@ -79,7 +79,7 @@
 				return resolve(response, state, xhr);
 			};
 			const error = function (response) {
-				response = responseInjector(response);
+				response = responseInjector(response, { API_OPTIONS });
 				return reject(response);
 			};
 
@@ -216,7 +216,7 @@
 										let header = xhr.getResponseHeader("content-disposition");
 
 										let fileName = (() => {
-											const kvStrArray = header?.split(";") || [];
+											const kvStrArray = (header && header.split(";")) || [];
 											const kvObject = _.reduce(
 												kvStrArray,
 												(keyVal, keyvalString) => {

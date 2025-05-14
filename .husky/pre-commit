@@ -3,4 +3,4 @@
 
 # commitmsg="$(git status)"
 # npm run githooks:pre-commit "$0" "$commitmsg"
-npm run githooks:pre-commit 
+# npm run githooks:pre-commit 

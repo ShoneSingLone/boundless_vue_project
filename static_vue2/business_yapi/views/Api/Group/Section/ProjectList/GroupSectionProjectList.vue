@@ -66,12 +66,20 @@ export default async function () {
 				isAdvancedSearchCollapse: true,
 				formQuery: defItems({
 					name: {
-						value: _.$lStorage?.GroupSectionProjectListFormQuery?.name || "",
+						value:
+							(_.$lStorage &&
+								_.$lStorage.GroupSectionProjectListFormQuery &&
+								_.$lStorage.GroupSectionProjectListFormQuery.name) ||
+							"",
 						resetValue: "",
 						placeholder: i18n("分组、项目的名称或者ID")
 					},
 					group: {
-						value: _.$lStorage?.GroupSectionProjectListFormQuery?.group || [],
+						value:
+							(_.$lStorage &&
+								_.$lStorage.GroupSectionProjectListFormQuery &&
+								_.$lStorage.GroupSectionProjectListFormQuery.group) ||
+							[],
 						resetValue: [],
 						itemType: "xItemSelect",
 						multiple: true,
@@ -131,7 +139,7 @@ export default async function () {
 										/* 全局的grouplist 拼接行数据 */
 										_list.push({
 											...row,
-											group_desc: groupItem?.group_desc || "",
+											group_desc: (groupItem && groupItem.group_desc) || "",
 											group_name: groupItem?.group_name || ""
 										});
 									}

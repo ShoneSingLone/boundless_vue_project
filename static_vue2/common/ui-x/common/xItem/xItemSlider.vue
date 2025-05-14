@@ -12,7 +12,6 @@
 		:show-input="showInput">
 	</xSlider>
 </template>
-
 <script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
@@ -22,22 +21,22 @@ export default async function () {
 		props: ["value", "configs"],
 		computed: {
 			showInput() {
-				return this.configs?.showInput ?? false;
+				return _.$val(this, "configs.showInput") ?? false;
 			},
 			disabled() {
-				return this.configs?.disabled ?? false;
+				return _.$val(this, "configs.disabled") ?? false;
 			},
 			min() {
-				return this.configs?.min ?? 0;
+				return _.$val(this, "configs.min") ?? 0;
 			},
 			max() {
-				return this.configs?.max ?? 100;
+				return _.$val(this, "configs.max") ?? 100;
 			},
 			marks() {
-				return this.configs?.marks ?? null;
+				return _.$val(this, "configs.marks") ?? null;
 			},
 			showInputControls() {
-				return this.configs?.showInputControls ?? true;
+				return _.$val(this, "configs.showInputControls") ?? true;
 			}
 		},
 		methods: {
@@ -51,8 +50,7 @@ export default async function () {
 	};
 }
 </script>
-
-<style scoped lang="less">
+<style lang="less">
 .xItem_controller {
 	> .xItemSlider {
 		width: var(--xItem-slider-width, 100%);

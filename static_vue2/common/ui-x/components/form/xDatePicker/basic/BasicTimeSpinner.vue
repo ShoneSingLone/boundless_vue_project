@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<div class="el-time-spinner" :class="{ 'has-seconds': showSeconds }">
 		<template v-if="!arrowControl">

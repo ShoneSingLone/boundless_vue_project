@@ -16,7 +16,7 @@
 		</xForm>
 		<template #footer>
 			<xBtn :configs="btnOk" />
-			<xBtn :configs="btnCancel">{{ i18n("取消") }}</xBtn>
+			<xBtn :configs="btnCancel">{{ i18n("cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>
@@ -106,7 +106,7 @@ ${httprequestoptions}
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("ok"),
 					async onClick() {
 						vm.closeModal();
 					}
@@ -115,7 +115,7 @@ ${httprequestoptions}
 			btnCancel() {
 				const vm = this;
 				return {
-					label: i18n("取消"),
+					label: i18n("cancel"),
 					preset: "blue",
 					async onClick() {
 						vm.closeModal();

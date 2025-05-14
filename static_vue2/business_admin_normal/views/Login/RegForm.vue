@@ -164,7 +164,7 @@ export default async function () {
 					size: "large",
 					preset: "blue",
 					class: "login-button flex center login-form-button",
-					label: i18n("注册"),
+					label: i18n("register_action"),
 					async onClick() {
 						const formData = _.$pickFormValues(vm.configsForm);
 						_.each(formData, (val, key) => {

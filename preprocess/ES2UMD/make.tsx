@@ -1,3 +1,3 @@
-import { ElTableV2 } from "element-plus";
+import generator from "@babel/generator";
 
-export { ElTableV2 as ElTableV2 };
+export { generator as bable_generator };

@@ -1,3 +1,6 @@
+<script lang="ts">
+export default async function () {}
+</script>
 <style lang="less">
 /* 常用的样式类，不加样式类不影响界面展示效果 */
 /* gap-gap-gap-gap-gap */
@@ -167,14 +170,29 @@ each(@list, {
 	outline: 1px solid red;
 }
 
+.word-pre-wrap {
+	word-break: pre-wrap;
+}
+
+.word-break-all {
+	word-break: break-all;
+}
+
 .display-none {
 	display: none;
+}
+
+.display-block {
+	display: block;
 }
 
 .cursor {
 	cursor: pointer;
 }
 
+.overflow-visible {
+	overflow: visible;
+}
 .overflow-hidden {
 	overflow: hidden;
 }
@@ -505,6 +523,14 @@ svg.pointer {
 	white-space: nowrap;
 }
 
+.position {
+	&.relative {
+		position: relative;
+	}
+	&.absolute {
+		position: absolute;
+	}
+}
 /* *****************************************transition********************************** */
 .fade-enter-active,
 .fade-leave-active {
@@ -739,6 +765,3 @@ svg.pointer {
 	}
 }
 </style>
-<script lang="ts">
-export default async function () {}
-</script>

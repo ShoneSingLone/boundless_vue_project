@@ -80,7 +80,7 @@ export default async function () {
 					);
 
 					if (item.redirect === "noRedirect" || index == levelList.length - 1) {
-						content = h("span", { key: item.path, staticClass: "no-redirect" }, [
+						content = hSpan({ key: item.path, staticClass: "no-redirect" }, [
 							item.meta.title
 						]);
 					}

@@ -6,7 +6,7 @@
 				<span class="demonstration">默认</span>
 				<xImg :src="src" />
 			</div>
-			<xGap l/>
+			<xGap l />
 			<div class="block">
 				<span class="demonstration">自定义</span>
 				<xImg :src="src">

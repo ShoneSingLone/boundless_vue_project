@@ -21,6 +21,7 @@ export default async function () {
 			"border-width",
 			"box-sizing"
 		];
+
 		let hiddenTextarea;
 
 		function calculateNodeStyling(targetElement) {
@@ -87,53 +88,53 @@ export default async function () {
 			EVENT_ARRAY,
 			useProps(vm) {
 				const cptPlaceholder = computed(() => {
-					if (_.isFunction(vm.configs?.placeholder)) {
+					if (_.isFunction(_.$val(vm, "configs.placeholder"))) {
 						return vm.configs.placeholder.call(vm.configs, { vm });
 					}
-					if (_.isString(vm.configs?.placeholder)) {
-						return vm.configs?.placeholder;
+					if (_.isString(_.$val(vm, "configs.placeholder"))) {
+						return _.$val(vm, "configs.placeholder");
 					}
 				});
 
 				const cptIsHide = computed(() => {
-					if (_.isFunction(vm.configs?.isHide)) {
+					if (_.isFunction(_.$val(vm, "configs.isHide"))) {
 						return vm.configs.isHide.call(vm.configs, { vm });
 					} else {
-						return !!vm.configs?.isHide;
+						return !!_.$val(vm, "configs.isHide");
 					}
 				});
 
 				const cptIsLoading = computed(() => {
-					if (_.isFunction(vm.configs?.isLoading)) {
+					if (_.isFunction(_.$val(vm, "configs.isLoading"))) {
 						return vm.configs.isLoading.call(vm.configs, { vm });
 					} else {
-						return !!vm.configs?.isLoading;
+						return !!_.$val(vm, "configs.isLoading");
 					}
 				});
 
 				const cptDisabled = computed(() => {
-					if (_.isFunction(vm.configs?.disabled)) {
+					if (_.isFunction(_.$val(vm, "configs.disabled"))) {
 						return vm.configs.disabled.call(vm.configs, { vm });
 					} else {
-						return !!vm.configs?.disabled;
+						return !!_.$val(vm, "configs.disabled");
 					}
 				});
 
 				const cptLabel = computed(() => {
-					if (_.isFunction(vm.configs?.label)) {
+					if (_.isFunction(_.$val(vm, "configs.label"))) {
 						return vm.configs.label.call(vm.configs, { xBtn: vm });
 					}
-					if (_.isString(vm.configs?.label)) {
+					if (_.isString(_.$val(vm, "configs.label"))) {
 						return vm.configs.label;
 					}
 					return "";
 				});
 
 				const cptChildren = computed(() => {
-					if (_.isFunction(vm.$vSlots?.default)) {
+					if (_.isFunction(_.$val(vm, "$vSlots.default"))) {
 						return hSpan(vm.$vSlots.default());
 					}
-					if (vm.$vSlots?.TYPE_IS_VNODE) {
+					if (_.$val(vm, "$vSlots.TYPE_IS_VNODE")) {
 						return vm.$vSlots;
 					}
 					return cptLabel.value;

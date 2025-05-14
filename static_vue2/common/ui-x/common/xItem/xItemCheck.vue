@@ -1,64 +1,3 @@
-<style lang="less">
-.xForm.xItemCheck {
-	.xFormItem {
-		min-height: var(--ui-height);
-		margin-top: unset;
-		&.grid-column1 {
-			align-items: center;
-		}
-	}
-}
-
-.xItemCheck-item-wrapper {
-	&.itemUse-BlockCheck {
-		--icon-width: 32px;
-
-		&.is-group-item {
-			width: calc(100% - var(--ui-half));
-		}
-		position: relative;
-		overflow: hidden;
-		color: var(--el-button-hover-text-color);
-		border-color: var(--el-button-hover-border-color);
-		background-color: var(--el-button-hover-bg-color);
-		transform: scale(1.01);
-		margin-bottom: var(--ui-half);
-		display: flex;
-		flex-flow: row nowrap;
-		justify-content: center;
-		align-items: center;
-
-		.xIcon.icon_check,
-		.xItemCheck-selected-icon-wrapper {
-			display: none;
-		}
-
-		&.el-button--xItemCheck-selected {
-			.xItemCheck-selected-icon-wrapper {
-				display: block;
-				width: var(--icon-width);
-				height: var(--icon-width);
-				transform: rotate(45deg);
-				position: absolute;
-				top: -24px;
-				right: -16px;
-				background-color: var(--el-button-hover-text-color);
-			}
-
-			.xIcon.icon_check {
-				display: block;
-				position: absolute;
-				color: var(--el-color-white);
-				top: 0;
-				right: 0;
-				width: 8px;
-				height: 8px;
-			}
-		}
-	}
-}
-</style>
-
 <script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
@@ -103,10 +42,10 @@ export default async function () {
 				return false;
 			},
 			minWidth() {
-				return this.cptConfigs?.minWidth || 80;
+				return _.$val(this, "cptConfigs.minWidth") || 80;
 			},
 			selectOptions() {
-				return this.options || this.cptConfigs?.options || [];
+				return this.options || _.$val(this, "cptConfigs.options") || [];
 			},
 			cptGroupProps() {
 				return mergeProps4h([
@@ -121,16 +60,16 @@ export default async function () {
 				]);
 			},
 			cptRenderOption() {
-				return this.cptConfigs?.renderOption;
+				return _.$val(this, "cptConfigs.renderOption");
 			},
 			cptItemRederer() {
-				if (this.cptConfigs?.xItemCheckUse === "blockCheck") {
+				if (_.$val(this, "cptConfigs.xItemCheckUse") === "blockCheck") {
 					return this.itemUseBlockCheck;
 				}
 				return this.itemUseDefault;
 			},
 			cptDefaultItem() {
-				let item = _.first(this.cptConfigs?.options);
+				let item = _.first(_.$val(this, "cptConfigs.options"));
 				if (!_.isPlainObject(item)) {
 					if (item) {
 						item = {
@@ -263,7 +202,7 @@ export default async function () {
 			}
 		},
 		render() {
-			if (this.cptConfigs?.isGroup) {
+			if (_.$val(this, "cptConfigs.isGroup")) {
 				/* 多选 value 为数组，元素为配置的value */
 				return this.rendererGroupItems();
 			} else {
@@ -274,3 +213,62 @@ export default async function () {
 	};
 }
 </script>
+<style lang="less">
+.xForm.xItemCheck {
+	.xFormItem {
+		min-height: var(--ui-height);
+		margin-top: unset;
+		&.grid-column1 {
+			align-items: center;
+		}
+	}
+}
+
+.xItemCheck-item-wrapper {
+	&.itemUse-BlockCheck {
+		--icon-width: 32px;
+
+		&.is-group-item {
+			width: calc(100% - var(--ui-half));
+		}
+		position: relative;
+		overflow: hidden;
+		color: var(--el-button-hover-text-color);
+		border-color: var(--el-button-hover-border-color);
+		background-color: var(--el-button-hover-bg-color);
+		margin-bottom: var(--ui-half);
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: center;
+		align-items: center;
+
+		.xIcon.icon_check,
+		.xItemCheck-selected-icon-wrapper {
+			display: none;
+		}
+
+		&.el-button--xItemCheck-selected {
+			.xItemCheck-selected-icon-wrapper {
+				display: block;
+				width: var(--icon-width);
+				height: var(--icon-width);
+				transform: rotate(45deg);
+				position: absolute;
+				top: -24px;
+				right: -16px;
+				background-color: var(--el-button-hover-text-color);
+			}
+
+			.xIcon.icon_check {
+				display: block;
+				position: absolute;
+				color: var(--el-color-white);
+				top: 0;
+				right: 0;
+				width: 8px;
+				height: 8px;
+			}
+		}
+	}
+}
+</style>

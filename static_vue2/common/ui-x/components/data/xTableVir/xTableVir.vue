@@ -897,7 +897,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 			flex.flexShrink = 1;
 		}
 		const style = {
-			...(column.style ?? {}),
+			...(column.style || {}),
 			...flex,
 			flexBasis: "auto",
 			width: column.width
@@ -972,7 +972,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 			} else {
 				order = oppositeOrderMap[sortBy.order];
 			}
-			props.onColumnSort?.({ column: getColumn(key), key, order });
+			props.onColumnSort && props.onColumnSort({ column: getColumn(key), key, order });
 		}
 
 		return {
@@ -1000,9 +1000,9 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 
 		function doScroll(params) {
 			const { scrollTop } = params;
-			mainTableRef.value?.scrollTo(params);
-			leftTableRef.value?.scrollToTop(scrollTop);
-			rightTableRef.value?.scrollToTop(scrollTop);
+			_.$callFn(mainTableRef, "value.scrollTo")(params);
+			_.$callFn(leftTableRef, "value.scrollToTop")(scrollTop);
+			_.$callFn(rightTableRef, "value.scrollToTop")(scrollTop);
 		}
 
 		function scrollTo(params) {
@@ -1017,7 +1017,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 
 		function scrollToLeft(scrollLeft) {
 			scrollPos.value.scrollLeft = scrollLeft;
-			mainTableRef.value?.scrollTo?.(unref(scrollPos));
+			_.$callFn(mainTableRef, "value.scrollTo")(unref(scrollPos));
 		}
 
 		function onScroll(params) {
@@ -1026,7 +1026,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 			} else {
 				this.ON_SCROLL_PARAMS = params;
 				scrollTo(params);
-				props.onScroll?.(params);
+				props.onScroll && props.onScroll(params);
 			}
 		}
 
@@ -1039,7 +1039,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 		}
 
 		function scrollToRow(row, strategy = "auto") {
-			mainTableRef.value?.scrollToRow(row, strategy);
+			_.$callFn(mainTableRef, "value.scrollToRow")(row, strategy);
 		}
 
 		watch(
@@ -1074,7 +1074,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 		inject_xTableVir.isDynamic = isDynamic.value;
 
 		function onRowsRendered(params) {
-			props.onRowsRendered?.(params);
+			props.onRowsRendered && props.onRowsRendered(params);
 			if (params.rowCacheEnd > unref(lastRenderedRowIndex)) {
 				lastRenderedRowIndex.value = params.rowCacheEnd;
 			}
@@ -1094,13 +1094,14 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 			}
 			expandedRowKeys.value = _expandedRowKeys;
 			inject_xTableVir.$emit("update:expandedRowKeys", _expandedRowKeys);
-			inject_xTableVir.onRowExpand?.({
-				expanded,
-				rowData,
-				rowIndex,
-				rowKey: rowKey
-			});
-			props.onExpandedRowsChange?.(_expandedRowKeys);
+			inject_xTableVir.onRowExpand &&
+				inject_xTableVir.onRowExpand({
+					expanded,
+					rowData,
+					rowIndex,
+					rowKey: rowKey
+				});
+			props.onExpandedRowsChange && props.onExpandedRowsChange(_expandedRowKeys);
 		}
 
 		const flushingRowHeights = _.debounce(() => {
@@ -1112,10 +1113,10 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 			resetAfterIndex(resetIndex.value, false);
 			pendingRowHeights.value = {};
 			resetIndex.value = null;
-			mainTableRef.value?.forceUpdate();
-			leftTableRef.value?.forceUpdate();
-			rightTableRef.value?.forceUpdate();
-			inject_xTableVir?.$forceUpdate();
+			_.$callFn(mainTableRef, "value.forceUpdate")();
+			_.$callFn(leftTableRef, "value.forceUpdate")();
+			_.$callFn(rightTableRef, "value.forceUpdate")();
+			_.$callFn(inject_xTableVir, "$forceUpdate")();
 			isResetting.value = false;
 		}, 0);
 
@@ -1273,7 +1274,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 		const rightTableWidth = computed(() => sum(unref(fixedColumnsOnRight).map(mapColumn)));
 		const headerHeight = computed(() => sum(props.headerHeight));
 		const fixedRowsHeight = computed(() => {
-			return (props.fixedData?.length || 0) * props.rowHeight;
+			return (_.$val(props, "fixedData.length") || 0) * props.rowHeight;
 		});
 		const windowHeight = computed(() => {
 			return unref(mainTableHeight) - unref(headerHeight) - unref(fixedRowsHeight);
@@ -1502,7 +1503,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 		functional: true,
 		render: (h, { data: props, slots }) => {
 			const { cellData, style } = props;
-			const displayText = cellData?.toString?.() || "";
+			const displayText = _.isString(cellData) ? cellData.toString() : "";
 			return h(
 				"div",
 				{
@@ -1529,10 +1530,10 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 						{
 							class: props.classV2,
 							attrs: {
-								title: props.column?.label
+								title: _.$val(props, "column.label")
 							}
 						},
-						[props.column?.label]
+						[_.$val(props, "column.label")]
 					);
 		}
 	};
@@ -1635,7 +1636,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 	const ComponentLeftTable = {
 		functional: true,
 		render: (h, { data: { leftTableRef, $vSlots, ...rest } }) => {
-			if (!rest?.columns.length) return;
+			if (!_.$val(rest, "columns.length")) return;
 			return h(
 				"ComponentTableV2Grid",
 				mergeProps4h([
@@ -1788,7 +1789,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 				if (columnCellRenderer) {
 					return columnCellRenderer;
 				}
-				if (slots?.default) {
+				if (_.$val(slots, "default")) {
 					return slots.default;
 				}
 				return props => h(TableV2Cell, mergeProps4h([{}, props]));
@@ -1822,14 +1823,14 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 				rowIndex
 			};
 			const Cell = CellComponent(cellProps);
-
-			const kls = [
+			const el_table_v2_row_cell_class = [
 				/* el-table-v2__row-cell */
 				ns.e("row-cell"),
 				column.class,
 				column.align === Alignment.CENTER && ns.is("align-center"),
 				column.align === Alignment.RIGHT && ns.is("align-right")
 			];
+
 			const expandable = (() => {
 				/*vir table 树形数据*/
 				/* 如果有children就可以展开 */
@@ -1898,17 +1899,17 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 			};
 
 			let IconOrPlaceholder = isShowIconArrow ? iconVNode() : null;
-
 			return h(
 				"div",
 				mergeProps4h([
 					{
-						class: kls,
+						class: el_table_v2_row_cell_class,
 						style: cellStyle
 					},
 					extraCellProps,
 					{
 						attrs: {
+							"data-prop": column.prop,
 							role: "cell"
 						}
 					}
@@ -1946,6 +1947,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 					[ns.is("customized")]: Boolean($vSlots.header)
 				}
 			];
+
 			const extraProps = {
 				...tryCall(headerProps, param),
 				columnsStyles,
@@ -1979,7 +1981,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 				if (render) {
 					return render;
 				}
-				if (slots?.default) {
+				if (_.$val(slots, "default")) {
 					return slots.default;
 				}
 
@@ -2004,6 +2006,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 				column.align === Alignment.RIGHT && ns.is("align-right"),
 				sortable && ns.is("sortable")
 			];
+
 			const cellWrapperProps = {
 				role: "columnheader",
 				...tryCall(headerCellProps, props),
@@ -2038,7 +2041,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 					class: props.classV2,
 					style: props.styleV2
 				},
-				[slots.default?.()]
+				[slots.default && slots.default()]
 			);
 		}
 	};
@@ -2049,7 +2052,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 		render(h, { data: props, slots, scopedSlots }, vm) {
 			const inject_xTableVir = injectVm(vm, "xTableVirWrapper");
 			let emptyChild = (() => {
-				if (inject_xTableVir?.$scopedSlots?.empty) {
+				if (_.$val(inject_xTableVir, "$scopedSlots.empty")) {
 					return inject_xTableVir.$scopedSlots.empty();
 				}
 				return emptyRender({ inject_xTableVir });
@@ -2084,7 +2087,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 					class: props.classV2,
 					style: props.styleV2
 				},
-				[slots.default?.()]
+				[slots.default && slots.default()]
 			);
 		}
 	};
@@ -2318,7 +2321,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 					},
 					row: props => {
 						const rowRender = (() => {
-							if (xTableVirWrapper.$attrs?.slotsRow) {
+							if (_.$val(xTableVirWrapper, "$attrs.slotsRow")) {
 								return args => {
 									/* { cells, columns, depth, isScrolling, rowData, rowIndex, style } */
 									return xTableVirWrapper.$attrs.slotsRow.call(null, args);
@@ -2347,8 +2350,8 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 							};
 
 							/* 如果有自定义 */
-							if (xTableVirWrapper.$attrs?.slotsCell) {
-								return hCustomCell(xTableVirWrapper.$attrs?.slotsCell);
+							if (_.$val(xTableVirWrapper, "$attrs.slotsCell")) {
+								return hCustomCell(_.$val(xTableVirWrapper, "$attrs.slotsCell"));
 							} else {
 								return hDefaultCell();
 							}
@@ -2427,12 +2430,12 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 	});
 
 	/* 	exports.TableV2Alignment = Alignment;
-  exports.TableV2FixedDir = FixedDir;
-  exports.TableV2Placeholder = placeholderSign;
-  exports.TableV2SortOrder = SortOrder;
-  exports.tableV2Props = tableV2Props;
-
-  */
+   exports.TableV2FixedDir = FixedDir;
+   exports.TableV2Placeholder = placeholderSign;
+   exports.TableV2SortOrder = SortOrder;
+   exports.tableV2Props = tableV2Props;
+  
+   */
 	let curr = {
 		id: 0,
 		x: 0,
@@ -2493,7 +2496,7 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 					if (["checkbox"].includes(prop)) {
 						return;
 					}
-					const index = _.findIndex(vm?.$props?.columns, { prop });
+					const index = _.findIndex(_.$val(vm, "$props.columns"), { prop });
 					if (~index) {
 						const item = vm.$props.columns[index];
 						const width = item.width + grow;
@@ -2618,6 +2621,44 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 				$vSlots: {
 					default: ({ width, height }) => {
 						const xTableVirProps = {
+							nativeOn: {
+								click($event) {
+									try {
+										const { target, currentTarget } = $event || {};
+										let $target = $(target);
+										const cellInfo = (() => {
+											const getCellInfo = $target => {
+												const $row = $target.parents(".el-table-v2__row");
+												return {
+													$event,
+													isCell: true,
+													rowIndex: _.$val($row, "0.dataset.rowIndex"),
+													prop: _.$val($target, "0.dataset.prop")
+												};
+											};
+
+											if ($target.hasClass("el-table-v2__row-cell")) {
+												return getCellInfo($target);
+											}
+											$target = $target.parents(".el-table-v2__row-cell");
+
+											if (!!$target.length) {
+												return getCellInfo($($target[0]));
+											} else {
+												return null;
+											}
+										})();
+
+										if (cellInfo) {
+											return vm.$emit("click", cellInfo);
+										} else {
+											return vm.$emit("click", { $event });
+										}
+									} catch (e) {
+										console.error(e);
+									}
+								}
+							},
 							staticClass: ["xDataGrid_table", PRIVATE_GLOBAL.x_ui.size].join(" "),
 							attrs: { "data-table": vm._uid },
 							width,
@@ -2651,7 +2692,6 @@ export default async function ({ PRIVATE_GLOBAL, mergeProps4h }) {
 	});
 }
 </script>
-
 <style lang="less">
 .xDataGrid_table {
 	&.small {

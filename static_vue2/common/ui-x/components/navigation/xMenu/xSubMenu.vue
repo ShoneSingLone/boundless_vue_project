@@ -374,6 +374,7 @@ export default async function () {
 									backgroundColor
 								}
 							],
+
 							children: [
 								title,
 								h("i", {

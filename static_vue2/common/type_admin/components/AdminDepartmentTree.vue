@@ -1,14 +1,3 @@
-<style lang="less">
-.AdminDepartmentTree {
-	* {
-		// outline: 1px solid red;
-	}
-	height: 100%;
-	.AdminDepartmentTree-tree {
-		position: relative;
-	}
-}
-</style>
 <template>
 	<div class="AdminDepartmentTree flex vertical">
 		<xInput
@@ -53,12 +42,12 @@ export default async function () {
 		},
 		computed: {
 			cptPlaceholder() {
-				return i18n("请输入部门名称");
+				return i18n("input_department_name");
 			}
 		},
 		methods: {
 			handleQueryChange(query) {
-				if (this.$refs.refTree?.filter) {
+				if (_.$val(this, "$refs.refTree.filter")) {
 					this.$refs.refTree.filter(query);
 				}
 			},
@@ -88,3 +77,14 @@ export default async function () {
 	});
 }
 </script>
+<style lang="less">
+.AdminDepartmentTree {
+	* {
+		// outline: 1px solid red;
+	}
+	height: 100%;
+	.AdminDepartmentTree-tree {
+		position: relative;
+	}
+}
+</style>

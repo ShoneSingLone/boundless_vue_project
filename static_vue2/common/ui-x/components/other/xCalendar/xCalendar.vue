@@ -1,81 +1,3 @@
-<style lang="less">
-.el-calendar {
-	background-color: #fff;
-}
-
-.el-calendar__header {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-pack: justify;
-	-ms-flex-pack: justify;
-	justify-content: space-between;
-	padding: 12px 20px;
-	border-bottom: 1px solid var(--el-border-color-lighter);
-}
-
-.el-calendar__title {
-	color: #000;
-	-ms-flex-item-align: center;
-	align-self: center;
-}
-
-.el-calendar__body {
-	padding: 12px 20px 35px;
-}
-
-.el-calendar-table {
-	table-layout: fixed;
-	width: 100%;
-}
-
-.el-calendar-table thead th {
-	padding: 12px 0;
-	color: #606266;
-	font-weight: 400;
-}
-
-.el-calendar-table:not(.is-range) td.next,
-.el-calendar-table:not(.is-range) td.prev {
-	color: var(--el-text-color-disabled);
-}
-
-.el-calendar-table td {
-	border-bottom: 1px solid var(--el-border-color-lighter);
-	border-right: 1px solid var(--el-border-color-lighter);
-	vertical-align: top;
-	-webkit-transition: background-color 0.2s ease;
-	transition: background-color 0.2s ease;
-}
-
-.el-calendar-table td.is-selected {
-	background-color: #f2f8fe;
-}
-
-.el-calendar-table tr:first-child td {
-	border-top: 1px solid var(--el-border-color-lighter);
-}
-
-.el-calendar-table tr td:first-child {
-	border-left: 1px solid var(--el-border-color-lighter);
-}
-
-.el-calendar-table tr.el-calendar-table__row--hide-border td {
-	border-top: none;
-}
-
-.el-calendar-table .el-calendar-day {
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
-	padding: 8px;
-	height: 85px;
-}
-
-.el-calendar-table .el-calendar-day:hover {
-	cursor: pointer;
-	background-color: #f2f8fe;
-}
-</style>
 <template>
 	<div class="el-calendar">
 		<div class="el-calendar__header">
@@ -443,7 +365,7 @@ export default async function () {
 			i18nDate() {
 				const year = this.date.getFullYear();
 				const month = this.date.getMonth() + 1;
-				return `${year} ${this.i18n("el.datepicker.year")} ${this.i18n("el.datepicker.month" + month)}`;
+				return `${year} ${this.i18n("el.datepicker.year")} ${this.i18n(`el.datepicker.month${month}`)}`;
 			},
 
 			formatedToday() {
@@ -546,3 +468,81 @@ export default async function () {
 	});
 }
 </script>
+<style lang="less">
+.el-calendar {
+	background-color: #fff;
+}
+
+.el-calendar__header {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	padding: 12px 20px;
+	border-bottom: 1px solid var(--el-border-color-lighter);
+}
+
+.el-calendar__title {
+	color: #000;
+	-ms-flex-item-align: center;
+	align-self: center;
+}
+
+.el-calendar__body {
+	padding: 12px 20px 35px;
+}
+
+.el-calendar-table {
+	table-layout: fixed;
+	width: 100%;
+}
+
+.el-calendar-table thead th {
+	padding: 12px 0;
+	color: #606266;
+	font-weight: 400;
+}
+
+.el-calendar-table:not(.is-range) td.next,
+.el-calendar-table:not(.is-range) td.prev {
+	color: var(--el-text-color-disabled);
+}
+
+.el-calendar-table td {
+	border-bottom: 1px solid var(--el-border-color-lighter);
+	border-right: 1px solid var(--el-border-color-lighter);
+	vertical-align: top;
+	-webkit-transition: background-color 0.2s ease;
+	transition: background-color 0.2s ease;
+}
+
+.el-calendar-table td.is-selected {
+	background-color: #f2f8fe;
+}
+
+.el-calendar-table tr:first-child td {
+	border-top: 1px solid var(--el-border-color-lighter);
+}
+
+.el-calendar-table tr td:first-child {
+	border-left: 1px solid var(--el-border-color-lighter);
+}
+
+.el-calendar-table tr.el-calendar-table__row--hide-border td {
+	border-top: none;
+}
+
+.el-calendar-table .el-calendar-day {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 8px;
+	height: 85px;
+}
+
+.el-calendar-table .el-calendar-day:hover {
+	cursor: pointer;
+	background-color: #f2f8fe;
+}
+</style>

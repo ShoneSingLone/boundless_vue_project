@@ -1,8 +1,3 @@
-<style lang="less">
-.el-affix--fixed {
-	position: fixed;
-}
-</style>
 <template>
 	<div ref="root" :class="ns.b()" :style="rootStyle">
 		<div :class="{ [ns.m('fixed')]: fixed }" :style="affixStyle" ref="refContent">
@@ -190,3 +185,8 @@ export default async function () {
 	});
 }
 </script>
+<style lang="less">
+.el-affix--fixed {
+	position: fixed;
+}
+</style>

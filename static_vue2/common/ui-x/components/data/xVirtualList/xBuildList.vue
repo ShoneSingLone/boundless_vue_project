@@ -540,6 +540,7 @@ export default async function () {
 							: children
 					)
 				];
+
 				const scrollProps = {
 					ref: "scrollbarRef",
 					clientSize,
@@ -607,7 +608,7 @@ export default async function () {
 				validateProps(props);
 				const instance = getCurrentInstance();
 				const cache2 = ref(initCache(props, instance));
-				injectToInstance?.(instance, cache2);
+				injectToInstance && injectToInstance(instance, cache2);
 				const inject_xTableVir = inject("inject_xTableVir");
 				/* 一帧 16ms */
 				const EXPERIENCE_VALUE = 18;
@@ -836,8 +837,8 @@ export default async function () {
 						)
 					},
 					(x, y) => {
-						hScrollbar.value?.onMouseUp?.();
-						vScrollbar.value?.onMouseUp?.();
+						_.$callFn(hScrollbar, "value.onMouseUp")();
+						_.$callFn(vScrollbar, "value.onMouseUp")();
 						const width = unref(parsedWidth);
 						const height = unref(parsedHeight);
 						scrollTo({
@@ -1165,6 +1166,7 @@ export default async function () {
 			gridCache[type],
 			gridCache[ACCESS_LAST_VISITED_KEY_MAP[type]]
 		];
+
 		const lastVisitedItemOffset = lastVisitedIndex > 0 ? cache2[lastVisitedIndex].offset : 0;
 		if (lastVisitedItemOffset >= offset) {
 			return bs(props, gridCache, 0, lastVisitedIndex, offset, type);

@@ -5,10 +5,10 @@ export default async function () {
 		mixins: [mixins],
 		computed: {
 			isShowPassword() {
-				return !!this.configs?.isPwd;
+				return !!_.$val(this, "configs.isPwd");
 			},
 			isNumber() {
-				return !!this.configs?.isNumber;
+				return !!_.$val(this, "configs.isNumber");
 			}
 		},
 		render(h) {
@@ -22,18 +22,18 @@ export default async function () {
 				showWordLimit: "",
 				showPassword: vm.isShowPassword,
 				autocomplete: "on",
-				type: vm.$attrs.type || vm.configs?.type || "text"
+				type: vm.$attrs.type || _.$val(vm, "configs.type") || "text"
 			};
-			if (_.isFunction(_xUtils?.globalConfigs?.xItemInput?.defaultProps)) {
+			if (_.isFunction(_.$val(_xUtils, "globalConfigs.xItemInput.defaultProps"))) {
 				attrs = _xUtils.globalConfigs.xItemInput.defaultProps(this, attrs);
 			}
 
-			if (vm.configs?.type === "textarea") {
+			if (_.$val(vm, "configs.type") === "textarea") {
 				attrs.rows = 4;
 			}
 
 			/* 前面是下拉的形式 */
-			if (vm.configs?.inputType === "select_input") {
+			if (_.$val(vm, "configs.inputType") === "select_input") {
 				const inputProps = _.merge(
 					{
 						$vSlots: {
@@ -67,7 +67,7 @@ export default async function () {
 								vm.mixin_value = val;
 							}
 						},
-						this?.$vnode?.data
+						_.$val(this, "$vnode.data")
 					])
 				);
 				return h(tag, inputProps);
@@ -84,12 +84,10 @@ export default async function () {
 							vm.mixin_value = val;
 						}
 					},
-					this?.$vnode?.data
+					_.$val(this, "$vnode.data")
 				])
 			);
 		}
 	});
 }
 </script>
-
-<style lang="less"></style>

@@ -1,18 +1,3 @@
-<style lang="less">
-.xIpAddress {
-	.xIpAddress_content {
-		width: 54px;
-		> .xInput {
-			> input {
-				text-align: center;
-			}
-		}
-	}
-	.cidr-point {
-		margin: 0 4px;
-	}
-}
-</style>
 <template>
 	<span class="xIpAddress flex middle">
 		<xInput
@@ -84,7 +69,7 @@ export default async function () {
 			ipObj: {
 				get() {
 					try {
-						const [one, two, three, four] = this.value?.split(".");
+						const [one, two, three, four] = _.$callFn(this, "value.split")(".");
 
 						return {
 							one,
@@ -141,3 +126,18 @@ export default async function () {
 	});
 }
 </script>
+<style lang="less">
+.xIpAddress {
+	.xIpAddress_content {
+		width: 54px;
+		> .xInput {
+			> input {
+				text-align: center;
+			}
+		}
+	}
+	.cidr-point {
+		margin: 0 4px;
+	}
+}
+</style>

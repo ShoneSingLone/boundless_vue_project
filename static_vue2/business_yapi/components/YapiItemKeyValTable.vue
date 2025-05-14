@@ -44,7 +44,7 @@ export default async function ({}) {
 					columns: [
 						{
 							prop: "key",
-							label: i18n("名称"),
+							label: i18n("name"),
 							cellRenderer({ rowData, rowIndex }) {
 								return hxItem({
 									configs: defItem({

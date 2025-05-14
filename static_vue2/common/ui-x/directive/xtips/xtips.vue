@@ -171,17 +171,26 @@ export default async function () {
 	}
 
 	_.$single.doc
-		/* click处理 */
-		.on(`click.${EVENT_UI_TARGET}` /* 左键单击 */, `[${SELECTOR_REFERENCE}]`, handleClick)
+		/* click处理 */ .on(
+			`click.${EVENT_UI_TARGET}` /* 左键单击 */,
+			`[${SELECTOR_REFERENCE}]`,
+			handleClick
+		)
 		.on(
 			`contextmenu.${EVENT_UI_TARGET}` /* 右键单击 */,
 			`[${SELECTOR_REFERENCE}][data-trigger=rightClick]`,
 			handleClick
 		)
-		/* hover处理 */
-		.on(`mouseenter.${EVENT_UI_TARGET}`, `[${SELECTOR_REFERENCE}]`, handleEnterReference)
-		/* focus处理 */
-		.on(`mousedown.${EVENT_UI_TARGET}`, `[${SELECTOR_REFERENCE}]`, handleFocusinReference);
+		/* hover处理 */ .on(
+			`mouseenter.${EVENT_UI_TARGET}`,
+			`[${SELECTOR_REFERENCE}]`,
+			handleEnterReference
+		)
+		/* focus处理 */ .on(
+			`mousedown.${EVENT_UI_TARGET}`,
+			`[${SELECTOR_REFERENCE}]`,
+			handleFocusinReference
+		);
 	//.on(`mouseup.${EVENT_UI_TARGET}`, `[${SELECTOR_REFERENCE}]`, handleFocusoutReference);
 
 	return Vue.directive("xtips", {
@@ -222,7 +231,7 @@ export default async function () {
 				}
 			}
 			setOptions(refId, binding.value);
-			if ("manual" === binding.value?.trigger) {
+			if ("manual" === _.$val(binding, "value.trigger")) {
 				if ($popover.length) {
 					vmPopover && vmPopover.$destroy();
 					$popover.remove();
@@ -236,8 +245,7 @@ export default async function () {
 	});
 }
 </script>
-
-<style>
+<style lang="less">
 .el-popper .popper__arrow,
 .el-popper .popper__arrow::after {
 	position: absolute;

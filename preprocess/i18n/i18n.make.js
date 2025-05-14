@@ -1,33 +1,32 @@
-const { fs, path, _, val } = require("../preprocess.utils");
-const { getI18NContent } = require("./i18n.utils");
+const { fs, path, _, $val, _n } = require("../preprocess.utils");
+const { ALL_I18N_CONTENT_IN, LANGUAGE_FILE_ORDER } = require("./i18n.utils");
 const [APP_NAME] = process.argv.slice(2);
 
-const I18N_CONTENT = getI18NContent(APP_NAME);
+const I18N_CONTENT = ALL_I18N_CONTENT_IN(APP_NAME);
 const LOG_PROPS_SET = new Set();
-/* 对应语言文件 */
-const LANGUAGE_FILE_ORDER = ["zh-CN", "en-US"];
+
 
 try {
-	LANGUAGE_FILE_ORDER.forEach((fileName, index) => {
-		const targetContent = {};
-		function TraversalObject(i18nContent, prePropArray = []) {
-			_.each(i18nContent, (objOrLabelArray, prop) => {
-				prePropArray.push(prop);
-				if (_.isPlainObject(objOrLabelArray)) {
+	_n.each(LANGUAGE_FILE_ORDER, (file_name_i18n_path, index) => {
+		const TARGET_CONTENT = {};
+		function TraversalObject(_i18n_content, pre_prop_array = []) {
+			_.each(_i18n_content, (obj_or_label_array, prop) => {
+				pre_prop_array.push(prop);
+				if (_.isPlainObject(obj_or_label_array)) {
 					//递归遍历
-					TraversalObject(objOrLabelArray, prePropArray);
+					TraversalObject(obj_or_label_array, pre_prop_array);
 				} else {
-					const props = prePropArray.join(".");
+					const props = pre_prop_array.join(".");
 					LOG_PROPS_SET.add(props);
-					const currentLabel = objOrLabelArray[index];
-					val(targetContent, props, currentLabel);
+					const currentLabel = obj_or_label_array[index];
+					$val(TARGET_CONTENT, props, currentLabel);
 				}
-				prePropArray.pop();
+				pre_prop_array.pop();
 			});
 		}
 		TraversalObject(I18N_CONTENT);
-		const content = JSON.stringify(targetContent);
-		const targetFilePath = `../../static_vue2/business_${APP_NAME}/i18n/${fileName}.js`;
+		const content = JSON.stringify(TARGET_CONTENT);
+		const targetFilePath = `../../static_vue2/business_${APP_NAME}/i18n/${file_name_i18n_path}.js`;
 		fs.writeFileSync(
 			path.resolve(__dirname, targetFilePath),
 			`window.i18n.options = ${content}`

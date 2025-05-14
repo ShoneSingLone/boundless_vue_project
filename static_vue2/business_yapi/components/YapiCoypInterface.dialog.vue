@@ -11,7 +11,7 @@
 		<xPagination :configs="configsTable" />
 		<template #footer>
 			<xBtn :configs="btnOk" />
-			<xBtn @click="closeModal">{{ i18n("取消") }}</xBtn>
+			<xBtn @click="closeModal">{{ i18n("cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>
@@ -68,7 +68,7 @@ export default async function ({ selected: interfaceIds }) {
 								return _.$val2L(cellData, dicts.group);
 							}
 						},
-						{ label: i18n("名称"), prop: "name" },
+						{ label: i18n("name"), prop: "name" },
 						{ label: i18n("描述"), prop: "desc" }
 					],
 					async onQuery(pagination) {
@@ -99,7 +99,7 @@ export default async function ({ selected: interfaceIds }) {
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("ok"),
 					preset: "blue",
 					disabled: () => !vm.configsTable.data.set.size,
 					async onClick() {

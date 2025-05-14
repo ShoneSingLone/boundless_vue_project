@@ -104,8 +104,7 @@
 		</div>
 	</div>
 </template>
-
-<script>
+<script lang="ts">
 import CrontabSecond from "./second.vue";
 import CrontabMin from "./min.vue";
 import CrontabHour from "./hour.vue";
@@ -306,7 +305,7 @@ export default {
 		},
 		clearCron() {
 			// 还原选择项
-			("准备还原");
+			"准备还原";
 			this.crontabValueObj = {
 				second: "*",
 				min: "*",
@@ -361,7 +360,7 @@ export default {
 	}
 };
 </script>
-<style scoped>
+<style lang="less">
 .pop_btn {
 	text-align: center;
 	margin-top: 20px;

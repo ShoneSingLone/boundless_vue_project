@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<xSelect v-model="mixin_value" placeholder="请选择" @resize="handleSelectorResize">
 		<template #prepend>

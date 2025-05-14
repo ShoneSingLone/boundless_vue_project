@@ -3,7 +3,6 @@
 		{{ cpt_label }}
 	</div>
 </template>
-
 <script lang="ts">
 export default async function () {
 	return {
@@ -18,7 +17,7 @@ export default async function () {
 				return this.row(this.cpt_prop);
 			},
 			cpt_item() {
-				const item = _.find(this.configs.col?.componentOptions?.options);
+				const item = _.find(_.$val(this, "configs.col.componentOptions.options"));
 				return item || {};
 			},
 			cpt_label() {
@@ -28,5 +27,3 @@ export default async function () {
 	};
 }
 </script>
-
-<style lang="less"></style>

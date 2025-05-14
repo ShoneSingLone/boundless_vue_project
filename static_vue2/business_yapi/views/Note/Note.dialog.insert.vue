@@ -46,7 +46,7 @@ export default async function ({ parentDocId, belong_type, belong_id, hide }) {
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("ok"),
 					preset: "blue",
 					onClick: async () => {
 						const [atLeastOne] = await _.$validateForm(vm.$el);
@@ -79,7 +79,7 @@ export default async function ({ parentDocId, belong_type, belong_id, hide }) {
 			btnCancel() {
 				const vm = this;
 				return {
-					label: i18n("取消"),
+					label: i18n("cancel"),
 					async onClick() {
 						vm.closeModal();
 					}

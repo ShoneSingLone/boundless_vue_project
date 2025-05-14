@@ -278,6 +278,7 @@
 		"layui-layer-btn",
 		"layui-layer-close"
 	];
+
 	doms.anim = [
 		"layer-anim-00",
 		"layer-anim-01",
@@ -442,6 +443,7 @@
 					(config.resize ? '<span class="x-layer-resize"></span>' : "") +
 					"</div>"
 			],
+
 			titleHTML,
 			$('<div class="' + doms.MOVE + '" id="' + doms.MOVE + '"></div>')
 		);
@@ -793,6 +795,7 @@
 					.css("border-bottom-color", config.tips[1]);
 			}
 		];
+
 		goal.where[guide - 1]();
 
 		/* 8*2为小三角形占据的空间 */
@@ -839,6 +842,7 @@
 					e.clientX - parseFloat(layero.css("left")),
 					e.clientY - parseFloat(layero.css("top"))
 				];
+
 				ready.moveElem.css("cursor", "move").show();
 			}
 		});
@@ -1033,6 +1037,7 @@
 			layero.position().top,
 			layero.position().left + parseFloat(layero.css("margin-left"))
 		];
+
 		layero.find(".layui-layer-max").addClass("layui-layer-maxmin");
 		layero.attr({ area: area });
 	};
@@ -1307,10 +1312,10 @@
 	};
 
 	/**
-
-	 拓展模块，layui 开始合并在一起
-
-	 */
+  
+   拓展模块，layui 开始合并在一起
+  
+   */
 
 	var cache = layer.cache || {},
 		skin = function (type) {
@@ -1564,12 +1569,12 @@
 		//一些动作
 		dict.event = function () {
 			/*
-			dict.bigimg.hover(function(){
-			  dict.imgsee.show();
-			}, function(){
-			  dict.imgsee.hide();
-			});
-			*/
+      dict.bigimg.hover(function(){
+        dict.imgsee.show();
+      }, function(){
+        dict.imgsee.hide();
+      });
+      */
 
 			dict.bigimg.find(".layui-layer-imgprev").on("click", function (event) {
 				event.preventDefault();

@@ -823,12 +823,12 @@
 	collectChildrenReverseFilter.filterName = "collectChildren";
 
 	/*
-
-LCS implementation that supports arrays or strings
-
-reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
-
-*/
+  
+  LCS implementation that supports arrays or strings
+  
+  reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
+  
+  */
 
 	var defaultMatch = function defaultMatch(array1, array2, index1, index2) {
 		return array1[index1] === array2[index2];
@@ -1555,6 +1555,7 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 					[DIFF_EQUAL, shorttext],
 					[DIFF_INSERT, longtext.substring(i + shorttext.length)]
 				];
+
 				// Swap insertions for deletions if diff is reversed.
 				if (text1.length > text2.length) {
 					diffs[0][0] = diffs[2][0] = DIFF_DELETE;
@@ -3088,8 +3089,8 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			if (typeof a == "string" && typeof opt_b == "string" && typeof opt_c == "undefined") {
 				// Method 1: text1, text2
 				// Compute diffs from text1 and text2.
-				text1 = /** @type {string} */ (a);
-				diffs = this.diff_main(text1, /** @type {string} */ (opt_b), true);
+				text1 = /** @type {string} */ a;
+				diffs = this.diff_main(text1, /** @type {string} */ opt_b, true);
 				if (diffs.length > 2) {
 					this.diff_cleanupSemantic(diffs);
 					this.diff_cleanupEfficiency(diffs);
@@ -3102,7 +3103,7 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			) {
 				// Method 2: diffs
 				// Compute text1 from diffs.
-				diffs = /** @type {!Array.<!diff_match_patch.Diff>} */ (a);
+				diffs = /** @type {!Array.<!diff_match_patch.Diff>} */ a;
 				text1 = this.diff_text1(diffs);
 			} else if (
 				typeof a == "string" &&
@@ -3111,8 +3112,8 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 				typeof opt_c == "undefined"
 			) {
 				// Method 3: text1, diffs
-				text1 = /** @type {string} */ (a);
-				diffs = /** @type {!Array.<!diff_match_patch.Diff>} */ (opt_b);
+				text1 = /** @type {string} */ a;
+				diffs = /** @type {!Array.<!diff_match_patch.Diff>} */ opt_b;
 			} else if (
 				typeof a == "string" &&
 				typeof opt_b == "string" &&
@@ -3121,8 +3122,8 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			) {
 				// Method 4: text1, text2, diffs
 				// text2 is not used.
-				text1 = /** @type {string} */ (a);
-				diffs = /** @type {!Array.<!diff_match_patch.Diff>} */ (opt_c);
+				text1 = /** @type {string} */ a;
+				diffs = /** @type {!Array.<!diff_match_patch.Diff>} */ opt_c;
 			} else {
 				throw new Error("Unknown call format to patch_make.");
 			}
@@ -4425,6 +4426,7 @@ reference: http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 			[/'/g, "&apos;"],
 			[/"/g, "&quot;"]
 		];
+
 		for (var i = 0; i < replacements.length; i++) {
 			html = html.replace(replacements[i][0], replacements[i][1]);
 		}

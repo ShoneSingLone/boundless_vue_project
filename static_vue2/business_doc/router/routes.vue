@@ -15,6 +15,10 @@ export default async function () {
 
 	return [
 		_.$newRoute("/all", "@/views/ViewAllProject.vue"),
+		_.$newRoute("/test", ComponentRouterView, {
+			redirect: "/test/babel",
+			children: [_.$newRoute("/test/babel", "@/views/test/test/UseBabel.vue")]
+		}),
 		_.$newRoute("/demo", ComponentRouterView, {
 			redirect: "/demo/config",
 			children: [
@@ -169,6 +173,10 @@ export default async function () {
 						_.$newRoute(
 							"/component/data/pagination",
 							"@/views/component/data/pagination/pagination.vue"
+						),
+						_.$newRoute(
+							"/component/data/badge",
+							"@/views/component/data/badge/DemoBadge.vue"
 						),
 						_.$newRoute(
 							"/component/data/excalidraw",

@@ -58,10 +58,10 @@ export default async function () {
 				formSearch: defItems({
 					menuName: _adminTools.search_form_configs_text({
 						label: "菜单名称",
-						placeholder: i18n("请输入菜单名称")
+						placeholder: i18n("input_menu_name")
 					}),
 					status: _adminTools.search_form_configs_select({
-						placeholder: i18n("状态"),
+						placeholder: i18n("status_info"),
 						options: sys_normal_disable
 					})
 				}),
@@ -93,7 +93,7 @@ export default async function () {
 						{ label: i18n("权限标识"), prop: "perms" },
 						{ label: i18n("组件路径"), prop: "component" },
 						{
-							label: i18n("状态"),
+							label: i18n("status_info"),
 							prop: "status",
 							cellRenderer: ({ cellData }) => hVal2Tag(cellData, sys_normal_disable)
 						},

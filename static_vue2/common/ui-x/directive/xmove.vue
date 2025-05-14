@@ -18,14 +18,14 @@ export default async function () {
 		const id = $ele.attr(xMoveClassName);
 		const value = MOVE_ITEM_BINDING[id];
 
-		if (value?.onStart) {
+		if (_.$val(value, "onStart")) {
 			value.onStart({
 				$ele,
 				clickInfo,
 				clickEvent: event
 			});
 		}
-		if (value?.onMoving) {
+		if (_.$val(value, "onMoving")) {
 			xLayerTools.onMoving = movingEvent => {
 				value.onMoving({
 					$ele,
@@ -59,4 +59,3 @@ export default async function () {
 	});
 }
 </script>
-<style lang="less"></style>

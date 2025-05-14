@@ -18,7 +18,6 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	};
 }
 </script>
-
 <style lang="less">
 @charset "utf-8";
 
@@ -111,7 +110,8 @@ body {
 	--el-box-shadow: 0px 12px 32px 4px rgba(0, 0, 0, 0.04), 0px 8px 20px rgba(0, 0, 0, 0.08);
 	--el-box-shadow-light: 0px 0px 12px rgba(0, 0, 0, 0.12);
 	--el-box-shadow-lighter: 0px 0px 6px rgba(0, 0, 0, 0.12);
-	--el-box-shadow-dark: 0px 16px 48px 16px rgba(0, 0, 0, 0.08), 0px 12px 32px rgba(0, 0, 0, 0.12),
+	--el-box-shadow-dark:
+		0px 16px 48px 16px rgba(0, 0, 0, 0.08), 0px 12px 32px rgba(0, 0, 0, 0.12),
 		0px 8px 16px -8px rgba(0, 0, 0, 0.16);
 	--el-disabled-bg-color: var(--el-fill-color-light);
 	--el-disabled-text-color: var(--el-text-color-placeholder);
@@ -572,8 +572,9 @@ body,
 	--ti-common-shadow-warn: 0 1px 3px 0 rgba(204, 100, 20, 0.25);
 	--ti-common-shadow-prompt: 0 1px 3px 0 rgba(70, 94, 184, 0.25);
 	--ti-common-shadow-success: 0 1px 3px 0 rgba(39, 176, 128, 0.25);
-	--ti-common-font-family: "Helvetica", "Arial", "PingFangSC-Regular", "Hiragino Sans GB",
-		"Microsoft YaHei", "微软雅黑", "Microsoft JhengHei";
+	--ti-common-font-family:
+		"Helvetica", "Arial", "PingFangSC-Regular", "Hiragino Sans GB", "Microsoft YaHei",
+		"微软雅黑", "Microsoft JhengHei";
 	--ti-common-font-size-base: 12px;
 	--ti-common-font-size-1: 14px;
 	--ti-common-font-size-2: 16px;

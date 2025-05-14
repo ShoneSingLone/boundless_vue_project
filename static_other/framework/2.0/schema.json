@@ -1,0 +1,393 @@
+{
+  "global": {
+    "supportedLanguages": [
+      {
+        "locale": "zh-cn",
+        "displayName": "中文（简体）"
+      },
+      {
+        "locale": "en-us",
+        "displayName": "English"
+      }
+    ],
+    "gotoServiceConsolePage": true,
+    "WorkScene": "HuaweiCloudStack"
+  },
+  "schemas": {
+    "header": {
+      "modules": {
+        "layout_header": {
+          "type": "Header",
+          "meta": {
+            "backgroundColor": "#282b33",
+            "color": "#adb0b8",
+            "justifyContent": "space-between",
+            "alignItems": "stretch",
+            "height": "50px",
+            "padding": "0 10px"
+          }
+        },
+        "layout_header_left": {
+          "type": "LayoutView",
+          "meta": {
+            "margin": 0,
+            "flexDirection": "row",
+            "justifyContent": "flex-start",
+            "alignItems": "stretch"
+          }
+        },
+        "layout_header_middle": {
+          "type": "LayoutView",
+          "meta": {}
+        },
+        "layout_header_right": {
+          "type": "LayoutView"
+        },
+        "logo": {
+          "type": "Logo"
+        },
+        "header-sep-line_0": {
+          "type": "HeaderSepLine",
+          "meta": {
+            "type": "header-left"
+          }
+        },
+        "region": {
+          "type": "Region"
+        },
+        "main-menu": {
+          "type": "MainMenu",
+          "meta": {
+            "menus": [
+              {
+                "id": "home",
+                "label": "console_term_homePage_label",
+                "link": "home_homeList",
+                "mgr_link": "home_homeList",
+                "display": [
+                  {
+                    "role": "*",
+                    "link": "home_homeList"
+                  }
+                ]
+              },
+              {
+                "id": "service",
+                "label": "console_term_service_label",
+                "link": "",
+                "mgr_link": "1_productmgr",
+                "action_key": "moscapp:service:console",
+                "hide": ["mo_agency"],
+                "display": [
+                  {
+                    "role": "mo_bss_adm",
+                    "link": "1_productmgr"
+                  }
+                ]
+              },
+              {
+                "id": "resource",
+                "label": "console_term_resource_label",
+                "link": "resource_List_resource_List",
+                "mgr_link": "resource_resourceOverview",
+                "action_key": "moscapp:resource:console",
+                "hide": ["mo_agency"],
+                "display": [
+                  {
+                    "role": "mo_bss_adm",
+                    "link": "resource_resourceOverview"
+                  },
+                  {
+                    "role": "vdc_adm",
+                    "link": "resource_List_resource_List"
+                  },
+                  {
+                    "role": "vdc_readonly",
+                    "link": "resource_List_resource_List"
+                  },
+                  {
+                    "role": "vdc_user",
+                    "link": "resource_List_resource_List"
+                  }
+                ]
+              },
+              {
+                "id": "application",
+                "label": "console_term_application_label",
+                "link": "application_applicationList",
+                "action_key": "moscapp:application:console",
+                "hide": ["mo_agency"],
+                "display": [
+                  {
+                    "role": "vdc_adm",
+                    "link": "application_applicationList"
+                  },
+                  {
+                    "role": "vdc_user",
+                    "link": "application_applicationList"
+                  },
+                  {
+                    "role": "vdc_readonly",
+                    "link": "application_applicationList"
+                  }
+                ]
+              },
+              {
+                "id": "organization",
+                "label": "console_term_organization_label",
+                "link": "",
+                "mgr_link": "tenant_tenantList",
+                "action_key": "moscapp:organization:console",
+                "hide": ["mo_agency"],
+                "display": [
+                  {
+                    "role": "mo_bss_adm",
+                    "link": "tenant_tenantList"
+                  }
+                ]
+              },
+              {
+                "id": "report",
+                "label": "console_term_report_label",
+                "link": "memtrport_url_center_rport",
+                "mgr_link": "manager_memtrport_url_center_rport",
+                "action_key": "moscapp:operation:console",
+                "hide": ["mo_agency"],
+                "display": [
+                  {
+                    "role": "mo_bss_adm",
+                    "link": "manager_memtrport_url_center_rport"
+                  },
+                  {
+                    "role": "vdc_adm",
+                    "link": "memtrport_url_center_rport"
+                  },
+                  {
+                    "role": "vdc_readonly",
+                    "link": "memtrport_url_center_rport"
+                  }
+                ]
+              },
+              {
+                "id": "market",
+                "label": "console_term_cloudMarket_label",
+                "link": "cloud_cloudmarket",
+                "mgr_link": "manager_cloudmarket_cloudmarket",
+                "action_key": "moscapp:cloudmarket:console",
+                "hide": ["mo_agency"],
+                "display": [
+                  {
+                    "role": "mo_bss_adm",
+                    "link": "manager_cloudmarket_cloudmarket"
+                  },
+                  {
+                    "role": "vdc_adm",
+                    "link": "cloud_cloudmarket"
+                  },
+                  {
+                    "role": "vdc_readonly",
+                    "link": "cloud_cloudmarket"
+                  },
+                  {
+                    "role": "vdc_user",
+                    "link": "cloud_cloudmarket"
+                  }
+                ]
+              },
+              {
+                "id": "system",
+                "label": "console_term_system_label",
+                "link": "movdc_url_center_list",
+                "mgr_link": "16_sysconfig",
+                "action_key": "moscapp:system:console",
+                "hide": ["mo_agency"],
+                "display": [
+                  {
+                    "role": "mo_bss_adm",
+                    "link": "16_sysconfig"
+                  },
+                  {
+                    "role": "vdc_adm",
+                    "link": "movdc_url_center_list"
+                  },
+                  {
+                    "role": "vdc_readonly",
+                    "link": "movdc_url_center_list"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "language-switch": {
+          "type": "LanguageSwitch"
+        },
+        "user-center": {
+          "type": "UserCenter",
+          "meta": {
+            "menus": [
+              {
+                "label": "console_term_myResourceSet_label",
+                "id": "resource_set",
+                "target": "_self",
+                "link": "project_center_project",
+                "action_key": "moscapp:organization-project:console",
+                "hide": ["mo_agency"],
+                "display": [
+                  {
+                    "role": "vdc_adm",
+                    "link": "project_center_project"
+                  },
+                  {
+                    "role": "vdc_user",
+                    "link": "project_center_project"
+                  },
+                  {
+                    "role": "vdc_readonly",
+                    "link": "project_center_project"
+                  }
+                ]
+              },
+              {
+                "label": "console_term_myApproval_label",
+                "id": "my_approval",
+                "target": "_self",
+                "link": "my_approval_user_center",
+                "mgr_link": "manager_my_approval_user_center",
+                "action_key": "moscapp:personal-center-myapproval:console",
+                "display": [
+                  {
+                    "role": "mo_bss_adm",
+                    "link": "manager_my_approval_user_center"
+                  },
+                  {
+                    "role": "approv_adm",
+                    "link": "my_approval_user_center"
+                  }
+                ]
+              },
+              {
+                "label": "console_term_myApply_label",
+                "id": "my_apply",
+                "target": "_self",
+                "link": "my_apply_user_center",
+                "action_key": "moscapp:personal-center-orders:console",
+                "hide": ["mo_agency"],
+                "display": [
+                  {
+                    "role": "vdc_adm",
+                    "link": "my_apply_user_center"
+                  },
+                  {
+                    "role": "vdc_readonly",
+                    "link": "my_apply_user_center"
+                  },
+                  {
+                    "role": "vdc_user",
+                    "link": "my_apply_user_center"
+                  },
+                  {
+                    "role": "res_adm",
+                    "link": "my_apply_user_center"
+                  }
+                ]
+              },
+              {
+                "label": "console_term_myLog_label",
+                "id": "my_log",
+                "target": "_self",
+                "link": "operate_log_user_center",
+                "mgr_link": "manager_operate_log_user_center",
+                "action_key": "moscapp:personal-center-logging:console",
+                "hide": ["mo_agency"],
+                "display": [
+                  {
+                    "role": "mo_bss_adm",
+                    "link": "manager_operate_log_user_center"
+                  },
+                  {
+                    "role": "*",
+                    "link": "operate_log_user_center"
+                  }
+                ]
+              },
+              {
+                "label": "console_term_personalSetting_label",
+                "id": "personal_setting",
+                "target": "_self",
+                "link": "personal_setting_user_center",
+                "mgr_link": "manager_personal_setting_user_center",
+                "action_key": "moscapp:personal-center-information:console",
+                "needLoginUser": true,
+                "display": [
+                  {
+                    "role": "mo_bss_adm",
+                    "link": "manager_personal_setting_user_center"
+                  },
+                  {
+                    "role": "*",
+                    "link": "personal_setting_user_center"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "header-sep-line_1": {
+          "type": "HeaderSepLine",
+          "meta": {}
+        },
+        "shopping-cart": {
+          "type": "ShoppingCart"
+        },
+        "task": {
+          "type": "Task"
+        },
+        "message": {
+          "type": "Message"
+        },
+        "help": {
+          "type": "Help"
+        }
+      },
+      "layout": {
+        "layout_header": ["layout_header_left", "layout_header_middle", "layout_header_right"],
+        "layout_header_left": ["logo", "header-sep-line_0", "region"],
+        "layout_header_middle": ["main-menu"],
+        "layout_header_right": [
+          "language-switch",
+          "user-center",
+          "header-sep-line_1",
+          "shopping-cart",
+          "task",
+          "message",
+          "help"
+        ]
+      },
+      "root": "layout_header"
+    },
+    "sidebar": {
+      "modules": {
+        "layout_sidebar": {
+          "type": "Sidebar",
+          "meta": {
+            "blackRoles": ["mo_bss_adm", "mo_agency", "op_gated_mo_bss_admin", "op_gated_sc_admin"]
+          }
+        },
+        "service-wrapper": {
+          "type": "ServiceList"
+        },
+        "sidebar-sep-line": {
+          "type": "SidebarLine"
+        },
+        "service-collection": {
+          "type": "Collections"
+        }
+      },
+      "layout": {
+        "layout_sidebar": ["service-wrapper", "sidebar-sep-line", "service-collection"]
+      },
+      "root": "layout_sidebar"
+    }
+  }
+}

@@ -5,7 +5,6 @@
 		</slot>
 	</div>
 </template>
-
 <script lang="ts">
 export default async function () {
 	return {
@@ -40,7 +39,7 @@ export default async function () {
 		},
 		computed: {
 			cptSeparator() {
-				if (this.separator?.TYPE_IS_VNODE) {
+				if (_.$val(this, "separator.TYPE_IS_VNODE")) {
 					return this.separator;
 				}
 				return h(
@@ -95,7 +94,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .x-breadcrumb__item {
 	&.is-last {

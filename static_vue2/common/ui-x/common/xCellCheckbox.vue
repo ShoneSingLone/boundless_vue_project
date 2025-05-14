@@ -6,7 +6,7 @@ export default async function () {
 			const { innerComponentConfigs, privateModel } = useCellArgs({
 				vm: this,
 				itemType: "xCheckbox",
-				cellConfigs: this.configs?.col?.componentOptions
+				cellConfigs: _.$val(this, "configs.col.componentOptions")
 			});
 			this.innerComponentConfigs = innerComponentConfigs;
 			return function () {

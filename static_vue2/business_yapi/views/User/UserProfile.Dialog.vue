@@ -30,7 +30,7 @@
 			<xBtn :configs="cptBtnDelete" />
 			<xGap f />
 			<xBtn :configs="cptBtnOk" />
-			<xBtn @click="closeModal">{{ i18n("取消") }}</xBtn>
+			<xBtn @click="closeModal">{{ i18n("cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>
@@ -59,7 +59,7 @@ export default async function ({ onOk, userId, canModifyAvatar }) {
 					},
 					email: {
 						value: "",
-						label: i18n("邮箱地址"),
+						label: i18n("email_address"),
 						rules: [_rules.required()],
 						readonly: true
 					},
@@ -180,7 +180,7 @@ export default async function ({ onOk, userId, canModifyAvatar }) {
 			cptBtnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("ok"),
 					preset: "blue",
 					async onClick() {
 						_.$loading(true);
@@ -204,7 +204,7 @@ export default async function ({ onOk, userId, canModifyAvatar }) {
 				const vm = this;
 				return {
 					isHide: !vm.cptCurrentIsRootAdmin,
-					label: i18n("删除"),
+					label: i18n("delete_action"),
 					preset: "danger",
 					async onClick() {
 						try {

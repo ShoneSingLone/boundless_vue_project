@@ -46,7 +46,6 @@
 		</xInput>
 	</div>
 </template>
-
 <script lang="ts">
 export default async function ({ PRIVATE_GLOBAL }) {
 	const { useFocus } = await _.$importVue("/common/utils/hooks.vue");
@@ -284,7 +283,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			}
 		},
 		async mounted() {
-			await _.$ensure(() => this.$refs.input?.$refs?.input);
+			await _.$ensure(() => _.$val(this, "$refs.input.$refs.input"));
 			let innerInput = this.$refs.input.$refs.input;
 			innerInput.setAttribute("role", "spinbutton");
 			innerInput.setAttribute("aria-valuemax", this.max);

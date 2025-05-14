@@ -45,22 +45,27 @@ export default async function () {
 									if (xItem.tipsHolder?.instance) {
 										xItem.tipsHolder.instance.options.visible = false;
 									}
-									return ""
+									return "";
 								}
 								return () => {
 									xItem.hideTips = xItem.hideTips || true;
-									xItem.tipsHolder = xItem.tipsHolder || h({ template: `<xIcon icon="exclamationMark" v-xtips="manual" class="ml4"/>`,
+									xItem.tipsHolder =
+										xItem.tipsHolder ||
+										h({
+											template: `<xIcon icon="exclamationMark" v-xtips="manual" class="ml4"/>`,
 											data(vm) {
 												return {
 													manual: {
-														content: () => h({
-															template: '<div>{{state.val}}</div>',
-															setup() {
-																return {
-																	state:reactive({val})
+														content: () =>
+															h({
+																template:
+																	"<div>{{state.val}}</div>",
+																setup() {
+																	return {
+																		state: reactive({ val })
+																	};
 																}
-															}
-														}),
+															}),
 														visible: true,
 														trigger: "manual",
 														placement: "right-end",
@@ -71,9 +76,8 @@ export default async function () {
 												};
 											},
 											methods: {}
-									});
+										});
 
-									
 									if (_.$val(xItem, "tipsHolder.popoverVm")) {
 										xItem.tipsHolder.popoverVm.options.content = val;
 									}

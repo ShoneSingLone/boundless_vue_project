@@ -31,6 +31,12 @@ export type t_xItemConfigsOptions = {
 	selectOptions?: any[];
 	/*** xInput 带有下拉框的Input 特型控件 下拉的值改变时的回调函数 */
 	onSelectChange?: Function;
+	/*** xInput 自定义的后图标的样式类， */
+	suffixInnerClass?: String;
+	/*** xInput 自定义的前置图标点击事件的回调函数， */
+	onClickPrefix?: Function;
+	/*** xInput 自定义的后置图标点击事件的回调函数， */
+	onClickSuffix?: Function;
 	/*** xInputNumber 步长 */
 	step?: number;
 	/*** xInputNumber 是否只能输入 step 的倍数 */
@@ -67,6 +73,7 @@ export type t_xItemConfigsOptions = {
 	options?: any[];
 	/*** xItemSelect 渲染自定义项 */
 	optonsRender?: Function;
+	/* 通用，value change之后的回调函数 */
 	onEmitValue?: ({ val: any }) => void;
 	once?: Function;
 	tips?: string | Function;

@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<div class="el-collapse-item" :class="{ 'is-active': isActive, 'is-disabled': disabled }">
 		<div

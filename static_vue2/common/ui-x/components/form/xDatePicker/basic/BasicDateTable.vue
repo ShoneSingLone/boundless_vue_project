@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<table
 		cellspacing="0"
@@ -11,7 +10,7 @@
 			<tr>
 				<th v-if="showWeekNumber">{{ i18n("el.datepicker.week") }}</th>
 				<th v-for="(week, key) in WEEKS" :key="key">
-					{{ i18n("el.datepicker.weeks." + week) }}
+					{{ i18n(`el.datepicker.weeks.${week}`) }}
 				</th>
 			</tr>
 			<tr

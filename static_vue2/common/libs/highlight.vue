@@ -393,6 +393,7 @@ export default async function () {
 				"list",
 				"value"
 			];
+
 			function O(e) {
 				function t(t, n) {
 					return RegExp(d(t), "m" + (e.case_insensitive ? "i" : "") + (n ? "g" : ""));
@@ -527,6 +528,7 @@ export default async function () {
 												}),
 										n
 									);
+
 									function s(e, s) {
 										t && (s = s.toLowerCase()),
 											s.split(" ").forEach(t => {
@@ -639,6 +641,7 @@ export default async function () {
 									(this.unknownLanguage = !0),
 									r(this.code)
 								);
+
 							let t;
 							return (
 								this.autoDetect
@@ -870,6 +873,7 @@ export default async function () {
 							(console.error(c.replace("{}", e)),
 							Error('Unknown language: "' + e + '"'))
 						);
+
 					const w = O(_);
 					let N = "",
 						y = a || w;
@@ -1073,6 +1077,7 @@ export default async function () {
 						),
 						b(e)
 					),
+
 					highlightBlock: x,
 					configure: e => {
 						e.useBR &&
@@ -1182,6 +1187,7 @@ export default async function () {
 								},
 								{ begin: "\\b0[bB][01](_*[01])*[lL]?\\b" }
 							],
+
 							relevance: 0
 						};
 					return {
@@ -1437,6 +1443,7 @@ export default async function () {
 										begin: e.UNDERSCORE_IDENT_RE
 									}
 								],
+
 								relevance: 0
 							},
 							{
@@ -1450,9 +1457,11 @@ export default async function () {
 										starts: a
 									}
 								],
+
 								relevance: 0
 							}
 						],
+
 						illegal: "[^\\s\\}]"
 					};
 				};
@@ -1523,6 +1532,7 @@ export default async function () {
 							"escape",
 							"unescape"
 						],
+
 						[
 							"arguments",
 							"this",
@@ -1534,6 +1544,7 @@ export default async function () {
 							"module",
 							"global"
 						],
+
 						[
 							"Intl",
 							"DataView",
@@ -1567,6 +1578,7 @@ export default async function () {
 							"Uint8ClampedArray",
 							"ArrayBuffer"
 						],
+
 						[
 							"EvalError",
 							"InternalError",
@@ -1673,6 +1685,7 @@ export default async function () {
 								]
 							}
 						];
+
 					o.contains = c;
 					const l = r.inherit(r.TITLE_MODE, { begin: s }),
 						d = "(\\(.*\\))?\\s*\\B[-=]>",
@@ -1797,6 +1810,7 @@ export default async function () {
 										begin: "(-?)(\\b0[xX][a-fA-F0-9']+|(\\b[\\d']+(\\.[\\d']*)?|\\.[\\d']+)([eE][-+]?[\\d']+)?)"
 									}
 								],
+
 								relevance: 0
 							},
 							o = {
@@ -1843,6 +1857,7 @@ export default async function () {
 										end: /;/
 									}
 								],
+
 								keywords: u,
 								contains: m.concat([
 									{
@@ -2131,6 +2146,7 @@ export default async function () {
 									begin: "@[\\w-]+"
 								}
 							],
+
 							starts: { end: "[;}]", returnEnd: !0, contains: c }
 						},
 						b = {
@@ -2141,6 +2157,7 @@ export default async function () {
 								},
 								{ begin: n, end: /\{/ }
 							],
+
 							returnBegin: !0,
 							returnEnd: !0,
 							illegal: "[<='$\"]",
@@ -2248,6 +2265,7 @@ export default async function () {
 							"escape",
 							"unescape"
 						],
+
 						[
 							"arguments",
 							"this",
@@ -2259,6 +2277,7 @@ export default async function () {
 							"module",
 							"global"
 						],
+
 						[
 							"Intl",
 							"DataView",
@@ -2292,6 +2311,7 @@ export default async function () {
 							"Uint8ClampedArray",
 							"ArrayBuffer"
 						],
+
 						[
 							"EvalError",
 							"InternalError",
@@ -2405,6 +2425,7 @@ export default async function () {
 											begin: "\\b0[0-7]+n?\\b"
 										}
 									],
+
 									relevance: 0
 								},
 								u = {
@@ -2483,6 +2504,7 @@ export default async function () {
 									g,
 									r.REGEXP_MODE
 								];
+
 							u.contains = p.concat({
 								begin: /\{/,
 								end: /\}/,
@@ -2609,6 +2631,7 @@ export default async function () {
 														end: o.end
 													}
 												],
+
 												subLanguage: "xml",
 												contains: [
 													{
@@ -2620,6 +2643,7 @@ export default async function () {
 												]
 											}
 										],
+
 										relevance: 0
 									},
 									{
@@ -2635,6 +2659,7 @@ export default async function () {
 											}),
 											A
 										],
+
 										illegal: /%/
 									},
 									{
@@ -2660,6 +2685,7 @@ export default async function () {
 											},
 											{ begin: "\\$" + c }
 										],
+
 										relevance: 0
 									},
 									{
@@ -2932,6 +2958,7 @@ export default async function () {
 							starts: { end: "$", contains: _ }
 						}
 					];
+
 					return (
 						t.unshift(b),
 						{
@@ -3051,6 +3078,7 @@ export default async function () {
 										begin: "(-?)(\\b0[xX][a-fA-F0-9']+|(\\b[\\d']+(\\.[\\d']*)?|\\.[\\d']+)([eE][-+]?[\\d']+)?)"
 									}
 								],
+
 								relevance: 0
 							},
 							o = {
@@ -3097,6 +3125,7 @@ export default async function () {
 										end: /;/
 									}
 								],
+
 								keywords: u,
 								contains: m.concat([
 									{
@@ -3357,6 +3386,7 @@ export default async function () {
 							"wsf",
 							"svg"
 						],
+
 						case_insensitive: !0,
 						contains: [
 							{
@@ -3649,9 +3679,11 @@ export default async function () {
 												e.C_BLOCK_COMMENT_MODE,
 												{ begin: ":" }
 											],
+
 											illegal: /["']/
 										}
 									],
+
 									illegal: /\[|%/
 								},
 								{
@@ -3826,6 +3858,7 @@ export default async function () {
 											beginKeywords: "class"
 										}
 									],
+
 									end: /:/,
 									illegal: /[${=;\n,]/,
 									contains: [
@@ -4186,6 +4219,7 @@ export default async function () {
 								{ begin: /"/, end: /"/ },
 								{ begin: /\S+/ }
 							],
+
 							contains: [
 								e.BACKSLASH_ESCAPE,
 								{
@@ -4340,6 +4374,7 @@ export default async function () {
 									relevance: 0
 								}
 							],
+
 							returnBegin: !0,
 							contains: [
 								{
@@ -4452,6 +4487,7 @@ export default async function () {
 													end: "(\\n)$"
 												}
 											],
+
 											relevance: 0
 										}
 									]
@@ -4498,6 +4534,7 @@ export default async function () {
 								relevance: 10
 							})
 						];
+
 					return {
 						name: "Lua",
 						keywords: {
@@ -4636,6 +4673,7 @@ export default async function () {
 									{ begin: r + a, relevance: 1 },
 									{ begin: r + "[ \\t\\f]+", relevance: 0 }
 								],
+
 								contains: [
 									{
 										className: "attr",
@@ -4644,6 +4682,7 @@ export default async function () {
 										relevance: 0
 									}
 								],
+
 								starts: i
 							},
 							{
@@ -4658,6 +4697,7 @@ export default async function () {
 										relevance: 0
 									}
 								],
+
 								starts: i
 							},
 							{
@@ -4784,6 +4824,7 @@ export default async function () {
 							"escape",
 							"unescape"
 						],
+
 						[
 							"arguments",
 							"this",
@@ -4795,6 +4836,7 @@ export default async function () {
 							"module",
 							"global"
 						],
+
 						[
 							"Intl",
 							"DataView",
@@ -4828,6 +4870,7 @@ export default async function () {
 							"Uint8ClampedArray",
 							"ArrayBuffer"
 						],
+
 						[
 							"EvalError",
 							"InternalError",
@@ -4898,6 +4941,7 @@ export default async function () {
 									begin: "\\b0[0-7]+n?\\b"
 								}
 							],
+
 							relevance: 0
 						},
 						E = {
@@ -5086,6 +5130,7 @@ export default async function () {
 												end: o.end
 											}
 										],
+
 										subLanguage: "xml",
 										contains: [
 											{
@@ -5097,6 +5142,7 @@ export default async function () {
 										]
 									}
 								],
+
 								relevance: 0
 							},
 							{
@@ -5126,6 +5172,7 @@ export default async function () {
 									},
 									{ begin: "\\$" + c }
 								],
+
 								relevance: 0
 							},
 							{
@@ -5318,6 +5365,7 @@ export default async function () {
 								]
 							}
 						];
+
 					return (
 						(s.contains = o),
 						(r.contains = o),
@@ -5363,6 +5411,7 @@ export default async function () {
 						{ begin: /;/, end: /$/ },
 						{ begin: /#/, end: /$/ }
 					];
+
 					const t = {
 							className: "variable",
 							variants: [{ begin: /\$[\w\d"][\w\d_]*/ }, { begin: /\$\{(.*?)\}/ }]
@@ -5620,6 +5669,7 @@ export default async function () {
 									begin: "(-?)(\\b0[xX][a-fA-F0-9']+|(\\b[\\d']+(\\.[\\d']*)?|\\.[\\d']+)([eE][-+]?[\\d']+)?)"
 								}
 							],
+
 							relevance: 0
 						},
 						s = {
@@ -5680,6 +5730,7 @@ export default async function () {
 								illegal: /\n/
 							})
 						]);
+
 					var g = {
 							variants: [o, c, s, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE]
 						},
@@ -6031,6 +6082,7 @@ export default async function () {
 										begin: "\\b(\\d[\\d_]*(\\.[0-9_]+)?([eE][+-]?[0-9_]+)?)" + n
 									}
 								],
+
 								relevance: 0
 							},
 							{
@@ -6061,6 +6113,7 @@ export default async function () {
 										endsParent: !0
 									})
 								],
+
 								illegal: "\\S"
 							},
 							{
@@ -6072,6 +6125,7 @@ export default async function () {
 										endsParent: !0
 									})
 								],
+
 								illegal: "[\\w\\d]"
 							},
 							{
@@ -6170,6 +6224,7 @@ export default async function () {
 								}
 							}
 						],
+
 						illegal: /\S/
 					};
 				};
@@ -6310,7 +6365,6 @@ export default async function () {
 	return window.hljs;
 }
 </script>
-
 <style lang="less">
 .markdown-wrapper {
 	overflow: auto;

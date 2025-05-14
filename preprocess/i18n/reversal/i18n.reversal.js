@@ -1,4 +1,4 @@
-const { val, fs, path, _ } = require("../../preprocess.utils");
+const { $val, fs, path, _ } = require("../../preprocess.utils");
 /* 把分开的zh-cn en 合并为数组的形式 */
 let target = {};
 //js遍历对象
@@ -12,8 +12,8 @@ function TraversalObject(obj, prePropArray = []) {
 			const props = prePropArray.join(".");
 			console.log(props, prePropArray);
 			const zh = objOrLabel;
-			const en = val(b, props);
-			val(target, props, [zh, en]);
+			const en = $val(b, props);
+			$val(target, props, [zh, en]);
 		}
 		prePropArray.pop();
 	});

@@ -48,7 +48,7 @@ export default async function () {
 				if (!iconName) {
 					return null;
 				}
-				return h("xIcon", {
+				return hxIcon({
 					class: "mr8",
 					attrs: {
 						useCurrentColor: true
@@ -78,7 +78,7 @@ export default async function () {
 					titleProps.title = titleTips;
 				}
 
-				return h("span", titleProps, [title]);
+				return hSpan(titleProps, [title]);
 			},
 			getIconUrl(url) {
 				if (!url) {
@@ -96,35 +96,26 @@ export default async function () {
 						attrs: {
 							index: resolvePath(item.path),
 							teleported: ""
-						},
-						scopedSlots: _u(
-							[
-								item.meta
-									? {
-											key: "title",
-											fn: () => {
-												return [vIcon(item), vMenuTitle(item)];
-											},
-											proxy: true
-										}
-									: null
-							],
-							null,
-							true
-						)
+						}
 					},
-					_l(item.children, (child, index) => {
-						return h("AdminSidebarItem", {
-							level: this.level + 1,
-							key: child.path + index,
-							staticClass: "nest-menu",
-							attrs: {
-								"is-nest": true,
-								item: child,
-								"base-path": resolvePath(child.path)
-							}
-						});
-					})
+					{
+						default: () =>
+							_.map(item.children, (child, index) => {
+								return h("AdminSidebarItem", {
+									level: this.level + 1,
+									key: child.path + index,
+									staticClass: "nest-menu",
+									attrs: {
+										"is-nest": true,
+										item: child,
+										"base-path": resolvePath(child.path)
+									}
+								});
+							}),
+						title: () => {
+							return [vIcon(item), vIcon(item), vMenuTitle(item)];
+						}
+					}
 				);
 			},
 			genAdminAppLink() {
@@ -157,24 +148,15 @@ export default async function () {
 								attrs: {
 									index: resolvePath(onlyOneChild.path)
 								},
-								scopedSlots: _u(
-									[
-										{
-											key: "title",
-											fn: () => {
-												if (cptIsCollapse && level === 0) {
-													return null;
-												} else {
-													return [vMenuTitle(item)];
-												}
-											},
-											proxy: true
+								props: {
+									titleRender: () => {
+										if (cptIsCollapse && level === 0) {
+											return null;
+										} else {
+											return [vMenuTitle(item)];
 										}
-									],
-									null,
-									false,
-									803820582
-								)
+									}
+								}
 							},
 							[vIcon(item)]
 						)
@@ -232,9 +214,9 @@ export default async function () {
 				return false;
 			}
 		},
-		render(h) {
+		render() {
 			const { item, level } = this;
-			return h("div", {
+			return hDiv({
 				vIf: !item.hidden,
 				class: "AdminSidebarItem",
 				attrs: {

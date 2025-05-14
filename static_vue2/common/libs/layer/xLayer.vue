@@ -1,6 +1,36 @@
 <script lang="ts">
 export default async function () {
+	function _defineProperty(obj, key, value) {
+		key = _toPropertyKey(key);
+		if (key in obj) {
+			Object.defineProperty(obj, key, {
+				value: value,
+				enumerable: true,
+				configurable: true,
+				writable: true
+			});
+		} else {
+			obj[key] = value;
+		}
+		return obj;
+	}
+	function _toPropertyKey(t) {
+		var i = _toPrimitive(t, "string");
+		return "symbol" == typeof i ? i : String(i);
+	}
+	function _toPrimitive(t, r) {
+		if ("object" != typeof t || !t) return t;
+		var e = t[Symbol.toPrimitive];
+		if (void 0 !== e) {
+			var i = e.call(t, r || "default");
+			if ("object" != typeof i) return i;
+			throw new TypeError("@@toPrimitive must return a primitive value.");
+		}
+		return ("string" === r ? String : Number)(t);
+	}
+
 	if (!Vue._xLayer) {
+		var _xLayer;
 		const layerType = {
 			/* TODO: 弹窗类型 */
 			dialog: "dialog",
@@ -10,14 +40,12 @@ export default async function () {
 			loading: "loading",
 			tips: "tips"
 		};
-
 		const className = {
 			layuiLayer: "layui-layer",
 			resize: "x-layer-resize",
 			shade: "layui-layer-shade",
 			move: "x-layer-move"
 		};
-
 		const xLayerTools = {
 			zIndex: 0,
 			/* 默认zIndex从2开始 */
@@ -38,7 +66,6 @@ export default async function () {
 			/* 记录宽高坐标，用于还原 */
 			record($layer) {
 				const [windowHeight, windowWidth] = [$win.height(), $win.width()];
-
 				const isLimit = $layer.height() > windowHeight;
 				const isLimitWidth = $layer.width() > windowWidth;
 				var area = [
@@ -48,7 +75,9 @@ export default async function () {
 					$layer.position().left + parseFloat($layer.css("margin-left"))
 				];
 				$layer.find(".x-layer-max").addClass("x-layer-maxmin");
-				$layer.attr({ area: area });
+				$layer.attr({
+					area: area
+				});
 			},
 			rescollbar(index) {
 				if ($html.attr("layer-full") == index) {
@@ -79,45 +108,39 @@ export default async function () {
 						let X = e.clientX - xLayerTools.pointMousedown[0];
 						let Y = e.clientY - xLayerTools.pointMousedown[1];
 						const fixed = $eleDialog.css("position") === "fixed";
-
 						xLayerTools.stX = fixed ? 0 : $win.scrollLeft();
 						xLayerTools.stY = fixed ? 0 : $win.scrollTop();
 						/* 控制元素不被拖出窗口外 */
 						if (!config.moveOut) {
 							let setRig = $win.width() - $eleDialog.outerWidth() + xLayerTools.stX;
 							let setBot = $win.height() - $eleDialog.outerHeight() + xLayerTools.stY;
-
 							if (X < xLayerTools.stX) {
 								X = xLayerTools.stX;
 							}
-
 							if (X > setRig) {
 								X = setRig;
 							}
-
 							if (Y < xLayerTools.stY) {
 								Y = xLayerTools.stY;
 							}
-
 							if (Y > setBot) {
 								Y = setBot;
 							}
 						}
-
-						$eleDialog.css({ left: X, top: Y });
+						$eleDialog.css({
+							left: X,
+							top: Y
+						});
 					}
-
 					if (config.resize) {
 						if (xLayerTools.moveOrResizeType === "resize") {
 							e.preventDefault();
 							const X = e.clientX - xLayerTools.pointMousedown[0];
 							const Y = e.clientY - xLayerTools.pointMousedown[1];
-
 							$eleDialog.css({
 								width: xLayerTools.moveOrResizeWH[0] + X,
 								height: xLayerTools.moveOrResizeWH[1] + Y
 							});
-
 							config.onResizing && config.onResizing($eleDialog);
 						}
 					}
@@ -136,52 +159,13 @@ export default async function () {
 				}
 				_.$single.mask.hide();
 			});
-
 		class xLayer {
-			static vms = {};
-			static index = 2;
-			/* 基础方法，通过配置展示内容 */
-			static open = setings => {
-				const layerVm = new xLayer(setings);
-			};
-
-			static close = index => {
-				let layerVm = xLayer.vms[index];
-				if (layerVm) {
-					layerVm.close();
-					layerVm = null;
-					delete xLayer.vms[index];
-				}
-			};
-
-			config = {
-				id: "",
-				type: layerType.page,
-				shade: 0.3,
-				fixed: true,
-				/* 是否允许拖拽 */
-				move: true,
-				resize: true,
-				title: "",
-				offset: "auto",
-				area: "auto",
-				closeIcon: true,
-				time: 0, //0表示不自动关闭
-				zIndex: 10,
-				maxWidth: 360,
-				anim: 0,
-				isOutAnim: true, //退出动画
-				minStack: true, //最小化堆叠
-				icon: -1
-			};
-
 			get layerId() {
 				return className.layuiLayer + this.config.id;
 			}
 			get shadeId() {
 				return className.shade + this.config.id;
 			}
-
 			get cptIconMove() {
 				if (this.config.move) {
 					return `<a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a>`;
@@ -215,15 +199,6 @@ export default async function () {
 				}
 			}
 			get cptOprations() {
-				if (this.config.content) {
-					return `<div id class="layui-layer-content">
-                ${this.config.content}
-            </div>`;
-				} else {
-					return "";
-				}
-			}
-			get cptOprations() {
 				return `<span class="layui-layer-setwin">
 				${this.cptIconMove}
 				${this.cptIconClose}
@@ -236,7 +211,6 @@ export default async function () {
 					return "";
 				}
 			}
-
 			get cptShade() {
 				if (this.config.shade) {
 					return `<div class="${className.shade} 
@@ -261,18 +235,38 @@ export default async function () {
             ${this.cptResize}
         </div>`;
 			}
-
 			get $layer() {
 				return $("#" + this.layerId);
 			}
 			get $shade() {
 				return $("#" + this.shadeId);
 			}
-
 			constructor(setings) {
+				_defineProperty(this, "config", {
+					id: "",
+					type: layerType.page,
+					shade: 0.3,
+					fixed: true,
+					/* 是否允许拖拽 */
+					move: true,
+					resize: true,
+					title: "",
+					offset: "auto",
+					area: "auto",
+					closeIcon: true,
+					time: 0,
+					//0表示不自动关闭
+					zIndex: 10,
+					maxWidth: 360,
+					anim: 0,
+					isOutAnim: true,
+					//退出动画
+					minStack: true,
+					//最小化堆叠
+					icon: -1
+				});
 				this.index = ++xLayer.index;
 				this.zIndex = this.index + 1;
-
 				this.config = _.merge(
 					{},
 					this.config,
@@ -285,7 +279,6 @@ export default async function () {
 				if (!this.config.area) {
 					this.config.area = "auto";
 				}
-
 				if (typeof this.config.area === "string") {
 					this.config.area =
 						this.config.area === "auto" ? ["", ""] : [this.config.area, ""];
@@ -298,10 +291,8 @@ export default async function () {
 				}
 				//建立容器和遮罩
 				_.$single.body.append(this.cptBody);
-
 				this.create();
 			}
-
 			create() {
 				const { config, $shade, $layer } = this;
 
@@ -310,7 +301,6 @@ export default async function () {
 					"background-color": config.shade[1] || "#000",
 					opacity: config.shade[0] || config.shade
 				});
-
 				$layer.css("visibility", "hidden");
 				//坐标自适应浏览器窗口尺寸
 				this.offset();
@@ -324,12 +314,10 @@ export default async function () {
 							this.auto(this.index);
 					});
 				}
-
 				config.time <= 0 ||
 					setTimeout(() => {
 						xLayer.close(this.index);
 					}, config.time);
-
 				this.move().callback();
 
 				//为兼容jQuery3.0的css动画影响元素尺寸计算
@@ -350,11 +338,10 @@ export default async function () {
 					$layer.data("isOutAnim", true);
 				}
 			}
-
 			offset() {
+				var _config$offset, _config$offset2;
 				const { win: $win } = _.$single;
 				const { config } = this;
-
 				var area = [this.$layer.outerWidth(), this.$layer.outerHeight()];
 
 				/* 默认居中 */
@@ -362,11 +349,18 @@ export default async function () {
 				this.offsetLeft = ($win.width() - area[0]) / 2;
 
 				/* 如果设置了偏移量 */
-				if (config.offset?.top) {
+				if (
+					(_config$offset = config.offset) !== null &&
+					_config$offset !== void 0 &&
+					_config$offset.top
+				) {
 					this.offsetTop = config.offset.top;
 				}
-
-				if (config.offset?.left) {
+				if (
+					(_config$offset2 = config.offset) !== null &&
+					_config$offset2 !== void 0 &&
+					_config$offset2.left
+				) {
 					this.offsetLeft = config.offset.left;
 				}
 
@@ -375,10 +369,11 @@ export default async function () {
 					this.offsetTop = $win.height() - (this.$layer.find(doms[1]).outerHeight() || 0);
 					this.offsetLeft = this.$layer.css("left");
 				}
-
-				this.$layer.css({ top: this.offsetTop, left: this.offsetLeft });
+				this.$layer.css({
+					top: this.offsetTop,
+					left: this.offsetLeft
+				});
 			}
-
 			move() {
 				/* 拖拽层 */
 				const { config, $layer } = this;
@@ -401,7 +396,6 @@ export default async function () {
 						_.$single.mask.css("cursor", "move").show();
 					}
 				});
-
 				$eleResize.on("mousedown", function (e) {
 					xLayer.setLayerTop($layer);
 					e.preventDefault();
@@ -414,9 +408,27 @@ export default async function () {
 				return dialogInst;
 			}
 		}
-		Vue._xLayer = { xLayer, xLayerTools };
-	}
+		_xLayer = xLayer;
+		_defineProperty(xLayer, "vms", {});
+		_defineProperty(xLayer, "index", 2);
+		/* 基础方法，通过配置展示内容 */
+		_defineProperty(xLayer, "open", setings => {
+			const layerVm = new _xLayer(setings);
+		});
+		_defineProperty(xLayer, "close", index => {
+			let layerVm = _xLayer.vms[index];
+			if (layerVm) {
+				layerVm.close();
+				layerVm = null;
+				delete _xLayer.vms[index];
+			}
+		});
 
+		Vue._xLayer = {
+			xLayer,
+			xLayerTools
+		};
+	}
 	return Vue._xLayer;
 }
 </script>

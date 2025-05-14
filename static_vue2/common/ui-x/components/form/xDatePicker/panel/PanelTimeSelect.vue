@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<transition
 		name="el-zoom-in-top"

@@ -13,7 +13,7 @@ const COMMIT_EDITMSG = fs.readFileSync(COMMIT_EDITMSG_FILE_PATH, "utf-8").trim()
 } */
 
 (async () => {
-	if ("******************************" === COMMIT_EDITMSG) {
+	if ("deploy======================" === COMMIT_EDITMSG) {
 		/* 不做校验 */
 		return;
 	}
@@ -25,7 +25,7 @@ const COMMIT_EDITMSG = fs.readFileSync(COMMIT_EDITMSG_FILE_PATH, "utf-8").trim()
 	let isFail = !commitRE.test(COMMIT_EDITMSG);
 	if (!isFail) {
 		const [, type, scope] = String(COMMIT_EDITMSG).match(commitRE);
-		const sepcial = ["xUI", "common", "sync", "readme"];
+		const sepcial = ["xUI", "common", "sync", "readme", "i18n", "githooks"];
 		const allowBusiness = [...sepcial, ...APP_NAME_ARRAY];
 		const [isNameOk, businessName] = (() => {
 			/* 不需要lint */

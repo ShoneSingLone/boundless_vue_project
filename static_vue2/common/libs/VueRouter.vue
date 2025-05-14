@@ -2217,15 +2217,15 @@ export default async function ({ PRIVATE_GLOBAL }) {
 
 							var resolve = once(function (resolvedDef) {
 								/* if (isESModule(resolvedDef)) {
-									resolvedDef = resolvedDef.default;
-								}
-								// save resolved on async factory in case it's used elsewhere
-								def.resolved = typeof resolvedDef === "function" ? resolvedDef : _Vue.extend(resolvedDef);
-								match.components[key] = resolvedDef;
-								pending.count--;
-								if (pending.count <= 0) {
-									next();
-								} */
+                	resolvedDef = resolvedDef.default;
+                }
+                // save resolved on async factory in case it's used elsewhere
+                def.resolved = typeof resolvedDef === "function" ? resolvedDef : _Vue.extend(resolvedDef);
+                match.components[key] = resolvedDef;
+                pending.count--;
+                if (pending.count <= 0) {
+                	next();
+                } */
 								Vue._HandleVueRouterAsyncComponentResolved({
 									resolvedDef,
 									def,
@@ -2526,7 +2526,6 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			History.prototype.setupListeners = function setupListeners() {
 				// Default implementation is empty
 			};
-
 			History.prototype.teardown = function teardown() {
 				// clean up event listeners
 				// https://github.com/vuejs/vue-router/issues/2341
@@ -2994,7 +2993,6 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				AbstractHistory.prototype.ensureURL = function ensureURL() {
 					// noop
 				};
-
 				return AbstractHistory;
 			})(History);
 

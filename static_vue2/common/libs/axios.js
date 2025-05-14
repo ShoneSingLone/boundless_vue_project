@@ -223,6 +223,7 @@
 					(context.delegate = null),
 					ContinueSentinel
 				);
+
 			var info = record.arg;
 			return info
 				? info.done
@@ -1120,6 +1121,7 @@
 			(!filter || filter(sourceObj, destObj)) &&
 			sourceObj !== Object.prototype
 		);
+
 		return destObj;
 	};
 
@@ -2158,6 +2160,7 @@
 				return data;
 			}
 		],
+
 		transformResponse: [
 			function transformResponse(data) {
 				var transitional = this.transitional || defaults.transitional;
@@ -2190,6 +2193,7 @@
 				return data;
 			}
 		],
+
 		/**
 		 * A timeout in milliseconds to abort a request. If set to 0 (default) a
 		 * timeout is not created.
@@ -2542,6 +2546,7 @@
 					}
 				}
 			],
+
 			[
 				{
 					key: "from",
@@ -2694,6 +2699,7 @@
 					[AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][
 						Math.floor(response.status / 100) - 4
 					],
+
 					response.config,
 					response.request,
 					response
@@ -3889,6 +3895,7 @@
 					 */
 				}
 			],
+
 			[
 				{
 					key: "source",
@@ -4088,4 +4095,3 @@
 
 	return axios;
 });
-//# sourceMappingURL=axios.js.map

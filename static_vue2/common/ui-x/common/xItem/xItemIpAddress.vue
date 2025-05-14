@@ -16,12 +16,10 @@ export default async function () {
 						on: vm.mixin_listeners
 						/* configs,value */
 					},
-					this?.$vnode?.data
+					_.$val(this, "$vnode.data")
 				])
 			);
 		}
 	});
 }
 </script>
-
-<style lang="less"></style>

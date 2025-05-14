@@ -3,11 +3,39 @@
 	const IS_DEV = !!localStorage.isDev;
 	const COMMON_LIBS = IS_DEV ? "/common/libs" : "/common/libs/min";
 	const camelizeRE = /\/|\.|_|-(\w)/g;
+
+	const {
+		srcRoot,
+		appName,
+		appEntryName,
+		appVersion,
+		loadingImg,
+		appPrefix,
+		noNprogress,
+		appUseBabel
+	} = (() => {
+
+		const srcRootDom = $$id("src-root");
+		const { src, dataset } = srcRootDom;
+
+		return {
+			srcRoot: src.split("/common/libs")[0],
+			appName: dataset.appName,
+			appEntryName: dataset.appEntryName,
+			appVersion: dataset.appVersion,
+			loadingImg: dataset.loadingImg,
+			appPrefix: dataset.appPrefix || "business_",
+			noNprogress: dataset.noNProgress,
+			appUseBabel: dataset.appUseBabel === "true"
+		};
+	})();
+
 	/**
 	 * document.getElementById
 	 * @param {*} id
 	 * @returns
 	 */
+
 	/* @typescriptDeclare $id(id: string)=> HTMLElement */
 	function $$id(id) {
 		return document.getElementById(id);
@@ -18,16 +46,18 @@
 	 * @param {*} tagName
 	 * @returns
 	 */
+
 	/* @typescriptDeclare (tagName: string)=> HTMLElement[] */
 	function $$tags(tagName) {
 		return document.getElementsByTagName(tagName);
 	}
+
 	function last(arr) {
 		return arr.length ? arr[arr.length - 1] : false;
 	}
 
 	function camelCase(str = "") {
-		str = String(str).replaceAll("@", "");
+		str = String(str).replace(/@/g, "");
 		return (
 			str &&
 			str.replace(camelizeRE, function (_, c) {
@@ -37,7 +67,7 @@
 	}
 
 	/**
-	 * indexedDB 简单封装，类似jQuery get set，异步函数
+	 * indexedDB 简单封装，类似 jQuery get set，异步函数
 	 * @param {*} key
 	 * @param {*} value
 	 * @param {*} customStore
@@ -51,6 +81,7 @@
 				request.onabort = request.onerror = () => reject(request.error);
 			});
 		}
+
 		function createStore(dbName, storeName) {
 			const request = indexedDB.open(dbName);
 			request.onupgradeneeded = () => request.result.createObjectStore(storeName);
@@ -58,34 +89,41 @@
 			return (txMode, callback) =>
 				dbp.then(db => callback(db.transaction(storeName, txMode).objectStore(storeName)));
 		}
+
 		let defaultGetStoreFunc;
+
 		function defaultGetStore() {
 			if (!defaultGetStoreFunc) {
 				defaultGetStoreFunc = createStore("keyval-store", "keyval");
 			}
 			return defaultGetStoreFunc;
 		}
+
 		function get(key, customStore = defaultGetStore()) {
 			return customStore("readonly", store => promisifyRequest(store.get(key)));
 		}
+
 		function set(key, value, customStore = defaultGetStore()) {
 			return customStore("readwrite", store => {
 				store.put(value, key);
 				return promisifyRequest(store.transaction);
 			});
 		}
+
 		function del(key, customStore = defaultGetStore()) {
 			return customStore("readwrite", store => {
 				store.delete(key);
 				return promisifyRequest(store.transaction);
 			});
 		}
+
 		function clear(customStore = defaultGetStore()) {
 			return customStore("readwrite", store => {
 				store.clear();
 				return promisifyRequest(store.transaction);
 			});
 		}
+
 		function eachCursor(store, callback) {
 			store.openCursor().onsuccess = function () {
 				if (!this.result) return;
@@ -94,6 +132,7 @@
 			};
 			return promisifyRequest(store.transaction);
 		}
+
 		function keys(customStore = defaultGetStore()) {
 			return customStore("readonly", store => {
 				if (store.getAllKeys) {
@@ -103,6 +142,7 @@
 				return eachCursor(store, cursor => items.push(cursor.key)).then(() => items);
 			});
 		}
+
 		return {
 			get,
 			set,
@@ -116,18 +156,6 @@
 	let LOADING_IMAGE_NAME = "x-loading";
 	/* 默认的loading样式 */
 	(function loadBaseInfo() {
-		const srcRootDom = $$id("src-root");
-		const { src } = srcRootDom;
-		const [srcRoot] = src.split("/common/libs");
-
-		const {
-			appName /*应用名称 */,
-			appEntryName /* 入口名称 */,
-			appVersion,
-			loadingImg,
-			appPrefix = "business_",
-			noNprogress /* 无加载伪进度条 */
-		} = srcRootDom.dataset;
 
 		if (!appName) {
 			alert("miss APP_NAME");
@@ -141,9 +169,10 @@
 		/* empty */
 		window.APP_VERSION = "" || appVersion || "";
 		/* empty */
-		let I18N_LANGUAGE = localStorage["X-Language"] || $$tags("html")[0].lang || "zh-CN";
-		if (!["zh-CN", "en-US"].includes(I18N_LANGUAGE)) {
-			console.error(`I18N_LANGUAGE is not valid ${I18N_LANGUAGE}`);
+		var I18N_LANGUAGE =
+			localStorage["X-Language"] || ($$tags("html")[0] && $$tags("html")[0].lang) || "zh-CN";
+		if (["zh-CN", "en-US"].indexOf(I18N_LANGUAGE) === -1) {
+			console.error("I18N_LANGUAGE is not valid " + I18N_LANGUAGE);
 			I18N_LANGUAGE = "zh-CN";
 		}
 		localStorage["X-Language"] = I18N_LANGUAGE;
@@ -152,16 +181,23 @@
 	})();
 
 	function execXHR(url) {
-		return new Promise((resolve, reject) => {
+		return new Promise(function (resolve, reject) {
 			try {
 				var xhr = new XMLHttpRequest();
 
 				/* "loadend" "loadstart" "timeout" */
 				xhr.onprogress = updateProgress;
-				xhr.onload = transferComplete;
+				xhr.onload = function (event) {
+					var target = event.currentTarget || event.target;
+					if (target.status === 404) {
+						reject(404);
+					} else {
+						resolve(target.responseText);
+					}
+				};
 				xhr.onerror = transferFailed;
 				xhr.onabort = transferCanceled;
-				xhr.open("GET", `${url}?_t=${Date.now()}`);
+				xhr.open("GET", url + "?_t=" + Date.now());
 				xhr.send();
 
 				// 服务端到客户端的传输进程（下载）
@@ -174,14 +210,6 @@
 					}
 				}
 
-				function transferComplete({ currentTarget }) {
-					if (currentTarget.status === 404) {
-						reject(404);
-					} else {
-						resolve(currentTarget.responseText);
-					}
-				}
-
 				function transferFailed(evt) {
 					console.log("An error occurred while transferring the file.");
 				}
@@ -190,20 +218,38 @@
 					console.log("The transfer has been canceled by the user.");
 				}
 			} catch (error) {
-				debugger;
+				console.error(error);
+				reject(error);
 			}
 		});
 	}
+
 	/*  */
+
+	/**
+	 * 可选链兼容方案
+	 * @param obj
+	 * @param prop_chain
+	 * @returns
+	 */
+	function $callFn(obj, prop_chain) {
+		const fn = $val(obj, prop_chain);
+		if (typeof fn === "function") {
+			return fn;
+		} else {
+			return () => null;
+		}
+	}
 
 	/**
 	 * 用"xx.xx.xx"的字符串，安全get、set对象的值，如果是vue2，则用$set保证响应
 	 */
+
 	/* @typescriptDeclare (item: object, prop: string, val?: any)=> any */
 	function $val(item, prop, val, options = {}) {
 		item = item || {};
-		const isVue2 = item._isVue;
-		const fnVue$set = item.$set;
+		const isVue2 = item && item._isVue;
+		const fnVue$set = item && item.$set;
 
 		if (typeof prop != "string") {
 			throw new Error("prop must be a string");
@@ -212,14 +258,28 @@
 		let key = "";
 		let nextItem = item;
 
-		const setVal = () => {
+		/* 如果有输入 */
+		if (val !== undefined) {
+			setVal(isVue2, key, propArray, nextItem, val);
+		}
+
+		/* 明确是删除属性 */
+		if (val == undefined && options && options.delete) {
+			delVal(isVue2, key, propArray, nextItem, val);
+		} else {
+			return getVal(isVue2, key, propArray, nextItem);
+		}
+
+		function setVal() {
 			while ((key = propArray.shift())) {
 				/* 如果是最后一项，就赋值后退出 */
 				if (propArray.length === 0) {
-					if (isVue2) {
+					if (isVue2 && fnVue$set) {
 						fnVue$set(nextItem, key, val);
 					} else {
-						Vue?.set && Vue?.set(nextItem, key, val);
+						if (window.Vue && window.Vue.set) {
+							window.Vue.set(nextItem, key, val);
+						}
 						nextItem[key] = val;
 					}
 					return;
@@ -227,7 +287,7 @@
 					/* 继续循环，如果中间有undefined，添加中间项 */
 					const _nextItem = nextItem[key];
 					if (!_nextItem) {
-						if (isVue2) {
+						if (isVue2 && fnVue$set) {
 							fnVue$set(nextItem, key, {});
 						} else {
 							nextItem[key] = {};
@@ -236,8 +296,9 @@
 					nextItem = nextItem[key];
 				}
 			}
-		};
-		const delVal = () => {
+		}
+
+		function delVal() {
 			while ((key = propArray.shift())) {
 				/* 如果是最后一项，就赋值后退出 */
 				if (propArray.length === 0) {
@@ -264,9 +325,9 @@
 					nextItem = nextItem[key];
 				}
 			}
-		};
+		}
 
-		const getVal = () => {
+		function getVal() {
 			while ((key = propArray.shift())) {
 				const _nextItem = nextItem[key];
 				if (!_nextItem) {
@@ -280,17 +341,8 @@
 				}
 			}
 			return nextItem;
-		};
+		}
 
-		/* 如果有输入 */
-		if (val !== undefined) {
-			setVal(isVue2, key, propArray, nextItem, val);
-		}
-		if (val == undefined && options?.delete) {
-			delVal(isVue2, key, propArray, nextItem, val);
-		} else {
-			return getVal(isVue2, key, propArray, nextItem);
-		}
 		return item;
 	}
 
@@ -315,6 +367,7 @@
 	 * @param {any} url
 	 * @returns
 	 */
+
 	/* @typescriptDeclare (url: string)=>string */
 	function $resolvePath(url) {
 		if (/^http/.test(url)) {
@@ -327,7 +380,7 @@
 		}
 		resolvedURL = url;
 		try {
-			if (lodash?.THIS_FILE_URL) {
+			if (lodash && lodash.THIS_FILE_URL) {
 				let parentURL = last(lodash.THIS_FILE_URL);
 				const parentResolvedURL = ResolvePathCache[parentURL];
 				if (parentResolvedURL) {
@@ -370,7 +423,7 @@
 			const key = camelCase(url);
 			let collection = $loadText.pending[key];
 
-			if ((typeof collection) === 'string') {
+			if (typeof collection === "string" && !IS_DEV) {
 				return resolve(collection);
 			}
 
@@ -399,6 +452,7 @@
 			}
 		});
 	}
+
 	$loadText.pending = {};
 
 	const $loadTextCacheify = async function (url) {
@@ -491,7 +545,6 @@
 		return $ensure;
 	})();
 
-
 	/**
 	 * 该函数用于在网页中动态添加脚本文件。它接受一个URL参数和一个全局名称参数，根据URL创建一个id，并检查是否已存在具有该id的script元素。如果不存在，它会创建一个新的script元素，设置其id和src属性，并添加到页面的body元素中。如果URL参数中包含路径，则使用该路径作为src属性值；否则，通过调用另一个函数获取脚本内容。无论使用哪种方式，加载脚本的过程都是异步的。如果指定了全局名称参数，则返回通过该名称访问到的值。
 	 *
@@ -499,6 +552,7 @@
 	 * @param {string} [globalName=""]
 	 * @returns
 	 */
+
 	/* @typescriptDeclare (url:string,globalName:string)=>any */
 	async function $appendScript(url, globalName = "", _SCRIPT_USE_SRC = false) {
 		try {
@@ -539,6 +593,7 @@
 			console.error(error);
 		}
 	}
+
 	$appendScript.loaded = {};
 
 	/**
@@ -563,6 +618,7 @@
 	 * @param {any} options {userLink:Boolean 如果为true，则使用Link方式引入，这样文件里面的相对路径是相对css文件，否则会缓存文本放在style元素里面，路径是相对页面，有这个差异}
 	 * @returns
 	 */
+
 	/* @typescriptDeclare (url:string,styleSourceCode?:string,options?:any)=>any */
 	async function $appendStyle(url, styleSourceCode = "", options = {}) {
 		const { useLink = false } = options;
@@ -626,7 +682,7 @@
 		await (async (/* clearAssetsCacheByAppVersion */) => {
 			/* 如果没有配置或者配置了并且和缓存的版本不一致，则清除缓存 */
 			const NO_CACHE = !APP_VERSION;
-			const NOT_MATCH = APP_VERSION && (APP_VERSION !== (await $idb.get("APP_VERSION")));
+			const NOT_MATCH = APP_VERSION && APP_VERSION !== (await $idb.get("APP_VERSION"));
 
 			if (IS_DEV || NO_CACHE || NOT_MATCH) {
 				await $idb.clear();
@@ -634,85 +690,121 @@
 				window.APP_VERSION = APP_VERSION;
 			}
 
-
 			/* 预加载，等vue加载后赋值 */
 			_$loadText(`@/i18n/${I18N_LANGUAGE}.js`);
 
-			await _$asyncLoadOrderAppendScrips([
-				[COMMON_LIBS + "/jquery/jquery-3.7.0.min.js", null, () => $("body").addClass("x-app-body")],
-				[COMMON_LIBS + "/lodash.js", null, () => {
-					_.$$tags = $$tags;
-					_.$$id = $$id;
-					_.$val = $val;
-					_.$ensure = $ensure;
-					_.$appendScript = $appendScript;
-					_.$appendStyle = $appendStyle;
-					_.$resolveCssAssetsPath = $resolveCssAssetsPath;
-					_.$idb = $idb;
-					_.$resolveSvgIcon = $resolveSvgIcon;
-					_.$resolvePath = $resolvePath;
-					_.$loadText = _$loadText;
-					_.$asyncLoadOrderAppendScrips = _$asyncLoadOrderAppendScrips;
-					/**
-					 * 创建i18n 函数，可同时存在不同语言options的i18n对象
-					 * @param {*} lang zh-CN,对应i18n文件夹下的文件
-					 * @returns
-					 */
-					/* @typescriptDeclare (options: { lang: "zh-CN" | "en-US" }) => Promise<any> */
-					_.$newI18n = async function ({ lang }) {
-						/* @/i18n/zh-CN.js */
-						/* @/i18n/en-US.js */
-						let langOptionsString = await _.$loadText(`@/i18n/${lang}.js`);
-						langOptionsString = langOptionsString.replace("window.i18n.options = ", "");
-						const getLangOptionsFn = new Function(`return ${langOptionsString};`);
-						const langOptions = getLangOptionsFn();
-						const i18n = function (key, payload) {
-							if (key.length > 64) {
-								alert(`i18n key: 【${key}】 长度超过64，过长，建议重命名`);
-							}
-							/!*使用 {变量名} 赋值*!/;
-							_.templateSettings.interpolate = /{([\s\S]+?)}/g;
-							let temp = $val(langOptions, key);
-							if (_.isString(temp)) {
-								return _.template(temp)(payload);
-							} else {
-								return key;
-							}
+			/* 一般依赖 */
+			const depends = [
+				[
+					COMMON_LIBS + "/jquery/jquery-3.7.0.min.js",
+					null,
+					() => $("body").addClass("x-app-body")
+				],
+				[
+					COMMON_LIBS + "/lodash.js",
+					null,
+					() => {
+						_.$$tags = $$tags;
+						_.$$id = $$id;
+						_.$val = $val;
+						_.$callFn = $callFn;
+						_.$ensure = $ensure;
+						_.$appendScript = $appendScript;
+						_.$appendStyle = $appendStyle;
+						_.$resolveCssAssetsPath = $resolveCssAssetsPath;
+						_.$idb = $idb;
+						_.$resolveSvgIcon = $resolveSvgIcon;
+						_.$resolvePath = $resolvePath;
+						_.$loadText = _$loadText;
+						_.$asyncLoadOrderAppendScrips = _$asyncLoadOrderAppendScrips;
+						/**
+						 * 创建i18n 函数，可同时存在不同语言options的i18n对象
+						 * @param {*} lang zh-CN,对应i18n文件夹下的文件
+						 * @returns
+						 */
+						/* @typescriptDeclare (options: { lang: "zh-CN" | "en-US" }) => Promise<any> */
+						_.$newI18n = async function ({ lang }) {
+							/* @/i18n/zh-CN.js */
+							/* @/i18n/en-US.js */
+							let langOptionsString = await _.$loadText(`@/i18n/${lang}.js`);
+							langOptionsString = langOptionsString.replace(
+								"window.i18n.options = ",
+								""
+							);
+							const getLangOptionsFn = new Function(`return ${langOptionsString};`);
+							const langOptions = getLangOptionsFn();
+							const i18n = function (key, payload) {
+								if (key.length > 64) {
+									console.warn(`[i18n:key too lang] ${key}`);
+								}
+								/!*使用 {变量名} 赋值*!/;
+								let i18nString = $val(langOptions, key);
+
+
+								if (i18nString === undefined) {
+									console.warn(`[i18n:unset] ${key}`);
+									return key;
+								} else {
+
+									if (typeof payload === "object") {
+										Object.keys(payload).forEach(key => {
+											const i18nVariable = $val(payload, key);
+											if (i18nVariable !== undefined) {
+												i18nString = String(i18nString).replace(`{${key}}`, i18nVariable);
+											}
+										});
+									}
+
+									return i18nString;
+								}
+							};
+							return i18n;
 						};
-						i18n.langOptions = langOptions;
 
-						return i18n;
-					};
-
-					if (IS_DEV || NO_CACHE || NOT_MATCH) {
-						try {
-							/* index.html页面带有preload的数据会首先加载并缓存，后续需要的时候直接使用 */
-							const preloadString = document.getElementById("preload")?.innerHTML || false;
-							if (preloadString) {
-								const getPreload = new Function(preloadString);
-								const preloadArray = getPreload();
-								preloadArray.forEach(url => $loadText(url));
+						if (IS_DEV || NO_CACHE || NOT_MATCH) {
+							try {
+								/* index.html页面带有preload的数据会首先加载并缓存，后续需要的时候直接使用 */
+								const preloadString = document.getElementById("preload")
+									? document.getElementById("preload").innerHTML
+									: false;
+								if (preloadString) {
+									const getPreload = new Function(preloadString);
+									const preloadArray = getPreload();
+									preloadArray.forEach(url => $loadText(url));
+								}
+							} catch (error) {
 							}
-						} catch (error) { }
+						}
 					}
-				}
 				],
 				[COMMON_LIBS + "/dayjs.js"],
-				[COMMON_LIBS + "/vue.js", null, async () => {
-					/**
-					 *  国际化
-					 * @param {*} key
-					 * @param {*} payload
-					 * @returns
-					*/
-					const i18n = await _.$newI18n({ lang: I18N_LANGUAGE });
-					/* vue加载之后才能使用国际化属性 */
-					window.i18n = i18n;
-					Vue.prototype.i18n = i18n;
-				}],
+				[
+					COMMON_LIBS + "/vue.js",
+					null,
+					async () => {
+						/**
+						 *  国际化
+						 * @param {*} key
+						 * @param {*} payload
+						 * @returns
+						 */
+						const i18n = await _.$newI18n({ lang: I18N_LANGUAGE });
+						/* vue加载之后才能使用国际化属性 */
+						window.i18n = i18n;
+						Vue.prototype.i18n = i18n;
+					}
+				],
 				[COMMON_LIBS + "/common.ts"],
 				[COMMON_LIBS + "/common.$.ajax.ts"]
-			]);
+			];
+
+			if (appUseBabel) {
+				depends.push([COMMON_LIBS + "/babel/babel.standalone.7.27.0.js"]);
+				depends.push([COMMON_LIBS + "/babel/babel.custom.js"]);
+			}
+
+			await _$asyncLoadOrderAppendScrips(depends);
+
 
 			if (IS_DEV) {
 				window.ONLY_USE_IN_DEV_MODEL && window.ONLY_USE_IN_DEV_MODEL();
@@ -724,12 +816,14 @@
 					"content",
 					"width=device-width, initial-scale=1.0, user-scalable=no"
 				);
+
 				function setRemBase() {
 					const wWidth = $(window).width();
 					const rate = wWidth / 375;
 					const unit = (16 * rate) / 16;
 					$("html").css("font-size", unit + "px");
 				}
+
 				$(window).on("resize", setRemBase).on("orientationchange", setRemBase);
 				setRemBase();
 			}
@@ -745,7 +839,7 @@
 `
 			);
 		})();
-		
+
 		/* setup */
 		!APP_NO_NPROGRESS &&
 			(_.$importVue.Nprogress = await _.$importVue("/common/libs/Nprogress.vue"));

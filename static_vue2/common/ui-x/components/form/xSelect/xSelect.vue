@@ -878,7 +878,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 			},
 
 			resetInputWidth() {
-				if (this.$refs.reference?.$el?.getBoundingClientRect) {
+				if (_.$val(this, "$refs.reference.$el.getBoundingClientRect")) {
 					this.inputWidth = this.$refs.reference.$el.getBoundingClientRect().width;
 					this.$emit("resize", {
 						inputWidth: this.inputWidth
@@ -954,7 +954,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		},
 
 		mounted() {
-			if (_.isFunction(this.xItem?.cptConfigs?.refInnerComponent)) {
+			if (_.isFunction(_.$val(this, "xItem.cptConfigs.refInnerComponent"))) {
 				this.xItem.cptConfigs.refInnerComponent({ vm: this });
 			}
 			if (this.multiple && Array.isArray(this.value) && this.value.length > 0) {

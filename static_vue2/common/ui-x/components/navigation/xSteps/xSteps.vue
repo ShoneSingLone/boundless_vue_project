@@ -1,3 +1,57 @@
+<template>
+	<div class="el-steps" :class="cptStepsClass">
+		<slot></slot>
+	</div>
+</template>
+<script lang="ts">
+export default async function () {
+	return defineComponent({
+		name: "ElSteps",
+		props: {
+			space: [Number, String],
+			active: Number,
+			direction: {
+				type: String,
+				default: "horizontal"
+			},
+			alignCenter: Boolean,
+			simple: Boolean,
+			finishStatus: {
+				type: String,
+				default: "finish"
+			},
+			processStatus: {
+				type: String,
+				default: "process"
+			}
+		},
+		data() {
+			return {
+				steps: [],
+				stepOffset: 0
+			};
+		},
+		methods: {},
+		watch: {
+			active(newVal, oldVal) {
+				this.$emit("change", newVal, oldVal);
+			},
+
+			steps(steps) {
+				steps.forEach((child, index) => {
+					child.index = index;
+				});
+			}
+		},
+		computed: {
+			cptStepsClass() {
+				const { simple, direction } = this;
+				return [!simple && "el-steps--" + direction, simple && "el-steps--simple"];
+			}
+		}
+	});
+}
+</script>
 <style lang="less">
 .el-steps {
 	display: flex;
@@ -311,57 +365,3 @@
 	display: none;
 }
 </style>
-<template>
-	<div class="el-steps" :class="cptStepsClass">
-		<slot></slot>
-	</div>
-</template>
-<script lang="ts">
-export default async function () {
-	return defineComponent({
-		name: "ElSteps",
-		props: {
-			space: [Number, String],
-			active: Number,
-			direction: {
-				type: String,
-				default: "horizontal"
-			},
-			alignCenter: Boolean,
-			simple: Boolean,
-			finishStatus: {
-				type: String,
-				default: "finish"
-			},
-			processStatus: {
-				type: String,
-				default: "process"
-			}
-		},
-		data() {
-			return {
-				steps: [],
-				stepOffset: 0
-			};
-		},
-		methods: {},
-		watch: {
-			active(newVal, oldVal) {
-				this.$emit("change", newVal, oldVal);
-			},
-
-			steps(steps) {
-				steps.forEach((child, index) => {
-					child.index = index;
-				});
-			}
-		},
-		computed: {
-			cptStepsClass() {
-				const { simple, direction } = this;
-				return [!simple && "el-steps--" + direction, simple && "el-steps--simple"];
-			}
-		}
-	});
-}
-</script>

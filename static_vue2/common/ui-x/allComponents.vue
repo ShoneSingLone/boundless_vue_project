@@ -37,6 +37,7 @@ export default async function () {
 		"components/data/xTableVir/xTableVir",
 		"components/data/xVirtualList/xFixedSizeList",
 		"components/data/xPagination/xPagination",
+		"components/data/xBadge/xBadge",
 		"components/data/xTree/xTree",
 		"components/data/xTree/xTreeNode",
 		"components/data/xTree/xNodeContent",

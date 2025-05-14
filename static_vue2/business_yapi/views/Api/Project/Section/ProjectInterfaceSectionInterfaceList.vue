@@ -52,6 +52,11 @@ export default async function () {
 						onClick: vm.addInterface
 					},
 					{
+						label: "修改Tags",
+						disabled: () => vm.cptIsCheckedRow,
+						onClick: vm.modifyInterfaceTags
+					},
+					{
 						label: "切换代理",
 						disabled: () => vm.cptIsCheckedRow,
 						onClick: vm.changeProxy
@@ -126,6 +131,17 @@ export default async function () {
 					parent: this,
 					project_id: this.APP.cptProjectId,
 					get_interface_list: this.inject_project.get_interface_list
+				});
+			},
+			async modifyInterfaceTags() {
+				return _.$openModal({
+					title: "修改Tags",
+					url: "@/components/ModifyInterfaceTags.dialog.vue",
+					parent: this,
+					allInterface: this.inject_project_interface_section.configsTable.data.list,
+					selected: Array.from(
+						this.inject_project_interface_section.configsTable.data.set
+					)
 				});
 			},
 			async changeProxy() {

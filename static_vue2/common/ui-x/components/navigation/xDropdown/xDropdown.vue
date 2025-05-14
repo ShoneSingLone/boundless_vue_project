@@ -335,6 +335,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 							value: hide
 						}
 					],
+
 					attrs: {
 						"aria-disabled": disabled
 					}
@@ -488,7 +489,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	position: relative;
 	margin-top: 6px;
 	border-top: 1px solid var(--el-border-color-lighter);
-	&:before {
+	&::before {
 		content: "";
 		height: 6px;
 		display: block;
@@ -516,7 +517,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	.el-dropdown-menu__item {
 		&.el-dropdown-menu__item--divided {
 			margin-top: 6px;
-			&:before {
+			&::before {
 				height: 6px;
 				margin: 0 -17px;
 			}
@@ -532,7 +533,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		font-size: 13px;
 		&.el-dropdown-menu__item--divided {
 			margin-top: 4px;
-			&:before {
+			&::before {
 				height: 4px;
 				margin: 0 -15px;
 			}
@@ -548,7 +549,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 		font-size: 12px;
 		&.el-dropdown-menu__item--divided {
 			margin-top: 3px;
-			&:before {
+			&::before {
 				height: 3px;
 				margin: 0 -10px;
 			}

@@ -51,8 +51,7 @@
 		</el-form-item>
 	</el-form>
 </template>
-
-<script>
+<script lang="ts">
 export default {
 	data() {
 		return {
@@ -71,7 +70,7 @@ export default {
 	methods: {
 		// 单选按钮值变化时
 		radioChange() {
-			("day rachange");
+			"day rachange";
 			if (this.radioValue !== 2 && this.cron.week !== "?") {
 				this.$emit("update", "week", "?", "day");
 			}

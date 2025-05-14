@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<div class="el-page-header xPageHeader">
 		<div class="el-page-header__left flex middle" @click="$emit('back')">

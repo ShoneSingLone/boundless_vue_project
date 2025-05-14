@@ -4,6 +4,89 @@
 	if (IS_DEV) {
 		console.log("common.js");
 	}
+	/**
+	 * base64编码 原生不支持字符，需要用$.base64 插件
+	 * */
+	/* @typescriptDeclare { decode(str: string): string; encode(str: string): string; is(str: string): boolean; }*/
+	_.$base64 = {
+		/**
+		 * 解码
+		 * @param str
+		 * @returns
+		 */
+		decode(str) {
+			if (str === undefined) {
+				return "";
+			} else {
+				/* 如果已经decode过了，则直接返回 */
+				if (!this.is(str)) {
+					return str;
+				}
+				if ($.base64) {
+					return $.base64.decode(str || "", true);
+				} else {
+					return atob(str || "");
+				}
+			}
+		},
+		/**
+		 * 编码
+		 * @param str
+		 * @returns
+		 */
+		encode(str) {
+			if (str === undefined) {
+				return "";
+			} else {
+				/* 如果已经encode过了，则直接返回 */
+				if (this.is(str)) {
+					return str;
+				}
+
+				if ($.base64) {
+					return $.base64.encode(str || "", true);
+				} else {
+					return btoa(str || "");
+				}
+			}
+		},
+		is(str) {
+			str = str === undefined ? "" : str;
+			try {
+				return this._encode(this._decode(str)) === str;
+			} catch (err) {
+				return false;
+			}
+		},
+		_encode(str) {
+			if (str === undefined) {
+				return "";
+			} else {
+				if ($.base64) {
+					return $.base64.encode(str || "", true);
+				} else {
+					return btoa(str || "");
+				}
+			}
+		},
+		_decode(str) {
+			if (str === undefined) {
+				return "";
+			} else {
+				if ($.base64) {
+					return $.base64.decode(str || "", true);
+				} else {
+					return atob(str || "");
+				}
+			}
+		}
+	};
+
+	/**
+	 * 检测是不是Base64编码
+	 * @param str
+	 * @returns
+	 */
 
 	/* 调用window.location.reload(),附加reason */
 	_.$reloadWindow = function (message) {
@@ -24,6 +107,75 @@
 			}
 		}
 	);
+
+	/**
+	 * 字符串脱敏处理函数
+	 * @param {string} str - 需要脱敏的字符串
+	 * @param {string} type - 脱敏类型：'phone'|'email'|'idcard'|'name'|'custom'
+	 * @param {object} options - 自定义脱敏选项
+	 * @param {number} options.start - 保留开始位数
+	 * @param {number} options.end - 保留结束位数
+	 * @param {string} options.mask - 掩码字符
+	 * @returns {string} 脱敏后的字符串
+	 */
+	/* @typescriptDeclare (str: any, type?: string, options?: object)=>string*/
+	_.$desensitize = function (str, type = "custom", options = {}) {
+		if (!str) return str;
+
+		const defaultMask = "*";
+		let start = 0;
+		let end = 0;
+		let mask = options.mask || defaultMask;
+
+		switch (type) {
+			case "phone": // 手机号脱敏：保留前3后4
+				start = 3;
+				end = 4;
+				break;
+			case "email": // 邮箱脱敏：保留@前3位和@后所有
+				const atIndex = str.indexOf("@");
+				if (atIndex > -1) {
+					return (
+						str.substring(0, Math.min(3, atIndex)) +
+						mask.repeat(Math.max(0, atIndex - 3)) +
+						str.substring(atIndex)
+					);
+				}
+				start = 3;
+				end = 4;
+				break;
+			case "idcard": // 身份证号脱敏：保留前4后4
+				start = 4;
+				end = 4;
+				break;
+			case "name": // 姓名脱敏：保留姓
+				start = 1;
+				end = 0;
+				break;
+			case "custom": // 自定义脱敏
+				start = options.start || 0;
+				end = options.end || 0;
+				break;
+		}
+
+		const length = str.length;
+		const maskLength = Math.max(0, length - start - end);
+
+		return str.substring(0, start) + mask.repeat(maskLength) + str.substring(length - end);
+	};
+
+	// 使用示例：
+	/*
+   console.log(desensitize('13812345678', 'phone'))               // 138****5678
+   console.log(desensitize('test@example.com', 'email'))          // tes*@example.com
+   console.log(desensitize('440123199001011234', 'idcard'))      // 4401**********1234
+   console.log(desensitize('张三丰', 'name'))                     // 张**
+   console.log(desensitize('abcdefgh', 'custom', {
+      start: 2,
+      end: 2,
+      mask: '#'
+   }))                                                           // ab####gh
+   */
 
 	/* @typescriptDeclare (paramName: any): string */
 	_.$getRawQueryParamFromSearch = function getRawQueryParamFromSearch(paramName) {
@@ -164,7 +316,7 @@
 	 */
 	/* @typescriptDeclare (tree:any[],handler:any,options?:{children:string})=>void */
 	_.$traverse = function (tree, handler, options, propString = "") {
-		const childrenName = options?.children || "children";
+		const childrenName = _.$val(options, "children") || "children";
 		if (!_.isEmpty(tree)) {
 			let len = tree.length - 1;
 			let i = len;
@@ -699,11 +851,11 @@
 		window.defTable.colActions = ({ cellRenderer, width, fixed = "right" }) => {
 			const columnDefaultConfigs = {
 				prop: "COL_ACTIONS",
-				label: i18n("操作"),
+				label: i18n("operation"),
 				fixed,
 				width,
 				headerCellRenderer(_props) {
-					return i18n("操作");
+					return i18n("operation");
 				}
 			};
 
@@ -876,6 +1028,7 @@
 	};
 
 	_.$scrollIntoView = function (container, selected) {
+		/* TODO:自定义偏移量 */
 		/* scrollIntoView api */
 		if (!selected) {
 			container.scrollTop = 0;
@@ -889,23 +1042,12 @@
 		}
 		const top =
 			selected.offsetTop + offsetParents.reduce((prev, curr) => prev + curr.offsetTop, 0);
-		const bottom = top + selected.offsetHeight;
-		const viewRectTop = container.scrollTop;
-		const viewRectBottom = viewRectTop + container.clientHeight;
 
-		if (top < viewRectTop) {
-			container.scrollTo({
-				top: top,
-				behavior: "smooth"
-			});
-			// container.scrollTop = top;
-		} else if (bottom > viewRectBottom) {
-			container.scrollTo({
-				top: bottom - container.clientHeight,
-				behavior: "smooth"
-			});
-			// container.scrollTop = bottom - container.clientHeight;
-		}
+		// 滑动到容器顶部
+		container.scrollTo({
+			top: top,
+			behavior: "smooth"
+		});
 	};
 
 	/**
@@ -976,6 +1118,7 @@
 
 	_.$lStorage = new Proxy(localStorage, {
 		set(_localStorage, prop, value) {
+			console.log("🚀 ~ set ~ _localStorage:", prop, value);
 			if (_.isPlainObject(value) || _.isArray(value)) {
 				_localStorage[prop] = JSON.stringify(value);
 			} else {
@@ -1283,9 +1426,10 @@
 					]);
 				};
 			}
+
 			const modalVm = await _.$openModal({
 				title,
-				url: "/common/ui-x/msg/WindowConfirm.vue",
+				url: PRIVATE_GLOBAL.x_confirm_window_component,
 				style: options.style,
 				resolve,
 				reject,
@@ -1320,7 +1464,7 @@
 				content: options
 			};
 		}
-		options.title = options.title || i18n("提示");
+		options.title = options.title || i18n("tips");
 		options.isDelete = true;
 		return _.$confirm(options);
 	};
@@ -1334,7 +1478,7 @@
 	/* @typescriptDeclare (title:string,options?:any)=>Promise<any> */
 	_.$msgSuccess = msg => {
 		return _.$notify.success({
-			title: i18n("提示"),
+			title: i18n("tips"),
 			message: msg
 		});
 	};
@@ -1363,7 +1507,7 @@
 					/* @ts-ignore */
 					tipsInfo = tipsInfo.error;
 					/* @ts-ignore */
-				} else if (_.isString(tipsInfo.responseJSON?.detailArgs)) {
+				} else if (_.isString(_.$val(tipsInfo, "responseJSON.detailArgs"))) {
 					/* @ts-ignore */
 					tipsInfo = tipsInfo.responseJSON.detailArgs;
 					/* @ts-ignore */
@@ -1381,11 +1525,11 @@
 			} else {
 				try {
 					const _msg = JSON.parse(_msg);
-					if (_msg?.responseJSON?.detailArgs) {
-						tipsInfo = _msg?.responseJSON?.detailArgs;
-					} else if (_msg?.responseText) {
+					if (_.$val(_msg, "responseJSON.detailArgs")) {
+						tipsInfo = _.$val(_msg, "responseJSON.detailArgs");
+					} else if (_.$val(_msg, "responseText")) {
 						tipsInfo = _msg.responseText;
-					} else if (_msg?.message) {
+					} else if (_.$val(_msg, "message")) {
 						tipsInfo = _msg.message;
 					}
 				} catch (error) {}
@@ -1549,8 +1693,14 @@
 		}) {
 			try {
 				payload = payload || {};
-				scritpSourceCode = scritpSourceCode || "";
+
+				/* app-use-bable 会加载babel，兼容低版本浏览器*/
+				if (window.Babel) {
+					scritpSourceCode = window.Babel.babelTransformCode(scritpSourceCode);
+				}
+
 				scritpSourceCode = scritpSourceCode.replace("export default", "");
+
 				const isShowTemplate = templateSourceCode && IS_DEV;
 				const innerCode = [
 					`console.info("${resolvedURL}");`,
@@ -1561,6 +1711,7 @@
 						resolvedURL
 					)}.call({THIS_FILE_URL:"${resolvedURL}"},payload);}catch(e){console.error(e)}`
 				].join("\n");
+
 				let scfObjAsyncFn;
 				let component = {};
 
@@ -1741,7 +1892,8 @@
 			/* hmr使用sourceCode不用发请求获取源码， */
 			payload = payload || {};
 			/* 切换页面时的动效 _.$importVue.Nprogress*/
-			_.$importVue?.Nprogress?.start?.();
+			_.$callFn(_, "$importVue.Nprogress.start")();
+
 			try {
 				/* 源文件加载之后会有缓存，但是payload会有变化 */
 				/* 所以只用异步组件不加payload，是可以用hmr，window需要自己重新加载 */
@@ -1761,8 +1913,8 @@
 				};
 				const ComponentOptions = (await _.$GenComponentOptions(params)) || {};
 
-				if (payload?.parent) {
-					ComponentOptions.parent = payload?.parent;
+				if (_.$val(payload, "parent")) {
+					ComponentOptions.parent = _.$val(payload, "parent");
 				}
 				ComponentOptions.FILE_URL = resolvedURL;
 				if (_.isFunction(ComponentOptions.onLoadSFC)) {
@@ -1787,7 +1939,7 @@
 					return { FILE_URL: resolvedURL };
 				}
 			} finally {
-				_.$importVue?.Nprogress?.done?.();
+				_.$callFn(_, "$importVue.Nprogress.done")();
 			}
 		};
 
@@ -1893,6 +2045,22 @@
 	}
 
 	/**
+	 * 通过ID获取xItem的vm实例
+	 * @param id
+	 * @returns Vue实例
+	 */
+	/* @typescriptDeclare (idName:string)=>Promise<[msg,vm][]> */
+	_.$xItemVmById = function (id) {
+		const itemDom = document.getElementById(id);
+		const { formItemId } = _.$val(itemDom, "dataset") || {};
+		if (formItemId) {
+			return Vue._X_ITEM_VM_S[formItemId];
+		} else {
+			return null;
+		}
+	};
+
+	/**
 	 * TODO: isHide的元素不需要校验
 	 *
 	 * @param {any} selector  满足jQuery能选出来就行 form#表单的包裹元素，校验元素内的所有控件
@@ -1918,7 +2086,7 @@
 			if (formItemId) {
 				const vm = Vue._X_ITEM_VM_S[formItemId];
 				let msg;
-				if (vm?.validate) {
+				if (_.$val(vm, "validate")) {
 					msg = await vm.validate();
 				} else {
 					console.log("miss vm in _X_ITEM_VM_S");
@@ -1955,12 +2123,12 @@
 		const $doms = xItemDomBy(selector);
 		for (const dom of $doms) {
 			const { formItemId } = dom.dataset || {};
-			const vm = Vue._X_ITEM_VM_S?.[formItemId || "________No"];
+			const vm = _.$val(Vue, `_X_ITEM_VM_S.${formItemId || "________No"}`);
 			_.each(attrs, (val, key) => {
 				if (vm && key === "disabled" && Vue.hasOwn(vm.privateState, "isDisabled")) {
 					vm.privateState.isDisabled = val ? "disabled" : "";
 				} else {
-					if (vm?.configs) {
+					if (_.$val(vm, "configs")) {
 						Vue.set(vm.configs, key, val);
 					}
 				}
@@ -1973,7 +2141,7 @@
 		try {
 			const targetDom = document.querySelector(`#${id}`);
 			const { formItemId } = targetDom.dataset || {};
-			vm = Vue._X_ITEM_VM_S?.[formItemId || "________No"] || {};
+			vm = _.$val(Vue, `_X_ITEM_VM_S.${formItemId || "________No"}`) || {};
 		} catch (error) {
 		} finally {
 			return vm;
@@ -1994,8 +2162,8 @@
 			if ($wrapper) {
 				const itemSelector = `.el-table__body-wrapper [data-row-index=${rowIndex}][data-col-prop=${colProp}]`;
 				const targetDom = $wrapper.find(itemSelector);
-				const { formItemId } = targetDom?.[0].dataset || {};
-				vm = Vue._X_ITEM_VM_S?.[formItemId || "________No"] || {};
+				const { formItemId } = _.$val(targetDom, "0.dataset") || {};
+				vm = _.$val(Vue, `_X_ITEM_VM_S.${formItemId || "________No"}`) || {};
 			}
 		} catch (error) {
 		} finally {
@@ -2018,7 +2186,7 @@
 						if (value === undefined) {
 							value = obj.p_value;
 						}
-						return obj?.configs?.options?.find(i => i.value === value) || {};
+						return _.$callFn(obj, "configs.options.find")(i => i.value === value) || {};
 					};
 				}
 				return obj[prop];
@@ -2151,16 +2319,31 @@
 
 		/**
 		 * 从数组中取第一个元素的value，如果数组为空则返回defaultValue
-		 * @param {*} options
+		 * @param {*} optionArray
 		 * @param {*} defaultValue
 		 * @returns
 		 */
-		_.$getFirstOrDefaultValue = function (options, defaultValue) {
+		_.$valuInArrayOrFirst = function (optionArray, obj) {
+			const [{ value, key }] = _.map(obj, (value, key) => ({ value, key }));
+			if (_.some(optionArray, item => item[key] === value)) {
+				return value;
+			} else {
+				return _.first(optionArray).value;
+			}
+		};
+
+		/**
+		 * 从数组中取第一个元素的value，如果数组为空则返回defaultValue
+		 * @param {*} optionArray
+		 * @param {*} defaultValue
+		 * @returns
+		 */
+		_.$getFirstOrDefaultValue = function (optionArray, defaultValue) {
 			if (defaultValue === undefined) {
 				alert("_.$getFirstOrDefaultValue miss defaultValue");
 			}
-			if (_.$isArrayFill(options)) {
-				return options[0].value;
+			if (_.$isArrayFill(optionArray)) {
+				return optionArray[0].value;
 			}
 			return defaultValue;
 		};
@@ -2259,7 +2442,7 @@
 			const key = JSON.stringify([url, data, method]);
 			let entry = this.cache[key];
 			const clearCacheEntry = () => {
-				if (entry?.clearTimer) clearTimeout(entry.clearTimer);
+				if (_.$val(entry, "clearTimer")) clearTimeout(entry.clearTimer);
 				entry.clearTimer = setTimeout(() => {
 					delete this.cache[key];
 				}, cacheDuration);

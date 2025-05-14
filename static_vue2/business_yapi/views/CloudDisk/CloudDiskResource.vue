@@ -110,7 +110,7 @@ export default async function () {
 					};
 					return [
 						{
-							label: i18n("名称"),
+							label: i18n("name"),
 							preset: "text",
 							onClick: genOnClickFn("name")
 						},

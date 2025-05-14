@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<div><slot /></div>
 </template>

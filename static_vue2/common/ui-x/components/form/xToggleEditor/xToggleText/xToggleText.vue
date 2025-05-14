@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<div class="flex middle xToggleText">
 		<div class="mr8" v-if="isEdit">

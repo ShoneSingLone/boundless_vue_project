@@ -81,7 +81,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 
 			const title = {
 				prop: "title",
-				label: i18n("名称"),
+				label: i18n("name"),
 				width: 300,
 				cellRenderer({ rowData }) {
 					return hDiv([
@@ -164,7 +164,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 
 			const status = {
 				prop: "status",
-				label: i18n("状态"),
+				label: i18n("status_info"),
 				width: 150
 			};
 
@@ -533,6 +533,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 					transition: `all 0.3s ease-in`
 				};
 				if (cptIsShowDetail) {
+					/* filter: blur(6px) */
 					style.filter = `blur(6px)`;
 					// style.transform = `translate(-50px, -50px)`;
 				}

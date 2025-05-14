@@ -63,7 +63,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				if (this.confirm) {
 					return this.confirm;
 				}
-				if (this.configs?.confirm) {
+				if (_.$val(this, "configs.confirm")) {
 					return this.configs.confirm;
 				}
 				return false;
@@ -72,7 +72,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				if (this.icon) {
 					return this.icon;
 				}
-				if (this.configs?.icon) {
+				if (_.$val(this, "configs.icon")) {
 					return this.configs.icon;
 				}
 				return "";
@@ -81,7 +81,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				return (this.elFormItem || {}).elFormItemSize;
 			},
 			buttonSize() {
-				if (this.configs?.size) {
+				if (_.$val(this, "configs.size")) {
 					return this.configs.size;
 				}
 				return this.size || this._elFormItemSize || PRIVATE_GLOBAL.x_ui.size;
@@ -132,7 +132,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 					value ? `${prefix}${value}` : defaultString;
 				return [
 					"xBtn el-button",
-					vm?.configs?.class || "",
+					_.$val(vm, "configs.class") || "",
 					/* 颜色 */
 					setClass("el-button--", vm.cptPreset),
 					/* 大小 */
@@ -151,26 +151,29 @@ export default async function ({ PRIVATE_GLOBAL }) {
 						return prop;
 					}
 				}
-				if (this.configs?.shape) {
-					return this.configs?.shape;
+				if (_.$val(this, "configs.shape")) {
+					return _.$val(this, "configs.shape");
 				}
 			}
 		},
 		methods: {
 			calLabel() {
-				if (_.isFunction(this.configs?.label)) {
+				if (_.isFunction(_.$val(this, "configs.label"))) {
 					return this.configs.label.call(this.configs, { xBtn: this });
 				}
-				if (_.isString(this.configs?.label) || this.configs?.label?.TYPE_IS_VNODE) {
+				if (
+					_.isString(_.$val(this, "configs.label")) ||
+					_.$val(this, "configs.label.TYPE_IS_VNODE")
+				) {
 					return this.configs.label;
 				}
 				return "";
 			},
 			calChildren() {
-				if (_.isFunction(this.$vSlots?.default)) {
+				if (_.isFunction(_.$val(this, "$vSlots.default"))) {
 					return hSpan(this.$vSlots.default());
 				}
-				if (this.$vSlots?.TYPE_IS_VNODE) {
+				if (_.$val(this, "$vSlots.TYPE_IS_VNODE")) {
 					return this.$vSlots;
 				}
 				return this.calLabel();
@@ -207,7 +210,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 					this.privateLoading = true;
 					if (_.isFunction(this.$listeners.click)) {
 						await this.$listeners.click.apply(this, args);
-					} else if (_.isFunction(this.configs?.onClick)) {
+					} else if (_.isFunction(_.$val(this, "configs.onClick"))) {
 						await this.configs.onClick.apply(this, args);
 					}
 				} catch (error) {
@@ -322,7 +325,6 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	});
 }
 </script>
-
 <style lang="less">
 .el-button,
 a.el-button {
@@ -1004,7 +1006,7 @@ a.el-button {
 		color: var(--el-button-hover-text-color);
 		border-color: var(--el-button-hover-border-color);
 		background-color: var(--el-button-hover-bg-color);
-		transform: scale(1.01);
+		transform: scale(0.98);
 		.xIcon {
 			color: var(--el-button-hover-text-color);
 		}
@@ -1014,7 +1016,7 @@ a.el-button {
 		color: var(--el-button-active-text-color);
 		border-color: var(--el-button-active-border-color);
 		background-color: var(--el-button-active-bg-color);
-		transform: scale(0.99);
+		transform: scale(0.96);
 	}
 
 	&.is-disabled,

@@ -1,12 +1,3 @@
-<style lang="less">
-.x-devlog {
-	position: fixed;
-	background-color: #607d8b38;
-	width: 300px;
-	max-height: 300px;
-	border: 1px solid var(--el-border-color-lighter);
-}
-</style>
 <template>
 	<div v-if="isShow" class="x-devlog flex vertical" ref="refBorder1" :style="borderStyle">
 		<div class="flex middle ml">
@@ -62,3 +53,12 @@ export default async function () {
 	});
 }
 </script>
+<style lang="less">
+.x-devlog {
+	position: fixed;
+	background-color: #607d8b38;
+	width: 300px;
+	max-height: 300px;
+	border: 1px solid var(--el-border-color-lighter);
+}
+</style>

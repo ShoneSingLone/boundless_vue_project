@@ -1,3 +1,115 @@
+<template>
+	<transition name="el-alert-fade">
+		<div
+			class="el-alert x-alert"
+			:class="[typeClass, center ? 'is-center' : '', 'is-' + effect]"
+			v-show="visible"
+			role="alert">
+			<xIcon :icon="iconName" v-if="showIcon" :class="['alert__icon', iconName, isBigIcon]" />
+			<div class="el-alert__content">
+				<span class="el-alert__title" :class="[isBoldTitle]" v-if="title || $slots.title">
+					<slot name="title">{{ title }}</slot>
+				</span>
+				<p class="el-alert__description" v-if="$slots.default && !description">
+					<slot></slot>
+				</p>
+				<p class="el-alert__description" v-if="description && !$slots.default">
+					{{ description }}
+				</p>
+				<xIcon
+					icon="close"
+					:class="cptCloseClassName"
+					v-show="closable && !closeText"
+					@click="close()" />
+				<span v-show="closeText" :class="cptCloseClassName">{{ closeText }}</span>
+			</div>
+		</div>
+	</transition>
+</template>
+<script lang="ts">
+export default async function () {
+	const TYPE_CLASSES_MAP = {
+		success: "el-icon-success",
+		warning: "el-icon-warning",
+		error: "el-icon-error"
+	};
+
+	return defineComponent({
+		name: "xAlert",
+		props: {
+			title: {
+				type: String,
+				default: ""
+			},
+			description: {
+				type: String,
+				default: ""
+			},
+			type: {
+				type: String,
+				default: "info"
+			},
+			closable: {
+				type: Boolean,
+				default: true
+			},
+			closeText: {
+				type: String,
+				default: ""
+			},
+			showIcon: Boolean,
+			center: Boolean,
+			effect: {
+				type: String,
+				default: "light",
+				validator: function (value) {
+					return ["light", "dark"].indexOf(value) !== -1;
+				}
+			}
+		},
+
+		data() {
+			return {
+				visible: true
+			};
+		},
+
+		methods: {
+			close() {
+				this.visible = false;
+				this.$emit("close");
+			}
+		},
+
+		computed: {
+			cptCloseClassName({ closeText }) {
+				return [
+					"el-alert__closebtn",
+					{
+						"is-customed": closeText !== "",
+						"el-icon-close": closeText === ""
+					}
+				];
+			},
+			typeClass() {
+				return `el-alert--${this.type}`;
+			},
+
+			iconName() {
+				return TYPE_CLASSES_MAP[this.type] || "info-filled";
+			},
+
+			isBigIcon() {
+				return this.description || this.$slots.default ? "is-big" : "";
+			},
+
+			isBoldTitle() {
+				return this.description || this.$slots.default ? "is-bold" : "";
+			}
+		}
+	});
+}
+</script>
 <style lang="less">
 .el-alert.x-alert {
 	width: 100%;
@@ -145,115 +257,3 @@
 	opacity: 0;
 }
 </style>
-<template>
-	<transition name="el-alert-fade">
-		<div
-			class="el-alert x-alert"
-			:class="[typeClass, center ? 'is-center' : '', 'is-' + effect]"
-			v-show="visible"
-			role="alert">
-			<xIcon :icon="iconName" v-if="showIcon" :class="['alert__icon', iconName, isBigIcon]" />
-			<div class="el-alert__content">
-				<span class="el-alert__title" :class="[isBoldTitle]" v-if="title || $slots.title">
-					<slot name="title">{{ title }}</slot>
-				</span>
-				<p class="el-alert__description" v-if="$slots.default && !description">
-					<slot></slot>
-				</p>
-				<p class="el-alert__description" v-if="description && !$slots.default">
-					{{ description }}
-				</p>
-				<xIcon
-					icon="close"
-					:class="cptCloseClassName"
-					v-show="closable && !closeText"
-					@click="close()" />
-				<span v-show="closeText" :class="cptCloseClassName">{{ closeText }}</span>
-			</div>
-		</div>
-	</transition>
-</template>
-<script lang="ts">
-export default async function () {
-	const TYPE_CLASSES_MAP = {
-		success: "el-icon-success",
-		warning: "el-icon-warning",
-		error: "el-icon-error"
-	};
-
-	return defineComponent({
-		name: "xAlert",
-		props: {
-			title: {
-				type: String,
-				default: ""
-			},
-			description: {
-				type: String,
-				default: ""
-			},
-			type: {
-				type: String,
-				default: "info"
-			},
-			closable: {
-				type: Boolean,
-				default: true
-			},
-			closeText: {
-				type: String,
-				default: ""
-			},
-			showIcon: Boolean,
-			center: Boolean,
-			effect: {
-				type: String,
-				default: "light",
-				validator: function (value) {
-					return ["light", "dark"].indexOf(value) !== -1;
-				}
-			}
-		},
-
-		data() {
-			return {
-				visible: true
-			};
-		},
-
-		methods: {
-			close() {
-				this.visible = false;
-				this.$emit("close");
-			}
-		},
-
-		computed: {
-			cptCloseClassName({ closeText }) {
-				return [
-					"el-alert__closebtn",
-					{
-						"is-customed": closeText !== "",
-						"el-icon-close": closeText === ""
-					}
-				];
-			},
-			typeClass() {
-				return `el-alert--${this.type}`;
-			},
-
-			iconName() {
-				return TYPE_CLASSES_MAP[this.type] || "info-filled";
-			},
-
-			isBigIcon() {
-				return this.description || this.$slots.default ? "is-big" : "";
-			},
-
-			isBoldTitle() {
-				return this.description || this.$slots.default ? "is-bold" : "";
-			}
-		}
-	});
-}
-</script>

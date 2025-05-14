@@ -14,6 +14,13 @@ type t_previewImgsOptions = {
 	index?: number;
 	/** 初始展示图片的地址*/
 	currentUrl?: string;
+	/* mask的样式 */
+	styleViewerMask?: {
+		/** 背景色*/
+		backgroundColor?: string;
+		/** 透明度*/
+		opacity?: number;
+	};
 };
 
 declare type previewImgs = {

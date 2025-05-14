@@ -142,7 +142,9 @@ export default async function () {
 				let { _reference } = this.popperJS;
 				if (_reference) {
 					$(this.popperJS._popper).css({
-						"--xSelectDropdown-min-width": `${_reference.offsetWidth}px`
+						"--xSelectDropdown-min-width": _reference.offsetWidth
+							? `${_reference.offsetWidth}px`
+							: 0
 					});
 				}
 				let placement = this.popperJS._popper.getAttribute("x-placement").split("-")[0];

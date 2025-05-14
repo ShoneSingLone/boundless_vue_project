@@ -41,7 +41,7 @@ export default async function () {
 
 					if (slotVNode.data) {
 						const { span, classString } = (() => {
-							if (slotVNode.data?.attrs?.span === FULL) {
+							if (_.$val(slotVNode, "data.attrs.span") === FULL) {
 								fullCount[index] = FULL;
 								return { span: cptCol.value, classString: " full" };
 							}
@@ -53,7 +53,7 @@ export default async function () {
 							}
 
 							return {
-								span: Number(slotVNode.data?.attrs?.span || 1),
+								span: Number(_.$val(slotVNode, "data.attrs.span") || 1),
 								classString: ""
 							};
 						})();
@@ -82,7 +82,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .xForm {
 	@listFlex: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;

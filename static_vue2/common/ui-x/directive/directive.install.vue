@@ -1,6 +1,6 @@
 <script lang="ts">
-export default async function () {
-	(function (/* 预览图片 */) {
+export default async function ({ PRIVATE_GLOBAL }) {
+	(function () /* 预览图片 */ {
 		let instance;
 		_.$previewImgs = async function (options) {
 			const ImageViewer = await _.$importVue("/common/ui-x/directive/xImg/ImageViewer.vue");
@@ -20,7 +20,7 @@ export default async function () {
 		};
 	})();
 
-	(function (/* 弹窗 */) {
+	(function () /* 弹窗 */ {
 		_.$openModal = async function (options, modalConfigs) {
 			const xModal = await _.$importVue("/common/ui-x/directive/xModal/xModal.vue", {
 				options,
@@ -32,10 +32,13 @@ export default async function () {
 			instance.$mount();
 			document.body.appendChild(instance.$el);
 			instance.viewerZIndex = PopupManager.nextZIndex();
+			if (_.isFunction(PRIVATE_GLOBAL.x_open_modal_do_some_thing_before_open)) {
+				PRIVATE_GLOBAL.x_open_modal_do_some_thing_before_open({ instance });
+			}
 			return instance;
 		};
 	})();
-	(function (/* xDrawer */) {
+	(function () /* xDrawer */ {
 		_.$openDrawer = async function (options) {
 			const [xDrawer, PopupManager] = await _.$importVue([
 				"/common/ui-x/directive/xDrawer/xDrawer.vue",
@@ -82,7 +85,7 @@ export default async function () {
 		};
 	})();
 
-	(function (/* notification */) {
+	(function () /* notification */ {
 		let instances = [];
 		let seed = 1;
 
@@ -95,7 +98,7 @@ export default async function () {
 
 		_.$notify = async function (options) {
 			const xNotification = await getCurrentNotifyComponent(
-				_xUtils.globalConfigs?.xNotification?.componentName
+				_.$val(_xUtils, "globalConfigs.xNotification.componentName")
 			);
 			const PopupManager = await _.$importVue("/common/libs/VuePopper/popupManager.vue");
 
@@ -185,7 +188,7 @@ export default async function () {
 		};
 	})();
 
-	(function (/* message */) {
+	(function () /* message */ {
 		let instances = [];
 		let seed = 1;
 
@@ -197,7 +200,7 @@ export default async function () {
 
 		_.$msg = async function (options) {
 			const xMsg = await getCurrentMessageComponent(
-				_xUtils.globalConfigs?.xNotification?.componentName
+				_.$val(_xUtils, "globalConfigs.xNotification.componentName")
 			);
 			const PopupManager = await _.$importVue("/common/libs/VuePopper/popupManager.vue");
 
@@ -292,4 +295,3 @@ export default async function () {
 	})();
 }
 </script>
-<style lang="less"></style>

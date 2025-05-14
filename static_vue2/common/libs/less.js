@@ -100,7 +100,7 @@
 				} else {
 					try {
 						options[opt] = JSON.parse(tag.dataset[opt]);
-					} catch (_) {}
+					} catch (_) { }
 				}
 			}
 		}
@@ -189,10 +189,10 @@
 		options.env =
 			options.env ||
 			(window.location.hostname == "127.0.0.1" ||
-			window.location.hostname == "0.0.0.0" ||
-			window.location.hostname == "localhost" ||
-			(window.location.port && window.location.port.length > 0) ||
-			options.isFileProtocol
+				window.location.hostname == "0.0.0.0" ||
+				window.location.hostname == "localhost" ||
+				(window.location.port && window.location.port.length > 0) ||
+				options.isFileProtocol
 				? "development"
 				: "production");
 		var dumpLineNumbers = /!dumpLineNumbers:(comments|mediaquery|all)/.exec(
@@ -261,6 +261,7 @@
 				"charsetLookup",
 				"getSourceMapGenerator"
 			];
+
 			var requiredFunctions = [];
 			var functions = requiredFunctions.concat(optionalFunctions);
 			for (var i = 0; i < functions.length; i++) {
@@ -584,10 +585,10 @@
 		};
 		Node.compare = function (a, b) {
 			/* returns:
-           -1: a < b
-           0: a = b
-           1: a > b
-           and *any* other value for a != b (e.g. undefined, NaN, -2 etc.) */
+			  -1: a < b
+			  0: a = b
+			  1: a > b
+			  and *any* other value for a != b (e.g. undefined, NaN, -2 etc.) */
 			if (
 				a.compare &&
 				// for "symmetric results" force toCSS-based comparison
@@ -1057,19 +1058,19 @@
 	}
 
 	/*! *****************************************************************************
-  Copyright (c) Microsoft Corporation. All rights reserved.
-  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-  this file except in compliance with the License. You may obtain a copy of the
-  License at http://www.apache.org/licenses/LICENSE-2.0
-
-  THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-  WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-  MERCHANTABLITY OR NON-INFRINGEMENT.
-
-  See the Apache Version 2.0 License for specific language governing permissions
-  and limitations under the License.
-  ***************************************************************************** */
+   Copyright (c) Microsoft Corporation. All rights reserved.
+   Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+   this file except in compliance with the License. You may obtain a copy of the
+   License at http://www.apache.org/licenses/LICENSE-2.0
+  
+   THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+   WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+   MERCHANTABLITY OR NON-INFRINGEMENT.
+  
+   See the Apache Version 2.0 License for specific language governing permissions
+   and limitations under the License.
+   ***************************************************************************** */
 
 	function __spreadArrays() {
 		for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
@@ -1321,7 +1322,7 @@
 		}
 	};
 	if (typeof Object.create === "undefined") {
-		var F = function () {};
+		var F = function () { };
 		F.prototype = Error.prototype;
 		LessError.prototype = new F();
 	} else {
@@ -1362,7 +1363,7 @@
 						stylize(
 							stylize(
 								stylize(extract[1].substr(this.column, 1), "bold") +
-									extract[1].slice(this.column + 1),
+								extract[1].slice(this.column + 1),
 								"red"
 							),
 							"inverse"
@@ -1846,8 +1847,8 @@
 		}
 	};
 	/*
-   parse is used whilst parsing
-   */
+	parse is used whilst parsing
+	*/
 	var parseCopyProperties = [
 		// options
 		"paths",
@@ -2291,22 +2292,22 @@
 				this._variables = !this.rules
 					? {}
 					: this.rules.reduce(function (hash, r) {
-							if (r instanceof Declaration && r.variable === true) {
-								hash[r.name] = r;
-							}
-							// when evaluating variables in an import statement, imports have not been eval'd
-							// so we need to go inside import statements.
-							// guard against root being a string (in the case of inlined less)
-							if (r.type === "Import" && r.root && r.root.variables) {
-								var vars = r.root.variables();
-								for (var name_1 in vars) {
-									if (vars.hasOwnProperty(name_1)) {
-										hash[name_1] = r.root.variable(name_1);
-									}
+						if (r instanceof Declaration && r.variable === true) {
+							hash[r.name] = r;
+						}
+						// when evaluating variables in an import statement, imports have not been eval'd
+						// so we need to go inside import statements.
+						// guard against root being a string (in the case of inlined less)
+						if (r.type === "Import" && r.root && r.root.variables) {
+							var vars = r.root.variables();
+							for (var name_1 in vars) {
+								if (vars.hasOwnProperty(name_1)) {
+									hash[name_1] = r.root.variable(name_1);
 								}
 							}
-							return hash;
-						}, {});
+						}
+						return hash;
+					}, {});
 			}
 			return this._variables;
 		},
@@ -2315,20 +2316,20 @@
 				this._properties = !this.rules
 					? {}
 					: this.rules.reduce(function (hash, r) {
-							if (r instanceof Declaration && r.variable !== true) {
-								var name_2 =
-									r.name.length === 1 && r.name[0] instanceof Keyword
-										? r.name[0].value
-										: r.name;
-								// Properties don't overwrite as they can merge
-								if (!hash["$" + name_2]) {
-									hash["$" + name_2] = [r];
-								} else {
-									hash["$" + name_2].push(r);
-								}
+						if (r instanceof Declaration && r.variable !== true) {
+							var name_2 =
+								r.name.length === 1 && r.name[0] instanceof Keyword
+									? r.name[0].value
+									: r.name;
+							// Properties don't overwrite as they can merge
+							if (!hash["$" + name_2]) {
+								hash["$" + name_2] = [r];
+							} else {
+								hash["$" + name_2].push(r);
 							}
-							return hash;
-						}, {});
+						}
+						return hash;
+					}, {});
 			}
 			return this._properties;
 		},
@@ -3178,7 +3179,7 @@
 			if (context && context.strictUnits && !this.unit.isSingular()) {
 				throw new Error(
 					"Multiple units in dimension. Correct the units or use the unit function. Bad unit: " +
-						this.unit.toString()
+					this.unit.toString()
 				);
 			}
 			var value = this.fround(context, this.value);
@@ -3220,11 +3221,11 @@
 					if (context.strictUnits && other.unit.toString() !== unit.toString()) {
 						throw new Error(
 							"Incompatible units. Change the units or use the unit function. " +
-								("Bad units: '" +
-									unit.toString() +
-									"' and '" +
-									other.unit.toString() +
-									"'.")
+							("Bad units: '" +
+								unit.toString() +
+								"' and '" +
+								other.unit.toString() +
+								"'.")
 						);
 					}
 					value = this._operate(context, op, this.value, other.value);
@@ -3361,19 +3362,19 @@
 	});
 
 	/*! *****************************************************************************
-  Copyright (c) Microsoft Corporation.
-
-  Permission to use, copy, modify, and/or distribute this software for any
-  purpose with or without fee is hereby granted.
-
-  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-  PERFORMANCE OF THIS SOFTWARE.
-  ***************************************************************************** */
+   Copyright (c) Microsoft Corporation.
+  
+   Permission to use, copy, modify, and/or distribute this software for any
+   purpose with or without fee is hereby granted.
+  
+   THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+   REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+   AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+   INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+   LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+   OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+   PERFORMANCE OF THIS SOFTWARE.
+   ***************************************************************************** */
 
 	function __spreadArray(to, from, pack) {
 		if (pack || arguments.length === 2)
@@ -4206,7 +4207,7 @@
 		}
 	});
 
-	var JsEvalNode = function () {};
+	var JsEvalNode = function () { };
 	JsEvalNode.prototype = Object.assign(new Node(), {
 		evaluateJavaScript: function (expression, context) {
 			var result;
@@ -4569,6 +4570,7 @@
 		this.selectors = [
 			new Selector([new Element(null, name, false, this._index, this._fileInfo)])
 		];
+
 		this.params = params;
 		this.condition = condition;
 		this.variadic = variadic;
@@ -4708,12 +4710,12 @@
 			var rules = !this.rules
 				? this.rules
 				: this.rules.map(function (r) {
-						if (r.makeImportant) {
-							return r.makeImportant(true);
-						} else {
-							return r;
-						}
-					});
+					if (r.makeImportant) {
+						return r.makeImportant(true);
+					} else {
+						return r;
+					}
+				});
 			var result = new Definition(
 				this.name,
 				this.params,
@@ -4793,12 +4795,12 @@
 			var requiredArgsCnt = !args
 				? 0
 				: args.reduce(function (count, p) {
-						if (optionalParameters.indexOf(p.name) < 0) {
-							return count + 1;
-						} else {
-							return count;
-						}
-					}, 0);
+					if (optionalParameters.indexOf(p.name) < 0) {
+						return count + 1;
+					} else {
+						return count;
+					}
+				}, 0);
 			if (!this.variadic) {
 				if (requiredArgsCnt < this.required) {
 					return false;
@@ -5037,19 +5039,19 @@
 				"(" +
 				(args
 					? args
-							.map(function (a) {
-								var argValue = "";
-								if (a.name) {
-									argValue += a.name + ":";
-								}
-								if (a.value.toCSS) {
-									argValue += a.value.toCSS();
-								} else {
-									argValue += "???";
-								}
-								return argValue;
-							})
-							.join(", ")
+						.map(function (a) {
+							var argValue = "";
+							if (a.name) {
+								argValue += a.name + ":";
+							}
+							if (a.value.toCSS) {
+								argValue += a.value.toCSS();
+							} else {
+								argValue += "???";
+							}
+							return argValue;
+						})
+						.join(", ")
 					: "") +
 				")"
 			);
@@ -5098,7 +5100,7 @@
 	};
 
 	var AbstractFileManager = /** @class */ (function () {
-		function AbstractFileManager() {}
+		function AbstractFileManager() { }
 		AbstractFileManager.prototype.getPath = function (filename) {
 			var j = filename.lastIndexOf("?");
 			if (j > 0) {
@@ -5923,7 +5925,7 @@
 					var selector = "_unknown_";
 					try {
 						selector = extend.selector.toCSS({});
-					} catch (_) {}
+					} catch (_) { }
 					if (!indices[extend.index + " " + selector]) {
 						indices[extend.index + " " + selector] = true;
 						logger$1.warn("extend '" + selector + "' has no matches");
@@ -6027,7 +6029,7 @@
 					try {
 						selectorOne = extendsToAdd[0].selfSelectors[0].toCSS();
 						selectorTwo = extendsToAdd[0].selector.toCSS();
-					} catch (e) {}
+					} catch (e) { }
 					throw {
 						message:
 							"extend circular reference detected. One of the circular extends is currently:" +
@@ -6161,7 +6163,7 @@
 							) ||
 							(potentialMatch.matched > 0 &&
 								needleElements[potentialMatch.matched].combinator.value !==
-									targetCombinator)
+								targetCombinator)
 						) {
 							potentialMatch = null;
 						} else {
@@ -6239,7 +6241,7 @@
 						if (
 							i !== 0 ||
 							(elementValue1.elements[i].combinator.value || " ") !==
-								(elementValue2.elements[i].combinator.value || " ")
+							(elementValue2.elements[i].combinator.value || " ")
 						) {
 							return false;
 						}
@@ -6509,7 +6511,7 @@
 			// so we have to clear that state here so it isn't used if toCSS is called twice
 			mixinNode.frames = [];
 		},
-		visitExtend: function (extendNode, visitArgs) {},
+		visitExtend: function (extendNode, visitArgs) { },
 		visitComment: function (commentNode, visitArgs) {
 			if (commentNode.blocksVisibility() || commentNode.isSilent(this._context)) {
 				return;
@@ -6632,7 +6634,7 @@
 				// remove rulesets from this ruleset body and compile them separately
 				var nodeRules = rulesetNode.rules;
 				var nodeRuleCnt = nodeRules ? nodeRules.length : 0;
-				for (var i = 0; i < nodeRuleCnt; ) {
+				for (var i = 0; i < nodeRuleCnt;) {
 					rule = nodeRules[i];
 					if (rule && rule.rules) {
 						// visit because we are moving them out from being a child
@@ -7343,9 +7345,9 @@
 			}
 			error(
 				msg ||
-					(typeof arg === "string"
-						? "expected '" + arg + "' got '" + parserInput.currentChar() + "'"
-						: "unexpected token")
+				(typeof arg === "string"
+					? "expected '" + arg + "' got '" + parserInput.currentChar() + "'"
+					: "unexpected token")
 			);
 		}
 		// Specialization of expect()
@@ -7388,7 +7390,7 @@
 						try {
 							result._index = i + currentIndex;
 							result._fileInfo = fileInfo;
-						} catch (e) {}
+						} catch (e) { }
 						returnNodes.push(result);
 					} else {
 						returnNodes.push(null);
@@ -7751,8 +7753,8 @@
 					//
 					customFuncCall: function (name) {
 						/* Ideally the table is to be moved out of here for faster perf.,
-                         but it's quite tricky since it relies on all these `parsers`
-                         and `expect` available only here */
+							   but it's quite tricky since it relies on all these `parsers`
+							   and `expect` available only here */
 						return {
 							alpha: f(parsers.ieAlpha, true),
 							boolean: f(condition),
@@ -7864,8 +7866,8 @@
 						expectChar(")");
 						return new tree.URL(
 							value.value != null ||
-							value instanceof tree.Variable ||
-							value instanceof tree.Property
+								value instanceof tree.Variable ||
+								value instanceof tree.Property
 								? value
 								: new tree.Anonymous(value, index),
 							index,
@@ -9682,15 +9684,15 @@
 									? new tree.Keyword(s)
 									: s.charAt(0) === "@"
 										? new tree.Variable(
-												"@" + s.slice(2, -1),
-												index[k],
-												fileInfo
-											)
+											"@" + s.slice(2, -1),
+											index[k],
+											fileInfo
+										)
 										: new tree.Property(
-												"$" + s.slice(2, -1),
-												index[k],
-												fileInfo
-											);
+											"$" + s.slice(2, -1),
+											index[k],
+											fileInfo
+										);
 						}
 						return name;
 					}
@@ -9832,7 +9834,7 @@
 				});
 				a = number$1(a);
 				return new Color(rgb, a, "rgba");
-			} catch (e) {}
+			} catch (e) { }
 		},
 		hsl: function (h, s, l) {
 			var a = 1;
@@ -9886,7 +9888,7 @@
 				var rgb = [hue(h + 1 / 3) * 255, hue(h) * 255, hue(h - 1 / 3) * 255];
 				a = number$1(a);
 				return new Color(rgb, a, "hsla");
-			} catch (e) {}
+			} catch (e) { }
 		},
 		hsv: function (h, s, v) {
 			return colorFunctions.hsva(h, s, v, 1.0);
@@ -9909,6 +9911,7 @@
 				[3, 1, 0],
 				[0, 1, 2]
 			];
+
 			return colorFunctions.rgba(
 				vs[perm[i][0]] * 255,
 				vs[perm[i][1]] * 255,
@@ -10051,6 +10054,7 @@
 				color1.rgb[1] * w1 + color2.rgb[1] * w2,
 				color1.rgb[2] * w1 + color2.rgb[2] * w2
 			];
+
 			var alpha = color1.alpha * p + color2.alpha * (1 - p);
 			return new Color(rgb, alpha);
 		},
@@ -10549,7 +10553,7 @@
 					: currentUnified.unit.toString();
 			unitStatic =
 				(unit !== "" && unitStatic === undefined) ||
-				(unit !== "" && order[0].unify().unit.toString() === "")
+					(unit !== "" && order[0].unify().unit.toString() === "")
 					? unit
 					: unitStatic;
 			unitClone =
@@ -10595,7 +10599,7 @@
 			}
 			try {
 				return minMax(true, args);
-			} catch (e) {}
+			} catch (e) { }
 		},
 		max: function () {
 			var args = [];
@@ -10604,7 +10608,7 @@
 			}
 			try {
 				return minMax(false, args);
-			} catch (e) {}
+			} catch (e) { }
 		},
 		convert: function (val, unit) {
 			return val.convertTo(unit.value);
@@ -10929,6 +10933,7 @@
 			new visitors.ExtendVisitor(),
 			new visitors.ToCSSVisitor({ compress: Boolean(options.compress) })
 		];
+
 		var preEvalVisitors = [];
 		var v;
 		var visitorIterator;
@@ -11398,7 +11403,7 @@
 					if (compress) {
 						logger$1.warn(
 							"The compress option has been deprecated. " +
-								"We recommend you use a dedicated css minifier, for instance see less-plugin-clean-css."
+							"We recommend you use a dedicated css minifier, for instance see less-plugin-clean-css."
 						);
 					}
 					var toCSSOptions = {
@@ -11493,8 +11498,8 @@
 						callback(null, { rules: [] }, false, null);
 						logger$1.info(
 							"The file " +
-								fullPath +
-								" was skipped because it was not found and the import was marked optional."
+							fullPath +
+							" was skipped because it was not found and the import was marked optional."
 						);
 					} else {
 						// Inline imports aren't cached here.
@@ -11886,7 +11891,7 @@
 	var logger;
 	var fileCache = {};
 	// TODOS - move log somewhere. pathDiff and doing something similar in node. use pathDiff in the other browser file for the initial load
-	var FileManager = function () {};
+	var FileManager = function () { };
 	FileManager.prototype = Object.assign(new AbstractFileManager(), {
 		alwaysMakePathsAbsolute: function () {
 			return true;
@@ -12243,7 +12248,7 @@
 		if (options.env !== "development") {
 			try {
 				cache = typeof window.localStorage === "undefined" ? null : window.localStorage;
-			} catch (_) {}
+			} catch (_) { }
 		}
 		return {
 			setCSS: function (path, lastModified, modifyVars, styles) {
@@ -12523,7 +12528,6 @@
 				if (remainingSheets === 0) {
 					endTime = new Date();
 					totalMilliseconds = endTime - startTime;
-					console.log("Less has finished and no sheets were loaded.");
 					resolve({
 						startTime: startTime,
 						endTime: endTime,
@@ -12547,10 +12551,10 @@
 							browser.createCSS(window.document, css, sheet);
 							less.logger.info(
 								"CSS for " +
-									sheet.href +
-									" generated in " +
-									(new Date() - endTime) +
-									"ms"
+								sheet.href +
+								" generated in " +
+								(new Date() - endTime) +
+								"ms"
 							);
 							// Count completed sheet
 							remainingSheets--;
@@ -12559,8 +12563,8 @@
 								totalMilliseconds = new Date() - startTime;
 								less.logger.info(
 									"Less has finished. CSS generated in " +
-										totalMilliseconds +
-										"ms"
+									totalMilliseconds +
+									"ms"
 								);
 								resolve({
 									startTime: startTime,

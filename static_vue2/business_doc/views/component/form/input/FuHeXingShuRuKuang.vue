@@ -18,7 +18,7 @@
 					<xOption label="订单号" value="2"></xOption>
 					<xOption label="用户电话" value="3"></xOption>
 				</xSelect>
-				<xBtn slot="append" icon="el-icon-search"></xBtn>
+				<xBtn slot="append" icon="search"></xBtn>
 			</xInput>
 		</div>
 	</div>

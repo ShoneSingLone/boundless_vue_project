@@ -11,7 +11,10 @@ export default async function () {
 		.on("mouseup", e => {
 			nodeList.forEach(node => {
 				try {
-					node[EVENT_CLICK_OUTSIDE_CONTEXT]?.documentHandler?.(e, startClick);
+					_.$callFn(node, `${EVENT_CLICK_OUTSIDE_CONTEXT}.documentHandler`)(
+						e,
+						startClick
+					);
 				} catch (error) {
 					console.log("error:", error);
 				}
@@ -39,10 +42,10 @@ export default async function () {
 				el[EVENT_CLICK_OUTSIDE_CONTEXT].methodName &&
 				vnode.context[el[EVENT_CLICK_OUTSIDE_CONTEXT].methodName]
 			) {
-				vnode.context[el[EVENT_CLICK_OUTSIDE_CONTEXT].methodName]();
+				vnode.context[el[EVENT_CLICK_OUTSIDE_CONTEXT].methodName]({ mouseup, mousedown });
 			} else {
 				el[EVENT_CLICK_OUTSIDE_CONTEXT].bindingFn &&
-					el[EVENT_CLICK_OUTSIDE_CONTEXT].bindingFn();
+					el[EVENT_CLICK_OUTSIDE_CONTEXT].bindingFn({ mouseup, mousedown });
 			}
 		};
 	}
@@ -95,4 +98,3 @@ export default async function () {
 	});
 }
 </script>
-<style lang="less"></style>

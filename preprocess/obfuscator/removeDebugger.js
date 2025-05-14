@@ -1,7 +1,8 @@
 const { fs, path, _n, APP_NAME_ARRAY } = require("../preprocess.utils");
-async function removeDebugger(params) {
+const target_dir = process.argv[2];
+async function removeDebugger(_target_dir) {
 	const [, files] = await _n.asyncAllDirAndFile([
-		path.resolve(__dirname, "../../static_vue2/business_yapi")
+		path.resolve(__dirname, `../../static_vue2/business_${_target_dir}`)
 	]);
 	_n.each(files, async i => {
 		if (path.extname(i) === ".vue") {
@@ -14,6 +15,9 @@ async function removeDebugger(params) {
 	});
 }
 
-APP_NAME_ARRAY.forEach(appName => {
-	removeDebugger(appName);
-});
+/* 如果提供了目标目录，则只处理该目录；否则，遍历 APP_NAME_ARRAY 中的所有目录。 */
+if (target_dir) {
+	removeDebugger(target_dir);
+} else {
+	APP_NAME_ARRAY.forEach(removeDebugger);
+}

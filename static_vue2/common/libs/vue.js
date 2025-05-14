@@ -411,6 +411,7 @@
 		"renderTracked",
 		"renderTriggered"
 	];
+
 	var config = {
 		/**
 		 * Option merge strategies (used in core/util/options)
@@ -647,7 +648,7 @@
 	 */
 	var VNode = /** @class */ (function () {
 		function VNode(tag, data, children, text, elm, context, componentOptions, asyncFactory) {
-			if (componentOptions?.FILE_URL) {
+			if (componentOptions && componentOptions.FILE_URL) {
 				this.FILE_URL = componentOptions.FILE_URL;
 			}
 			/* 用来判断是否是vNode */
@@ -702,7 +703,7 @@
 		return new VNode(undefined, undefined, undefined, String(val));
 	}
 
-	const isVNode = vm => !!vm?.TYPE_IS_VNODE;
+	const isVNode = vm => !!_.$val(vm, "TYPE_IS_VNODE");
 
 	// optimized shallow clone
 	// used for static nodes and slot nodes because they may be reused across
@@ -713,7 +714,7 @@
 			return createEmptyVNode();
 		}
 		if (extraProps) {
-			if (extraProps.style && vnode?.data?.style) {
+			if (extraProps.style && _.$val(vnode, "data.style")) {
 				vnode.data.style = _.merge(vnode.data.style, extraProps.style);
 			}
 		}
@@ -827,17 +828,17 @@
 		};
 	}
 	/******************************************************************************
-	 Copyright (c) Microsoft Corporation.
-	 Permission to use, copy, modify, and/or distribute this software for any
-	 purpose with or without fee is hereby granted.
-	 THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-	 REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-	 AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-	 INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-	 LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-	 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-	 PERFORMANCE OF THIS SOFTWARE.
-	 ***************************************************************************** */
+   Copyright (c) Microsoft Corporation.
+   Permission to use, copy, modify, and/or distribute this software for any
+   purpose with or without fee is hereby granted.
+   THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+   REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+   AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+   INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+   LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+   OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+   PERFORMANCE OF THIS SOFTWARE.
+   ***************************************************************************** */
 	var __assign = function () {
 		__assign =
 			Object.assign ||
@@ -1192,11 +1193,11 @@
 		}
 		if (target._isVue || (ob && ob.vmCount)) {
 			/* Avoid adding reactive properties to a Vue instance or its root $data " + "at runtime - declare it upfront in the data option. */
-			warnMsgVm(`v-model绑定 ${target?.FILE_URL} 的${key} 未定义`);
+			warnMsgVm(`v-model绑定 ${target && target.FILE_URL} 的${key} 未定义`);
 			return val;
 		}
 		if (!ob) {
-			target[key] = val;
+			target && (target[key] = val);
 			return val;
 		}
 		defineReactive(ob.value, key, val, undefined, ob.shallow, ob.mock);
@@ -1987,13 +1988,13 @@
 				}
 			}
 			/* 第三个参数作为循环的key */
-			if (_.$isInput(children) && isPrimitive(children) && props?.children) {
+			if (_.$isInput(children) && isPrimitive(children) && _.$val(props, "children")) {
 				props.key = children;
 				updateChildren(props.children, props);
 			}
 
 			/* 如果还是没有children，则尝试从props中获取children */
-			if (!_.$isInput(children) && props?.children) {
+			if (!_.$isInput(children) && _.$val(props, "children")) {
 				children = props.children;
 			}
 
@@ -2007,7 +2008,7 @@
 			}
 
 			/* 如果还是没有children，则尝试从props中获取children */
-			if (!_.$isInput(children) && props?.children) {
+			if (!_.$isInput(children) && _.$val(props, "children")) {
 				updateChildren(props.children, props);
 			}
 
@@ -3380,7 +3381,7 @@
 		if (parent) {
 			if (!options.abstract) {
 				/* 如果上层组件是抽象组件，则跳过，用上上层的$parent */
-				while (parent.$options?.abstract && parent.$parent) {
+				while (_.$val(parent, "$options.abstract") && parent.$parent) {
 					parent = parent.$parent;
 				}
 				parent.$children.push(vm);
@@ -3586,6 +3587,7 @@
 			(newScopedSlots && vm.$scopedSlots.$key !== newScopedSlots.$key) ||
 			(!newScopedSlots && vm.$scopedSlots.$key)
 		);
+
 		// Any static slot children from the parent may have changed during parent's
 		// update. Dynamic scoped slots may also have changed. In such cases, a forced
 		// update is necessary to ensure correctness.
@@ -3594,6 +3596,7 @@
 			vm.$options._renderChildren || // has old static slots
 			hasDynamicScopedSlot
 		);
+
 		var prevVNode = vm.$vnode;
 		vm.$options._parentVnode = parentVnode;
 		vm.$vnode = parentVnode; // update vm's placeholder node without re-render
@@ -5252,7 +5255,7 @@
 			(function () {
 				Object.defineProperty(vm, "$vSlots", {
 					get() {
-						return vm.$vnode?.data?.$vSlots || {};
+						return _.$val(vm, "$vnode.data.$vSlots") || {};
 					}
 				});
 			})();
@@ -5646,7 +5649,7 @@
 			tag: tag,
 			children: children
 		};
-		if (Ctor?.options?.FILE_URL) {
+		if (_.$val(Ctor, "options.FILE_URL")) {
 			componentOptions.FILE_URL = Ctor.options.FILE_URL;
 		}
 		var vnode = new VNode(
@@ -5749,7 +5752,7 @@
 			} else {
 				console.log(`[Vue warn]:`, vm);
 				console.log(`[Vue trace]:`, trace);
-				console.error(`[Vue warn]: ${vm?.$vnode?.FILE_URL || ""}\n${msg}`);
+				console.error(`[Vue warn]: ${_.$val(vm, "$vnode.FILE_URL") || ""}\n${msg}`);
 			}
 		}
 	};
@@ -5760,7 +5763,7 @@
 			if (error) {
 				throw error;
 			} else {
-				console.warn(`[Vue tip]: ${vm?.$vnode?.FILE_URL}\n${msg}`);
+				console.warn(`[Vue tip]: ${_.$val(vm, "$vnode.FILE_URL")}\n${msg}`);
 			}
 		}
 	};
@@ -6202,13 +6205,14 @@
 			return;
 		}
 		const getComponentFromParent = options => {
-			if (options.parent?.$options.components) {
-				res = options.parent?.$options.components[id];
+			if (_.$val(options, "parent.$options.components")) {
+				res = options.parent.$options.components[id];
 				if (res) {
 					return res;
 				}
 			}
-			if (options?.parent?.$options) {
+
+			if (_.$val(options, "parent.$options")) {
 				return getComponentFromParent(options.parent.$options);
 			}
 		};
@@ -6242,7 +6246,7 @@
 		/* @custom */
 		var value = (function () {
 			var value = propsData[key];
-			if (_.isUndefined(value) && vm?.$vnode) {
+			if (_.isUndefined(value) && _.$val(vm, "$vnode")) {
 				value = vm.$vnode.data[key];
 				propsData[key] = value;
 			}
@@ -7046,13 +7050,13 @@
 		node.appendChild(child);
 	}
 	function parentNode(node) {
-		return node?.parentNode;
+		return _.$val(node, "parentNode");
 	}
 	function nextSibling(node) {
-		return node?.nextSibling;
+		return _.$val(node, "nextSibling");
 	}
 	function tagName(node) {
-		return node?.tagName;
+		return _.$val(node, "tagName");
 	}
 	function setTextContent(node, text) {
 		node.textContent = text;
@@ -7390,10 +7394,10 @@
 			}
 		}
 		function isPatchable(vnode = {}) {
-			while (vnode?.componentInstance) {
+			while (_.$val(vnode, "componentInstance")) {
 				vnode = vnode.componentInstance._vnode;
 			}
-			return isDef(vnode?.tag);
+			return isDef(_.$val(vnode, "tag"));
 		}
 		function invokeCreateHooks(vnode, insertedVnodeQueue) {
 			for (var i_2 = 0; i_2 < cbs.create.length; ++i_2) {
@@ -7449,7 +7453,7 @@
 				return;
 			}
 			var i, j;
-			var data = vnode?.data;
+			var data = _.$val(vnode, "data");
 			if (isDef(data)) {
 				if (isDef((i = data.hook)) && isDef((i = i.destroy))) i(vnode);
 				for (i = 0; i < cbs.destroy.length; ++i) cbs.destroy[i](vnode);
@@ -7616,7 +7620,7 @@
 			var seenKeys = {};
 			for (var i_4 = 0; i_4 < children.length; i_4++) {
 				var vnode = children[i_4];
-				var key = vnode?.key;
+				var key = _.$val(vnode, "key");
 				if (isDef(key)) {
 					if (seenKeys[key]) {
 						warnMsgVm(
@@ -8164,12 +8168,12 @@
 		}
 		var cls = genClassForVnode(vnode);
 		// handle transition classes
-		var transitionClass = el?._transitionClasses;
+		var transitionClass = _.$val(el, "_transitionClasses");
 		if (isDef(transitionClass)) {
 			cls = concat(cls, stringifyClass(transitionClass));
 		}
 		// set the class
-		if (el && cls !== el?._prevClass) {
+		if (el && cls !== _.$val(el, "_prevClass")) {
 			elSetAttribute(el, "class", cls);
 			el._prevClass = cls;
 		}
@@ -13055,16 +13059,16 @@
 					for (var f in afterProps[prop]) {
 						/* 如果已存在 */
 						/* if (preProps[prop][f]) {
-							var g = _.isArray(preProps[prop][f])
-									? preProps[prop][f]
-									: [preProps[prop][f]],
-								h = _.isArray(afterProps[prop][f])
-									? afterProps[prop][f]
-									: [afterProps[prop][f]];
-							preProps[prop][f] = [].concat(g, h);
-						} else {
-							preProps[prop][f] = afterProps[prop][f];
-						} */
+          	  var g = _.isArray(preProps[prop][f])
+          			  ? preProps[prop][f]
+          			  : [preProps[prop][f]],
+          		  h = _.isArray(afterProps[prop][f])
+          			  ? afterProps[prop][f]
+          			  : [afterProps[prop][f]];
+          	  preProps[prop][f] = [].concat(g, h);
+          } else {
+          	  preProps[prop][f] = afterProps[prop][f];
+          } */
 						for (var i in afterProps[prop]) {
 							preProps[prop][i] = preProps[prop][i]
 								? mergeFn(preProps[prop][i], afterProps[prop][i])
@@ -13092,7 +13096,7 @@
 				current.$emit.apply($parent, [eventName].concat(eventPayload));
 			}
 			var current = $parent;
-			$parent = current?.$parent;
+			$parent = _.$val(current, "$parent");
 		}
 	}
 
@@ -13107,7 +13111,7 @@
 	}
 
 	function _GetVM(uid, children) {
-		children = children || saveVm4ForceUpdate.VM_HOLDER?.$children;
+		children = children || _.$val(saveVm4ForceUpdate.VM_HOLDER, "$children");
 		for (const child of children) {
 			if (child._uid == uid) {
 				return child;
@@ -13127,7 +13131,7 @@
 	}
 
 	function elSetAttribute(el, key, value) {
-		if (el?.setAttribute) {
+		if (_.$val(el, "setAttribute")) {
 			if (!["function", "object"].includes(typeof value)) {
 				el.setAttribute(key, value);
 			}
@@ -13169,7 +13173,7 @@
 	Vue.injectVm = (vm, componentName) => {
 		let parent = vm;
 		while (parent) {
-			if (parent.$options?.componentName === componentName) {
+			if (_.$val(parent, "$options.componentName") === componentName) {
 				return parent;
 			} else {
 				parent = parent.$parent;
@@ -13190,8 +13194,8 @@
 				current = current.$parent;
 
 				while (current) {
-					if (current?.componentName === "xItem") {
-						attrs = current?.$attrs;
+					if (_.$val(current, "componentName") === "xItem") {
+						attrs = _.$val(current, "$attrs");
 						break;
 					} else {
 						current = current.$parent;

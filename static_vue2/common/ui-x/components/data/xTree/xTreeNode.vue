@@ -1,79 +1,3 @@
-<style lang="less">
-.xTreeNode {
-	&.is-current {
-		.el-tree-node__content {
-			background-color: var(--xTreeNode-bg-current, var(--el-color-primary));
-			color: var(--xTreeNode-text-color-current, white);
-		}
-	}
-	&.dragged {
-		opacity: 0.3;
-		transition: all 0.3s ease-in-out;
-	}
-	.indicator {
-		position: absolute;
-		z-index: 1;
-		display: none;
-		background-color: var(--el-color-primary);
-		&.top {
-			height: 2px;
-			left: 0;
-			top: 0;
-			right: 0;
-		}
-		&.right {
-			width: 2px;
-			// background-color: red;
-			right: 0;
-			top: 0;
-			bottom: 0;
-		}
-		&.bottom {
-			height: 2px;
-			// background-color: green;
-			left: 0;
-			right: 0;
-			bottom: 0;
-		}
-		&.left {
-			width: 2px;
-			// background-color: yellow;
-			left: 0;
-			top: 0;
-			bottom: 0;
-		}
-	}
-
-	&.before {
-		transform: translate(2px, 2px);
-		.indicator {
-			&.left,
-			&.top {
-				display: block;
-			}
-		}
-	}
-	&.inner {
-		.indicator {
-			&.right,
-			&.left,
-			&.top,
-			&.bottom {
-				display: block;
-			}
-		}
-	}
-	&.after {
-		transform: translate(-2px, -2px);
-		.indicator {
-			&.right,
-			&.bottom {
-				display: block;
-			}
-		}
-	}
-}
-</style>
 <template>
 	<div
 		:draggable="cptDraggable"
@@ -176,11 +100,11 @@ export default async function () {
 			const injectRootTree = this.injectRootTree;
 			const ns = _xUtils.useNamespace("tree");
 			const indent = computed(() => {
-				return injectRootTree.props?.indent || 16;
+				return _.$val(injectRootTree, "props.indent") || 16;
 			});
 			const icon = computed(() => {
 				return (
-					injectRootTree.props?.icon ||
+					_.$val(injectRootTree, "props.icon") ||
 					h("xIcon", { class: "el-icon-caret-right", icon: "caret-right" })
 				);
 			});
@@ -199,7 +123,12 @@ export default async function () {
 					event.stopPropagation();
 					event.preventDefault();
 				}
-				injectRootTree.$emit(ON_NODE_CONTEXTMENU, event, props.node?.data, props.node);
+				injectRootTree.$emit(
+					ON_NODE_CONTEXTMENU,
+					event,
+					_.$val(props, "node.data"),
+					props.node
+				);
 			};
 			return {
 				ns,
@@ -213,7 +142,7 @@ export default async function () {
 		},
 		computed: {
 			cptDraggable() {
-				return !!this.injectRootTree?.dragAndDrop;
+				return !!_.$val(this, "injectRootTree.dragAndDrop");
 			},
 			cptTreeNodeClass() {
 				const { dropType, ns, expanded, current, disabled, checked, injectRootTree, node } =
@@ -230,8 +159,8 @@ export default async function () {
 
 				if (this.cptDraggable) {
 					return _.concat(classArray, [
-						(injectRootTree.drag === node?.key && "dragged") || "",
-						(injectRootTree.drop === node?.key && dropType) || ""
+						(injectRootTree.drag === _.$val(node, "key") && "dragged") || "",
+						(injectRootTree.drop === _.$val(node, "key") && dropType) || ""
 					]);
 				} else {
 					return classArray;
@@ -291,7 +220,7 @@ export default async function () {
 				}
 
 				// 保存被拖动元素的引用
-				this.injectRootTree.drag = this.node?.key;
+				this.injectRootTree.drag = _.$val(this, "node.key");
 				// 设置为半透明
 				// event.target.classList.add("dragging");
 				// console.log("🚀 ~ onDragstart ~ event:", event);
@@ -311,7 +240,7 @@ export default async function () {
 					return;
 				}
 				// 阻止默认行为以允许放置
-				this.injectRootTree.drop = this.node?.key;
+				this.injectRootTree.drop = _.$val(this, "node.key");
 				event.preventDefault();
 				const { offsetX, offsetY } = event;
 				const onepice = Math.floor(event.target.offsetWidth / 3);
@@ -319,14 +248,14 @@ export default async function () {
 
 				this.dropType = (function () {
 					/* 
-					if (offsetY < onepice) {
-						return "before";
-					} else if (offsetY > onepice * 2) {
-						return "after";
-					} else {
-						return "inner";
-					}
-					*/
+          if (offsetY < onepice) {
+          	return "before";
+          } else if (offsetY > onepice * 2) {
+          	return "after";
+          } else {
+          	return "inner";
+          }
+          */
 
 					if (offsetX < onepice) {
 						return "before";
@@ -368,3 +297,79 @@ export default async function () {
 	});
 }
 </script>
+<style lang="less">
+.xTreeNode {
+	&.is-current {
+		.el-tree-node__content {
+			background-color: var(--xTreeNode-bg-current, var(--el-color-primary));
+			color: var(--xTreeNode-text-color-current, white);
+		}
+	}
+	&.dragged {
+		opacity: 0.3;
+		transition: all 0.3s ease-in-out;
+	}
+	.indicator {
+		position: absolute;
+		z-index: 1;
+		display: none;
+		background-color: var(--el-color-primary);
+		&.top {
+			height: 2px;
+			left: 0;
+			top: 0;
+			right: 0;
+		}
+		&.right {
+			width: 2px;
+			// background-color: red;
+			right: 0;
+			top: 0;
+			bottom: 0;
+		}
+		&.bottom {
+			height: 2px;
+			// background-color: green;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+		&.left {
+			width: 2px;
+			// background-color: yellow;
+			left: 0;
+			top: 0;
+			bottom: 0;
+		}
+	}
+
+	&.before {
+		transform: translate(2px, 2px);
+		.indicator {
+			&.left,
+			&.top {
+				display: block;
+			}
+		}
+	}
+	&.inner {
+		.indicator {
+			&.right,
+			&.left,
+			&.top,
+			&.bottom {
+				display: block;
+			}
+		}
+	}
+	&.after {
+		transform: translate(-2px, -2px);
+		.indicator {
+			&.right,
+			&.bottom {
+				display: block;
+			}
+		}
+	}
+}
+</style>

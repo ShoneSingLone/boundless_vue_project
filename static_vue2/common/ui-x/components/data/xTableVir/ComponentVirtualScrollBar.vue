@@ -164,6 +164,7 @@ export default async function () {
 							props.classV2,
 							(props.alwaysOn || state.isDragging) && "always-on"
 						],
+
 						style: trackStyle.value,
 						onMousedown: clickTrackHandler,
 						onTouchstartPrevent: onThumbMouseDown
@@ -189,5 +190,3 @@ export default async function () {
 	});
 }
 </script>
-
-<style lang="less"></style>

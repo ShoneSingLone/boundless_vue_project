@@ -34,17 +34,17 @@ export default async function () {
 					const gapStyle = {};
 
 					if (attrs.w !== undefined) {
-						if (attrs.w?.length) {
+						if (_.$val(attrs, "w.length")) {
 							gapStyle.width = `${attrs.w}px`;
 						}
 					}
 					if (attrs.h !== undefined) {
-						if (attrs.h?.length) {
+						if (_.$val(attrs, "h.length")) {
 							gapStyle.height = `${attrs.h}px`;
 						}
 					}
 					if (attrs.a !== undefined) {
-						if (attrs.a?.length) {
+						if (_.$val(attrs, "a.length")) {
 							gapStyle.margin = `${attrs.a}px`;
 						} else {
 							gapStyle.margin = `var(--ui-one)`;
@@ -54,7 +54,7 @@ export default async function () {
 					_.each(POSITION_MAP, (prop, position) => {
 						const value = attrs[position];
 						if (value !== undefined) {
-							if (value?.length) {
+							if (_.$val(value, "length")) {
 								//@ts-ignore
 								gapStyle[`margin-${prop}`] = `${value}px`;
 							} else {

@@ -63,7 +63,7 @@ export default async function () {
 		el.dataset[RIPPLE_COUNT] = count.toString();
 	}
 	function getRippleCount(el) {
-		return parseInt(el.dataset[RIPPLE_COUNT] ?? "0", 10);
+		return parseInt(el.dataset[RIPPLE_COUNT] || "0", 10);
 	}
 	function incrementRippleCount(el) {
 		const count = getRippleCount(el);
@@ -143,7 +143,7 @@ export default async function () {
 
 	return Vue.directive("ripple", {
 		inserted(el, binding) {
-			optionMap.set(el, binding.value ?? {});
+			optionMap.set(el, binding.value || {});
 			el.addEventListener("pointerdown", event => {
 				const options = optionMap.get(el);
 				if (binding.value && binding.value.disabled) {
@@ -159,10 +159,8 @@ export default async function () {
 			});
 		},
 		update(el, binding) {
-			optionMap.set(el, binding.value ?? {});
+			optionMap.set(el, binding.value || {});
 		}
 	});
 }
 </script>
-
-<style></style>

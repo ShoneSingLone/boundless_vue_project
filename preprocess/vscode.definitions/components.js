@@ -459,6 +459,9 @@
     "xChart": [
         "static_vue2\\common\\ui-x\\components\\data\\xChart\\xChart.vue"
     ],
+    "xBadge": [
+        "static_vue2\\common\\ui-x\\components\\data\\xBadge\\xBadge.vue"
+    ],
     "common": [
         "static_vue2\\common\\ui-x\\components\\data\\virtualized\\common.vue"
     ],
@@ -975,6 +978,7 @@
         "static_vue2\\business_mo_ack_oc\\layout\\AppLayoutLeft.vue",
         "static_vue2\\business_mo_ack\\layout\\AppLayoutLeft.vue",
         "static_vue2\\business_moRancher\\layout\\AppLayoutLeft.vue",
+        "static_vue2\\business_lingyun_perf\\layout\\AppLayoutLeft.vue",
         "static_vue2\\business_internet_portal_oc\\layout\\AppLayoutLeft.vue",
         "static_vue2\\business_hdr_y_oc\\layout\\AppLayoutLeft.vue",
         "static_vue2\\business_hdr_y\\layout\\AppLayoutLeft.vue",
@@ -1392,7 +1396,6 @@
     "var": [
         "static_vue2\\business_yapi\\utils\\var.vue",
         "static_vue2\\business_shenjiaosuo\\utils\\var.vue",
-        "static_vue2\\business_internet_portal\\utils\\var.vue",
         "static_vue2\\business_anxin\\utils\\var.vue",
         "static_vue2\\business_ait\\utils\\var.vue",
         "static_vue2\\business_admin_normal\\utils\\var.vue",
@@ -1486,6 +1489,9 @@
     ],
     "PanelReqBodyForm": [
         "static_vue2\\business_yapi\\components\\PanelReqBodyForm.vue"
+    ],
+    "ModifyInterfaceTags.dialog": [
+        "static_vue2\\business_yapi\\components\\ModifyInterfaceTags.dialog.vue"
     ],
     "deploy.dialog": [
         "static_vue2\\business_yapi\\components\\deploy\\deploy.dialog.vue"
@@ -2905,8 +2911,29 @@
     "clusterBaseInfo": [
         "static_vue2\\business_moRancher\\components\\clusterBaseInfo.vue"
     ],
+    "PageSystemSettings": [
+        "static_vue2\\business_lingyun_perf\\views\\system_settings\\PageSystemSettings.vue"
+    ],
+    "PageSystemSettings.add.dialog": [
+        "static_vue2\\business_lingyun_perf\\views\\system_settings\\PageSystemSettings.add.dialog.vue"
+    ],
+    "PageReportModelConfiguration": [
+        "static_vue2\\business_lingyun_perf\\views\\report_model_configuration\\PageReportModelConfiguration.vue"
+    ],
+    "PageModifyPwd": [
+        "static_vue2\\business_lingyun_perf\\views\\login\\PageModifyPwd.vue"
+    ],
     "PageLogin": [
         "static_vue2\\business_lingyun_perf\\views\\login\\PageLogin.vue"
+    ],
+    "PageIndicatorMappingConfiguration": [
+        "static_vue2\\business_lingyun_perf\\views\\indicator_mapping_configuration\\PageIndicatorMappingConfiguration.vue"
+    ],
+    "PageIndicatorMappingConfiguration.update.dialog": [
+        "static_vue2\\business_lingyun_perf\\views\\indicator_mapping_configuration\\PageIndicatorMappingConfiguration.update.dialog.vue"
+    ],
+    "PageForwadRealTime": [
+        "static_vue2\\business_lingyun_perf\\views\\forward\\PageForwadRealTime.vue"
     ],
     "Sass": [
         "static_vue2\\business_internet_portal_oc\\views\\Sass\\Sass.vue"
@@ -2932,6 +2959,9 @@
     "xItemQuill": [
         "static_vue2\\business_internet_portal_oc\\components\\xItemQuill.vue"
     ],
+    "MenuArray.message_center": [
+        "static_vue2\\business_internet_portal\\router\\MenuArray.message_center.vue"
+    ],
     "PageThird": [
         "static_vue2\\business_internet_portal\\layout\\PageThird.vue"
     ],
@@ -2946,9 +2976,6 @@
     ],
     "PageShowAllItems": [
         "static_vue2\\business_internet_portal\\layout\\PageShowAllItems.vue"
-    ],
-    "PageRegisterUserForm": [
-        "static_vue2\\business_internet_portal\\layout\\PageRegister\\PageRegisterUserForm.vue"
     ],
     "PageRegisterTenantFormCertify": [
         "static_vue2\\business_internet_portal\\layout\\PageRegister\\PageRegisterTenantFormCertify.vue"
@@ -3007,9 +3034,6 @@
     "PageAccountCertifyUpgrade": [
         "static_vue2\\business_internet_portal\\layout\\PageAccount\\PageAccountCertifyUpgrade.vue"
     ],
-    "PageAccountCertifyModify": [
-        "static_vue2\\business_internet_portal\\layout\\PageAccount\\PageAccountCertifyModify.vue"
-    ],
     "PageAccountCertify": [
         "static_vue2\\business_internet_portal\\layout\\PageAccount\\PageAccountCertify.vue"
     ],
@@ -3034,11 +3058,26 @@
     "PageEcs": [
         "static_vue2\\business_internet_portal\\layout\\Page\\ecs\\PageEcs.vue"
     ],
+    "PageMessageCenterMessageList": [
+        "static_vue2\\business_internet_portal\\layout\\MessageCenter\\PageMessageCenterMessageList.vue"
+    ],
+    "PageMessageCenterMessageList copy 2": [
+        "static_vue2\\business_internet_portal\\layout\\MessageCenter\\PageMessageCenterMessageList copy 2.vue"
+    ],
+    "PageMessageCenterLeftSide": [
+        "static_vue2\\business_internet_portal\\layout\\MessageCenter\\PageMessageCenterLeftSide.vue"
+    ],
+    "PageMessageCenter": [
+        "static_vue2\\business_internet_portal\\layout\\MessageCenter\\PageMessageCenter.vue"
+    ],
     "xItemPhoneNumber": [
         "static_vue2\\business_internet_portal\\components\\xItemPhoneNumber.vue"
     ],
     "xItemInputModify": [
         "static_vue2\\business_internet_portal\\components\\xItemInputModify.vue"
+    ],
+    "xItemCaptcha": [
+        "static_vue2\\business_internet_portal\\components\\xItemCaptcha.vue"
     ],
     "UserCenterBlock": [
         "static_vue2\\business_internet_portal\\components\\UserCenterBlock.vue"
@@ -3079,6 +3118,15 @@
     "PanelAdvanced": [
         "static_vue2\\business_internet_portal\\components\\PanelAdvanced.vue"
     ],
+    "MenuDropdownType3": [
+        "static_vue2\\business_internet_portal\\components\\MenuDropdownType3.vue"
+    ],
+    "MenuDropdownType2": [
+        "static_vue2\\business_internet_portal\\components\\MenuDropdownType2.vue"
+    ],
+    "MenuDropdown": [
+        "static_vue2\\business_internet_portal\\components\\MenuDropdown.vue"
+    ],
     "InternetPortalItemUploadCertify": [
         "static_vue2\\business_internet_portal\\components\\InternetPortalItemUploadCertify.vue"
     ],
@@ -3090,6 +3138,9 @@
     ],
     "ContentBannerItem": [
         "static_vue2\\business_internet_portal\\components\\ContentBannerItem.vue"
+    ],
+    "CertifyImagUpload": [
+        "static_vue2\\business_internet_portal\\components\\CertifyImagUpload.vue"
     ],
     "CardRegisterSuccess": [
         "static_vue2\\business_internet_portal\\components\\CardRegisterSuccess.vue"
@@ -3161,6 +3212,7 @@
         "static_vue2\\business_doc\\views\\component\\data\\descriptions\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\chart\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\card\\JiChuYongFa.vue",
+        "static_vue2\\business_doc\\views\\component\\data\\badge\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\component\\data\\avatar\\JiChuYongFa.vue",
         "static_vue2\\business_doc\\views\\base\\button\\JiChuYongFa.vue"
     ],
@@ -3846,6 +3898,9 @@
     "card": [
         "static_vue2\\business_doc\\views\\component\\data\\card\\card.vue"
     ],
+    "DemoBadge": [
+        "static_vue2\\business_doc\\views\\component\\data\\badge\\DemoBadge.vue"
+    ],
     "ZhanShiLeiXing": [
         "static_vue2\\business_doc\\views\\component\\data\\avatar\\ZhanShiLeiXing.vue"
     ],
@@ -4173,6 +4228,9 @@
     ],
     "SpecialPrivateCloudeELBApplication1": [
         "static_vue2\\business_anxin\\components\\SpecialPrivateCloudeELBApplication1.vue"
+    ],
+    "VersionUpgrade": [
+        "static_vue2\\business_ait\\views\\alarm\\VersionUpgrade.vue"
     ],
     "ValueConfigList": [
         "static_vue2\\business_ait\\views\\alarm\\ValueConfigList.vue"
@@ -4540,6 +4598,9 @@
     ],
     "AdminPrivatePagination": [
         "static_vue2\\business_admin_db_audit\\components\\AdminPrivatePagination.vue"
+    ],
+    "xItemDatetimerange": [
+        "static_vue2\\business_admin_db_audit\\components\\AdminItems\\xItemDatetimerange.vue"
     ],
     "xItemDaterange": [
         "static_vue2\\business_admin_db_audit\\components\\AdminItems\\xItemDaterange.vue"

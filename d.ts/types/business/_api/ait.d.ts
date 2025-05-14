@@ -14,4 +14,6 @@ alarmConfigUpdate(args?:any):Promise<any>
 alarmAllLists(args?:any):Promise<any>
 uploadFile(args?:any):Promise<any>
 updateFile(args?:any):Promise<any>
+alarmListDownload(args?:any):Promise<any>
+updateVersionUpgradeFile(args?:any):Promise<any>
 };

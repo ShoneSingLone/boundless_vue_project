@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<xRender :render="itemRender" v-if="itemRender" />
 	<li
@@ -88,7 +87,7 @@ export default async function () {
 				};
 			},
 			active() {
-				if (this.item?.href) {
+				if (_.$val(this, "item.href")) {
 					return this.item.href === this.rootMenu.defaultActive;
 				}
 				return this.index === this.rootMenu.activeIndex;

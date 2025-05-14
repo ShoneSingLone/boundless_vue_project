@@ -1,7 +1,6 @@
 <template>
 	<div class="xItemMonaco mt x-loading" ref="refMonacoContainer" />
 </template>
-
 <script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
@@ -22,10 +21,10 @@ export default async function () {
 				const { monaco } = window;
 				vm.raw$editor = monaco.editor.create(container, {
 					value: vm.mixin_value || "",
-					language: vm.configs?.language || "json",
+					language: _.$val(vm, "configs.language") || "json",
 					automaticLayout: true, //自动布局
-					readOnly: vm.configs?.readOnly || false,
-					theme: vm.configs?.theme || theme[1]
+					readOnly: _.$val(vm, "configs.readOnly") || false,
+					theme: _.$val(vm, "configs.theme") || theme[1]
 				});
 				vm.raw$editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, function () {
 					vm.raw$editor.getAction("editor.action.formatDocument").run();
@@ -45,7 +44,7 @@ export default async function () {
 		},
 		methods: {
 			setEditorValue(options = {}) {
-				if (!this.raw$editor?.getValue) {
+				if (!_.$val(this, "raw$editor.getValue")) {
 					return;
 				}
 				try {
@@ -74,7 +73,6 @@ export default async function () {
 	});
 }
 </script>
-
 <style lang="less">
 .xItemMonaco {
 	width: 100%;

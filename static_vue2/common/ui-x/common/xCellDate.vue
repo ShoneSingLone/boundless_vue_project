@@ -1,7 +1,6 @@
 <template>
 	<span>{{ cpt_label }}</span>
 </template>
-
 <script lang="ts">
 export default async function () {
 	return {
@@ -11,12 +10,12 @@ export default async function () {
 		computed: {
 			cpt_type() {
 				/* _.$dateFormat 默认0、1、 自定义 */
-				return this?.$options?.propsData?.configs?.col?.componentOptions?.type || 0;
+				return _.$val(this, "$options.propsData.configs.col.componentOptions.type") || 0;
 			},
 			cpt_prop() {
 				return (
-					this?.$options?.propsData?.configs?.col?.componentOptions?.prop ||
-					this?.$options?.propsData?.configs?.prop
+					_.$val(this, "$options.propsData.configs.col.componentOptions.prop") ||
+					_.$val(this, "$options.propsData.configs.prop")
 				);
 			},
 			cpt_label() {

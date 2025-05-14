@@ -2,37 +2,66 @@
 #ProjectInterfaceSectionInterfaceDetailEditor {
 	height: 1px;
 	overflow: auto;
+
+	.result-wrapper {
+		> .el-collapse {
+			height: 100%;
+			display: flex;
+			flex-flow: column nowrap;
+
+			> .el-collapse-item {
+				display: flex;
+				flex-flow: column nowrap;
+				&.is-active {
+					flex: 1;
+					height: 1px;
+
+					> .el-collapse-item__wrap {
+						flex: 1;
+						overflow: auto;
+					}
+				}
+			}
+		}
+	}
 }
 </style>
 <template>
-	<div
-		v-if="isShow"
-		id="ProjectInterfaceSectionInterfaceDetailEditor"
-		class="flex1 flex vertical">
-		<xCard>
+	<div v-if="isShow" id="ProjectInterfaceSectionInterfaceDetailEditor" class="flex1 flex">
+		<div class="flex flex1 vertical">
 			<div class="flex middle">
 				<xItem :configs="form.path" v-model="formData.path" class="mr" />
 				<xBtn :configs="btnRunTest" />
+				<xBtn :configs="btnSaveConfigs" />
 			</div>
-			<xItem :configs="form.editor" style="height: 150px; --xItem-wrapper-width: 100%" />
-		</xCard>
-		<xGap t />
-		<div class="flex1 height100 overflow-auto" v-xloading="cptIsLoading">
+			<xItem :configs="form.editor" style="--xItem-wrapper-width: 100%" />
+		</div>
+		<xGap l />
+		<div
+			class="flex flex1 vertical height100 overflow-auto result-wrapper"
+			v-xloading="cpt_is_loading">
 			<xCollapse :value="'Response'">
-				<xCollapseItem title="Response" name="Response" v-if="cptCode_response">
-					<xMd :md="cptCode_response" @click.native="copyResponse" id="refCopyResponse" />
+				<xCollapseItem title="Response" name="Response" v-if="cpt_code_response">
+					<xMd
+						:md="cpt_code_response"
+						@click.native="copyResponse(cpt_code_response)"
+						id="refCopyResponse" />
 				</xCollapseItem>
 				<xCollapseItem
 					title="Response Headers"
 					name="Headers"
-					v-if="cptCode_response_headers">
-					<xMd :md="cptCode_response_headers" />
+					v-if="cpt_code_response_headers">
+					<xMd
+						:md="cpt_code_response_headers"
+						@click.native="copyResponse(cpt_code_response_headers)" />
 				</xCollapseItem>
 				<xCollapseItem
 					title="Request Options"
 					name="Request"
-					v-if="cptCode_request_options">
-					<xMd :md="cptCode_request_options" />
+					v-if="cpt_code_request_options">
+					<xMd
+						:md="cpt_code_request_options"
+						@click.native="copyResponse(cpt_code_request_options)" />
 				</xCollapseItem>
 			</xCollapse>
 		</div>
@@ -58,6 +87,13 @@ export default async function () {
 					label: "运行",
 					onClick() {
 						return vm.run();
+					}
+				},
+				btnSaveConfigs: {
+					preset: "primary",
+					label: i18n("保存配置"),
+					onClick() {
+						return vm.saveConfigs();
 					}
 				}
 			};
@@ -107,13 +143,13 @@ export default async function () {
 			};
 		},
 		computed: {
-			cptIsLoading() {
+			cpt_is_loading() {
 				return _.isEqual(this.response, "pending");
 			},
-			cptCode_response() {
+			cpt_code_response() {
 				let response = "";
 				try {
-					if (this.response && !this.cptIsLoading) {
+					if (this.response && !this.cpt_is_loading) {
 						response = JSON.stringify(
 							_.omit(this.response, ["headers", "config"]),
 							null,
@@ -128,7 +164,7 @@ export default async function () {
 				}
 				return response;
 			},
-			cptCode_response_headers() {
+			cpt_code_response_headers() {
 				let response = "";
 				try {
 					if (this.response) {
@@ -146,7 +182,7 @@ export default async function () {
 				}
 				return response;
 			},
-			cptCode_request_options() {
+			cpt_code_request_options() {
 				let httprequestoptions = "";
 				try {
 					if (this.httprequestoptions) {
@@ -159,38 +195,12 @@ export default async function () {
 					return `\`\`\`js\n${httprequestoptions}\n\`\`\``;
 				}
 				return httprequestoptions;
-			},
-			cptFormDataResBackupJson: {
-				get() {
-					return this.formData.resBackupJson || "";
-				},
-				set(req_params) {
-					this.formData.resBackupJson = req_params;
-					return true;
-				}
-			},
-			cptFormDataReqParams: {
-				get() {
-					return this.formData.req_params || [];
-				},
-				set(req_params) {
-					this.formData.req_params = req_params;
-					return true;
-				}
-			},
-			btnUpdate() {
-				return {
-					label: "更新",
-					preset: "blue",
-					onClick: () => {
-						return this.onSubmit();
-					}
-				};
 			}
 		},
 		methods: {
-			copyResponse() {
-				return _.$copyToClipboard($("#refCopyResponse").text())
+			copyResponse(text) {
+				/* $("#refCopyResponse").text() */
+				return _.$copyToClipboard(text)
 					.then(() => _.$msg("复制成功"))
 					.catch(error => _.$msgError(error));
 			},
@@ -221,20 +231,17 @@ export default async function () {
 				const mockHref = `${protocol}//${hostname}${port ? `:${port}` : ""}/mock/${project_id}${apiURL}`;
 
 				try {
-					const res = await _api.yapi.interface_usecase_get_all(interfaceId);
-					if (!res.errcode) {
-						const { data } = res;
-						if (data.length > 0) {
-							await this.setFormEditorValue(data[0].usecaseCode);
-							this.currentUseCase = data[0];
-						} else {
-							await this.setFormEditorValue(`async function run() {
+					const { data } = await _api.yapi.interface_usecase_get_all(interfaceId);
+					if (data.length > 0) {
+						await this.setFormEditorValue(data[0].usecaseCode);
+						this.currentUseCase = data[0];
+					} else {
+						await this.setFormEditorValue(`async function run() {
 	return await axios({
 			method: "${_.lowerCase(method)}",
 			url: "${mockHref}"
 		});
 }`);
-						}
 					}
 				} catch (error) {
 					_.$msgError(error);
@@ -266,24 +273,21 @@ export default async function () {
 					this.httprequestoptions = JSON.parse(httprequestoptions);
 				} catch (error) {}
 			},
-			async onSubmit() {
-				const [atLeastOne] = await _.$validateForm(this.$el);
-				if (atLeastOne) {
-					return;
-				}
-				_.$loading(true);
+			async saveConfigs() {
 				try {
-					const formData = this.formData;
-					const { data } = await _api.yapi.interface_up(formData);
-					if (data) {
-						this.inject_project.get_interface_list();
-						this.inject_interface_section_interface_detail.updateInterface();
-					}
-					_.$msg("修改成功");
+					const id = this.currentUseCase?._id;
+					const { projectId, interfaceId } = this.$route.query;
+					const dataForm = {
+						id,
+						interfaceId,
+						projectId,
+						usecaseCode: this.form.editor.value
+					};
+					await _api.yapi.interface_usecase_upsert(dataForm);
+					this.APP.updateGroupProjectList();
+					_.$msg("更新成功");
 				} catch (error) {
-					_.$msgError("修改失败");
-				} finally {
-					_.$loading(false);
+					_.$msgError(error);
 				}
 			}
 		},

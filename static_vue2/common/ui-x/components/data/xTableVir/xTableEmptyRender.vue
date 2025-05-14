@@ -12,7 +12,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 					},
 					[]
 				),
-				hSpan({ staticClass: "el-table__empty-text flex center" }, [i18n("暂无数据")])
+				hSpan({ staticClass: "el-table__empty-text flex center" }, [i18n("no_data_available")])
 			]);
 		}
 	};

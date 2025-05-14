@@ -21,10 +21,11 @@ export default async function () {
 						class: ns.b()
 					},
 					[
-						slots.default?.({
-							height: height.value,
-							width: width.value
-						})
+						slots.default &&
+							slots.default({
+								height: height.value,
+								width: width.value
+							})
 					]
 				);
 			};

@@ -96,7 +96,7 @@ export default async function () {
 						}
 					},
 					{
-						label: i18n("删除"),
+						label: i18n("delete_action"),
 						disabled: () => !vm.configsTable.data.set.size,
 						isHide: () => !vm.$auth.hasPermiOr(["monitor:job:remove"]),
 						async onClick() {
@@ -140,12 +140,12 @@ export default async function () {
 							}
 						}),
 						{ label: i18n("任务编号"), prop: "jobId" },
-						{ label: i18n("任务名称"), prop: "jobName" },
+						{ label: i18n("task_name_info"), prop: "jobName" },
 						{ label: i18n("任务组名"), prop: "jobGroup" },
 						{ label: i18n("调用目标字符串"), prop: "invokeTarget" },
 						{ label: i18n("cron执行表达式"), prop: "cronExpression" },
 						{
-							label: i18n("状态"),
+							label: i18n("status_info"),
 							prop: "status",
 							cellRenderer: ({ cellData }) =>
 								hVal2Tag(cellData, dicts.sys_job_status),
@@ -183,7 +183,7 @@ export default async function () {
 											}
 										},
 										{
-											label: i18n("删除"),
+											label: i18n("delete_action"),
 											isHide: () =>
 												!vm.$auth.hasPermiOr(["monitor:job:remove"]),
 											onClick: async () => {
@@ -281,7 +281,7 @@ export default async function () {
 				try {
 					await _.$confirm_important('是否确认删除任务编号为"' + jobIds + '"的数据项？');
 					await _adminTools.api_job_delete(jobIds);
-					_.$msg(i18n("删除成功"));
+					_.$msg(i18n("delete_success_info"));
 					this.getTableData();
 				} catch (error) {
 					if (error) {

@@ -1,8 +1,3 @@
-<style lang="less">
-.xDesc {
-	--xItem-label-width: 120px;
-}
-</style>
 <script lang="ts">
 export default async function () {
 	const { THIS_FILE_URL } = this;
@@ -22,9 +17,9 @@ export default async function () {
 					default: ({ width, height }) => {
 						if (width) {
 							/* const col = this.getCol(width, Math.ceil(width / this.itemWidth));
-							if (this.col != col) {
-								this.col = col;
-							} */
+            if (this.col != col) {
+            	this.col = col;
+            } */
 							return h("xForm", { staticClass: "xDesc" }, this.$slots.default);
 						}
 					}
@@ -34,3 +29,8 @@ export default async function () {
 	});
 }
 </script>
+<style lang="less">
+.xDesc {
+	--xItem-label-width: 120px;
+}
+</style>

@@ -81,7 +81,7 @@ export default async function () {
 						}
 					},
 					{
-						label: i18n("删除"),
+						label: i18n("delete_action"),
 						preset: "danger",
 						disabled() {
 							return vm.configsTable.data.selected.length === 0;
@@ -169,7 +169,7 @@ export default async function () {
 									}
 								},
 								{
-									label: i18n("删除"),
+									label: i18n("delete_action"),
 									onClick({ row }) {
 										_.$confirm_important({
 											content: `${i18n("msgSureDelete")}${i18n("QOS规格")}${row.name}?`

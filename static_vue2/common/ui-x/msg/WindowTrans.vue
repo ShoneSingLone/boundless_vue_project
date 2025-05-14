@@ -7,7 +7,6 @@
 		</template>
 	</xDialog>
 </template>
-
 <script lang="ts">
 export default async function ({ onOk, onCancel, content }) {
 	const isUpdate = false;
@@ -42,7 +41,7 @@ export default async function ({ onOk, onCancel, content }) {
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("ok"),
 					async onClick() {
 						vm.closeModal();
 						onOk();
@@ -52,7 +51,7 @@ export default async function ({ onOk, onCancel, content }) {
 			btnCancel() {
 				const vm = this;
 				return {
-					label: i18n("取消"),
+					label: i18n("cancel"),
 					/* 因为是弹出确认框，引导用户取消 */
 					preset: "blue",
 					async onClick() {
@@ -83,7 +82,6 @@ export default async function ({ onOk, onCancel, content }) {
 	};
 }
 </script>
-
 <style lang="less">
 #WindowTrans {
 }

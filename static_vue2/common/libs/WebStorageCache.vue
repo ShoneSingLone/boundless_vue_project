@@ -2,11 +2,11 @@
 export default async function () {
 	if (!window.WebStorageCache) {
 		/*!
-    web-storage-cache -- Added `expires` attribute and serialize data with `JSON.parse` for the localStorage and sessionStorage.
-    Version 1.1.1
-    https://github.com/WQTeam/web-storage-cache
-    (c) 2013-2016 WQTeam, MIT license
-*/
+      web-storage-cache -- Added `expires` attribute and serialize data with `JSON.parse` for the localStorage and sessionStorage.
+      Version 1.1.1
+      https://github.com/WQTeam/web-storage-cache
+      (c) 2013-2016 WQTeam, MIT license
+    */
 		!(function (a, b) {
 			"function" == typeof define && define.amd
 				? define(b)

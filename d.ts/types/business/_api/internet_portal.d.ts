@@ -1,9 +1,11 @@
 export type t_internet_portal = {
+rest_me(args?:any):Promise<any>
 /**
 				 *  banner全量查询
 				 *  http://10.143.133.216:3001/yapi#/api/project?projectId=366&groupId=370&projectTabName=%E6%8E%A5%E5%8F%A3&project_interface_tab=preview&project_setting_tab=1&interfaceType=interface&interfaceId=37630/#/api/project?projectId=366&groupId=370&interfaceType=interface&interfaceId=37630&project_interface_tab=preview&project_setting_tab=3&projectTabName=接口
 				 */
 homepageBannerList(args?:any):Promise<any>
+homepageSolutionList(args?:any):Promise<any>
 /**
 				 *  页脚查询
 				 *  http://10.143.133.216:3001/yapi#/api/project?projectId=366&groupId=370&projectTabName=%E6%8E%A5%E5%8F%A3&project_interface_tab=preview&project_setting_tab=1&interfaceType=interface&interfaceId=37631/#/api/project?projectId=366&groupId=370&interfaceType=interface&interfaceId=37631&project_interface_tab=preview&project_setting_tab=3&projectTabName=接口
@@ -95,4 +97,24 @@ userUsernameVerification(args?:any):Promise<any>
 				 *  http://10.143.133.216:3001/yapi#/api/project?projectId=366&groupId=370&projectTabName=%E6%8E%A5%E5%8F%A3&project_interface_tab=preview&interfaceType=interface&interfaceId=37736/#/api/project?projectId=366&groupId=370&interfaceType=interface&interfaceId=37736&project_interface_tab=preview&project_setting_tab=3&projectTabName=接口
 				 */
 userAreaCodeList(args?:any):Promise<any>
+/**
+				 *  获取首页信息
+				 *  http://10.143.133.216:3001/yapi#/api/project?projectId=366&groupId=370&projectTabName=%E6%8E%A5%E5%8F%A3&project_interface_tab=preview&interfaceType=interface&interfaceId=37746/#/api/project?projectId=366&groupId=370&interfaceType=interface&interfaceId=37746&project_interface_tab=preview&project_setting_tab=3&projectTabName=接口
+				 */
+menuDetailMenuPageType(args?:any):Promise<any>
+/**
+				 *  注册时候的验证码
+				 *  http://10.143.133.216:3001/yapi#/api/project?projectId=366&groupId=370&projectTabName=%E6%8E%A5%E5%8F%A3&project_interface_tab=preview&interfaceType=interface&interfaceId=37761/#/api/project?projectId=366&groupId=370&interfaceType=interface&interfaceId=37761&project_interface_tab=preview&project_setting_tab=3&projectTabName=接口
+				 */
+captchaGetOne(args?:any):Promise<any>
+/**
+				 *  用户注册日志记录
+				 *  http://10.143.133.216:3001/yapi#/api/project?projectId=366&groupId=370&projectTabName=%E6%8E%A5%E5%8F%A3&project_interface_tab=preview&project_setting_tab=1&interfaceType=interface&interfaceId=37762/#/api/project?projectId=366&groupId=370&interfaceType=interface&interfaceId=37762&project_interface_tab=preview&project_setting_tab=3&projectTabName=接口
+				 */
+processApi10HistoryProcInstId(args?:any):Promise<any>
+/**
+				 *  /homepage/messagest/{pageSize}/{curPage}
+				 *  http://10.143.133.216:3001/yapi#/api/project?projectId=366&groupId=370&projectTabName=%E6%8E%A5%E5%8F%A3&project_interface_tab=preview&interfaceType=interface&interfaceId=37763/#/api/project?projectId=366&groupId=370&interfaceType=interface&interfaceId=37763&project_interface_tab=preview&project_setting_tab=3&projectTabName=接口
+				 */
+homepageMessagestPageSizeCurPage(args?:any):Promise<any>
 };

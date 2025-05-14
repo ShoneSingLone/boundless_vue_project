@@ -11,7 +11,7 @@
 		</xCard>
 		<template #footer>
 			<xBtn :configs="btnOk" />
-			<xBtn @click="closeModal">{{ i18n("取消") }}</xBtn>
+			<xBtn @click="closeModal">{{ i18n("Cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>
@@ -67,7 +67,7 @@ export default async function ({ row, onClick }) {
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("OK"),
 					preset: "blue",
 					async onClick() {
 						vm.onClickOk();

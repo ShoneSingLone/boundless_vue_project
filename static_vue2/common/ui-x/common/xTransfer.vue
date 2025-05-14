@@ -30,7 +30,6 @@
 		</div>
 	</xDialog>
 </template>
-
 <script lang="ts">
 export default async function () {
 	return {
@@ -113,7 +112,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .xTransfer {
 	margin: 20px 0;

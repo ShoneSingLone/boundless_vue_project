@@ -330,7 +330,7 @@ export default async function ({ rootApp }) {
 					},
 					value: "",
 					clearable: true,
-					placeholder: i18n("请输入字符")
+					placeholder: i18n("input_char")
 				},
 				options
 			);
@@ -346,7 +346,7 @@ export default async function ({ rootApp }) {
 					clearable: true,
 					itemType: "xItemSelect",
 					options: [],
-					placeholder: i18n("状态")
+					placeholder: i18n("status_info")
 				},
 				options
 			);
@@ -359,7 +359,7 @@ export default async function ({ rootApp }) {
 						this.value = "";
 					},
 					value: [],
-					placeholder: i18n("时间范围"),
+					placeholder: i18n("time_period"),
 					itemType: "AdminXItemDaterange"
 				},
 				options

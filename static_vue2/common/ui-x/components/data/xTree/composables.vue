@@ -214,7 +214,7 @@ export default async function () {
 				const { treeNodeMap } = tree.value;
 				keySet.forEach(key => {
 					const treeNode = treeNodeMap.get(key);
-					if (node && node.level === treeNode?.level) {
+					if (node && node.level === _.$val(treeNode, "level")) {
 						keySet.delete(key);
 					}
 				});
@@ -397,7 +397,7 @@ export default async function () {
 		function getChecked(leafOnly = false) {
 			const checkedNodes = [];
 			const keys2 = [];
-			if (tree?.value && props.showCheckbox) {
+			if (_.$val(tree, "value") && props.showCheckbox) {
 				const { treeNodeMap } = tree.value;
 				checkedKeysSet.value.forEach(key => {
 					const node = treeNodeMap.get(key);
@@ -415,7 +415,7 @@ export default async function () {
 		function getHalfChecked() {
 			const halfCheckedNodes = [];
 			const halfCheckedKeys = [];
-			if (tree?.value && props.showCheckbox) {
+			if (_.$val(tree, "value") && props.showCheckbox) {
 				const { treeNodeMap } = tree.value;
 				indeterminateKeys.value.forEach(key => {
 					const node = treeNodeMap.get(key);
@@ -436,7 +436,7 @@ export default async function () {
 			_setCheckedKeys(keys2);
 		}
 		function setChecked(key, isChecked2) {
-			if (tree?.value && props.showCheckbox) {
+			if (_.$val(tree, "value") && props.showCheckbox) {
 				const node = tree.value.treeNodeMap.get(key);
 				if (node) {
 					toggleCheckbox(node, isChecked2, false);
@@ -444,7 +444,7 @@ export default async function () {
 			}
 		}
 		function _setCheckedKeys(keys2) {
-			if (tree?.value) {
+			if (_.$val(tree, "value")) {
 				const { treeNodeMap } = tree.value;
 				if (props.showCheckbox && treeNodeMap && keys2) {
 					try {

@@ -1,18 +1,3 @@
-<style lang="less">
-.xAdvancedSearch {
-	.xAdvancedSearch-label {
-	}
-	.xAdvancedSearch-icon {
-		width: 12px;
-		height: 12px;
-		&.collapse {
-			transform: rotate(180deg);
-		}
-	}
-	.xAdvancedSearch-more-search-wrapper {
-	}
-}
-</style>
 <template>
 	<div class="xAdvancedSearch flex middle">
 		<slot name="collapse" class="xAdvancedSearch-collapse-wrapper" v-if="cptIsCollapse" />
@@ -37,7 +22,7 @@ export default async function () {
 			},
 			label: {
 				type: [String, Boolean],
-				default: i18n("高级搜索")
+				default: i18n("advanced_search")
 			},
 			collapse: {
 				type: Boolean,
@@ -129,7 +114,7 @@ export default async function () {
 				if (_.isBoolean(this.label)) {
 					return this.label;
 				}
-				return this.label || i18n("高级搜索");
+				return this.label || i18n("advanced_search");
 			},
 			cptIconClass() {
 				return {
@@ -146,3 +131,18 @@ export default async function () {
 	});
 }
 </script>
+<style lang="less">
+.xAdvancedSearch {
+	.xAdvancedSearch-label {
+	}
+	.xAdvancedSearch-icon {
+		width: 12px;
+		height: 12px;
+		&.collapse {
+			transform: rotate(180deg);
+		}
+	}
+	.xAdvancedSearch-more-search-wrapper {
+	}
+}
+</style>

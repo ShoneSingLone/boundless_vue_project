@@ -20,5 +20,3 @@ export default async function () {
 	});
 }
 </script>
-
-<style></style>

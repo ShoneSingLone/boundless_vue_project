@@ -391,7 +391,7 @@
 			}
 			elementsQueue.push(
 				...elementToCheck.children,
-				...(elementToCheck.shadowRoot?.children || []),
+				...(_.$val(elementToCheck, "shadowRoot.children") || []),
 				...(elementToCheck.assignedElements?.() || [])
 			);
 		}
@@ -592,6 +592,7 @@
 			"810x1080",
 			"1080x810"
 		];
+
 		if (
 			!ipad &&
 			macos &&
@@ -3913,26 +3914,26 @@
 		const { classNames, params, rtl, el, device } = swiper;
 		// prettier-ignore
 		const suffixes = prepareClasses(['initialized', params.direction, {
-        'free-mode': swiper.params.freeMode && params.freeMode.enabled
-      }, {
-        'autoheight': params.autoHeight
-      }, {
-        'rtl': rtl
-      }, {
-        'grid': params.grid && params.grid.rows > 1
-      }, {
-        'grid-column': params.grid && params.grid.rows > 1 && params.grid.fill === 'column'
-      }, {
-        'android': device.android
-      }, {
-        'ios': device.ios
-      }, {
-        'css-mode': params.cssMode
-      }, {
-        'centered': params.cssMode && params.centeredSlides
-      }, {
-        'watch-progress': params.watchSlidesProgress
-      }], params.containerModifierClass);
+      'free-mode': swiper.params.freeMode && params.freeMode.enabled
+    }, {
+      'autoheight': params.autoHeight
+    }, {
+      'rtl': rtl
+    }, {
+      'grid': params.grid && params.grid.rows > 1
+    }, {
+      'grid-column': params.grid && params.grid.rows > 1 && params.grid.fill === 'column'
+    }, {
+      'android': device.android
+    }, {
+      'ios': device.ios
+    }, {
+      'css-mode': params.cssMode
+    }, {
+      'centered': params.cssMode && params.centeredSlides
+    }, {
+      'watch-progress': params.watchSlidesProgress
+    }], params.containerModifierClass);
 		classNames.push(...suffixes);
 		el.classList.add(...classNames);
 		swiper.emitContainerClasses();
@@ -4348,15 +4349,15 @@
 			}
 			// prettier-ignore
 			return {
-          'width': 'height',
-          'margin-top': 'margin-left',
-          'margin-bottom ': 'margin-right',
-          'margin-left': 'margin-top',
-          'margin-right': 'margin-bottom',
-          'padding-left': 'padding-top',
-          'padding-right': 'padding-bottom',
-          'marginRight': 'marginBottom'
-        }[property];
+        'width': 'height',
+        'margin-top': 'margin-left',
+        'margin-bottom ': 'margin-right',
+        'margin-left': 'margin-top',
+        'margin-right': 'margin-bottom',
+        'padding-left': 'padding-top',
+        'padding-right': 'padding-bottom',
+        'marginRight': 'marginBottom'
+      }[property];
 		}
 		getSlideIndex(slideEl) {
 			const { slidesEl, params } = this;
@@ -5285,6 +5286,7 @@
 					[swiperOffset.left, swiperOffset.top + swiperHeight],
 					[swiperOffset.left + swiperWidth, swiperOffset.top + swiperHeight]
 				];
+
 				for (let i = 0; i < swiperCoord.length; i += 1) {
 					const point = swiperCoord[i];
 					if (
@@ -10655,6 +10657,7 @@
 		EffectCreative,
 		EffectCards
 	];
+
 	Swiper.use(modules);
 
 	/* underscore in name -> watch for changes */
@@ -11111,6 +11114,7 @@
 		"virtual",
 		"zoom"
 	];
+
 	function getParams(element, propName, propValue) {
 		const params = {};
 		const passedParams = {};

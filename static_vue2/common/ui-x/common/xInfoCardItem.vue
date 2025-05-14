@@ -12,7 +12,6 @@
 		</div>
 	</div>
 </template>
-
 <script lang="ts">
 export default async function () {
 	return {
@@ -59,7 +58,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .el-descriptions {
 	-webkit-box-sizing: border-box;

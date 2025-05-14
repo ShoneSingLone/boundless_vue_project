@@ -15,7 +15,6 @@
 		</xDropdownMenu>
 	</xDropdown>
 </template>
-
 <script lang="ts">
 export default async function () {
 	/* xPagination  后台是以0开始，注意current的加减*/
@@ -46,8 +45,8 @@ export default async function () {
 		},
 		computed: {
 			cptColumnsForShow() {
-				if (this.configs?.columns) {
-					const columns = _.filter(this.configs?.columns, col => {
+				if (_.$val(this, "configs.columns")) {
+					const columns = _.filter(_.$val(this, "configs.columns"), col => {
 						if (!col.label) {
 							return false;
 						}
@@ -58,7 +57,7 @@ export default async function () {
 				}
 
 				/* xTable colInfo 配置项*/
-				return _.filter(this.configs?.colInfo, (col, prop) => {
+				return _.filter(_.$val(this, "configs.colInfo"), (col, prop) => {
 					const isCol = /COL_/.test(prop);
 					return !isCol;
 				});
@@ -67,5 +66,3 @@ export default async function () {
 	};
 }
 </script>
-
-<style lang="less"></style>

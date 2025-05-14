@@ -87,7 +87,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .el-form-item.is-error {
 	> .xBlock.el-card {

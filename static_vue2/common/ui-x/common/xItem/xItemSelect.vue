@@ -9,14 +9,14 @@ export default async function () {
 				return this.readonly;
 			},
 			selectOptions() {
-				return this.options || this?.configs?.options || [];
+				return this.options || _.$val(this, "configs.options") || [];
 			}
 		},
 		mounted() {},
 		render() {
 			const vm = this;
 			let attrs = {};
-			if (_.isFunction(_xUtils?.globalConfigs?.xItemSelect?.defaultProps)) {
+			if (_.isFunction(_.$val(_xUtils, "globalConfigs.xItemSelect.defaultProps"))) {
 				attrs = _xUtils.globalConfigs.xItemSelect.defaultProps(vm, vm.$attrs);
 			}
 
@@ -29,11 +29,11 @@ export default async function () {
 						vm.mixin_value = val;
 					}
 				},
-				vm?.$vnode?.data
+				_.$val(vm, "$vnode.data")
 			]);
 
 			const children = (() => {
-				if (vm.configs?.optonsRender) {
+				if (_.$val(vm, "configs.optonsRender")) {
 					return [vm.configs.optonsRender({ options: vm.selectOptions, vm })];
 				} else {
 					return _.map(vm.selectOptions, (item, key) => {
@@ -49,7 +49,7 @@ export default async function () {
 
 			if (vm.cptReadonly) {
 				const item = _.find(vm.selectOptions, { value: vm.mixin_value });
-				return hDiv([item?.label || vm.mixin_value]);
+				return hDiv([_.$val(item, "label") || vm.mixin_value]);
 			}
 
 			return h("xSelect", selectProps, children);
@@ -57,5 +57,3 @@ export default async function () {
 	});
 }
 </script>
-
-<style lang="less"></style>

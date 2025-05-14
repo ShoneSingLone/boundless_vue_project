@@ -16,7 +16,7 @@ export default async function () {
 				};
 			},
 			cptDisabled() {
-				if (this.configs?.disabled) {
+				if (_.$val(this, "configs.disabled")) {
 					return true;
 				}
 
@@ -26,10 +26,10 @@ export default async function () {
 				return false;
 			},
 			minWidth() {
-				return this.configs?.minWidth || 200;
+				return _.$val(this, "configs.minWidth") || 200;
 			},
 			selectOptions() {
-				return this.options || this.configs?.options || [];
+				return this.options || _.$val(this, "configs.options") || [];
 			},
 			cptGroupProps() {
 				return mergeProps4h([
@@ -48,8 +48,8 @@ export default async function () {
 			vDomItems() {
 				const vm = this;
 				/*el-radio-button*/
-				const tag = this.configs?.type || "el-radio";
-				const renderOption = this.configs?.renderOption;
+				const tag = _.$val(this, "configs.type") || "el-radio";
+				const renderOption = _.$val(this, "configs.renderOption");
 				return _.map(this.selectOptions, item => {
 					let { value, label } = item;
 					if (renderOption) {
@@ -91,7 +91,7 @@ export default async function () {
 			}
 		},
 		render() {
-			if (this.configs?.isButton) {
+			if (_.$val(this, "configs.isButton")) {
 				return h(
 					"xBtnGroup",
 					_.map(this.selectOptions, item => {
@@ -134,7 +134,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .xForm.xItemRadioGroup {
 	.xFormItem {

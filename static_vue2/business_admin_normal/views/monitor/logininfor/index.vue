@@ -19,15 +19,14 @@
 								<xItem :configs="formSearch.dateRange" />
 								<div class="flex end width100" span="2">
 									<xBtn @click="resetSearchForm">重置</xBtn>
-									<xBtn preset="primary" @click="getTableData({ page: 1 })"
-										>查询</xBtn
+									<xBtn :configs="cptBtnQuery" />
 									>
 								</div>
 							</xForm>
 						</xBlock>
 						<template #collapse>
 							<xItem :configs="formSearch.userName" />
-							<xBtn preset="primary" @click="getTableData({ page: 1 })">查询</xBtn>
+							<xBtn :configs="cptBtnQuery" />
 						</template>
 					</xAdvancedSearch>
 				</template>
@@ -64,7 +63,7 @@ export default async function () {
 				/*  */
 				oprBtnArray: [
 					{
-						label: i18n("删除"),
+						label: i18n("delete_action"),
 						disabled: () => !vm.configsTable.data.set.size,
 						isHide: () => !vm.$auth.hasPermiOr(["monitor:logininfor:remove"]),
 						async onClick() {
@@ -88,7 +87,7 @@ export default async function () {
 					ipaddr: _adminTools.search_form_configs_text({ label: i18n("登录地址") }),
 					userName: _adminTools.search_form_configs_text({ label: i18n("用户名称") }),
 					status: _adminTools.search_form_configs_select({
-						label: i18n("状态"),
+						label: i18n("status_info"),
 						options: dicts.sys_common_status
 					}),
 					dateRange: _adminTools.search_form_date_range({ label: i18n("登录时间") })
@@ -114,7 +113,7 @@ export default async function () {
 						{ label: i18n("登录地址"), prop: "ipaddr" },
 						{ label: i18n("登录地点"), prop: "loginLocation" },
 						{ label: i18n("浏览器"), prop: "browser" },
-						{ label: i18n("操作系统"), prop: "os" },
+						{ label: i18n("operating_system_info"), prop: "os" },
 						{
 							label: i18n("登录状态"),
 							prop: "status",
@@ -161,6 +160,16 @@ export default async function () {
 			};
 		},
 		computed: {
+			cptBtnQuery() {
+				const vm = this;
+				return {
+					label: i18n("search"),
+					preset: "primary",
+					onClick() {
+						vm.getTableData({ page: 1 });
+					}
+				};
+			},
 			cptSearchParams() {
 				return _.$pickFormValues(this.formSearch);
 			},
@@ -179,7 +188,7 @@ export default async function () {
 						await _.$confirm_important("是否确认删除数据项？");
 						await _adminTools.api_logininfor_delete(operIds);
 					}
-					_.$msg(i18n("删除成功"));
+					_.$msg(i18n("delete_success_info"));
 					this.getTableData();
 				} catch (error) {
 					if (error) {

@@ -3,7 +3,7 @@ export default async function ({ rootApp }) {
 	const ALL_PERMISSION = "*:*:*";
 
 	function isAuthMatch(permission) {
-		const permissions = rootApp?.user?.permissions || [];
+		const permissions = (rootApp && rootApp.user && rootApp.user.permissions) || [];
 		return _.some(permissions, userPermission => {
 			return ALL_PERMISSION === userPermission || userPermission === permission;
 		});
@@ -97,4 +97,3 @@ export default async function ({ rootApp }) {
 	return auth;
 }
 </script>
-;

@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<transition name="el-zoom-in-top" @after-leave="$emit('dodestroy')">
 		<div v-show="visible" class="el-time-panel el-popper" :class="popperClass">

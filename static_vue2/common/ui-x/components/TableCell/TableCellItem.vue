@@ -10,7 +10,6 @@
 		</span>
 	</div>
 </template>
-
 <script lang="ts">
 export default async function () {
 	return {
@@ -40,8 +39,7 @@ export default async function () {
 	};
 }
 </script>
-
-<style lang="less" scoped>
+<style lang="less">
 .cell-wrap {
 	display: flex;
 	align-items: center;

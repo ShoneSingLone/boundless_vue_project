@@ -29,7 +29,7 @@ export default async function () {
 					return this.row[this.configs.prop] || "";
 				},
 				set(val) {
-					if (this.configs?.col?.componentOptions?.onEmitValue) {
+					if (_.$val(this, "configs.col.componentOptions.onEmitValue")) {
 						if (this.row[this.configs.prop] !== val) {
 							this.configs.col.componentOptions.onEmitValue({
 								...this.params,
@@ -40,7 +40,7 @@ export default async function () {
 				}
 			},
 			searchDisabled() {
-				let dis = this.configs?.col?.componentOptions?.search?.disabled;
+				let dis = _.$val(this, "configs.col.componentOptions.search.disabled");
 				if (_.isFunction(dis)) {
 					return dis();
 				}
@@ -49,15 +49,15 @@ export default async function () {
 		},
 		render() {
 			const vm = this;
-			let opts = vm.configs?.col?.componentOptions?.search?.options ?? [];
+			let opts = _.$val(vm, "configs.col.componentOptions.search.options") ?? [];
 			return hDiv({ class: "select-search" }, [
 				h(
 					"el-select",
 					{
-						value: vm.configs?.col?.componentOptions?.search?.value,
+						value: _.$val(vm, "configs.col.componentOptions.search.value"),
 						disabled: vm.searchDisabled,
 						onChange: val => {
-							if (vm.configs?.col?.componentOptions?.search?.value) {
+							if (_.$val(vm, "configs.col.componentOptions.search.value")) {
 								vm.configs.col.componentOptions.search.value = val;
 							}
 						}
@@ -74,7 +74,7 @@ export default async function () {
 				),
 				hxItem({
 					configs: {
-						...(vm.configs?.col?.componentOptions || {}),
+						...(_.$val(vm, "configs.col.componentOptions") || {}),
 						itemType: "xItemSelect",
 						payload: vm.params
 					},

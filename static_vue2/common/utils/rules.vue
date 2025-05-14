@@ -28,7 +28,7 @@ export default async function () {
 						if (urlRegex.test(val)) {
 							return "";
 						} else {
-							return i18n("请输入正确的手机号码");
+							return i18n("input_correct_phone");
 						}
 					},
 					trigger: ["change", "blur"]
@@ -160,11 +160,11 @@ export default async function () {
 				};
 			},
 			/**
-			 * 要求控件必填，提示信息默认i18n("必填项")
+			 * 要求控件必填，提示信息默认i18n("required_item")
 			 * @param defaultMsg 自定义的提示信息
 			 */
 			required: (args = {}) => {
-				let defaultMsg = i18n("必填项");
+				let defaultMsg = i18n("required_item");
 				/* 兼容老的用法 */
 				if (_.isString(args)) {
 					defaultMsg = args;
@@ -178,7 +178,7 @@ export default async function () {
 					async validator({ val }) {
 						let msg = "";
 						if (!_.$isInput(val)) {
-							msg = defaultMsg || i18n("必填项");
+							msg = defaultMsg || i18n("required_item");
 						}
 						/* 返回提示信息即error */
 						/* 返回""为success */
@@ -188,7 +188,7 @@ export default async function () {
 				};
 			},
 			email: options => {
-				const msg = options?.msg || i18n("请输入Email");
+				const msg = _.$val(options, "msg") || i18n("input_email_addr");
 
 				return {
 					name: "email",
@@ -217,7 +217,7 @@ export default async function () {
 						let msg = "";
 
 						if (String(val).length > size) {
-							msg = i18n("ruleMsgWordLessThan", { size });
+							msg = i18n("form.rules.msg.wordLessThan", { size });
 						}
 						/* 返回提示信息即error */
 						/* 返回""为success */
@@ -342,7 +342,7 @@ export default async function () {
 				};
 			},
 			/* 匹配一个字符串，该字符串以小写英文字母或数字开头，并且只包含字母或数字 */
-			lettersOrNumbers(msg = i18n("以小写英文字母或数字开头，并且只包含字母、数字或者-")) {
+			lettersOrNumbers(msg = i18n("input_start_format")) {
 				return {
 					name: "name",
 					async validator({ val }) {
@@ -387,7 +387,7 @@ export default async function () {
 					name: "required",
 					async validator({ val, xItem }) {
 						const record = [];
-						let rows = xItem.configs?.payload?.row || {};
+						let rows = _.$val(xItem, "configs.payload.row") || {};
 						for (let key of rowArray) {
 							record.push(rows[key]);
 						}
@@ -413,7 +413,7 @@ export default async function () {
 					name: "required",
 					async validator({ val, xItem }) {
 						const record = [];
-						let rows = xItem.configs?.payload?.row || {};
+						let rows = _.$val(xItem, "configs.payload.row") || {};
 						for (let key of rowArray) {
 							record.push(rows[key]);
 						}

@@ -1366,14 +1366,14 @@
 		this.documents = [];
 
 		/*
-      this.version;
-      this.checkLineBreaks;
-      this.tagMap;
-      this.anchorMap;
-      this.tag;
-      this.anchor;
-      this.kind;
-      this.result;*/
+        this.version;
+        this.checkLineBreaks;
+        this.tagMap;
+        this.anchorMap;
+        this.tag;
+        this.anchor;
+        this.kind;
+        this.result;*/
 	}
 
 	function generateError(state, message) {
@@ -3282,7 +3282,8 @@
 				!(prev === CHAR_COLON && !cIsNsChar)) || // false on ': '
 			(isNsCharOrWhitespace(prev) && !isWhitespace(prev) && c === CHAR_SHARP) || // change to true on '[^ ]#'
 			(prev === CHAR_COLON && cIsNsChar)
-		); // change to true on ':[^ ]'
+		);
+		// change to true on ':[^ ]'
 	}
 
 	// Simplified test for values allowed as the first character in plain style.
@@ -3509,12 +3510,14 @@
 						blockHeader(string, state.indent) +
 						dropEndingNewline(indentString(string, indent))
 					);
+
 				case STYLE_FOLDED:
 					return (
 						">" +
 						blockHeader(string, state.indent) +
 						dropEndingNewline(indentString(foldString(string, lineWidth), indent))
 					);
+
 				case STYLE_DOUBLE:
 					return '"' + escapeString(string) + '"';
 				default:

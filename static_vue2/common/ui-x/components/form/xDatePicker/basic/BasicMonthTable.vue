@@ -1,11 +1,10 @@
-<style lang="less"></style>
 <template>
 	<table @click="handleMonthTableClick" @mousemove="handleMouseMove" class="el-month-table">
 		<tbody>
 			<tr v-for="(row, key) in rows" :key="key">
 				<td :class="getCellStyle(cell)" v-for="(cell, key) in row" :key="key">
 					<div>
-						<a class="cell">{{ i18n("el.datepicker.months." + months[cell.text]) }}</a>
+						<a class="cell">{{ i18n(`el.datepicker.months.${months[cell.text]}`) }}</a>
 					</div>
 				</td>
 			</tr>
@@ -108,6 +107,7 @@ export default async function () {
 					"nov",
 					"dec"
 				],
+
 				tableRows: [[], [], []],
 				lastRow: null,
 				lastColumn: null

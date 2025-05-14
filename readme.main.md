@@ -86,4 +86,7 @@ window.APP_ENTRY_NAME 默认entry 其他的也可以
 - [dbgate](https://github.com/dbgate/dbgate)
 - [focalboard](https://www.focalboard.com/)
 - [trilium](https://github.com/zadam/trilium)
+- [immich](https://github.com/immich-app/immich)类google相册
 - [ClickOutside的实现](https://mp.weixin.qq.com/s/M-VunCPLgDEMnK1qv8X8jw)
+- [icon](https://www.iconfont.cn/collections/detail?spm=a313x.collections_index.i1.d9df05512.34653a81Uj9bUB&cid=22664)
+- [vxetable](https://vxetable.cn/#/demo/list)

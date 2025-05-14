@@ -57,6 +57,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				"Friday",
 				"Saturday"
 			];
+
 			var monthNames = [
 				"January",
 				"February",
@@ -71,6 +72,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				"November",
 				"December"
 			];
+
 			var monthNamesShort = shorten(monthNames, 3);
 			var dayNamesShort = shorten(dayNames, 3);
 			fecha.i18n = {
@@ -184,18 +186,21 @@ export default async function ({ PRIVATE_GLOBAL }) {
 						d.day = v;
 					}
 				],
+
 				Do: [
 					twoDigits + word,
 					function (d, v) {
 						d.day = parseInt(v, 10);
 					}
 				],
+
 				M: [
 					twoDigits,
 					function (d, v) {
 						d.month = v - 1;
 					}
 				],
+
 				yy: [
 					twoDigits,
 					function (d, v) {
@@ -204,48 +209,56 @@ export default async function ({ PRIVATE_GLOBAL }) {
 						d.year = "" + (v > 68 ? cent - 1 : cent) + v;
 					}
 				],
+
 				h: [
 					twoDigits,
 					function (d, v) {
 						d.hour = v;
 					}
 				],
+
 				m: [
 					twoDigits,
 					function (d, v) {
 						d.minute = v;
 					}
 				],
+
 				s: [
 					twoDigits,
 					function (d, v) {
 						d.second = v;
 					}
 				],
+
 				yyyy: [
 					fourDigits,
 					function (d, v) {
 						d.year = v;
 					}
 				],
+
 				S: [
 					"\\d",
 					function (d, v) {
 						d.millisecond = v * 100;
 					}
 				],
+
 				SS: [
 					"\\d{2}",
 					function (d, v) {
 						d.millisecond = v * 10;
 					}
 				],
+
 				SSS: [
 					threeDigits,
 					function (d, v) {
 						d.millisecond = v;
 					}
 				],
+
 				D: [twoDigits, noop],
 				ddd: [word, noop],
 				MMM: [word, monthUpdate("monthNamesShort")],
@@ -261,6 +274,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 						}
 					}
 				],
+
 				ZZ: [
 					"[^\\s]*?[\\+\\-]\\d\\d:?\\d\\d|[^\\s]*?Z",
 					function (d, v) {
@@ -782,7 +796,6 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	return PRIVATE_GLOBAL.dateUtils;
 }
 </script>
-
 <style lang="less">
 .el-date-table td,
 .el-date-table td div {

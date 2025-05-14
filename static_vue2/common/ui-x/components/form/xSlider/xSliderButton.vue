@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<div
 		class="el-slider__button-wrapper"

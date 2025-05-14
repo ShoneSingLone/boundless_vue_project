@@ -23,7 +23,6 @@
 		</div>
 	</div>
 </template>
-
 <script lang="ts">
 export default async function ({ PRIVATE_GLOBAL }) {
 	const { useElementSize } = await _.$importVue("/common/utils/hooks.vue");
@@ -60,7 +59,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 					return true;
 				}
 
-				if (this.configs?.header) {
+				if (_.$val(this, "configs.header")) {
 					return true;
 				}
 
@@ -70,7 +69,7 @@ export default async function ({ PRIVATE_GLOBAL }) {
 				return false;
 			},
 			fillItems() {
-				return this.configs?.items.length % this.col;
+				return _.$val(this, "configs.items.length") % this.col;
 			},
 			cellStyle() {
 				return {
@@ -127,7 +126,6 @@ export default async function ({ PRIVATE_GLOBAL }) {
 	};
 }
 </script>
-
 <style lang="less">
 .xInfoCard {
 	.el-descriptions__body {

@@ -17,7 +17,7 @@ export default async function () {
 						vm.mixin_value = val;
 					}
 				},
-				vm?.$vnode?.data
+				_.$val(vm, "$vnode.data")
 			]);
 
 			return h("xCascader", cascaderProps);
@@ -25,5 +25,3 @@ export default async function () {
 	});
 }
 </script>
-
-<style lang="less"></style>

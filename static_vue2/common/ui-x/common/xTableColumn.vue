@@ -52,7 +52,6 @@
 		</el-table-column>
 	</el-table>
 </template>
-
 <script lang="ts">
 export default async function () {
 	/**
@@ -63,7 +62,7 @@ export default async function () {
 		setup() {
 			const setColActionWidthImmediate = () => {
 				try {
-					if (this?.configs?.data?.list?.length > 0) {
+					if (_.$val(this, "configs.data.list.length") > 0) {
 						const $xColActions = $(this.$refs.xTable.$el).find(".xColActions")[0];
 						/* TODO: 列表中最长的操作 */
 						if (
@@ -119,7 +118,7 @@ export default async function () {
 						return configsCol.label;
 					}
 					if (prop === "COL_ACTIONS") {
-						return i18n("Operation");
+						return i18n("operation");
 					}
 					return "";
 				}
@@ -127,7 +126,7 @@ export default async function () {
 			},
 			getWidthBy(prop) {
 				const configsCol = this.allColInfo[prop];
-				if (configsCol?.width) {
+				if (_.$val(configsCol, "width")) {
 					return configsCol.width;
 				}
 
@@ -156,7 +155,7 @@ export default async function () {
 			/* ***************** */
 			isUseComponent(prop) {
 				const colInfo = this.allColInfo[prop];
-				let isUse = !!colInfo?.component;
+				let isUse = !!_.$val(colInfo, "component");
 				if (!isUse) {
 					for (const prop in colInfo) {
 						if (/^xCell/.test(prop)) {
@@ -171,7 +170,7 @@ export default async function () {
 			},
 			useComponent(prop) {
 				const colInfo = this.allColInfo[prop];
-				return colInfo?.component || "div";
+				return _.$val(colInfo, "component") || "div";
 			},
 			log(prop, col) {
 				console.log("🚀:xTable log", prop, col);
@@ -227,7 +226,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .xTable {
 	margin-top: 10px;

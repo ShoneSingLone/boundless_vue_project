@@ -1769,14 +1769,14 @@ var VueRouter = (function (exports, vue) {
 	}
 
 	/**
-     * Transforms a queryString into a {@link LocationQuery} object. Accept both, a
-     * version with the leading `?` and without Should work as URLSearchParams
-  
-     * @internal
-     *
-     * @param search - search string to parse
-     * @returns a query object
-     */
+      * Transforms a queryString into a {@link LocationQuery} object. Accept both, a
+      * version with the leading `?` and without Should work as URLSearchParams
+   
+      * @internal
+      *
+      * @param search - search string to parse
+      * @returns a query object
+      */
 	function parseQuery(search) {
 		const query = {};
 		// avoid creating an object with an empty key and empty value

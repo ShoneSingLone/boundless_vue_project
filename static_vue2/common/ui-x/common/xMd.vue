@@ -7,7 +7,6 @@
 		<div class="markdown-wrapper_description" v-html="html"></div>
 	</div>
 </template>
-
 <script lang="ts">
 export default async function ({ code, PRIVATE_GLOBAL }) {
 	const [hljs, marked] = await Promise.all([
@@ -181,7 +180,6 @@ export default async function ({ code, PRIVATE_GLOBAL }) {
 	};
 }
 </script>
-
 <style lang="less">
 .markdown-wrapper_description {
 	ul {

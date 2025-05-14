@@ -38,7 +38,7 @@ export default async function () {
 						value: username,
 						size: "large",
 						/* render的时候重新获取 */
-						placeholder: () => i18n("账号"),
+						placeholder: () => i18n("账号:tony"),
 						onEmitValue({ val }) {
 							_.$lStorage.username = val;
 						},
@@ -57,7 +57,7 @@ export default async function () {
 						isPwd: true,
 						size: "large",
 						/* render的时候重新获取 */
-						placeholder: () => i18n("密码"),
+						placeholder: () => i18n("密码:123456"),
 						onEmitValue({ val }) {
 							_.$lStorage.password = val;
 						},

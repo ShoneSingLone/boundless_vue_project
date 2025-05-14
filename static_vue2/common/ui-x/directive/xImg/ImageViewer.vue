@@ -1,5 +1,3 @@
-<style lang="less">
-</style>
 <template>
 	<transition name="viewer-fade">
 		<div
@@ -7,10 +5,13 @@
 			ref="el-image-viewer__wrapper"
 			class="el-image-viewer__wrapper"
 			:style="{ 'z-index': viewerZIndex }">
-			<div class="el-image-viewer__mask" @click.self="handleMaskClick"></div>
+			<div
+				class="el-image-viewer__mask"
+				@click.self="handleMaskClick"
+				:style="styleViewerMask"></div>
 			<!-- CLOSE -->
 			<span class="el-image-viewer__btn el-image-viewer__close" @click="hide">
-				<i class="el-icon-close"></i>
+				<xIcon class="el-icon-close" icon="icon_close" />
 			</span>
 			<!-- ARROW -->
 			<template v-if="!isSingle">
@@ -18,25 +19,35 @@
 					class="el-image-viewer__btn el-image-viewer__prev"
 					:class="{ 'is-disabled': !infinite && isFirst }"
 					@click="prev">
-					<i class="el-icon-arrow-left" />
+					<xIcon class="el-icon-arrow-left" icon="arrow-left" />
 				</span>
 				<span
 					class="el-image-viewer__btn el-image-viewer__next"
 					:class="{ 'is-disabled': !infinite && isLast }"
 					@click="next">
-					<i class="el-icon-arrow-right" />
+					<xIcon class="el-icon-arrow-right" icon="arrow-right" />
 				</span>
 			</template>
 			<!-- ACTIONS -->
 			<div class="el-image-viewer__btn el-image-viewer__actions">
 				<div class="el-image-viewer__actions__inner">
-					<i class="el-icon-zoom-out" @click="handleActions('zoomOut')"></i>
-					<i class="el-icon-zoom-in" @click="handleActions('zoomIn')"></i>
-					<i class="el-image-viewer__actions__divider"></i>
-					<i :class="mode.icon" @click="toggleMode"></i>
-					<i class="el-image-viewer__actions__divider"></i>
-					<i class="el-icon-refresh-left" @click="handleActions('anticlocelise')"></i>
-					<i class="el-icon-refresh-right" @click="handleActions('clocelise')"></i>
+					<xIcon
+						class="el-icon-zoom-out"
+						icon="zoom-out"
+						@click="handleActions('zoomOut')"></xIcon>
+					<xIcon
+						class="el-icon-zoom-in"
+						icon="zoom-in"
+						@click="handleActions('zoomIn')"></xIcon>
+					<xIcon :class="mode.icon" :icon="mode.icon" @click="toggleMode"></xIcon>
+					<xIcon
+						class="el-icon-refresh-left"
+						icon="refresh-left"
+						@click="handleActions('anticlocelise')"></xIcon>
+					<xIcon
+						class="el-icon-refresh-right"
+						icon="refresh-right"
+						@click="handleActions('clocelise')"></xIcon>
 				</div>
 			</div>
 			<!-- CANVAS -->
@@ -65,11 +76,11 @@ export default async function () {
 	const Mode = {
 		CONTAIN: {
 			name: "contain",
-			icon: "el-icon-full-screen"
+			icon: "full-screen"
 		},
 		ORIGINAL: {
 			name: "original",
-			icon: "el-icon-c-scale-to-original"
+			icon: "scale-to-original"
 		}
 	};
 
@@ -79,6 +90,7 @@ export default async function () {
 			return {
 				index: 0,
 				urlList: [],
+				styleViewerMask: {},
 				zIndex: 0,
 				onSwitch: () => {},
 				onClose: () => {},
@@ -210,7 +222,7 @@ export default async function () {
 			},
 			handleImgError(e) {
 				this.loading = false;
-				e.target.alt = "加载失败";
+				e.target.alt = i18n("el.image.error");
 			},
 			handleMouseDown(e) {
 				if (this.loading || e.button !== 0) return;

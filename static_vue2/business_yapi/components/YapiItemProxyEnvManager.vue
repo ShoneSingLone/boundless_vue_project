@@ -51,7 +51,7 @@
 		</div>
 		<template #footer>
 			<xBtn :configs="btnOk" />
-			<xBtn :configs="btnCancel">{{ i18n("取消") }}</xBtn>
+			<xBtn :configs="btnCancel">{{ i18n("cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>
@@ -143,7 +143,7 @@ export default async function ({}) {
 			},
 			btnCancel() {
 				return {
-					label: i18n("取消"),
+					label: i18n("cancel"),
 					onClick: async () => {
 						this.closeModal();
 					}
@@ -169,6 +169,7 @@ export default async function ({}) {
 						return `${row.key}=${row.value}`;
 					}).join(";");
 				};
+				debugger;
 				const Cookie = toString(formData.Cookie);
 
 				if (Cookie) {
@@ -232,7 +233,7 @@ export default async function ({}) {
 							env.Cookie = _.map(Cookie.value.split(";"), i => {
 								const [key, value] = i.split("=");
 								return {
-									key,
+									key: String(key).trim(),
 									value
 								};
 							});
@@ -246,7 +247,7 @@ export default async function ({}) {
 					const toKeyValue = item =>
 						_.map(item, i =>
 							_.merge(i, {
-								key: i.name,
+								key: String(i.name).trim(),
 								value: i.value
 							})
 						);

@@ -1933,7 +1933,6 @@
 		function baseLodash() {
 			// No operation performed.
 		}
-
 		/**
 		 * The base constructor for creating `lodash` wrapper objects.
 		 *
@@ -16311,7 +16310,6 @@
 		function noop() {
 			// No operation performed.
 		}
-
 		/**
 		 * Creates a function that gets the argument at index `n`. If `n` is negative,
 		 * the nth argument from the end is returned.

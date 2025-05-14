@@ -61,7 +61,7 @@ export default async function ({ row }) {
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("ok"),
 					preset: "blue",
 					async onClick() {
 						vm.onClickOk();

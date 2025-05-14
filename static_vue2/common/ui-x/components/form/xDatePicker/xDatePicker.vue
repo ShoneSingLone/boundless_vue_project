@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <script lang="ts">
 export default async function () {
 	const [BasicDatePicker, PanelDate, PanelDateRange, PanelMonthRange] = await _.$importVue([

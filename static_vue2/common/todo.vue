@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<div style="color: red">{{ THIS_FILE_URL }}</div>
 </template>

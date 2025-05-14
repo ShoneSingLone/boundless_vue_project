@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<xBtn v-xtips="manual" @click="handleClick" :configs="configs" />
 </template>

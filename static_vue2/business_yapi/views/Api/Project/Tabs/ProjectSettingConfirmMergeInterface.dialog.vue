@@ -18,7 +18,7 @@
 		</div>
 		<template #footer>
 			<xBtn :configs="btnOk" />
-			<xBtn :configs="btnCancel">{{ i18n("取消") }}</xBtn>
+			<xBtn :configs="btnCancel">{{ i18n("cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>
@@ -74,7 +74,7 @@ export default async function ({ domainData, originData, dataSync }) {
 			},
 			btnCancel() {
 				return {
-					label: i18n("取消"),
+					label: i18n("cancel"),
 					preset: "blue",
 					onClick: async () => {
 						this.closeModal();

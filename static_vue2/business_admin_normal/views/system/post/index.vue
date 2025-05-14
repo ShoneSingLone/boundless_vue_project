@@ -78,7 +78,7 @@ export default async function () {
 						}
 					},
 					{
-						label: i18n("删除"),
+						label: i18n("delete_action"),
 						disabled: () => !vm.configsTable.data.set.size,
 						isHide: () => !vm.$auth.hasPermiOr(["system:post:remove"]),
 						async onClick() {
@@ -126,7 +126,7 @@ export default async function () {
 						{ label: i18n("岗位名称"), prop: "postName" },
 						{ label: i18n("显示顺序"), prop: "postSort" },
 						{
-							label: i18n("状态"),
+							label: i18n("status_info"),
 							prop: "status",
 							cellRenderer: ({ cellData }) =>
 								hVal2Tag(cellData, dicts.sys_normal_disable)
@@ -159,7 +159,7 @@ export default async function () {
 											}
 										},
 										{
-											label: i18n("删除"),
+											label: i18n("delete_action"),
 											isHide: () =>
 												!vm.$auth.hasPermiOr(["system:post:remove"]),
 											onClick: async () => {
@@ -188,7 +188,7 @@ export default async function () {
 				try {
 					await _.$confirm_important('是否确认删除岗位编号为"' + postIds + '"的数据项？');
 					await _adminTools.api_post_delete(postIds);
-					_.$msg(i18n("删除成功"));
+					_.$msg(i18n("delete_success_info"));
 					this.getTableData();
 				} catch (error) {
 					if (error) {

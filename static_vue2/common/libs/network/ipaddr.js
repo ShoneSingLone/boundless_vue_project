@@ -204,6 +204,7 @@
 				[new IPv4([172, 16, 0, 0]), 12],
 				[new IPv4([192, 168, 0, 0]), 16]
 			],
+
 			// Reserved and testing-only ranges; RFCs 5735, 5737, 2544, 1700
 			reserved: [
 				[new IPv4([192, 0, 0, 0]), 24],
@@ -872,6 +873,7 @@
 					parseInt(match[4]),
 					parseInt(match[5])
 				];
+
 				for (i = 0; i < octets.length; i++) {
 					octet = octets[i];
 					if (!(0 <= octet && octet <= 255)) {

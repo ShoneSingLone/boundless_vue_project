@@ -1,4 +1,3 @@
-<style lang="less"></style>
 <template>
 	<component
 		:is="_elTag"

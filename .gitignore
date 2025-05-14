@@ -14,3 +14,20 @@ preprocess/uploadFileToRemote/zips
 vscode.workspace/
 pull.bat
 push.bat
+static_vue2/business_Internet_portal
+static_vue2/business_Internet_portal
+preprocess/deploy/internet_portal/zips
+pnpm-lock.yaml
+package-lock.json
+*.gz
+preprocess/obfuscator/zips
+any.json
+static_vue2/business_lingyun_perf.zip
+preprocess/refactor/test_output
+preprocess/refactor/i18n_output
+i18n_output
+**/i18n.all.*.json
+preprocess/i18n/i18n.replace_zh_word_to_en/zhJSON.js
+preprocess/i18n/i18n.replace_zh_word_to_en/enJson.js
+preprocess/i18n/i18n.replace_zh_word_to_en/enJson copy.json
+static_vue2/**.rar

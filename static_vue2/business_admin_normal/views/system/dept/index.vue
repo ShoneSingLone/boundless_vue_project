@@ -60,10 +60,10 @@ export default async function () {
 				formSearch: defItems({
 					deptName: _adminTools.search_form_configs_text({
 						label: "部门名称",
-						placeholder: i18n("请输入部门名称")
+						placeholder: i18n("input_department_name")
 					}),
 					status: _adminTools.search_form_configs_select({
-						placeholder: i18n("状态"),
+						placeholder: i18n("status_info"),
 						options: dicts.sys_normal_disable
 					})
 				}),
@@ -80,7 +80,7 @@ export default async function () {
 						{ label: i18n("部门名称"), prop: "deptName" },
 						{ label: i18n("排序"), prop: "orderNum" },
 						{
-							label: i18n("状态"),
+							label: i18n("status_info"),
 							prop: "status",
 							cellRenderer: ({ cellData }) =>
 								hVal2Tag(cellData, dicts.sys_normal_disable)

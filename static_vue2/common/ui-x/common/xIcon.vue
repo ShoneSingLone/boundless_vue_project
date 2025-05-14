@@ -1,5 +1,5 @@
 <template>
-	<img v-if="cptImg" :src="cptImgSrc" />
+	<img v-if="cptImg" :src="cptImgSrc" @click="handleClick" :data-origin-img-src="cptImg" />
 	<svg
 		v-else
 		:data-icon-name="cptIconName"
@@ -58,7 +58,11 @@ export default async function () {
 				return this.cptHref === "#_svg_icon_loading";
 			},
 			cptImg() {
-				return _.$resolvePath(this.img || this.$attrs.img || "");
+				if (this.img) {
+					return _.$resolvePath(this.img || this.$attrs.img || "");
+				} else {
+					return "";
+				}
 			},
 			cptImgSrc({ iscache, cachedImgSrc, cptImg }) {
 				if (cachedImgSrc) {
@@ -66,7 +70,7 @@ export default async function () {
 				}
 
 				if (iscache && !cachedImgSrc) {
-					return "";
+					return cptImg;
 				}
 				return cptImg;
 			},
@@ -122,9 +126,9 @@ export default async function () {
 			}
 		},
 		methods: {
-			async doCacheImg({ cptImg, iscache }) {
+			async doCacheImg({ cptImg, iscache, cptCurrentImgProp }) {
 				if (cptImg && iscache) {
-					const cachedImgSrc = await _.$idb.get(this.cptCurrentImgProp);
+					const cachedImgSrc = await _.$idb.get(cptCurrentImgProp);
 
 					if (!cachedImgSrc) {
 						try {
@@ -139,7 +143,7 @@ export default async function () {
 							const reader = new FileReader();
 							reader.onload = () => {
 								const base64Data = reader.result;
-								_.$idb.set(this.cptCurrentImgProp, base64Data);
+								_.$idb.set(cptCurrentImgProp, base64Data);
 								this.cachedImgSrc = base64Data;
 							};
 							reader.readAsDataURL(blob);
@@ -162,47 +166,68 @@ export default async function () {
 			},
 			async loadSVG() {
 				this.isLoaded = await (async () => {
-					let isLoaded;
+					// 校验关键变量是否有效
+					if (!this.cptSelector || !this.cptIconUrl) {
+						console.error("cptSelector 或 cptIconUrl 无效");
+						return false;
+					}
+
+					let isLoaded = false;
+
 					try {
 						const $svg = $(this.cptSelector);
-						if ($svg.length === 0) {
-							/*  */
-							/* useXui xIconUseSvgInit 保证 $("#__SVG_SPRITE_NODE__")*/
-							const $svgWrapper = $("#__SVG_SPRITE_NODE__");
-							const svgContent = await _.$loadText(this.cptIconUrl);
-							if (svgContent.includes("<svg ")) {
-								const $svgContent = $(svgContent);
-								const width = $svgContent.attr("width");
-								const height = $svgContent.attr("height");
 
-								$svgContent
-									.attr({
-										id: this.cptId,
-										fill: "inherit"
-									})
-									.removeAttr("width")
-									.removeAttr("height");
-
-								if (width && height) {
-									$svgContent.attr({
-										viewBox: `0 0 ${width} ${height}`
-									});
-								}
-								$svgWrapper.append($svgContent);
-								if (this.cptIconName === "loading") {
-									/* 需要旋转 */
-									$svgWrapper.append(rotationIndefinite(3));
-								}
-								isLoaded = true;
-							} else {
-								isLoaded = false;
-							}
+						// 如果目标 SVG 已存在，直接返回成功
+						if ($svg.length > 0) {
+							isLoaded = true;
 						} else {
+							/* useXui xIconUseSvgInit 保证 $("#__SVG_SPRITE_NODE__")*/
+							// 确保 SVG 容器存在
+							const $svgWrapper = $("#__SVG_SPRITE_NODE__");
+							if (!$svgWrapper.length) {
+								console.error("__SVG_SPRITE_NODE__ 不存在");
+								return false;
+							}
+
+							// 加载 SVG 内容
+							const svgContent = await _.$loadText(this.cptIconUrl);
+							if (!svgContent.includes("<svg ")) {
+								console.warn("加载的 SVG 内容无效");
+								return false;
+							}
+
+							// 解析并处理 SVG 内容
+							const $svgContent = $(svgContent);
+							const width = $svgContent.attr("width") || "";
+							const height = $svgContent.attr("height") || "";
+
+							$svgContent
+								.attr({
+									id: this.cptId,
+									fill: "inherit",
+									viewBox: width && height ? `0 0 ${width} ${height}` : undefined
+								})
+								.removeAttr("width")
+								.removeAttr("height");
+
+							// 将 SVG 内容追加到容器中
+							$svgWrapper.append($svgContent);
+
+							// 如果是加载图标，添加旋转效果
+							if (this.cptIconName === "loading") {
+								const rotationElement = rotationIndefinite(3);
+								if (rotationElement) {
+									$svgWrapper.append(rotationElement);
+								}
+							}
+
 							isLoaded = true;
 						}
 					} catch (error) {
-						console.warn(error);
+						console.error("加载 SVG 时发生错误:", error.message);
+						return false; // 明确返回失败状态
 					}
+
 					return isLoaded;
 				})();
 			}
@@ -210,7 +235,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .xIcon {
 	display: inline-block;

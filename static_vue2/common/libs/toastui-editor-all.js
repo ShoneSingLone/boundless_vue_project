@@ -2332,7 +2332,6 @@
 
 					return purify;
 				});
-				//# sourceMappingURL=purify.js.map
 
 				/***/
 			},
@@ -4033,6 +4032,7 @@ PERFORMANCE OF THIS SOFTWARE.
 						}),
 					g
 				);
+
 				function verb(n) {
 					return function (v) {
 						return step([n, v]);
@@ -4215,6 +4215,7 @@ PERFORMANCE OF THIS SOFTWARE.
 					}),
 					i
 				);
+
 				function verb(n) {
 					if (g[n])
 						i[n] = function (v) {
@@ -4260,6 +4261,7 @@ PERFORMANCE OF THIS SOFTWARE.
 					}),
 					i
 				);
+
 				function verb(n, f) {
 					i[n] = o[n]
 						? function (v) {
@@ -7310,6 +7312,7 @@ defined by an array of [rules](https://prosemirror.net/docs/ref/#model.ParseRule
 						(preserveWhitespace ? OPT_PRESERVE_WS : 0) |
 						(preserveWhitespace === "full" ? OPT_PRESERVE_WS_FULL : 0)
 					);
+
 				return type && type.whitespace == "pre"
 					? OPT_PRESERVE_WS | OPT_PRESERVE_WS_FULL
 					: base & ~OPT_OPEN_LEFT;
@@ -11435,6 +11438,7 @@ a `"uiEvent"` property of that may be `"paste"`, `"cut"`, or `"drop"`.
 					}
 				})
 			];
+
 			// Object wrapping the part of a state object that stays the same
 			// across transactions. Stored in the state's `config` property.
 			class Configuration {
@@ -13881,6 +13885,7 @@ active in a state.
 									next.dirty != NODE_DIRTY &&
 									sameOuterDeco(outerDeco, next.outerDeco)
 								);
+
 							if (!locked && next.update(node, outerDeco, innerDeco, view)) {
 								this.destroyBetween(this.index, i);
 								if (next.dom != nextDOM) this.changed = true;
@@ -20267,6 +20272,7 @@ The amount of redoable events available in a given editor state.
 							(title ? ' "' + title + '"' : "") +
 							")"
 						);
+
 					default:
 						return null;
 				}
@@ -21142,6 +21148,7 @@ The amount of redoable events available in a given editor state.
 				"Alt-ArrowUp",
 				"Alt-ArrowDown"
 			];
+
 			function execCommand(view, command, payload) {
 				view.focus();
 				return command(payload)(view.state, view.dispatch, view);
@@ -21599,6 +21606,7 @@ The amount of redoable events available in a given editor state.
 						__spreadArray([start, addOffsetPos(start, padding)], spec)
 					)
 				];
+
 				if (task) {
 					marks.push(
 						markInfo(
@@ -21831,6 +21839,7 @@ The amount of redoable events available in a given editor state.
 				"indent",
 				"outdent"
 			];
+
 			function getToolbarStateType(mdNode) {
 				var type = mdNode.type;
 				if (isListNode(mdNode)) {
@@ -24057,6 +24066,7 @@ The amount of redoable events available in a given editor state.
 							previewHighlight(this.context),
 							smartTask(this.context)
 						],
+
 						this.createPluginProps()
 					).concat(this.defaultPlugins);
 				};
@@ -30470,6 +30480,7 @@ PERFORMANCE OF THIS SOFTWARE.
 										[openerEndPos[0], openerEndPos[1] - useDelims + 1],
 										[closerStartPos[0], closerStartPos[1] + useDelims - 1]
 									];
+
 									openerInl.sourcepos[1][1] -= useDelims;
 									closerInl.sourcepos[0][1] += useDelims;
 									openerInl.literal = openerInl.literal.slice(useDelims);
@@ -31758,6 +31769,7 @@ PERFORMANCE OF THIS SOFTWARE.
 				/^<[/]?(?:address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[123456]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|nav|noframes|ol|optgroup|option|p|param|section|source|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul)(?:\s|[/]?[>]|$)/i,
 				new RegExp("^(?:" + OPENTAG + "|" + CLOSETAG + ")\\s*$", "i")
 			];
+
 			var reSetextHeadingLine = /^(?:=+|-+)[ \t]*$/;
 			var reATXHeadingMarker = /^#{1,6}(?:[ \t]+|$)/;
 			var reThematicBreak = /^(?:(?:\*[ \t]*){3,}|(?:_[ \t]*){3,}|(?:-[ \t]*){3,})[ \t]*$/;
@@ -32040,6 +32052,7 @@ PERFORMANCE OF THIS SOFTWARE.
 				tableBody,
 				esm_customBlock
 			];
+
 			// `---` for YAML, `+++` for TOML, `;;;` for JSON
 			var reFrontMatter = /^(-{3}|\+{3}|;{3})$/;
 			var frontMatter$1 = function (parser, container) {
@@ -32385,6 +32398,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									!container.firstChild &&
 									container.sourcepos[0][0] === this.lineNumber)
 							);
+
 						// propagate lastLineBlank up through parents:
 						var cont = container;
 						while (cont) {
@@ -32766,6 +32780,7 @@ PERFORMANCE OF THIS SOFTWARE.
 							[1, 1],
 							[1, 0]
 						];
+
 						return;
 					}
 					if (this.root.lastChild) {
@@ -33085,6 +33100,7 @@ PERFORMANCE OF THIS SOFTWARE.
 				"script",
 				"plaintext"
 			];
+
 			var reDisallowedTag = new RegExp(
 				"<(/?(?:" + disallowedTags.join("|") + ")[^>]*>)",
 				"ig"
@@ -33770,6 +33786,7 @@ PERFORMANCE OF THIS SOFTWARE.
 								}
 							}
 						],
+
 						toDOM: function (node) {
 							var _a = sanitizeDOM(node, typeName, sanitizeHTML, wwToDOMAdaptor),
 								dom = _a.dom,
@@ -33800,6 +33817,7 @@ PERFORMANCE OF THIS SOFTWARE.
 								}
 							}
 						],
+
 						toDOM: function (node) {
 							var htmlAttrs = sanitizeDOM(
 								node,
@@ -35641,6 +35659,7 @@ PERFORMANCE OF THIS SOFTWARE.
 						className: "remove-row"
 					}
 				],
+
 				[
 					{
 						action: "Add column to left",
@@ -35654,6 +35673,7 @@ PERFORMANCE OF THIS SOFTWARE.
 					},
 					{ action: "Remove column", command: "removeColumn", className: "remove-column" }
 				],
+
 				[
 					{
 						action: "Align column to left",
@@ -35674,8 +35694,10 @@ PERFORMANCE OF THIS SOFTWARE.
 						className: "align-column-right"
 					}
 				],
+
 				[{ action: "Remove table", command: "removeTable", className: "remove-table" }]
 			];
+
 			function getContextMenuGroups(eventEmitter, inTableHead) {
 				return contextMenuGroups
 					.map(function (contextMenuGroup) {
@@ -37041,6 +37063,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									}
 								}
 							],
+
 							toDOM: function (_a) {
 								var attrs = _a.attrs;
 								return [
@@ -37205,6 +37228,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									}
 								}
 							],
+
 							toDOM: function (_a) {
 								var attrs = _a.attrs;
 								return [
@@ -37281,6 +37305,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									}
 								}
 							],
+
 							toDOM: function (_a) {
 								var attrs = _a.attrs;
 								var task = attrs.task,
@@ -38188,6 +38213,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									}
 								}
 							],
+
 							toDOM: function (_a) {
 								var attrs = _a.attrs;
 								return ["tbody", getCustomAttrs(attrs), 0];
@@ -38233,6 +38259,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									}
 								}
 							],
+
 							toDOM: function (_a) {
 								var attrs = _a.attrs;
 								return ["tr", getCustomAttrs(attrs), 0];
@@ -38372,6 +38399,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									}
 								}
 							],
+
 							toDOM: function (_a) {
 								var attrs = _a.attrs;
 								return [
@@ -38708,6 +38736,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									}
 								}
 							],
+
 							toDOM: function (_a) {
 								var attrs = _a.attrs;
 								return [
@@ -38799,6 +38828,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									}
 								}
 							],
+
 							toDOM: function (_a) {
 								var attrs = _a.attrs;
 								return [attrs.rawHTML || "code", getCustomAttrs(attrs)];
@@ -38857,6 +38887,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									}
 								}
 							],
+
 							toDOM: function (_a) {
 								var attrs = _a.attrs;
 								return ["div", { "data-custom-info": attrs.info || null }, 0];
@@ -38906,6 +38937,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									tag: "div[data-front-matter]"
 								}
 							],
+
 							toDOM: function () {
 								return ["div", { "data-front-matter": "true" }, 0];
 							}
@@ -38958,6 +38990,7 @@ PERFORMANCE OF THIS SOFTWARE.
 							parseDOM: [
 								{ preserveWhitespace: "full", tag: "div[data-html-comment]" }
 							],
+
 							toDOM: function () {
 								return ["div", { "data-html-comment": "true" }, 0];
 							}
@@ -39076,6 +39109,7 @@ PERFORMANCE OF THIS SOFTWARE.
 							task(),
 							toolbarStateHighlight(this.eventEmitter)
 						],
+
 						this.createPluginProps()
 					).concat(this.defaultPlugins);
 				};
@@ -39353,6 +39387,7 @@ PERFORMANCE OF THIS SOFTWARE.
 				"keydown",
 				"keyup"
 			];
+
 			/**
 			 * Class EventEmitter
 			 * @ignore
@@ -41734,6 +41769,7 @@ PERFORMANCE OF THIS SOFTWARE.
 					"tableHeadCell",
 					"tableBodyCell"
 				];
+
 				return common_includes(containerTypes, type);
 			}
 			function createMdLikeNode(node) {
@@ -42205,6 +42241,7 @@ PERFORMANCE OF THIS SOFTWARE.
 								["code", "codeblock"],
 								["scrollSync"]
 							],
+
 							hideModeSwitch: false,
 							linkAttributes: null,
 							extendedAutolinks: false,
@@ -43382,6 +43419,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									"\n        >\n          ",
 									"\n        </div>\n      </div>\n    "
 								],
+
 								[
 									'\n      <div class="',
 									'" style="display: ',
@@ -43649,6 +43687,7 @@ PERFORMANCE OF THIS SOFTWARE.
 				"size",
 				"weight"
 			];
+
 			// Check if MutationObserver is available.
 			var mutationObserverSupported = typeof MutationObserver !== "undefined";
 			/**
@@ -44411,6 +44450,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									'\n        <li data-type="Paragraph" aria-role="menuitem">\n          <div>',
 									"</div>\n        </li>\n      </ul>\n    "
 								],
+
 								[
 									"\n      <ul\n        onClick=",
 									'\n        aria-role="menu"\n        aria-label="',
@@ -44434,6 +44474,7 @@ PERFORMANCE OF THIS SOFTWARE.
 											" ",
 											"</$>\n              </li>\n            "
 										],
+
 										[
 											'\n              <li data-level="',
 											'" data-type="Heading" aria-role="menuitem">\n                <',
@@ -44474,6 +44515,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									'" aria-role="tabpanel">\n        ',
 									"\n      </div>\n    "
 								],
+
 								[
 									'\n      <div class="',
 									'" aria-role="tabpanel">\n        ',
@@ -44497,6 +44539,7 @@ PERFORMANCE OF THIS SOFTWARE.
 											'"\n            >\n              ',
 											"\n            </div>\n          "
 										],
+
 										[
 											'\n            <div\n              class="tab-item',
 											'"\n              onClick=',
@@ -44570,6 +44613,7 @@ PERFORMANCE OF THIS SOFTWARE.
 						{ name: "file", text: "File" },
 						{ name: "url", text: "URL" }
 					];
+
 					return _this;
 				}
 				ImagePopupBody.prototype.emitAddImageBlob = function () {
@@ -44661,6 +44705,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									">\n            ",
 									"\n          </button>\n        </div>\n      </div>\n    "
 								],
+
 								[
 									'\n      <div aria-label="',
 									'">\n        <',
@@ -44807,6 +44852,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									">\n            ",
 									"\n          </button>\n        </div>\n      </div>\n    "
 								],
+
 								[
 									'\n      <div aria-label="',
 									'">\n        <label for="toastuiLinkUrlInput">',
@@ -45009,6 +45055,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									'">',
 									"</p>\n      </div>\n    "
 								],
+
 								[
 									'\n      <div aria-label="',
 									'">\n        <div\n          class="',
@@ -45477,6 +45524,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									'">\n          ',
 									"\n        </div>\n      </div>\n    "
 								],
+
 								[
 									'\n      <div\n        class="',
 									" ",
@@ -45582,6 +45630,7 @@ PERFORMANCE OF THIS SOFTWARE.
 										"\n          disabled=",
 										"\n        />\n      "
 									],
+
 									[
 										"\n        <",
 										"\n          ...",
@@ -45691,6 +45740,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									"\n      >\n        ",
 									"\n      </button>\n    "
 								],
+
 								[
 									"\n      <button\n        ref=",
 									'\n        type="button"\n        style=',
@@ -45789,6 +45839,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									"\n        onMouseout=",
 									"\n      ></div>\n    "
 								],
+
 								[
 									"\n      <div\n        ref=",
 									"\n        style=",
@@ -45837,6 +45888,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									'" style=',
 									"></div>\n      </div>\n    "
 								],
+
 								[
 									'\n      <div class="',
 									'" style=',
@@ -45940,6 +45992,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									"\n        >\n          ",
 									"\n        </div>\n      </div>\n    "
 								],
+
 								[
 									'\n      <div class="',
 									'" style=',
@@ -45987,6 +46040,7 @@ PERFORMANCE OF THIS SOFTWARE.
 														"\n                    ...",
 														"\n                  />\n                "
 													],
+
 													[
 														"\n                  <",
 														"\n                    group=",
@@ -46070,6 +46124,7 @@ PERFORMANCE OF THIS SOFTWARE.
 						{ name: "write", text: "Write" },
 						{ name: "preview", text: "Preview" }
 					];
+
 					_this.itemWidthMap = {};
 					_this.initialItems = groupToolbarItems(
 						props.toolbarItems || [],
@@ -46287,6 +46342,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									"\n          execCommand=",
 									"\n        />\n      </div>\n    "
 								],
+
 								[
 									'\n      <div class="',
 									'">\n        <div\n          class="',
@@ -46337,6 +46393,7 @@ PERFORMANCE OF THIS SOFTWARE.
 											"\n                ...",
 											"\n              />\n            "
 										],
+
 										[
 											"\n              <",
 											"\n                group=",
@@ -46435,6 +46492,7 @@ PERFORMANCE OF THIS SOFTWARE.
 															'">',
 															"</span>\n                </li>\n              "
 														],
+
 														[
 															"\n                <li\n                  onClick=",
 															'\n                  class="menu-item',
@@ -46458,6 +46516,7 @@ PERFORMANCE OF THIS SOFTWARE.
 													'<ul class="menu-group">\n              ',
 													"\n            </ul>"
 												],
+
 												[
 													'<ul class="menu-group">\n              ',
 													"\n            </ul>"
@@ -46484,6 +46543,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									' aria-role="menu">\n      ',
 									"\n    </div>"
 								],
+
 								[
 									'<div class="',
 									'" style=',
@@ -46594,6 +46654,7 @@ PERFORMANCE OF THIS SOFTWARE.
 									" eventEmitter=",
 									" />\n      </div>\n    "
 								],
+
 								[
 									'\n      <div\n        class="',
 									"",
@@ -46705,6 +46766,7 @@ PERFORMANCE OF THIS SOFTWARE.
 										"\n          theme=",
 										"\n        />\n      "
 									],
+
 									[
 										"\n        <",
 										"\n          ref=",

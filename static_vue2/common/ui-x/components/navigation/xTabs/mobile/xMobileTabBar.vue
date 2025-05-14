@@ -1,55 +1,3 @@
-<style lang="less">
-.x-mobile-tab-bar {
-	position: relative;
-	align-items: center;
-}
-
-.x-mobile-tab-bar,
-.x-mobile-tab-bar_inline .x-mobile-tab {
-	display: flex;
-	justify-content: center;
-}
-
-.x-mobile-tab-bar_inline .x-mobile-tab {
-	align-content: center;
-}
-
-.x-mobile-tab-bar-slider {
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	height: 2px;
-	width: 20px;
-	background-color: var(--el-color-primary);
-}
-
-.x-mobile-tab {
-	flex: 1;
-	padding: 7px 0;
-	color: #666;
-	text-align: center;
-}
-
-.x-mobile-tab_active {
-	color: var(--el-color-primary);
-}
-
-.x-mobile-tab-panels {
-	position: relative;
-	overflow: hidden;
-}
-
-.x-mobile-tab-panels-group {
-	display: flex;
-	transition: all 0.4s cubic-bezier(0.86, 0, 0.07, 1);
-}
-
-.x-mobile-tab-panel {
-	width: 100%;
-	flex: 1 0 auto;
-}
-</style>
-
 <template>
 	<div class="x-mobile-tab-bar" :class="{ 'x-mobile-tab-bar_inline': inline }">
 		<slot>
@@ -200,3 +148,54 @@ export default async function () {
 	});
 }
 </script>
+<style lang="less">
+.x-mobile-tab-bar {
+	position: relative;
+	align-items: center;
+}
+
+.x-mobile-tab-bar,
+.x-mobile-tab-bar_inline .x-mobile-tab {
+	display: flex;
+	justify-content: center;
+}
+
+.x-mobile-tab-bar_inline .x-mobile-tab {
+	align-content: center;
+}
+
+.x-mobile-tab-bar-slider {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 2px;
+	width: 20px;
+	background-color: var(--el-color-primary);
+}
+
+.x-mobile-tab {
+	flex: 1;
+	padding: 7px 0;
+	color: #666;
+	text-align: center;
+}
+
+.x-mobile-tab_active {
+	color: var(--el-color-primary);
+}
+
+.x-mobile-tab-panels {
+	position: relative;
+	overflow: hidden;
+}
+
+.x-mobile-tab-panels-group {
+	display: flex;
+	transition: all 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.x-mobile-tab-panel {
+	width: 100%;
+	flex: 1 0 auto;
+}
+</style>

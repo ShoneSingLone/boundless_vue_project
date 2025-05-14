@@ -7,7 +7,7 @@ export default async function () {
 			const res = useCellArgs({
 				vm: this,
 				itemType: "xItemInput",
-				cellConfigs: this.configs?.col?.componentOptions
+				cellConfigs: _.$val(this, "configs.col.componentOptions")
 			});
 			// 这里已经赋值过了，所以使用时不需要在.value
 			this.res = res;
@@ -40,7 +40,7 @@ export default async function () {
 					return this.row[this.configs.prop] || "";
 				},
 				set(val) {
-					if (this.configs?.col?.componentOptions?.onEmitValue) {
+					if (_.$val(this, "configs.col.componentOptions.onEmitValue")) {
 						if (this.row[this.configs.prop] !== val) {
 							this.configs.col.componentOptions.onEmitValue({
 								...this.params,
@@ -51,20 +51,20 @@ export default async function () {
 				}
 			},
 			searchDisabled() {
-				let dis = this.configs?.col?.componentOptions?.search?.disabled;
+				let dis = _.$val(this, "configs.col.componentOptions.search.disabled");
 				if (_.isFunction(dis)) {
 					return Boolean(dis.call(this));
 				}
 				return dis ?? false;
 			},
 			searchValue() {
-				return this.configs?.row?.searchValue || "";
+				return _.$val(this, "configs.row.searchValue") || "";
 			}
 		},
 		mounted() {},
 		render() {
 			const vm = this;
-			let opts = vm.configs?.col?.componentOptions?.search?.options ?? [];
+			let opts = _.$val(vm, "configs.col.componentOptions.search.options") ?? [];
 
 			return hDiv({ class: "select-search" }, [
 				h(
@@ -74,12 +74,16 @@ export default async function () {
 						disabled: vm.searchDisabled,
 						style: "display:none",
 						onChange: val => {
-							if (vm.configs?.col?.componentOptions?.search?.value) {
+							if (_.$val(vm, "configs.col.componentOptions.search.value")) {
 								vm.configs.col.componentOptions.search.value = val;
 								vm.configs.row.searchValue = val;
 								vm.configs.row[vm.configs.prop] = "";
 							}
-							if (_.isFunction(vm.configs?.col?.componentOptions?.search?.change)) {
+							if (
+								_.isFunction(
+									_.$val(vm, "configs.col.componentOptions.search.change")
+								)
+							) {
 								vm.configs.col.componentOptions.search.change(vm, val);
 							}
 						}
@@ -97,7 +101,7 @@ export default async function () {
 				vm.searchValue == "true"
 					? hxItem({
 							configs: {
-								...(vm.configs?.col?.componentOptions || {}),
+								...(_.$val(vm, "configs.col.componentOptions") || {}),
 								itemType: "xItemSelect",
 								payload: vm.params
 							},

@@ -67,6 +67,7 @@ export default async function () {
 						panes.length === this.panes.length &&
 						panes.every((pane, index) => pane === this.panes[index])
 					);
+
 					if (isForceUpdate || panesChanged) {
 						this.panes = panes;
 					}

@@ -10,7 +10,6 @@
 		</template>
 	</xDialog>
 </template>
-
 <script lang="ts">
 export default async function ({ resolve, reject, content, renderFooter, style }) {
 	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
@@ -37,7 +36,7 @@ export default async function ({ resolve, reject, content, renderFooter, style }
 			},
 			btnOk() {
 				const vm = this;
-				let label = i18n("确定");
+				let label = i18n("ok");
 				return {
 					label,
 					async onClick() {
@@ -49,7 +48,7 @@ export default async function ({ resolve, reject, content, renderFooter, style }
 			btnCancel() {
 				const vm = this;
 				return {
-					label: i18n("取消"),
+					label: i18n("cancel"),
 					/* 因为是弹出确认框，引导用户取消 */
 					preset: "blue",
 					async onClick() {
@@ -62,7 +61,6 @@ export default async function ({ resolve, reject, content, renderFooter, style }
 	});
 }
 </script>
-
 <style lang="less">
 #WindowConfirm {
 	min-width: unset;

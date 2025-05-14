@@ -17,4 +17,5 @@ deleteTenant(args?:any):Promise<any>
 };riverList(args?:any):Promise<any>
 DriverRegister(args?:any):Promise<any>
 DriverUnRegister(args?:any):Promise<any>
+restHdrYManageGetPublicKey(args?:any):Promise<any>
 };

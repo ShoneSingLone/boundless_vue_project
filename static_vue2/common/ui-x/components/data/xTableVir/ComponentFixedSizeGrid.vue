@@ -2,11 +2,9 @@
 export default async function () {
 	const { AUTO_ALIGNMENT, SMART_ALIGNMENT, START_ALIGNMENT, CENTERED_ALIGNMENT, END_ALIGNMENT } =
 		_xUtils;
-
 	const [{ createGrid }] = await _.$importVue([
 		"/common/ui-x/components/data/xVirtualList/xBuildList.vue"
 	]);
-
 	return createGrid({
 		name: "ComponentFixedSizeGrid",
 		getColumnPosition: ({ columnWidth }, index) => [columnWidth, index * columnWidth],
@@ -137,5 +135,3 @@ export default async function () {
 	});
 }
 </script>
-
-<style lang="less"></style>

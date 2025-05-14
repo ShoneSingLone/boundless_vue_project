@@ -10,7 +10,7 @@
 		</xCard>
 		<template #footer>
 			<xBtn :configs="btnOk" />
-			<xBtn @click="closeModal">{{ i18n("取消") }}</xBtn>
+			<xBtn @click="closeModal">{{ i18n("Cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>
@@ -46,7 +46,7 @@ export default async function ({ row, onClick }) {
 						options: dicts.sys_notice_type,
 						itemSlots: {
 							beforeController() {
-								return h("div", { class: "mr" }, [
+								return hDiv({ class: "mr" }, [
 									hVal2Tag(vm.form.noticeType.value, dicts.sys_notice_type),
 									h("xGap", { f: true })
 								]);
@@ -55,7 +55,7 @@ export default async function ({ row, onClick }) {
 					},
 					status: {
 						value: _.first(dicts.sys_notice_status).value,
-						label: i18n("状态"),
+						label: i18n("status_info"),
 						rules: [_rules.required()],
 						itemType: "xItemRadioGroup",
 						isButton: true,
@@ -83,7 +83,7 @@ export default async function ({ row, onClick }) {
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("OK"),
 					preset: "blue",
 					async onClick() {
 						vm.onClickOk();

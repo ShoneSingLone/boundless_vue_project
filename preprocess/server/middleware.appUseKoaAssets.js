@@ -150,7 +150,7 @@ exports.appUseKoaAssets = function (app) {
 								},
 								set(newValue) {
 									_AJAX_URL_PREFIX = newValue
-									console.log("🚀 ~ set ~ _AJAX_URL_PREFIX in only-use-in-dev-model:", _AJAX_URL_PREFIX);
+									console.log("[dev:info] in only-use-in-dev-model:", _AJAX_URL_PREFIX);
 								},
 							});
 						</script>`);

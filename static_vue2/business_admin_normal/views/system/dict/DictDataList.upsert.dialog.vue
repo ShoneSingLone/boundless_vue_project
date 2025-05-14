@@ -14,7 +14,7 @@
 		</xCard>
 		<template #footer>
 			<xBtn :configs="btnOk" />
-			<xBtn @click="closeModal">{{ i18n("取消") }}</xBtn>
+			<xBtn @click="closeModal">{{ i18n("cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>
@@ -38,11 +38,11 @@ export default async function ({ row, onClick, DICT_TYPE }) {
 		},
 		{
 			value: "success",
-			label: i18n("成功")
+			label: i18n("success_info")
 		},
 		{
 			value: "info",
-			label: i18n("信息")
+			label: i18n("message")
 		},
 		{
 			value: "warning",
@@ -99,7 +99,7 @@ export default async function ({ row, onClick, DICT_TYPE }) {
 						options: LIST_CLASS_OPTIONS,
 						itemSlots: {
 							beforeController() {
-								return h("div", { vIf: vm.form.listClass.value, class: "mr" }, [
+								return hDiv({ vIf: vm.form.listClass.value, class: "mr" }, [
 									h("xTag", { type: vm.form.listClass.value }, [
 										`${vm.form.dictLabel.value}`
 									])
@@ -123,7 +123,7 @@ export default async function ({ row, onClick, DICT_TYPE }) {
 					},
 					status: {
 						value: "1",
-						label: i18n("状态"),
+						label: i18n("status_info"),
 						itemType: "xItemRadioGroup",
 						isButton: true,
 						options: dicts.sys_normal_disable,
@@ -151,7 +151,7 @@ export default async function ({ row, onClick, DICT_TYPE }) {
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("ok"),
 					preset: "blue",
 					async onClick() {
 						vm.onClickOk();

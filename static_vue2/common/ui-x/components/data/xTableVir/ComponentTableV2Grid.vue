@@ -115,11 +115,14 @@ export default async function () {
 								{
 									default: params => {
 										const rowData = data[params.rowIndex];
-										return vm.$vSlots.row?.({
-											...params,
-											columns: columns2,
-											rowData
-										});
+										return (
+											vm.$vSlots.row &&
+											vm.$vSlots.row({
+												...params,
+												columns: columns2,
+												rowData
+											})
+										);
 									}
 								}
 							]
@@ -161,7 +164,6 @@ export default async function () {
 	});
 }
 </script>
-
 <style lang="less">
 [data-role="table-virtualized"] {
 	* {

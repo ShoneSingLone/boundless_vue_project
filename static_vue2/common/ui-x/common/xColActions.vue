@@ -1,7 +1,6 @@
 <template>
 	<component class="xColActions" :is="currentComponent" :configs="this.configs" />
 </template>
-
 <script lang="ts">
 export default async function () {
 	return {
@@ -20,7 +19,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .xColActions {
 	width: 100%;

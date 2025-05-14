@@ -65,7 +65,7 @@ export default async function ({}) {
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("ok"),
 					preset: "blue",
 					async onClick() {
 						refreshTableData();

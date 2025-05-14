@@ -10,7 +10,7 @@
 		</div>
 		<template #footer>
 			<xBtn :configs="btnOk" />
-			<xBtn @click="closeModal">{{ i18n("取消") }}</xBtn>
+			<xBtn @click="closeModal">{{ i18n("cancel") }}</xBtn>
 		</template>
 	</xDialog>
 </template>
@@ -33,7 +33,7 @@ export default async function ({ makeNewDir, item, refreshList, action }) {
 					name: {
 						value: isRename ? item.name : "",
 						clearable: true,
-						label: i18n("名称"),
+						label: i18n("name"),
 						rules: [_rules.required(), _rules.lessThan(50)],
 						onEnter() {
 							vm.btnOk.onClick();
@@ -46,7 +46,7 @@ export default async function ({ makeNewDir, item, refreshList, action }) {
 			btnOk() {
 				const vm = this;
 				return {
-					label: i18n("确定"),
+					label: i18n("ok"),
 					preset: "blue",
 					async onClick() {
 						_.$loading(true);

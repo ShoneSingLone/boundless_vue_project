@@ -5,7 +5,6 @@
 		</div>
 	</div>
 </template>
-
 <script lang="ts">
 export default async function () {
 	return {
@@ -14,8 +13,11 @@ export default async function () {
 		},
 		computed: {
 			rate() {
-				if (_.isFunction(this.configs?.col?.componentOptions?.rate)) {
-					return this.configs?.col?.componentOptions?.rate({
+				if (_.isFunction(_.$val(this, "configs.col.componentOptions.rate"))) {
+					return _.$callFn(
+						this,
+						"configs.col.componentOptions.rate"
+					)({
 						xCellRate: this,
 						configs: this.configs,
 						col: this.configs.col,
@@ -42,8 +44,8 @@ export default async function () {
 				if (this.rate) {
 					return this.rate;
 				}
-				if (this.row?.rate) {
-					return this.row?.rate;
+				if (_.$val(this, "row.rate")) {
+					return _.$val(this, "row.rate");
 				}
 				return 0;
 			}
@@ -51,7 +53,6 @@ export default async function () {
 	};
 }
 </script>
-
 <style lang="less">
 .xCellRate {
 	width: 94%;
